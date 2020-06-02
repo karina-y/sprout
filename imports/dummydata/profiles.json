@@ -1,0 +1,723 @@
+[
+  {
+	"_id" : "LkycTLdDAwpnrWk8y",
+	"image" : "/images/plant-06.jpg",
+	"commonName" : "aaaaa",
+	"latinName" : "bbbbb",
+	"waterSchedule" : 12,
+	"waterPreference" : "cccc",
+	"lightPreference" : "ddddd",
+	"fertilizerSchedule" : 33,
+	"soilCompositionTracker" : [
+	  {
+		"date" : "2020-05-27T23:46:54.991Z",
+		"ph" : 4.2
+	  }
+	],
+	"locationBought" : "eeeee",
+	"dateBought" : "2020-05-05T00:00:00.000",
+	"location" : "ffffff",
+	"createdAt" : "2020-05-28T00:02:12.",
+	"updatedAt" : "2020-05-28T00:02:12."
+  },
+  {
+	"_id" : "5ecf185c2fa2a9651dc3cb72",
+	"commonName" : "Pink Syngonium",
+	"latinName" : "Syngonium podophyllum",
+	"location" : "office desk",
+	"dateBought" : "2020-05-05T23:46:54.991Z",
+	"locationBought" : "folia collective",
+	"companions" : [
+	  "plant one",
+	  "plant two",
+	  "plant three"
+	],
+	"notes" : "Painting should do one thing. It should put happiness in your heart. This painting comes right out of your heart. Let's make some happy little clouds in our world.",
+	"image" : "https://thatplantylife.com/wp-content/uploads/2020/01/Pink-syngonium.jpg",
+	"fertilizerSchedule" : 14,
+	"waterSchedule" : 7,
+	"waterPreference" : "Keep soil moist but not soggy",
+	"lightPreference" : "Bright indirect light",
+	"soilMoisturePreference" : 0.6,
+	"fertilizerTracker" : [
+	  {
+		"date" : "2020-05-06T23:46:54.991Z",
+		"fertilizer" : "dr. earth pump n grow indoor plant food"
+	  },
+	  {
+		"date" : "2020-05-15T23:46:54.991Z",
+		"fertilizer" : "dr. earth pump n grow indoor plant food"
+	  }
+	],
+	"waterTracker" : [
+	  {
+		"date" : "2020-05-06T23:46:54.991Z"
+	  },
+	  {
+		"date" : "2020-05-15T23:46:54.991Z"
+	  }
+	],
+	"pestTracker" : [
+	  {
+		"date" : "2020-05-06T23:46:54.991Z",
+		"pest" : "fungus gnats",
+		"treatment" : "letting it dry out"
+	  },
+	  {
+		"date" : "2020-05-15T23:46:54.991Z",
+		"pest" : "fungus gnats",
+		"treatment" : "sticky traps"
+	  }
+	],
+	"soilCompositionTracker" : [
+	  {
+		"date" : "2020-05-06T23:46:54.991Z",
+		"ph" : 4.2,
+		"moisture" : 0.1
+	  },
+	  {
+		"date" : "2020-05-15T23:46:54.991Z",
+		"ph" : 3.8,
+		"moisture" : 0.18
+	  }
+	]
+  },
+  {
+	"_id" : "kjSJHasdA7SKLawk",
+	"commonName" : "Green Syngonium",
+	"latinName" : "Syngonium podophyllum",
+	"location" : "office desk",
+	"dateBought" : "2020-05-05T23:46:54.991Z",
+	"locationBought" : "folia collective",
+	"companions" : null,
+	"notes" : "blah blah blah",
+	"image" : "https://i1.fnp.com/images/pr/l/v20191101181613/green-syngonium-in-copper-pot_3.jpg",
+	"fertilizerSchedule" : 18,
+	"waterSchedule" : 80,
+	"waterPreference" : "Keep soil moist but not soggy",
+	"lightPreference" : "Bright indirect light",
+	"soilMoisturePreference" : 0.6,
+	"fertilizerTracker" : [
+	  {
+		"date" : "2020-05-06T23:46:54.991Z",
+		"fertilizer" : "dr. earth pump n grow indoor plant food"
+	  },
+	  {
+		"date" : "2020-05-15T23:46:54.991Z",
+		"fertilizer" : "dr. earth pump n grow indoor plant food"
+	  }
+	],
+	"waterTracker" : [
+	  {
+		"date" : "2020-05-06T23:46:54.991Z"
+	  },
+	  {
+		"date" : "2020-05-15T23:46:54.991Z"
+	  }
+	],
+	"pestTracker" : [
+	  {
+		"date" : "2020-05-06T23:46:54.991Z",
+		"pest" : "fungus gnats",
+		"treatment" : "letting it dry out"
+	  },
+	  {
+		"date" : "2020-05-15T23:46:54.991Z",
+		"pest" : "fungus gnats",
+		"treatment" : "sticky traps"
+	  }
+	],
+	"soilCompositionTracker" : [
+	  {
+		"date" : "2020-05-06T23:46:54.991Z",
+		"ph" : 3.9,
+		"moisture" : 0.1
+	  },
+	  {
+		"date" : "2020-05-15T23:46:54.991Z",
+		"ph" : 4.7,
+		"moisture" : 0.68
+	  }
+	]
+  },
+  {
+	"_id" : "alklKS2Vjsu2BV",
+	"commonName" : "Swiss cheese plant",
+	"latinName" : "Monstera adansonii",
+	"location" : "sun room plant shelf",
+	"dateBought" : "2020-04-15T23:46:54.991Z",
+	"locationBought" : null,
+	"companions" : null,
+	"notes" : "i'm a pretty plant",
+	"image" : "https://i.redd.it/q7mz2ky86p931.jpg",
+	"fertilizerSchedule" : 25,
+	"waterSchedule" : 30,
+	"waterPreference" : "Keep soil moist but not soggy",
+	"lightPreference" : "Bright indirect light",
+	"soilMoisturePreference" : 0.6,
+	"fertilizerTracker" : [
+	  {
+		"date" : "2020-05-06T23:46:54.991Z",
+		"fertilizer" : "dr. earth pump n grow indoor plant food"
+	  },
+	  {
+		"date" : "2020-05-17T23:46:54.991Z",
+		"fertilizer" : "dr. earth pump n grow indoor plant food"
+	  }
+	],
+	"waterTracker" : [
+	  {
+		"date" : "2020-05-06T23:46:54.991Z"
+	  },
+	  {
+		"date" : "2020-05-17T23:46:54.991Z"
+	  }
+	],
+	"pestTracker" : [
+	  {
+		"date" : "2020-05-06T23:46:54.991Z",
+		"pest" : "fungus gnats",
+		"treatment" : "letting it dry out"
+	  },
+	  {
+		"date" : "2020-05-17T23:46:54.991Z",
+		"pest" : "fungus gnats",
+		"treatment" : "sticky traps"
+	  }
+	],
+	"soilCompositionTracker" : [
+	  {
+		"date" : "2020-05-06T23:46:54.991Z",
+		"ph" : 8.0,
+		"moisture" : 0.1
+	  },
+	  {
+		"date" : "2020-05-17T23:46:54.991Z",
+		"ph" : 8.9,
+		"moisture" : 0.18
+	  }
+	]
+  },
+  {
+	"_id" : "MJSJwbqHAHw1782MA",
+	"commonName" : "Pink String of Hearts",
+	"latinName" : "Ceropegia woodii",
+	"location" : "office desk",
+	"dateBought" : "2020-05-04T23:46:54.991Z",
+	"locationBought" : "folia collective",
+	"companions" : null,
+	"notes" : "blah blah blah",
+	"image" : "https://images-na.ssl-images-amazon.com/images/I/513nXyA4niL._AC_SL1059_.jpg",
+	"fertilizerSchedule" : 4,
+	"waterSchedule" : 180,
+	"waterPreference" : "Keep soil moist but not soggy",
+	"lightPreference" : "Bright indirect light",
+	"soilMoisturePreference" : 0.6,
+	"fertilizerTracker" : [
+	  {
+		"date" : "2020-05-08T23:46:54.991Z",
+		"fertilizer" : "dr. earth pump n grow indoor plant food"
+	  },
+	  {
+		"date" : "2020-05-18T23:46:54.991Z",
+		"fertilizer" : "dr. earth pump n grow indoor plant food"
+	  }
+	],
+	"waterTracker" : [
+	  {
+		"date" : "2020-05-08T23:46:54.991Z"
+	  },
+	  {
+		"date" : "2020-05-18T23:46:54.991Z"
+	  }
+	],
+	"pestTracker" : [
+	  {
+		"date" : "2020-05-08T23:46:54.991Z",
+		"pest" : "fungus gnats",
+		"treatment" : "letting it dry out"
+	  },
+	  {
+		"date" : "2020-05-18T23:46:54.991Z",
+		"pest" : "fungus gnats",
+		"treatment" : "sticky traps"
+	  }
+	],
+	"soilCompositionTracker" : [
+	  {
+		"date" : "2020-05-08T23:46:54.991Z",
+		"ph" : 4.8,
+		"moisture" : 0.1
+	  },
+	  {
+		"date" : "2020-05-18T23:46:54.991Z",
+		"ph" : 7.3,
+		"moisture" : 0.18
+	  }
+	]
+  },
+  {
+	"_id" : "JSIwha118hASDHBsd8",
+	"commonName" : "Polka Dot Begonia",
+	"latinName" : "Begonia 'Wightii' maculata variegata",
+	"location" : "office desk",
+	"dateBought" : "2020-05-04T23:46:54.991Z",
+	"locationBought" : "folia collective",
+	"companions" : null,
+	"notes" : "blah blah blah",
+	"image" : "https://www.myhomenature.com/media/catalog/product/cache/55a4c94cf440c86a19669f2b711c5d63/2/0/20190424141010.jpg",
+	"fertilizerSchedule" : 5,
+	"waterSchedule" : 12,
+	"waterPreference" : "Keep soil moist but not soggy",
+	"lightPreference" : "Bright indirect light",
+	"soilMoisturePreference" : 0.6,
+	"fertilizerTracker" : [
+	  {
+		"date" : "2020-05-14T23:46:54.991Z",
+		"fertilizer" : "dr. earth pump n grow indoor plant food"
+	  },
+	  {
+		"date" : "2020-05-19T23:46:54.991Z",
+		"fertilizer" : "dr. earth pump n grow indoor plant food"
+	  }
+	],
+	"waterTracker" : [
+	  {
+		"date" : "2020-05-14T23:46:54.991Z"
+	  },
+	  {
+		"date" : "2020-05-30T23:46:54.991Z"
+	  }
+	],
+	"pestTracker" : [
+	  {
+		"date" : "2020-05-14T23:46:54.991Z",
+		"pest" : "fungus gnats",
+		"treatment" : "letting it dry out"
+	  },
+	  {
+		"date" : "2020-05-30T23:46:54.991Z",
+		"pest" : "fungus gnats",
+		"treatment" : "sticky traps"
+	  }
+	],
+	"soilCompositionTracker" : [
+	  {
+		"date" : "2020-05-14T23:46:54.991Z",
+		"ph" : 3.9,
+		"moisture" : 0.1
+	  },
+	  {
+		"date" : "2020-05-30T23:46:54.991Z",
+		"ph" : 7.6,
+		"moisture" : 0.28
+	  }
+	]
+  },
+  {
+	"_id" : "sm2jgK8GJS82sn6y",
+	"commonName" : "Swallow Tail",
+	"latinName" : "Christia obcordata",
+	"location" : "sun room plant shelf",
+	"dateBought" : "2020-04-10T23:46:54.991Z",
+	"locationBought" : null,
+	"companions" : null,
+	"notes" : "i'm a pretty plant",
+	"image" : "https://media.karousell.com/media/photos/products/2019/12/01/plant__christia_obcordata__swallowtail_plant_butterfly_leaf_stripe__butterfly_wingplant_1518__1575182013_fe927336_progressive.jpg",
+	"fertilizerSchedule" : 14,
+	"waterSchedule" : 7,
+	"waterPreference" : "Keep soil moist but not soggy",
+	"lightPreference" : "Bright indirect light",
+	"soilMoisturePreference" : 0.6,
+	"fertilizerTracker" : [
+	  {
+		"date" : "2020-04-10T23:46:54.991Z",
+		"fertilizer" : "dr. earth pump n grow indoor plant food"
+	  },
+	  {
+		"date" : "2020-04-30T23:46:54.991Z",
+		"fertilizer" : "dr. earth pump n grow indoor plant food"
+	  }
+	],
+	"waterTracker" : [
+	  {
+		"date" : "2020-04-10T23:46:54.991Z"
+	  },
+	  {
+		"date" : "2020-04-30T23:46:54.991Z"
+	  }
+	],
+	"pestTracker" : [
+	  {
+		"date" : "2020-04-10T23:46:54.991Z",
+		"pest" : "fungus gnats",
+		"treatment" : "letting it dry out"
+	  },
+	  {
+		"date" : "2020-04-30T23:46:54.991Z",
+		"pest" : "fungus gnats",
+		"treatment" : "sticky traps"
+	  }
+	],
+	"soilCompositionTracker" : [
+	  {
+		"date" : "2020-04-10T23:46:54.991Z",
+		"ph" : 3.5,
+		"moisture" : 0.1
+	  },
+	  {
+		"date" : "2020-04-30T23:46:54.991Z",
+		"ph" : 6.4,
+		"moisture" : 0.18
+	  }
+	]
+  },
+  {
+	"_id" : "jdghaJDHw71bfj",
+	"commonName" : "Marble Queen Pothos",
+	"latinName" : "Epipremnum aureum",
+	"location" : "office desk",
+	"dateBought" : "2020-04-10T23:46:54.991Z",
+	"locationBought" : "folia collective",
+	"companions" : null,
+	"notes" : "blah blah blah",
+	"image" : "https://cdn.shopify.com/s/files/1/0260/3037/4957/files/marble-queen-pothos-plant-care-guide.jpg?v=1573860879",
+	"fertilizerSchedule" : 14,
+	"waterSchedule" : 7,
+	"waterPreference" : "Keep soil moist but not soggy",
+	"lightPreference" : "Bright indirect light",
+	"soilMoisturePreference" : 0.6,
+	"fertilizerTracker" : [
+	  {
+		"date" : "2020-04-20T23:46:54.991Z",
+		"fertilizer" : "dr. earth pump n grow indoor plant food"
+	  },
+	  {
+		"date" : "2020-04-20T23:46:54.991Z",
+		"fertilizer" : "dr. earth pump n grow indoor plant food"
+	  }
+	],
+	"waterTracker" : [
+	  {
+		"date" : "2020-04-20T23:46:54.991Z"
+	  },
+	  {
+		"date" : "2020-04-20T23:46:54.991Z"
+	  }
+	],
+	"pestTracker" : [
+	  {
+		"date" : "2020-04-20T23:46:54.991Z",
+		"pest" : "fungus gnats",
+		"treatment" : "letting it dry out"
+	  },
+	  {
+		"date" : "2020-04-20T23:46:54.991Z",
+		"pest" : "fungus gnats",
+		"treatment" : "sticky traps"
+	  }
+	],
+	"soilCompositionTracker" : [
+	  {
+		"date" : "2020-04-20T23:46:54.991Z",
+		"ph" : 8.0,
+		"moisture" : 0.1
+	  },
+	  {
+		"date" : "2020-04-20T23:46:54.991Z",
+		"ph" : 7.8,
+		"moisture" : 0.18
+	  }
+	]
+  },
+  {
+	"_id" : "sj2wgAHSHfja82ha",
+	"commonName" : "Maranta Prayer Plant",
+	"latinName" : "Maranta leuconeura",
+	"location" : "office desk",
+	"dateBought" : "2020-05-02T23:46:54.991Z",
+	"locationBought" : "folia collective",
+	"companions" : null,
+	"notes" : "blah blah blah",
+	"image" : "https://i.etsystatic.com/22515147/r/il/a1624c/2325318950/il_794xN.2325318950_6rkk.jpg",
+	"fertilizerSchedule" : 18,
+	"waterSchedule" : 80,
+	"waterPreference" : "Keep soil moist but not soggy",
+	"lightPreference" : "Bright indirect light",
+	"soilMoisturePreference" : 0.6,
+	"fertilizerTracker" : [
+	  {
+		"date" : "2020-05-16T23:46:54.991Z",
+		"fertilizer" : "dr. earth pump n grow indoor plant food"
+	  },
+	  {
+		"date" : "2020-05-12T23:46:54.991Z",
+		"fertilizer" : "dr. earth pump n grow indoor plant food"
+	  }
+	],
+	"waterTracker" : [
+	  {
+		"date" : "2020-05-16T23:46:54.991Z"
+	  },
+	  {
+		"date" : "2020-05-12T23:46:54.991Z"
+	  }
+	],
+	"pestTracker" : [
+	  {
+		"date" : "2020-05-16T23:46:54.991Z",
+		"pest" : "fungus gnats",
+		"treatment" : "letting it dry out"
+	  },
+	  {
+		"date" : "2020-05-12T23:46:54.991Z",
+		"pest" : "fungus gnats",
+		"treatment" : "sticky traps"
+	  }
+	],
+	"soilCompositionTracker" : [
+	  {
+		"date" : "2020-05-16T23:46:54.991Z",
+		"ph" : 7.2,
+		"moisture" : 0.1
+	  },
+	  {
+		"date" : "2020-05-12T23:46:54.991Z",
+		"ph" : 6.3,
+		"moisture" : 0.68
+	  }
+	]
+  },
+  {
+	"_id" : "ksbN3siygSVB72s2J",
+	"commonName" : "Watermelon Peperomia",
+	"latinName" : "Peperomia argyreia",
+	"location" : "sun room plant shelf",
+	"dateBought" : "2020-05-02T23:46:54.991Z",
+	"locationBought" : null,
+	"companions" : null,
+	"notes" : "i'm a pretty plant",
+	"image" : "https://preview.redd.it/v0x3qlcvpz911.jpg?width=640&crop=smart&auto=webp&s=b1e1213199cf5d63468e9f6cf4c197cd1f476f10",
+	"fertilizerSchedule" : 25,
+	"waterSchedule" : 30,
+	"waterPreference" : "Keep soil moist but not soggy",
+	"lightPreference" : "Bright indirect light",
+	"soilMoisturePreference" : 0.6,
+	"fertilizerTracker" : [
+	  {
+		"date" : "2020-05-06T23:46:54.991Z",
+		"fertilizer" : "dr. earth pump n grow indoor plant food"
+	  },
+	  {
+		"date" : "2020-05-12T23:46:54.991Z",
+		"fertilizer" : "dr. earth pump n grow indoor plant food"
+	  }
+	],
+	"waterTracker" : [
+	  {
+		"date" : "2020-05-06T23:46:54.991Z"
+	  },
+	  {
+		"date" : "2020-05-12T23:46:54.991Z"
+	  }
+	],
+	"pestTracker" : [
+	  {
+		"date" : "2020-05-06T23:46:54.991Z",
+		"pest" : "fungus gnats",
+		"treatment" : "letting it dry out"
+	  },
+	  {
+		"date" : "2020-05-12T23:46:54.991Z",
+		"pest" : "fungus gnats",
+		"treatment" : "sticky traps"
+	  }
+	],
+	"soilCompositionTracker" : [
+	  {
+		"date" : "2020-05-06T23:46:54.991Z",
+		"ph" : 4.2,
+		"moisture" : 0.1
+	  },
+	  {
+		"date" : "2020-05-12T23:46:54.991Z",
+		"ph" : 6.8,
+		"moisture" : 0.18
+	  }
+	]
+  },
+  {
+	"_id" : "jsdgVS82mh5q2wa",
+	"commonName" : "Arugula",
+	"latinName" : "Eruca vesicaria",
+	"location" : "patio",
+	"dateBought" : "2020-05-02T23:46:54.991Z",
+	"locationBought" : "Armstrong Garden Centers",
+	"companions" : null,
+	"notes" : "great for salads and aphids love to harass this plant",
+	"image" : "https://www.outsidepride.com/images/products/detail/herbseed/arugula3.jpg",
+	"fertilizerSchedule" : 25,
+	"waterSchedule" : 30,
+	"waterPreference" : "Keep soil moist but not soggy",
+	"lightPreference" : "Bright indirect light",
+	"soilMoisturePreference" : 0.6,
+	"fertilizerTracker" : [
+	  {
+		"date" : "2020-05-06T23:46:54.991Z",
+		"fertilizer" : "dr. earth pump n grow indoor plant food"
+	  },
+	  {
+		"date" : "2020-05-12T23:46:54.991Z",
+		"fertilizer" : "dr. earth pump n grow indoor plant food"
+	  }
+	],
+	"waterTracker" : [
+	  {
+		"date" : "2020-05-06T23:46:54.991Z"
+	  },
+	  {
+		"date" : "2020-05-12T23:46:54.991Z"
+	  }
+	],
+	"pestTracker" : [
+	  {
+		"date" : "2020-05-06T23:46:54.991Z",
+		"pest" : "fungus gnats",
+		"treatment" : "letting it dry out"
+	  },
+	  {
+		"date" : "2020-05-12T23:46:54.991Z",
+		"pest" : "fungus gnats",
+		"treatment" : "sticky traps"
+	  }
+	],
+	"soilCompositionTracker" : [
+	  {
+		"date" : "2020-05-06T23:46:54.991Z",
+		"ph" : 4.2,
+		"moisture" : 0.1
+	  },
+	  {
+		"date" : "2020-05-12T23:46:54.991Z",
+		"ph" : 6.8,
+		"moisture" : 0.18
+	  }
+	]
+  },
+  {
+	"_id" : "BVcQhq2JSDHanb29a",
+	"commonName" : "Strawberry",
+	"latinName" : "Fragaria ananassa",
+	"location" : "office desk",
+	"dateBought" : "2020-05-02T23:46:54.991Z",
+	"locationBought" : null,
+	"companions" : null,
+	"notes" : "mmmm strawberries",
+	"image" : "https://img.thrfun.com/img/123/986/strawberry_plant_s1.jpg",
+	"fertilizerSchedule" : 5,
+	"waterSchedule" : 12,
+	"waterPreference" : "Keep soil moist but not soggy",
+	"lightPreference" : "Bright indirect light",
+	"soilMoisturePreference" : 0.6,
+	"fertilizerTracker" : [
+	  {
+		"date" : "2020-05-06T23:46:54.991Z",
+		"fertilizer" : "dr. earth pump n grow indoor plant food"
+	  },
+	  {
+		"date" : "2020-05-12T23:46:54.991Z",
+		"fertilizer" : "dr. earth pump n grow indoor plant food"
+	  }
+	],
+	"waterTracker" : [
+	  {
+		"date" : "2020-05-06T23:46:54.991Z"
+	  },
+	  {
+		"date" : "2020-05-12T23:46:54.991Z"
+	  }
+	],
+	"pestTracker" : [
+	  {
+		"date" : "2020-05-06T23:46:54.991Z",
+		"pest" : "fungus gnats",
+		"treatment" : "letting it dry out"
+	  },
+	  {
+		"date" : "2020-05-12T23:46:54.991Z",
+		"pest" : "fungus gnats",
+		"treatment" : "sticky traps"
+	  }
+	],
+	"soilCompositionTracker" : [
+	  {
+		"date" : "2020-05-06T23:46:54.991Z",
+		"ph" : 4.2,
+		"moisture" : 0.1
+	  },
+	  {
+		"date" : "2020-05-12T23:46:54.991Z",
+		"ph" : 6.8,
+		"moisture" : 0.18
+	  }
+	]
+  },
+  {
+	"_id" : "Qqkxui2nagka92AJD",
+	"commonName" : "Philodendron Silver Sword",
+	"latinName" : "Philodendron hastatum",
+	"location" : "sun room plant shelf",
+	"dateBought" : "2020-05-02T23:46:54.991Z",
+	"locationBought" : null,
+	"companions" : null,
+	"notes" : "i'm a pretty plant",
+	"image" : "https://philodendronplant.com/wp-content/uploads/2019/02/Grow-Philodendron-Hastatum2.jpeg",
+	"fertilizerSchedule" : 14,
+	"waterSchedule" : 7,
+	"waterPreference" : "Keep soil moist but not soggy",
+	"lightPreference" : "Bright indirect light",
+	"soilMoisturePreference" : 0.6,
+	"fertilizerTracker" : [
+	  {
+		"date" : "2020-05-06T23:46:54.991Z",
+		"fertilizer" : "dr. earth pump n grow indoor plant food"
+	  },
+	  {
+		"date" : "2020-05-12T23:46:54.991Z",
+		"fertilizer" : "dr. earth pump n grow indoor plant food"
+	  }
+	],
+	"waterTracker" : [
+	  {
+		"date" : "2020-05-06T23:46:54.991Z"
+	  },
+	  {
+		"date" : "2020-05-12T23:46:54.991Z"
+	  }
+	],
+	"pestTracker" : [
+	  {
+		"date" : "2020-05-06T23:46:54.991Z",
+		"pest" : "fungus gnats",
+		"treatment" : "letting it dry out"
+	  },
+	  {
+		"date" : "2020-05-12T23:46:54.991Z",
+		"pest" : "fungus gnats",
+		"treatment" : "sticky traps"
+	  }
+	],
+	"soilCompositionTracker" : [
+	  {
+		"date" : "2020-05-06T23:46:54.991Z",
+		"ph" : 4.2,
+		"moisture" : 0.1
+	  },
+	  {
+		"date" : "2020-05-12T23:46:54.991Z",
+		"ph" : 6.8,
+		"moisture" : 0.18
+	  }
+	]
+  }
+]

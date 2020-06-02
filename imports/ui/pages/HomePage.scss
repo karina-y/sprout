@@ -1,0 +1,44 @@
+@import '../stylesheets/variables.scss';
+
+@keyframes scrollingImage {
+  100% {
+    transform: translateY(-66.6666%);
+  }
+}
+
+.HomePage {
+
+
+
+
+  //#region breakpoints
+  @media only screen and ($breakpoint-xs) {
+
+  }
+
+  @media only screen and ($breakpoint-sm) {
+
+
+  }
+
+  @media only screen and ($breakpoint-md) {
+
+
+
+  }
+
+  @media only screen and ($breakpoint-lg) {
+
+
+  }
+
+  @media only screen and ($breakpoint-mac-min) and ($breakpoint-mac-max) {
+
+
+  }
+
+  @media only screen and ($breakpoint-xl) {
+
+  }
+  //#endregion
+}

@@ -1,0 +1,82 @@
+@import '../../stylesheets/variables';
+
+.WeGotYou {
+  background: $polished-pine;
+  position: relative;
+
+
+  .img-panel {
+    background-color: #F7D4D8;
+    background-image: url('/images/waterdrops-plant.gif');
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: contain;
+    height: 100%;
+    padding: 0;
+    border: none;
+
+    img {
+      position: absolute;
+      width: 400px;
+      left: 70px;
+      top: 70px;
+    }
+
+    .text-box {
+      position: absolute;
+      left: 300px;
+      bottom: 160px;
+      width: 500px;
+      height: 300px;
+      background: white;
+      color: $melon;
+      padding: 30px;
+    }
+  }
+
+  .text-panel {
+    flex-wrap: wrap;
+    text-align: right;
+
+    .panel-title {
+      color: #F7D4D8;
+      padding-bottom: 20px;
+      text-align: center;
+    }
+
+    .subtitle {
+      color: $alice-blue;
+      font-family: Sans Serif FLF DemiBold;
+      //font-family: Sans Serif Book FLF;
+    }
+  }
+
+
+
+  //#region breakpoints
+  @media only screen and ($breakpoint-xs) {
+
+  }
+
+  @media only screen and ($breakpoint-sm) {
+
+  }
+
+  @media only screen and ($breakpoint-md) {
+
+
+  }
+
+  @media only screen and ($breakpoint-lg) {
+
+  }
+
+  @media only screen and ($breakpoint-mac-min) and ($breakpoint-mac-max) {
+
+  }
+
+  @media only screen and ($breakpoint-xl) {
+
+  }
+  //#endregion
+}
