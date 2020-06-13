@@ -37,7 +37,7 @@ class App extends Component {
 
   render() {
 
-	logger('info', "loading", this.props.loading);
+	// logger('info', "loading", this.props.loading);
 
 	return (
 			!this.props.loading ?
