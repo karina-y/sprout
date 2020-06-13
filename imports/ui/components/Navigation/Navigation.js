@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import autoBind from 'react-autobind';
 import './Navigation.scss';
 import BurgerMenu from 'react-burger-menu';
 import { Session } from 'meteor/session';
@@ -16,8 +15,6 @@ class Navigation extends Component {
 	  menus: {
 	  }
 	};
-
-	autoBind(this);
   }
 
 

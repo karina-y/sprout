@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import autoBind from 'react-autobind';
 import PropTypes from 'prop-types';
 import "./ProfileAdd.scss";
 import Modal from 'react-bootstrap/Modal';
@@ -31,8 +30,6 @@ class ProfileAdd extends Component {
 	  showNotesModal: false,
 	  currentDateSelection: null
 	};
-
-	autoBind(this);
   }
 
   componentDidMount() {

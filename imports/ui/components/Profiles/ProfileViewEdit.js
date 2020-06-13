@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import autoBind from 'react-autobind';
 import { withTracker } from 'meteor/react-meteor-data';
 import PropTypes from 'prop-types';
 import "./ProfileViewEdit.scss";
@@ -42,8 +41,6 @@ class ProfileViewEdit extends Component {
 	  currentDateSelection: null,
 	  modalOpen: null
 	};
-
-	autoBind(this);
   }
 
   componentDidMount() {
@@ -162,8 +159,6 @@ class ProfileViewEdit extends Component {
   }
 
   updateProfile(type) {
-	// console.log("date", date)
-	// console.log("type", type)
 
 	const newProfileData = this.state.newData;
 	const oldProfileData = this.props.profile;
@@ -197,8 +192,6 @@ class ProfileViewEdit extends Component {
 	}
 
 	data._id = oldProfileData._id;
-
-	console.log("asdfasdf")
 
 	Meteor.call('profile.update', type, data, (err, response) => {
 	  if (err) {
@@ -265,7 +258,6 @@ class ProfileViewEdit extends Component {
 
   render() {
 	const profile = this.props.profile;
-	console.log("profile", profile);
 
 	const fertilizerContent = profile.fertilizerTracker && profile.fertilizerTracker.length > 0 ? profile.fertilizerTracker[profile.fertilizerTracker.length-1].fertilizer : 'N/A';
 	let soilCompLastChecked = lastChecked(profile.soilCompositionTracker);

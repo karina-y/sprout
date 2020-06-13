@@ -7,7 +7,6 @@ import {
   Switch,
   Route
 } from "react-router-dom";
-import autoBind from 'react-autobind';
 import Navigation from './components/Navigation/Navigation';
 import PlantCatalogue from './pages/PlantCatalogue';
 import ProfileViewEdit from './components/Profiles/ProfileViewEdit';
@@ -25,8 +24,6 @@ class App extends Component {
 	this.state = {
 	  accessible: false
 	}
-
-	autoBind(this);
   }
 
   toggleAccessibility() {

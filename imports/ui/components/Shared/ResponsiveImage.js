@@ -1,7 +1,6 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import autoBind from 'react-autobind';
 
 class ResponsiveImage extends React.Component {
   constructor(props) {
@@ -10,7 +9,6 @@ class ResponsiveImage extends React.Component {
 	this.state = {
 	}
 
-	autoBind(this);
   }
 
   render() {
