@@ -4,4 +4,4 @@ package-lock.json
 settings-*
 .idea/
 .meteor/
-
+dev-notes.*
