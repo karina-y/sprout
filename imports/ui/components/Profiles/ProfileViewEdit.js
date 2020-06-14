@@ -28,8 +28,8 @@ import {
 } from '../../../utils/plantData'
 import Profile from '/imports/api/Profile/Profile';
 import { toast } from 'react-toastify';
-import SwipePanelContent from '../Shared/SwipePanelContent'
-import ProfileViewEditModal from '../Shared/ProfileViewEditModal'
+import SwipePanelContent from '../Shared/SwipePanelContent';
+import ProfileViewEditModal from '../Shared/ProfileViewEditModal';
 
 class ProfileViewEdit extends Component {
   constructor(props) {
@@ -258,7 +258,6 @@ class ProfileViewEdit extends Component {
 
   render() {
 	const profile = this.props.profile;
-
 	const fertilizerContent = profile.fertilizerTracker && profile.fertilizerTracker.length > 0 ? profile.fertilizerTracker[profile.fertilizerTracker.length-1].fertilizer : 'N/A';
 	let soilCompLastChecked = lastChecked(profile.soilCompositionTracker);
 	let soilPh = getLastSoilPh(profile.soilCompositionTracker);

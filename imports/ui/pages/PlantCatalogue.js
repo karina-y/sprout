@@ -12,10 +12,6 @@ class PlantCatalogue extends Component {
 	super(props);
 
 	this.state = {
-	  catalogue: props.catalogue,
-	  filteredOrSortedProfiles: props.catalogue,
-	  profileFilter: "",
-	  sortBy: ""
 	};
   }
 
@@ -23,25 +19,7 @@ class PlantCatalogue extends Component {
 	Session.set('pageTitle', "Catalogue");
   }
 
-  //this hits when a profile is deleted
-  static getDerivedStateFromProps(nextProps, prevState) {
-	if (nextProps.catalogue && nextProps.catalogue.length !== prevState.catalogue.length) {
-	  // console.log("*********UPDATING");
-	  let newState = prevState;
-
-	  newState.catalogue = nextProps.catalogue;
-	  newState.filteredOrSortedProfiles = nextProps.catalogue;
-	  newState.profileFilter = "";
-	  newState.sortBy = "";
-
-	  return newState;
-	} else {
-	  return null
-	}
-  }
-
   render() {
-	const filteredOrSortedProfiles = this.state.filteredOrSortedProfiles;
 	const props = this.props;
 
 	return (
@@ -49,7 +27,7 @@ class PlantCatalogue extends Component {
 			  {/* TODO add sorting and filtering */}
 
 			  <div className="all-profiles">
-				{filteredOrSortedProfiles.map(function(profile, index) {
+				{this.props.catalogue.map(function(profile, index) {
 				  return <ProfilePreview profile={profile}
 										 key={index}
 										 {...props}/>;
