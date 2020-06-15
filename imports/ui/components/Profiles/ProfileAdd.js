@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import autobind from 'react-autobind';
 import "./ProfileAdd.scss";
 import Modal from 'react-bootstrap/Modal';
 import { Session } from 'meteor/session';
@@ -30,6 +31,8 @@ class ProfileAdd extends Component {
 	  showNotesModal: false,
 	  currentDateSelection: null
 	};
+
+	autobind(this);
   }
 
   componentDidMount() {

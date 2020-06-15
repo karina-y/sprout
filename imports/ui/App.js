@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { withTracker } from 'meteor/react-meteor-data';
+import autobind from 'react-autobind';
 import './stylesheets/sitewide.scss';
 import HomePage from './pages/HomePage';
 import {
@@ -14,8 +15,8 @@ import ProfileAdd from './components/Profiles/ProfileAdd';
 import ScrollToTop from './components/Shared/ScrollToTop';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
-import Loading from './components/Shared/Loading'
-import logger from '../utils/logger'
+import Loading from './components/Shared/Loading';
+import logger from '../utils/logger';
 
 class App extends Component {
   constructor(props) {
@@ -24,6 +25,8 @@ class App extends Component {
 	this.state = {
 	  accessible: false
 	}
+
+	autobind(this);
   }
 
   toggleAccessibility() {

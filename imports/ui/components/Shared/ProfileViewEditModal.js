@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import autobind from 'react-autobind';
 import Modal from 'react-bootstrap/Modal';
 // import './ProfileViewEditModal.scss';
 
@@ -10,6 +11,8 @@ class ProfileViewEditModal extends Component {
 	this.state = {
 	  show: false
 	};
+
+	autobind(this);
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {

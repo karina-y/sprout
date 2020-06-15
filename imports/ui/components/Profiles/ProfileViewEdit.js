@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { withTracker } from 'meteor/react-meteor-data';
 import PropTypes from 'prop-types';
+import autobind from 'react-autobind';
 import "./ProfileViewEdit.scss";
 import { Session } from 'meteor/session';
 import DatePicker from "react-datepicker";
@@ -41,6 +42,8 @@ class ProfileViewEdit extends Component {
 	  currentDateSelection: null,
 	  modalOpen: null
 	};
+
+	autobind(this)
   }
 
   componentDidMount() {
