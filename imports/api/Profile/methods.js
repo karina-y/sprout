@@ -36,6 +36,7 @@ Meteor.methods({
 	  // data.updatedAt = new Date();
 	  const profile = Profile.findOne({_id: data._id});
 	  delete data._id;
+	  data.updatedAt = new Date();
 	  let validationSchema;
 	  let query;
 
