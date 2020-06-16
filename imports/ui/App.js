@@ -17,6 +17,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
 import Loading from './components/Shared/Loading';
 import logger from '../utils/logger';
+import Account from './pages/Account'
 
 class App extends Component {
   constructor(props) {
@@ -51,9 +52,11 @@ class App extends Component {
 						<Switch>
 						  <Route exact path="/" render={props => <HomePage {...props} />} />
 
+						  <Route exact path="/account" render={props => <Account {...props} />} />
+
 						  <Route exact path="/catalogue" render={props => <PlantCatalogue {...props} />} />
 
-						  <Route exact path="/catalogue/add" render={props => <ProfileAdd {...props} editing={false} />} />
+						  <Route exact path="/catalogue/add" render={props => <ProfileAdd {...props} />} />
 
 						  <Route exact path="/catalogue/:id" render={props => <ProfileViewEdit {...props} />} />
 						</Switch>

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withTracker } from 'meteor/react-meteor-data';
-import "./PlantCatalogue.scss";
+// import "./PlantCatalogue.scss";
 // import profiles  from '../../dummydata/profiles.json';
 import ProfilePreview from '../components/Profiles/ProfilePreview'
 import { Session } from "meteor/session";
@@ -26,12 +26,16 @@ class PlantCatalogue extends Component {
 			<div className="PlantCatalogue">
 			  {/* TODO add sorting and filtering */}
 
-			  <div className="all-profiles">
-				{this.props.catalogue.map(function(profile, index) {
-				  return <ProfilePreview profile={profile}
-										 key={index}
-										 {...props}/>;
-				})}
+			  <div className="flex-around flex-wrap">
+				{this.props.catalogue && this.props.catalogue.length > 0 ?
+						this.props.catalogue.map(function(profile, index) {
+						  return <ProfilePreview profile={profile}
+												 key={index}
+												 {...props}/>;
+						})
+						:
+						<p className="title-ming" style={{marginTop: '50px', textAlign: 'center'}}>You don't have any plants in your catalogue yet.</p>
+				}
 			  </div>
 			</div>
 	);
@@ -43,7 +47,7 @@ PlantCatalogue.propTypes = {
 };
 
 export default withTracker(() => {
-  const catalogue = Profile.find().fetch();
+  const catalogue = Profile.find({userId: Meteor.userId()}).fetch();
 
   //to test locally without hooking up to db, be sure to uncomment import statement for this
   //const catalogue = profiles;

@@ -11,9 +11,10 @@ Meteor.methods({
 	try {
 	  data.createdAt = new Date();
 	  data.updatedAt = new Date();
+	  data.userId = Meteor.userId()
 
 	  const validationContext = new SimpleSchema(Profile.schema).newContext();
-	  validationContext.validate({data});
+	  validationContext.validate(data);
 
 	  if (!validationContext.isValid()){
 		logger('danger', "Validation failed", validationContext.validationErrors());

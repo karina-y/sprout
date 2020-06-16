@@ -21,6 +21,11 @@ Profile.deny({
 
 
 Profile.schema = new SimpleSchema({
+		  userId: {
+			type: String,
+			defaultValue: 'admin',
+			label: 'userId'
+		  },
 		  commonName: {
 			type: String,
 			defaultValue: '',

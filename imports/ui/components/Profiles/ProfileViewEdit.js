@@ -58,6 +58,7 @@ class ProfileViewEdit extends Component {
 	}
   }
 
+  //TODO turn into hook
   static getHighlightDates(items, type) {
 	let dates = [];
 
@@ -300,7 +301,7 @@ class ProfileViewEdit extends Component {
 
 				<div className="swipe-slide slide-one">
 
-				  <p className="swipe-title">
+				  <p className="swipe-title title-ming">
 					Water - Light <FontAwesomeIcon icon={profile.waterCondition === "needs-attn" ? faSadTear : profile.waterCondition === "neutral" ? faMeh : profile.waterCondition === "unsure" ? faQuestionCircle : faSmile}
 												   className="plant-condition-icon"
 												   title="water condition"
@@ -323,7 +324,7 @@ class ProfileViewEdit extends Component {
 				</div>
 
 				<div className="swipe-slide slide-two">
-				  <p className="swipe-title">
+				  <p className="swipe-title title-ming">
 					Fertilizer <FontAwesomeIcon icon={profile.fertilizerCondition === "needs-attn" ? faSadTear : profile.fertilizerCondition === "neutral" ? faMeh : faSmile}
 												className="plant-condition-icon"
 												title="fertilizer condition"
@@ -342,7 +343,7 @@ class ProfileViewEdit extends Component {
 				</div>
 
 				<div className="swipe-slide slide-three">
-				  <p className="swipe-title">
+				  <p className="swipe-title title-ming">
 					Soil Composition <FontAwesomeIcon icon={profile.soilCondition === "needs-attn" ? faSadTear : profile.soilCondition === "neutral" ? faMeh : faSmile}
 													  className="plant-condition-icon"
 													  title="soil condition"
@@ -361,7 +362,7 @@ class ProfileViewEdit extends Component {
 				</div>
 
 				<div className="swipe-slide slide-four">
-				  <p className="swipe-title">Pests</p>
+				  <p className="swipe-title title-ming">Pests</p>
 
 				  <SwipePanelContent icon={faCalendarAlt}>
 					<p>Last checked {pestLastChecked}</p>
@@ -378,7 +379,7 @@ class ProfileViewEdit extends Component {
 				</div>
 
 				<div className="swipe-slide slide-five">
-				  <p className="swipe-title">Notes</p>
+				  <p className="swipe-title title-ming">Notes</p>
 
 				  <SwipePanelContent icon={faInfoCircle}>
 					<p>{profile.notes || 'N/A'}</p>
@@ -387,7 +388,7 @@ class ProfileViewEdit extends Component {
 
 
 				<div className="swipe-slide slide-six">
-				  <p className="swipe-title">Etc</p>
+				  <p className="swipe-title title-ming">Etc</p>
 
 				  <SwipePanelContent icon={faMapMarker}>
 					<p>{profile.locationBought || 'N/A'}</p>
@@ -407,7 +408,7 @@ class ProfileViewEdit extends Component {
 				</div>
 			  </SwipeableViews>
 
-			  <div className="add-data">
+			  <div className="add-data flex-around">
 				<FontAwesomeIcon icon={faTrash}
 								 className="plant-condition-icon"
 								 size='3x'
@@ -537,11 +538,6 @@ class ProfileViewEdit extends Component {
 					   placeholder="Location Bought"
 					   onChange={(e) => this.updateData(e, 'locationBought')}
 					   defaultValue={profile.locationBought} />
-
-				{/*<input type="date"
-					   placeholder="Date Bought"
-					   onChange={(e) => this.updateData(e, 'dateBought')}
-					   value={new Date(profile.dateBought).toDateString()} />*/}
 
 				<DatePicker selected={this.state.newData.dateBought || Date.now()}
 							className="react-datepicker-wrapper"

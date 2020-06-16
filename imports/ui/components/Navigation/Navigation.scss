@@ -35,12 +35,6 @@
       }
     }
 
-    .nav-link-container {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
     .nav-icon {
       width: 40px;
       height: auto;
@@ -97,7 +91,8 @@
       overflow-y: hidden !important;
       height: 100vh;
 
-      a {
+      a,
+      p {
         color: $polished-pine;
         text-decoration: none;
 
@@ -108,7 +103,8 @@
       }
     }
 
-    .bm-item-list a {
+    .bm-item-list a,
+    .bm-item-list p {
       padding: 0.8em 0;
 
       span {

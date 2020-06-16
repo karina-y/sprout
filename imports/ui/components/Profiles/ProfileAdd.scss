@@ -46,23 +46,6 @@
       width: 85%;
     }
 
-    .svg-inline--fa {
-      color: $ming;
-      width: 15px;
-
-      &.fa-sad-tear {
-        color: $danger-dark;
-      }
-
-      &.fa-meh {
-        color: $warning-dark;
-      }
-
-      &.fa-smile {
-        color: $success-dark;
-      }
-    }
-
     .separator {
       margin: 0 10px;
     }
@@ -72,12 +55,8 @@
     }
 
     .swipe-title {
-      font-weight: bold;
-      font-size: 17px;
       text-align: center;
       margin-bottom: 15px;
-      color: $ming;
-      font-family: "Spartan ExtraBold", sans-serif;;
       position: relative;
 
       &::before {
@@ -93,39 +72,54 @@
         transform: translateX(-50%);
       }
     }
+  }
 
-    .add-data {
-      text-align: center;
-      position: relative;
-      //width: 50px;
-      width: 100%;
-      margin: 0 auto;
-      margin-top: 30px;
+  .add-data {
+    text-align: center;
+    position: relative;
+    width: 100%;
+    margin: 0 auto;
+    padding-bottom: 15px;
 
-      //bottom: 17px;
-      //position: absolute;
-      //transform: translateX(-3px);
-      //width: 90%;
+    .svg-inline--fa {
+      color: $brand-white;
+      background-color: $success-dark;
+      border-radius: 100%;
+      padding: 13px;
+      height: 50px;
+      width: 50px;
 
-      .svg-inline--fa {
-        color: $brand-white;
-        background-color: $success-dark;
-        border-radius: 100%;
-        padding: 13px;
-        height: 50px;
-        width: 50px;
+      &.fa-chevron-right,
+      &.fa-check {
+        float: right;
+      }
 
-        &.fa-chevron-right,
-        &.fa-check {
-          float: right;
-        }
-
-        &.fa-chevron-left {
-          float: left;
-        }
+      &.fa-chevron-left {
+        float: left;
       }
     }
   }
+
+  /*.add-data {
+    text-align: center;
+    position: relative;
+    width: 100%;
+    margin: 0 auto;
+    padding-bottom: 15px;
+
+    .svg-inline--fa {
+      color: $brand-white;
+      background-color: $success-dark;
+      border-radius: 100%;
+      padding: 13px;
+      height: 50px;
+      width: 50px;
+    }
+
+    .fa-trash {
+      background-color: $danger-dark;
+    }
+  }*/
 
   input.small {
     width: 20%;

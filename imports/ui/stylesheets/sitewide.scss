@@ -60,6 +60,29 @@ body {
     font-weight: bold;
   }
 
+  .flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .flex-between {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .flex-around {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
+
+  .flex-wrap {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
   //#region panels
   .panel {
     height: 500px;
@@ -124,6 +147,13 @@ body {
     &.md {
       font-size: $font-md;
     }
+  }
+
+  .title-ming {
+    font-weight: bold;
+    font-size: 17px;
+    color: $ming;
+    font-family: "Spartan ExtraBold", sans-serif;
   }
 
   .subtitle {
@@ -673,149 +703,6 @@ body {
   }
 
 
-  .nav-tabs {
-    border-color: $light-blue;
-
-    a.nav-link {
-      color: $light-gray;
-      transition: border 0.2s ease-in;
-      text-transform: capitalize;
-
-      &.active {
-        background-color: $med-gray;
-        color: $light-blue;
-        border-color: $light-blue;
-        border-bottom-color: transparent;
-        font-weight: bold;
-
-        &:hover {
-          background-color: $med-gray;
-          border-color: $light-blue;
-          border-bottom-color: transparent;
-        }
-      }
-
-      &:hover {
-        background-color: inherit;
-        border-color: $light-gray;
-        border-bottom-color: transparent;
-      }
-    }
-  }
-
-  ////#region customs crollbar
-  ///* width */
-  //::-webkit-scrollbar {
-  //  width: 10px;
-  //}
-  //
-  ///* Track */
-  //::-webkit-scrollbar-track {
-  //  background: $light-gray;
-  //}
-  //
-  ///* Handle */
-  //::-webkit-scrollbar-thumb {
-  //  background: $med-gray;
-  //}
-  //
-  ///* Handle on hover */
-  //::-webkit-scrollbar-thumb:hover {
-  //  background: $med-gray;
-  //}
-  ////#endregion
-
-  .react-confirm-alert-body {
-    width: 95%;
-    margin: 0 auto;
-
-    .react-confirm-alert-button-group {
-      justify-content: space-around;
-    }
-
-    h1 {
-      font-family: "Spartan Black", sans-serif;
-      font-size: $font-sm;
-    }
-
-    button {
-      font-family: "Spartan ExtraBold", sans-serif;
-      text-transform: none;
-      position: relative;
-      //font-size: 64px;
-      outline: none;
-      text-decoration: none;
-      border: none;
-      //padding: 20px 35px !important;
-      background: $powder-blue;
-      color: $ming;
-      box-shadow: 5px 5px 0px 0px $ming;
-      transition: all 0.15s ease-in !important;
-      cursor: pointer;
-      font-size: 22px;
-      padding: 0px 15px !important;
-      height: 45px;
-
-
-      &:hover {
-        transition: all 0.15s ease-in !important;
-        box-shadow: 0px 0px 0px 0px $ming;
-      }
-
-      /*&::before {
-        content: 'download';
-        color: $ming;
-        position: absolute;
-        top: 4px;
-        right: 16px;
-      }*/
-
-      /*&:first-child {
-        &:before {
-          content: 'yes';
-        }
-      }
-
-      &:last-child {
-        &:before {
-          content: 'no';
-        }
-      }*/
-    }
-  }
-
-  /*.react-datepicker-wrapper {
-    opacity: 0;
-    position: absolute;
-    width: 50px;
-    height: 50px;
-    margin: 0 auto;
-    vertical-align: middle;
-    text-align: center;
-    left: 0;
-    top: 0;
-    border-radius: 100% !important;
-
-    .react-datepicker__input-container {
-      position: absolute;
-      top: 0;
-      left: 0;
-    }
-
-    input {
-      position: absolute;
-      width: 50px;
-      height: 50px;
-      margin: 0 auto;
-      vertical-align: middle;
-      text-align: center;
-      left: 0;
-      top: 0;
-      border-radius: 100% !important;
-    }
-
-  }*/
-
   .react-datepicker {
     width: 100%;
 
@@ -879,13 +766,13 @@ body {
     }
   }
 
-  input::-webkit-calendar-picker-indicator{
+  /*input::-webkit-calendar-picker-indicator{
     display: none;
   }
 
   input[type="date"]::-webkit-input-placeholder{
     visibility: hidden !important;
-  }
+  }*/
 
   .react-swipeable-view-container > div {
     //height: fit-content;

@@ -1,8 +1,29 @@
 @import '../stylesheets/variables.scss';
 
+.Account {
+  flex-wrap: wrap;
+  height: 100%;
 
-.HomePage {
+  .acct-title {
+    text-align: center;
+    //margin-bottom: 15px;
+    margin-top: auto;
+    position: relative;
+  }
 
+  form {
+    text-align: center;
+  }
+
+  input {
+    margin-bottom: 10px;
+    width: auto;
+  }
+
+  .buttons-footer {
+    width: 70%;
+    margin-bottom: auto;
+  }
 
   //#region breakpoints
   @media only screen and ($breakpoint-xs) {

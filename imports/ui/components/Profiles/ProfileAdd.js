@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import autobind from 'react-autobind';
 import "./ProfileAdd.scss";
 import Modal from 'react-bootstrap/Modal';
@@ -20,6 +19,7 @@ import { faChevronLeft } from '@fortawesome/free-solid-svg-icons/faChevronLeft';
 import { faCheck } from '@fortawesome/free-solid-svg-icons/faCheck';
 import { selectRandomPlantPicture } from '/imports/utils/selectRandomPlantPicture';
 import { toast } from 'react-toastify';
+// import DatePicker from "react-datepicker";
 
 class ProfileAdd extends Component {
   constructor(props) {
@@ -37,6 +37,21 @@ class ProfileAdd extends Component {
 
   componentDidMount() {
 	Session.set('pageTitle', this.state.profile.commonName);
+  }
+
+  //TODO turn into hook
+  static getHighlightDates(items, type) {
+	let dates = [];
+
+	if (type === "dateBought" && items) {
+	  dates.push(new Date(items))
+	} else if (items && items.length > 0) {
+	  for (let i = 0; i < items.length; i++) {
+		dates.push(new Date(items[i].date));
+	  }
+	}
+
+	return dates;
   }
 
   addNewProfile() {
@@ -93,19 +108,22 @@ class ProfileAdd extends Component {
 
 	if (type === "companions") {
 	  if (e.target.value === "") {
-	    delete profile[type];
+		delete profile[type];
 	  } else {
 		const stripped = e.target.value.replace(/\s*,\s*/g, ",");
 		profile[type] = stripped.split(',');
 	  }
 	} else if (type === "ph" || type === "moisture") {
+	  let phVal = parseFloat(e.target.value);
+	  let moistureVal = parseFloat((parseInt(e.target.value) / 100).toFixed(2))
+
 	  if (profile.soilCompositionTracker) {
-		profile.soilCompositionTracker[type] = type === "moisture" ? parseInt(e.target.value) : parseFloat(e.target.value);
+		profile.soilCompositionTracker[type] = ( type === "moisture" ? moistureVal : phVal );
 	  }
 	  else {
 		profile.soilCompositionTracker = {
 		  date: new Date(),
-		  [type]: type === "moisture" ? parseInt(e.target.value) : parseFloat(e.target.value)
+		  [type]: type === "moisture" ? moistureVal : phVal
 		}
 	  }
 
@@ -121,7 +139,7 @@ class ProfileAdd extends Component {
 	  }
 
 	} else if (type === "dateBought") {
-	  profile[type] = new Date(e.target.value);
+	  profile[type] = new Date(e);
 	} else {
 	  profile[type] = e.target.value;
 	}
@@ -133,7 +151,6 @@ class ProfileAdd extends Component {
 
   render() {
 	const profile = this.state.profile;
-	console.log("profile", profile);
 
 	return (
 			<div className="ProfileAdd">
@@ -147,9 +164,10 @@ class ProfileAdd extends Component {
 							  index={this.state.swipeViewIndex}
 							  onChangeIndex={(e) => this.setState({swipeViewIndex: e})}>
 
+				{/* plant info */}
 				<div className="swipe-slide slide-zero">
 
-				  <p className="swipe-title">
+				  <p className="swipe-title title-ming">
 					Plant Name
 				  </p>
 
@@ -185,19 +203,13 @@ class ProfileAdd extends Component {
 					</div>
 				  </div>
 
-
-				  <div className="add-data">
-					<FontAwesomeIcon icon={faChevronRight}
-									 className="plant-condition-icon"
-									 size='3x'
-									 alt="plus"
-									 onClick={() => this.setState({swipeViewIndex: this.state.swipeViewIndex + 1})}/>
-				  </div>
 				</div>
 
+
+				{/* water */}
 				<div className="swipe-slide slide-one">
 
-				  <p className="swipe-title">
+				  <p className="swipe-title title-ming">
 					Water - Light
 				  </p>
 
@@ -250,24 +262,12 @@ class ProfileAdd extends Component {
 					</div>
 				  </div>
 
-				  <div className="add-data">
-					<FontAwesomeIcon icon={faChevronLeft}
-									 className="plant-condition-icon"
-									 size='3x'
-									 alt="left arrow"
-									 onClick={() => this.setState({swipeViewIndex: this.state.swipeViewIndex - 1})}/>
-
-					<FontAwesomeIcon icon={faChevronRight}
-									 className="plant-condition-icon"
-									 size='3x'
-									 alt="right arrow"
-									 onClick={() => this.setState({swipeViewIndex: this.state.swipeViewIndex + 1})}/>
-				  </div>
 				</div>
 
-				{!this.props.editing &&
+
+				{/* fertilizer */}
 				<div className="swipe-slide slide-two">
-				  <p className="swipe-title">
+				  <p className="swipe-title title-ming">
 					Fertilizer
 				  </p>
 
@@ -287,25 +287,12 @@ class ProfileAdd extends Component {
 					</div>
 				  </div>
 
-				  <div className="add-data">
-					<FontAwesomeIcon icon={faChevronLeft}
-									 className="plant-condition-icon"
-									 size='3x'
-									 alt="left arrow"
-									 onClick={() => this.setState({swipeViewIndex: this.state.swipeViewIndex - 1})}/>
-
-					<FontAwesomeIcon icon={faChevronRight}
-									 className="plant-condition-icon"
-									 size='3x'
-									 alt="right arrow"
-									 onClick={() => this.setState({swipeViewIndex: this.state.swipeViewIndex + 1})}/>
-				  </div>
 				</div>
-				}
 
-				{!this.props.editing &&
+
+				{/* soil comp */}
 				<div className="swipe-slide slide-three">
-				  <p className="swipe-title">
+				  <p className="swipe-title title-ming">
 					Soil Composition
 				  </p>
 
@@ -341,25 +328,12 @@ class ProfileAdd extends Component {
 					</div>
 				  </div>
 
-				  <div className="add-data">
-					<FontAwesomeIcon icon={faChevronLeft}
-									 className="plant-condition-icon"
-									 size='3x'
-									 alt="left arrow"
-									 onClick={() => this.setState({swipeViewIndex: this.state.swipeViewIndex - 1})}/>
-
-					<FontAwesomeIcon icon={faChevronRight}
-									 className="plant-condition-icon"
-									 size='3x'
-									 alt="right arrow"
-									 onClick={() => this.setState({swipeViewIndex: this.state.swipeViewIndex + 1})}/>
-				  </div>
 				</div>
-				}
 
-				{!this.props.editing &&
+
+				{/* pests */}
 				<div className="swipe-slide slide-four">
-				  <p className="swipe-title">Pests</p>
+				  <p className="swipe-title title-ming">Pests</p>
 
 				  <div className="detail-panel">
 					<div className="icon-side">
@@ -391,24 +365,12 @@ class ProfileAdd extends Component {
 					</div>
 				  </div>
 
-				  <div className="add-data">
-					<FontAwesomeIcon icon={faChevronLeft}
-									 className="plant-condition-icon"
-									 size='3x'
-									 alt="left arrow"
-									 onClick={() => this.setState({swipeViewIndex: this.state.swipeViewIndex - 1})}/>
-
-					<FontAwesomeIcon icon={faChevronRight}
-									 className="plant-condition-icon"
-									 size='3x'
-									 alt="right arrow"
-									 onClick={() => this.setState({swipeViewIndex: this.state.swipeViewIndex + 1})}/>
-				  </div>
 				</div>
-				}
 
+
+				{/* location/date bought */}
 				<div className="swipe-slide slide-five">
-				  <p className="swipe-title">Location & Date Bought</p>
+				  <p className="swipe-title title-ming">Location & Date Bought</p>
 
 				  <div className="detail-panel">
 					<div className="icon-side">
@@ -427,7 +389,7 @@ class ProfileAdd extends Component {
 				  </div>
 
 				  <div className="detail-panel">
-					<div className="icon-side">
+					<div className="icon-side" style={{verticalAlign: 'top'}}>
 					  <FontAwesomeIcon icon={faCalendarAlt}
 									   className="plant-condition-icon"
 									   alt="calendar"/>
@@ -439,26 +401,24 @@ class ProfileAdd extends Component {
 								  placeholder="Date Bought"
 								  onBlur={(e) => this.updateData(e, 'dateBought')}
 								  defaultValue={profile.dateBought || ''}/></p>
+
+					  {/*TODO get datepicker to open over image*/}
+					  {/*<p>* Date Bought</p>
+					  <DatePicker selected={profile.dateBought || Date.now()}
+								  className="react-datepicker-wrapper"
+								  dateFormat="dd-MMMM-yyyy"
+								  popperPlacement="bottom"
+								  onSelect={(e) => this.updateData(e, 'dateBought')}
+								  highlightDates={ProfileAdd.getHighlightDates(profile.dateBought, 'dateBought')} />*/}
 					</div>
 				  </div>
 
-				  <div className="add-data">
-					<FontAwesomeIcon icon={faChevronLeft}
-									 className="plant-condition-icon"
-									 size='3x'
-									 alt="left arrow"
-									 onClick={() => this.setState({swipeViewIndex: this.state.swipeViewIndex - 1})}/>
-
-					<FontAwesomeIcon icon={faChevronRight}
-									 className="plant-condition-icon"
-									 size='3x'
-									 alt="right arrow"
-									 onClick={() => this.setState({swipeViewIndex: this.state.swipeViewIndex + 1})}/>
-				  </div>
 				</div>
 
+
+				{/* notes/etc */}
 				<div className="swipe-slide slide-six">
-				  <p className="swipe-title">Notes</p>
+				  <p className="swipe-title title-ming">Notes</p>
 
 				  <div className="detail-panel">
 					<div className="icon-side">
@@ -507,23 +467,44 @@ class ProfileAdd extends Component {
 								   value={profile.notes || ''}/></p>
 					</div>
 				  </div>
-
-				  <div className="add-data">
-					<FontAwesomeIcon icon={faChevronLeft}
-									 className="plant-condition-icon"
-									 size='3x'
-									 alt="left arrow"
-									 onClick={() => this.setState({swipeViewIndex: this.state.swipeViewIndex - 1})}/>
-
-					<FontAwesomeIcon icon={faCheck}
-									 className="plant-condition-icon"
-									 size='3x'
-									 alt="checkmark"
-									 onClick={this.addNewProfile}/>
-				  </div>
 				</div>
+
 			  </SwipeableViews>
 
+			  <div className="add-data flex-around">
+				{this.state.swipeViewIndex === 6 ?
+						<React.Fragment>
+						  <FontAwesomeIcon icon={faChevronLeft}
+										   className="plant-condition-icon"
+										   size='3x'
+										   alt="left arrow"
+										   onClick={() => this.setState({swipeViewIndex: this.state.swipeViewIndex - 1})}/>
+
+						  <FontAwesomeIcon icon={faCheck}
+										   className="plant-condition-icon"
+										   size='3x'
+										   alt="checkmark"
+										   onClick={this.addNewProfile}/>
+						</React.Fragment>
+						:
+						<React.Fragment>
+						  {this.state.swipeViewIndex !== 0 &&
+						  <FontAwesomeIcon icon={faChevronLeft}
+										   className="plant-condition-icon"
+										   size='3x'
+										   alt="left arrow"
+										   onClick={() => this.setState({swipeViewIndex: this.state.swipeViewIndex - 1})}/>
+						  }
+
+						  <FontAwesomeIcon icon={faChevronRight}
+										   className="plant-condition-icon"
+										   size='3x'
+										   alt="right arrow"
+										   onClick={() => this.setState({swipeViewIndex: this.state.swipeViewIndex + 1})}/>
+						</React.Fragment>
+				}
+
+			  </div>
 
 			  <Modal show={this.state.showNotesModal}
 					 onHide={() => this.setState({showNotesModal: false})}
@@ -552,9 +533,5 @@ class ProfileAdd extends Component {
 	);
   }
 }
-
-ProfileAdd.propTypes = {
-  editing: PropTypes.bool.isRequired
-};
 
 export default ProfileAdd;
