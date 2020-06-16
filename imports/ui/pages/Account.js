@@ -18,6 +18,11 @@ class Account extends Component {
 
   componentDidMount() {
 	Session.set('pageTitle', "Account");
+
+	//TODO is there a smarter way to do this?
+	if (this.props.history.action === "REPLACE") {
+	  toast.error("You need to be logged in to perform that action.");
+	}
   }
 
   login() {
@@ -93,14 +98,14 @@ class Account extends Component {
 			  </form>
 
 			  <div className="buttons-footer flex-between">
-				<button onClick={this.login}
-						className="flat">
-				  Login
-				</button>
-
 				<button onClick={this.createUser}
 						className="flat">
 				  Sign Up
+				</button>
+
+				<button onClick={this.login}
+						className="flat">
+				  Login
 				</button>
 			  </div>
 			</div>

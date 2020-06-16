@@ -53,7 +53,7 @@ class Navigation extends Component {
 	  },
 	  {
 		href: Meteor.userId() ? "#" : "/account",
-		title: Meteor.userId() ? "Logout" : "Login"
+		title: Meteor.userId() ? "Logout" : "Login / Sign Up"
 	  }
 	];
 

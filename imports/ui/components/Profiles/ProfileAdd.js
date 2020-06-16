@@ -151,6 +151,7 @@ class ProfileAdd extends Component {
 
   render() {
 	const profile = this.state.profile;
+	//TODO add ability to set plant photo and photo history eventually
 
 	return (
 			<div className="ProfileAdd">

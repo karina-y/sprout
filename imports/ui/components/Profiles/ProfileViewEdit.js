@@ -287,6 +287,8 @@ class ProfileViewEdit extends Component {
 	let pestName = getLastPestName(profile.pestTracker);
 	let pestTreatment = getLastPestTreatment(profile.pestTracker);
 
+	//TODO add ability to add more plant photos and view calendar with details for each view (ie fertilizerTracker with date and fertilizer used)
+
 	return (
 			<div className="ProfileViewEdit">
 			  <img src={profile.image}

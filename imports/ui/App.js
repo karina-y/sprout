@@ -18,6 +18,7 @@ import { ToastContainer } from 'react-toastify';
 import Loading from './components/Shared/Loading';
 import logger from '../utils/logger';
 import Account from './pages/Account'
+import Authorized from './pages/Authorized'
 
 class App extends Component {
   constructor(props) {
@@ -54,11 +55,11 @@ class App extends Component {
 
 						  <Route exact path="/account" render={props => <Account {...props} />} />
 
-						  <Route exact path="/catalogue" render={props => <PlantCatalogue {...props} />} />
+						  <Authorized exact path="/catalogue" render={props => <PlantCatalogue {...props} />} />
 
-						  <Route exact path="/catalogue/add" render={props => <ProfileAdd {...props} />} />
+						  <Authorized exact path="/catalogue/add" render={props => <ProfileAdd {...props} />} />
 
-						  <Route exact path="/catalogue/:id" render={props => <ProfileViewEdit {...props} />} />
+						  <Authorized exact path="/catalogue/:id" render={props => <ProfileViewEdit {...props} />} />
 						</Switch>
 
 						{(!Meteor.isCordova && !Meteor.isMobile) && <div className="Footer">
