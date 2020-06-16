@@ -23,6 +23,7 @@ import { faHome } from '@fortawesome/free-solid-svg-icons/faHome';
 import { faUserFriends } from '@fortawesome/free-solid-svg-icons/faUserFriends';
 import { faQuestionCircle } from '@fortawesome/free-solid-svg-icons/faQuestionCircle';
 import { faTrash } from '@fortawesome/free-solid-svg-icons/faTrash';
+import { faPencilAlt } from '@fortawesome/free-solid-svg-icons/faPencilAlt';
 import {
   getDaysSinceAction, getLastPestName, getLastPestTreatment, getLastSoilMoisture, getLastSoilPh,
   getPlantCondition, getSoilCondition, lastChecked
@@ -57,22 +58,22 @@ class ProfileViewEdit extends Component {
 	}
   }
 
-  static getHighlightDates(items) {
-	if (items && items.length > 0) {
-	  let dates = [];
+  static getHighlightDates(items, type) {
+	let dates = [];
 
+    if (type === "dateBought" && items) {
+      dates.push(new Date(items))
+	} else if (items && items.length > 0) {
 	  for (let i = 0; i < items.length; i++) {
 		dates.push(new Date(items[i].date));
 	  }
-
-	  return dates;
-	} else {
-	  return [];
 	}
 
+	return dates;
   }
 
   updateData(e, type) {
+
 	const newProfileData = this.state.newData;
 
 	if (type === "companions") {
@@ -152,6 +153,8 @@ class ProfileViewEdit extends Component {
 		}
 	  }
 
+	} else if (type === "dateBought") {
+	  newProfileData[type] = new Date(e);
 	} else {
 	  newProfileData[type] = e.target.value;
 	}
@@ -181,6 +184,10 @@ class ProfileViewEdit extends Component {
 	  data = {
 		soilCompositionTracker: newProfileData.soilCompositionTracker
 	  }
+	} else if (type === "pest") {
+	  data = {
+		pestTracker: newProfileData.pestTracker
+	  }
 	} else if (type === "notes") {
 	  data = {
 		notes: newProfileData.notes
@@ -194,17 +201,27 @@ class ProfileViewEdit extends Component {
 	  }
 	}
 
-	data._id = oldProfileData._id;
+	if (data) {
+	  data._id = oldProfileData._id;
 
-	Meteor.call('profile.update', type, data, (err, response) => {
-	  if (err) {
-		toast.error(err.message);
-	  } else {
-		this.setState({
-		  modalOpen: false
-		})
-	  }
-	});
+	  console.log("updating", type, "data is:", data);
+
+	  Meteor.call('profile.update', type, data, (err, response) => {
+		if (err) {
+		  toast.error(err.message);
+		} else {
+		  toast.success("Successfully saved new entry.")
+
+		  //reset the data
+		  this.setState({
+			modalOpen: false,
+			newData: {}
+		  })
+		}
+	  });
+	} else {
+	  toast.error("No data entered.")
+	}
   }
 
   resetModal() {
@@ -395,22 +412,26 @@ class ProfileViewEdit extends Component {
 								 className="plant-condition-icon"
 								 size='3x'
 								 alt="trash"
+								 title="delete"
 								 onClick={() => this.setState({modalOpen: "delete"})}/>
 
-				<FontAwesomeIcon icon={faPlus}
+				<FontAwesomeIcon icon={this.state.swipeViewIndex === 5 ? faPencilAlt : faPlus}
 								 className="plant-condition-icon"
 								 size='3x'
-								 alt="plus"
+								 alt={this.state.swipeViewIndex === 5 ? "pencil" : "plus"}
+								 title="edit"
 								 onClick={this.openModal}/>
 
 			  </div>
 
+
+			  {/* water */}
 			  <ProfileViewEditModal save={this.updateProfile}
 									cancel={this.resetModal}
 									show={this.state.modalOpen}
 									type="water"
 									header="New water entry">
-				<DatePicker selected={Date.now()}
+				<DatePicker selected={this.state.newData.waterTracker ? this.state.newData.waterTracker.date : Date.now()}
 							className="react-datepicker-wrapper"
 							dateFormat="dd-MMMM-yyyy"
 							popperPlacement="bottom"
@@ -419,30 +440,36 @@ class ProfileViewEdit extends Component {
 							highlightDates={ProfileViewEdit.getHighlightDates(profile.waterTracker)} />
 			  </ProfileViewEditModal>
 
+
+			  {/* fertilizer */}
 			  <ProfileViewEditModal save={this.updateProfile}
 									cancel={this.resetModal}
 									show={this.state.modalOpen}
 									type="fertilizer"
 									header="New fertilizer entry">
-				<DatePicker selected={Date.now()}
+
+				<DatePicker selected={this.state.newData.fertilizerTracker ? this.state.newData.fertilizerTracker.date : Date.now()}
 							className="react-datepicker-wrapper"
 							dateFormat="dd-MMMM-yyyy"
 							popperPlacement="bottom"
 							inline
 							onSelect={(e) => this.updateData(e, 'fertilizerDate')}
-							highlightDates={ProfileViewEdit.getHighlightDates(profile.fertilizerTracker)} />
+							highlightDates={ProfileViewEdit.getHighlightDates(profile.fertilizerTracker, 'fertilizer')} />
 
 				<input type="text"
 					   placeholder="Fertilizer"
 					   onChange={(e) => this.updateData(e, 'fertilizer')} />
 			  </ProfileViewEditModal>
 
+
+			  {/* soil comp */}
 			  <ProfileViewEditModal save={this.updateProfile}
 									cancel={this.resetModal}
 									show={this.state.modalOpen}
 									type="soil composition"
 									header="New soil composition entry">
-				<DatePicker selected={Date.now()}
+
+				<DatePicker selected={this.state.newData.soilCompositionTracker ? this.state.newData.soilCompositionTracker.date : Date.now()}
 							className="react-datepicker-wrapper"
 							dateFormat="dd-MMMM-yyyy"
 							popperPlacement="bottom"
@@ -459,12 +486,15 @@ class ProfileViewEdit extends Component {
 					   onChange={(e) => this.updateData(e, 'moisture')}/>
 			  </ProfileViewEditModal>
 
+
+			  {/* pests */}
 			  <ProfileViewEditModal save={this.updateProfile}
 									cancel={this.resetModal}
 									show={this.state.modalOpen}
 									type="pest"
 									header="New pest entry">
-				<DatePicker selected={Date.now()}
+
+				<DatePicker selected={this.state.newData.pestTracker ? this.state.newData.pestTracker.date : Date.now()}
 							className="react-datepicker-wrapper"
 							dateFormat="dd-MMMM-yyyy"
 							popperPlacement="bottom"
@@ -481,42 +511,56 @@ class ProfileViewEdit extends Component {
 					   onChange={(e) => this.updateData(e, 'treatment')}/>
 			  </ProfileViewEditModal>
 
+
+			  {/* notes */}
 			  <ProfileViewEditModal save={this.updateProfile}
 									cancel={this.resetModal}
 									show={this.state.modalOpen}
 									type="notes"
 									header="Edit notes">
+
 			  <textarea rows="3"
 						placeholder="Notes"
 						onChange={(e) => this.updateData(e, 'notes')}
-						value={profile.notes}/>
+						defaultValue={profile.notes}/>
 			  </ProfileViewEditModal>
 
+
+			  {/* the rest */}
 			  <ProfileViewEditModal save={this.updateProfile}
 									cancel={this.resetModal}
 									show={this.state.modalOpen}
 									type="etc"
 									header="Edit other details">
+
 				<input type="text"
 					   placeholder="Location Bought"
 					   onChange={(e) => this.updateData(e, 'locationBought')}
-					   value={profile.locationBought} />
+					   defaultValue={profile.locationBought} />
 
-				<input type="date"
+				{/*<input type="date"
 					   placeholder="Date Bought"
 					   onChange={(e) => this.updateData(e, 'dateBought')}
-					   value={profile.dateBought} />
+					   value={new Date(profile.dateBought).toDateString()} />*/}
+
+				<DatePicker selected={this.state.newData.dateBought || Date.now()}
+							className="react-datepicker-wrapper"
+							dateFormat="dd-MMMM-yyyy"
+							popperPlacement="bottom"
+							onSelect={(e) => this.updateData(e, 'dateBought')}
+							highlightDates={ProfileViewEdit.getHighlightDates(profile.dateBought, 'dateBought')} />
 
 				<input type="text"
 					   placeholder="Location In Home"
 					   onChange={(e) => this.updateData(e, 'location')}
-					   value={profile.location} />
+					   defaultValue={profile.location} />
 
 				<input type="text"
 					   placeholder="Companions"
 					   onChange={(e) => this.updateData(e, 'companions')}
-					   value={profile.companions ? profile.companions.join(", ") : null} />
+					   defaultValue={profile.companions ? profile.companions.join(", ") : null} />
 			  </ProfileViewEditModal>
+
 
 			  <ProfileViewEditModal save={this.deleteProfile}
 									cancel={this.resetModal}

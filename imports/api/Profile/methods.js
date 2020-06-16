@@ -78,7 +78,7 @@ Meteor.methods({
 			}
 		  });
 
-		  query = {$set: {waterPreference: data.waterPreference, lightPreference: data.lightPreference, updatedAt: data.updatedAt}, $push: {waterTracker: data.waterTracker}}
+		  query = {$set: {updatedAt: data.updatedAt}, $push: {fertilizerTracker: data.fertilizerTracker}}
 		  break;
 		case "soil composition":
 		  validationSchema = new SimpleSchema({
@@ -105,6 +105,77 @@ Meteor.methods({
 
 		  query = {$set: {updatedAt: data.updatedAt}, $push: {soilCompositionTracker: data.soilCompositionTracker}}
 		  break;
+		case "pest":
+		  validationSchema = new SimpleSchema({
+			pestTracker: {
+			  type: Object,
+			  optional: true,
+			  label: 'pestTracker'
+			},
+			'pestTracker.date': {
+			  type: Date,
+			  label: 'pestTracker.date'
+			},
+			'pestTracker.pest': {
+			  type: String,
+			  optional: true,
+			  label: 'pestTracker.pest'
+			},
+			'pestTracker.treatment': {
+			  type: String,
+			  optional: true,
+			  label: 'pestTracker.treatment'
+			},
+			updatedAt: {
+			  type: Date,
+			  defaultValue: new Date(),
+			  optional: true
+			}
+		  });
+
+		  query = {$set: {updatedAt: data.updatedAt}, $push: {pestTracker: data.pestTracker}}
+		  break;
+		case "notes":
+		  validationSchema = new SimpleSchema({
+			notes: {
+			  type: String
+			},
+			updatedAt: {
+			  type: Date
+			}
+		  })
+
+		  query = {$set: {notes: data.notes, updatedAt: data.updatedAt}};
+		  break;
+		case "etc":
+		  validationSchema = new SimpleSchema({
+			location: {
+			  type: String,
+			  label: 'location'
+			},
+			dateBought: {
+			  type: Date,
+			  label: 'dateBought'
+			},
+			locationBought: {
+			  type: String,
+			  label: 'locationBought'
+			},
+			companions: {
+			  type: Array,
+			  label: 'companions'
+			},
+			'companions.$': {
+			  type: String,
+			  label: 'companions.$'
+			},
+			updatedAt: {
+			  type: Date
+			}
+		  })
+
+		  query = {$set: {location: data.location, dateBought: data.dateBought, locationBought: data.locationBought, companions: data.companions, updatedAt: data.updatedAt}};
+		  break;
 	  }
 
 	  const validationContext = new SimpleSchema(validationSchema).newContext();
@@ -114,7 +185,7 @@ Meteor.methods({
 		logger('danger', "Validation failed", validationContext.validationErrors());
 		throw new Meteor.Error('500');
 	  } else {
-	    logger('success', "passed", data)
+		logger('success', "passed", data)
 		const response = Profile.update({_id: profile._id}, query);
 		return response;
 	  }
