@@ -1,5 +1,6 @@
 
 # plant management tracker
+_this is just a personal project i'm working on because i'm having trouble keeping up with my plants and their schedules_
 <br /><br />
 
 ![image](https://user-images.githubusercontent.com/19538307/83470022-ff335e80-a435-11ea-9337-4f2e9523b788.png)

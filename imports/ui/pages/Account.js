@@ -34,7 +34,7 @@ class Account extends Component {
 		  //do something if error occurred or
 		  toast.error(err.message)
 		} else {
-		  toast.success(`Welcome back ${data.name}!`);
+		  toast.success(`Welcome back ${Meteor.user().profile.name}!`);
 		  props.history.push('/catalogue');
 		}
 	  });
