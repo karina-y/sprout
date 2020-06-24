@@ -18,7 +18,16 @@ import { ToastContainer } from 'react-toastify';
 import Loading from './components/Shared/Loading';
 import logger from '../utils/logger';
 import Account from './pages/Account'
-import Authenticated from './pages/Authenticated'
+import Authenticated from './pages/Authenticated';
+
+/*
+TODO
+- add your own photo of the plant
+- edit the plant's name (tbh i just don't know where to put this, the notes section maybe? what do y'all think?)
+- adding notes on a calendar basis, like a diary. this isn't complicated i'm just lazy and haven't done it yet.
+- push notifications that let you know when it's time to water or fertilize your plants
+- the homepage will be a list of your plants that currently need attention instead of the sprout about page
+*/
 
 class App extends Component {
   constructor(props) {

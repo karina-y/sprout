@@ -460,22 +460,27 @@ class ProfileViewEdit extends Component {
 									   type="water-history"
 									   header="Watering History">
 
-				<table>
-				  <thead>
-				  <tr>
-					<th>Date</th>
-				  </tr>
-				  </thead>
-				  <tbody>
+				{profile.waterTracker && profile.waterTracker.length > 0 ?
+						<table>
+						  <thead>
+						  <tr>
+							<th>Date</th>
+						  </tr>
+						  </thead>
+						  <tbody>
 
-				  {profile.waterTracker.map((item, index) => {
-					return <tr key={index}>
-					  <td>{new Date(item.date).toLocaleDateString()}</td>
-					</tr>
-				  })}
+						  {profile.waterTracker.map((item, index) => {
+							return <tr key={index}>
+							  <td>{new Date(item.date).toLocaleDateString()}</td>
+							</tr>
+						  })}
 
-				  </tbody>
-				</table>
+						  </tbody>
+						</table>
+						:
+						<p>No entries recorded</p>
+				}
+
 			  </ProfileViewHistoryModal>
 
 
@@ -504,24 +509,29 @@ class ProfileViewEdit extends Component {
 									   type="fertilizer-history"
 									   header="Fertilizing History">
 
-				<table>
-				  <thead>
-				  <tr>
-					<th>Date</th>
-					<th>Fertilizer</th>
-				  </tr>
-				  </thead>
-				  <tbody>
+				{profile.fertilizerTracker && profile.fertilizerTracker.length > 0 ?
+						<table>
+						  <thead>
+						  <tr>
+							<th>Date</th>
+							<th>Fertilizer</th>
+						  </tr>
+						  </thead>
+						  <tbody>
 
-				  {profile.fertilizerTracker.map((item, index) => {
-					return <tr key={index}>
-					  <td>{new Date(item.date).toLocaleDateString()}</td>
-					  <td>{item.fertilizer}</td>
-					</tr>
-				  })}
+						  {profile.fertilizerTracker.map((item, index) => {
+							return <tr key={index}>
+							  <td>{new Date(item.date).toLocaleDateString()}</td>
+							  <td>{item.fertilizer}</td>
+							</tr>
+						  })}
 
-				  </tbody>
-				</table>
+						  </tbody>
+						</table>
+						:
+						<p>No entries recorded</p>
+				}
+
 			  </ProfileViewHistoryModal>
 
 
@@ -554,26 +564,30 @@ class ProfileViewEdit extends Component {
 									   type="soil composition-history"
 									   header="Soil Composition History">
 
-				<table>
-				  <thead>
-				  <tr>
-					<th>Date</th>
-					<th>pH</th>
-					<th>Moisture</th>
-				  </tr>
-				  </thead>
-				  <tbody>
+				{profile.soilCompositionTracker && profile.soilCompositionTracker.length > 0 ?
+						<table>
+						  <thead>
+						  <tr>
+							<th>Date</th>
+							<th>pH</th>
+							<th>Moisture</th>
+						  </tr>
+						  </thead>
+						  <tbody>
 
-				  {profile.soilCompositionTracker.map((item, index) => {
-					return <tr key={index}>
-					  <td>{new Date(item.date).toLocaleDateString()}</td>
-					  <td>{item.ph || 'N/A'}</td>
-					  <td>{item.moisture ? `${Math.round(item.moisture * 100)}%` : 'N/A'}</td>
-					</tr>
-				  })}
+						  {profile.soilCompositionTracker.map((item, index) => {
+							return <tr key={index}>
+							  <td>{new Date(item.date).toLocaleDateString()}</td>
+							  <td>{item.ph || 'N/A'}</td>
+							  <td>{item.moisture ? `${Math.round(item.moisture * 100)}%` : 'N/A'}</td>
+							</tr>
+						  })}
+						  </tbody>
+						</table>
+						:
+						<p>No entries recorded</p>
+				}
 
-				  </tbody>
-				</table>
 			  </ProfileViewHistoryModal>
 
 
@@ -607,26 +621,32 @@ class ProfileViewEdit extends Component {
 									   type="pest-history"
 									   header="Pest History">
 
-				<table>
-				  <thead>
-				  <tr>
-					<th>Date</th>
-					<th>Pest</th>
-					<th>Treatment</th>
-				  </tr>
-				  </thead>
-				  <tbody>
 
-				  {profile.pestTracker.map((item, index) => {
-					return <tr key={index}>
-					  <td>{new Date(item.date).toLocaleDateString()}</td>
-					  <td>{item.pest || 'N/A'}</td>
-					  <td>{item.treatment || 'N/A'}</td>
-					</tr>
-				  })}
+				{profile.pestTracker && profile.pestTracker.length > 0 ?
+						<table>
+						  <thead>
+						  <tr>
+							<th>Date</th>
+							<th>Pest</th>
+							<th>Treatment</th>
+						  </tr>
+						  </thead>
+						  <tbody>
 
-				  </tbody>
-				</table>
+						  {profile.pestTracker.map((item, index) => {
+							return <tr key={index}>
+							  <td>{new Date(item.date).toLocaleDateString()}</td>
+							  <td>{item.pest || 'N/A'}</td>
+							  <td>{item.treatment || 'N/A'}</td>
+							</tr>
+						  })}
+
+						  </tbody>
+						</table>
+						:
+						<p>No entries recorded</p>
+				}
+
 			  </ProfileViewHistoryModal>
 
 
