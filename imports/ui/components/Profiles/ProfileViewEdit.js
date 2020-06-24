@@ -31,7 +31,10 @@ import {
 import Profile from '/imports/api/Profile/Profile';
 import { toast } from 'react-toastify';
 import SwipePanelContent from '../Shared/SwipePanelContent';
-import ProfileViewEditModal from '../Shared/ProfileViewEditModal';
+import ProfileAddEntryModal from '../Shared/ProfileAddEntryModal';
+import ProfileViewHistoryModal from '../Shared/ProfileViewHistoryModal'
+
+//TODO order dates in trackers from latest first
 
 class ProfileViewEdit extends Component {
   constructor(props) {
@@ -58,12 +61,12 @@ class ProfileViewEdit extends Component {
 	}
   }
 
-  //TODO turn into hook
+  //TODO turn into hook and memoize
   static getHighlightDates(items, type) {
 	let dates = [];
 
-    if (type === "dateBought" && items) {
-      dates.push(new Date(items))
+	if (type === "dateBought" && items) {
+	  dates.push(new Date(items))
 	} else if (items && items.length > 0) {
 	  for (let i = 0; i < items.length; i++) {
 		dates.push(new Date(items[i].date));
@@ -232,21 +235,21 @@ class ProfileViewEdit extends Component {
 	})
   }
 
-  openModal() {
+  openModal(history) {
 	let modalOpen;
 
 	switch (this.state.swipeViewIndex) {
 	  case 0:
-		modalOpen = "water";
+		modalOpen = history ? "water-history" : "water";
 		break;
 	  case 1:
-		modalOpen = "fertilizer";
+		modalOpen = history ? "fertilizer-history" : "fertilizer";
 		break;
 	  case 2:
-		modalOpen = "soil composition";
+		modalOpen = history ? "soil composition-history" : "soil composition";
 		break;
 	  case 3:
-		modalOpen = "pest";
+		modalOpen = history ? "pest-history" : "pest";
 		break;
 	  case 4:
 		modalOpen = "notes";
@@ -410,6 +413,7 @@ class ProfileViewEdit extends Component {
 				</div>
 			  </SwipeableViews>
 
+			  {/* buttons */}
 			  <div className="add-data flex-around">
 				<FontAwesomeIcon icon={faTrash}
 								 className="plant-condition-icon"
@@ -418,18 +422,26 @@ class ProfileViewEdit extends Component {
 								 title="delete"
 								 onClick={() => this.setState({modalOpen: "delete"})}/>
 
+				<FontAwesomeIcon icon={this.state.swipeViewIndex === 5 ? faCalendarAlt : faCalendarAlt}
+								 className="plant-condition-icon"
+								 size='3x'
+								 alt={this.state.swipeViewIndex === 5 ? "pencil" : "plus"}
+								 title="view history"
+								 onClick={() => this.openModal(true)}/>
+
 				<FontAwesomeIcon icon={this.state.swipeViewIndex === 5 ? faPencilAlt : faPlus}
 								 className="plant-condition-icon"
 								 size='3x'
 								 alt={this.state.swipeViewIndex === 5 ? "pencil" : "plus"}
 								 title="edit"
-								 onClick={this.openModal}/>
+								 onClick={() => this.openModal(false)}/>
 
 			  </div>
 
 
+			  {/* TODO - make modal situation more efficient, i should really be able to decrease this code, too much repetition */}
 			  {/* water */}
-			  <ProfileViewEditModal save={this.updateProfile}
+			  <ProfileAddEntryModal save={this.updateProfile}
 									cancel={this.resetModal}
 									show={this.state.modalOpen}
 									type="water"
@@ -441,11 +453,34 @@ class ProfileViewEdit extends Component {
 							inline
 							onSelect={(e) => this.updateData(e, 'waterDate')}
 							highlightDates={ProfileViewEdit.getHighlightDates(profile.waterTracker)} />
-			  </ProfileViewEditModal>
+			  </ProfileAddEntryModal>
+
+			  <ProfileViewHistoryModal cancel={this.resetModal}
+									   show={this.state.modalOpen}
+									   type="water-history"
+									   header="Watering History">
+
+				<table>
+				  <thead>
+				  <tr>
+					<th>Date</th>
+				  </tr>
+				  </thead>
+				  <tbody>
+
+				  {profile.waterTracker.map((item, index) => {
+					return <tr key={index}>
+					  <td>{new Date(item.date).toLocaleDateString()}</td>
+					</tr>
+				  })}
+
+				  </tbody>
+				</table>
+			  </ProfileViewHistoryModal>
 
 
 			  {/* fertilizer */}
-			  <ProfileViewEditModal save={this.updateProfile}
+			  <ProfileAddEntryModal save={this.updateProfile}
 									cancel={this.resetModal}
 									show={this.state.modalOpen}
 									type="fertilizer"
@@ -462,11 +497,36 @@ class ProfileViewEdit extends Component {
 				<input type="text"
 					   placeholder="Fertilizer"
 					   onChange={(e) => this.updateData(e, 'fertilizer')} />
-			  </ProfileViewEditModal>
+			  </ProfileAddEntryModal>
+
+			  <ProfileViewHistoryModal cancel={this.resetModal}
+									   show={this.state.modalOpen}
+									   type="fertilizer-history"
+									   header="Fertilizing History">
+
+				<table>
+				  <thead>
+				  <tr>
+					<th>Date</th>
+					<th>Fertilizer</th>
+				  </tr>
+				  </thead>
+				  <tbody>
+
+				  {profile.fertilizerTracker.map((item, index) => {
+					return <tr key={index}>
+					  <td>{new Date(item.date).toLocaleDateString()}</td>
+					  <td>{item.fertilizer}</td>
+					</tr>
+				  })}
+
+				  </tbody>
+				</table>
+			  </ProfileViewHistoryModal>
 
 
 			  {/* soil comp */}
-			  <ProfileViewEditModal save={this.updateProfile}
+			  <ProfileAddEntryModal save={this.updateProfile}
 									cancel={this.resetModal}
 									show={this.state.modalOpen}
 									type="soil composition"
@@ -487,11 +547,38 @@ class ProfileViewEdit extends Component {
 				<input type="number"
 					   placeholder="Soil Moisture %"
 					   onChange={(e) => this.updateData(e, 'moisture')}/>
-			  </ProfileViewEditModal>
+			  </ProfileAddEntryModal>
+
+			  <ProfileViewHistoryModal cancel={this.resetModal}
+									   show={this.state.modalOpen}
+									   type="soil composition-history"
+									   header="Soil Composition History">
+
+				<table>
+				  <thead>
+				  <tr>
+					<th>Date</th>
+					<th>pH</th>
+					<th>Moisture</th>
+				  </tr>
+				  </thead>
+				  <tbody>
+
+				  {profile.soilCompositionTracker.map((item, index) => {
+					return <tr key={index}>
+					  <td>{new Date(item.date).toLocaleDateString()}</td>
+					  <td>{item.ph || 'N/A'}</td>
+					  <td>{item.moisture ? `${Math.round(item.moisture * 100)}%` : 'N/A'}</td>
+					</tr>
+				  })}
+
+				  </tbody>
+				</table>
+			  </ProfileViewHistoryModal>
 
 
 			  {/* pests */}
-			  <ProfileViewEditModal save={this.updateProfile}
+			  <ProfileAddEntryModal save={this.updateProfile}
 									cancel={this.resetModal}
 									show={this.state.modalOpen}
 									type="pest"
@@ -512,11 +599,39 @@ class ProfileViewEdit extends Component {
 				<input type="text"
 					   placeholder="Treatment Method"
 					   onChange={(e) => this.updateData(e, 'treatment')}/>
-			  </ProfileViewEditModal>
+			  </ProfileAddEntryModal>
+
+
+			  <ProfileViewHistoryModal cancel={this.resetModal}
+									   show={this.state.modalOpen}
+									   type="pest-history"
+									   header="Pest History">
+
+				<table>
+				  <thead>
+				  <tr>
+					<th>Date</th>
+					<th>Pest</th>
+					<th>Treatment</th>
+				  </tr>
+				  </thead>
+				  <tbody>
+
+				  {profile.pestTracker.map((item, index) => {
+					return <tr key={index}>
+					  <td>{new Date(item.date).toLocaleDateString()}</td>
+					  <td>{item.pest || 'N/A'}</td>
+					  <td>{item.treatment || 'N/A'}</td>
+					</tr>
+				  })}
+
+				  </tbody>
+				</table>
+			  </ProfileViewHistoryModal>
 
 
 			  {/* notes */}
-			  <ProfileViewEditModal save={this.updateProfile}
+			  <ProfileAddEntryModal save={this.updateProfile}
 									cancel={this.resetModal}
 									show={this.state.modalOpen}
 									type="notes"
@@ -526,11 +641,11 @@ class ProfileViewEdit extends Component {
 						placeholder="Notes"
 						onChange={(e) => this.updateData(e, 'notes')}
 						defaultValue={profile.notes}/>
-			  </ProfileViewEditModal>
+			  </ProfileAddEntryModal>
 
 
 			  {/* the rest */}
-			  <ProfileViewEditModal save={this.updateProfile}
+			  <ProfileAddEntryModal save={this.updateProfile}
 									cancel={this.resetModal}
 									show={this.state.modalOpen}
 									type="etc"
@@ -557,16 +672,16 @@ class ProfileViewEdit extends Component {
 					   placeholder="Companions"
 					   onChange={(e) => this.updateData(e, 'companions')}
 					   defaultValue={profile.companions ? profile.companions.join(", ") : null} />
-			  </ProfileViewEditModal>
+			  </ProfileAddEntryModal>
 
 
-			  <ProfileViewEditModal save={this.deleteProfile}
+			  <ProfileAddEntryModal save={this.deleteProfile}
 									cancel={this.resetModal}
 									show={this.state.modalOpen}
 									type="delete"
 									header="Are you sure you want to delete this profile?">
 
-			  </ProfileViewEditModal>
+			  </ProfileAddEntryModal>
 			</div>
 	);
   }

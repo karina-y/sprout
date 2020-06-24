@@ -72,7 +72,7 @@ export function getLastSoilMoisture(tracker) {
   let soilMoisture = "N/A";
 
   if (tracker && tracker.length > 0) {
-	soilMoisture = tracker[tracker.length-1].moisture ? `${Math.round(tracker[tracker.length-1].moisture * 10)}%` : 'N/A';
+	soilMoisture = tracker[tracker.length-1].moisture ? `${Math.round(tracker[tracker.length-1].moisture * 100)}%` : 'N/A';
   }
 
   return soilMoisture;

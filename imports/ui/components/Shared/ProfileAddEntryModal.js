@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import autobind from 'react-autobind';
 import Modal from 'react-bootstrap/Modal';
-// import './ProfileViewEditModal.scss';
+// import './ProfileAddEntryModal.scss';
 
-class ProfileViewEditModal extends Component {
+class ProfileAddEntryModal extends Component {
   constructor(props) {
 	super(props);
 
@@ -16,6 +16,8 @@ class ProfileViewEditModal extends Component {
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
+    // console.log("nextProps", nextProps)
+    // console.log("prevState", prevState)
 
 	if (nextProps.show === nextProps.type) {
 	  let newState = prevState;
@@ -85,12 +87,12 @@ class ProfileViewEditModal extends Component {
   }
 }
 
-ProfileViewEditModal.propTypes = {
+ProfileAddEntryModal.propTypes = {
   save: PropTypes.func.isRequired,
   cancel: PropTypes.func.isRequired,
-  type: PropTypes.string.isRequired,
+  type: PropTypes.string,
   header: PropTypes.string.isRequired,
   modalOpen: PropTypes.string
 }
 
-export default ProfileViewEditModal;
+export default ProfileAddEntryModal;

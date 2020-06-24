@@ -43,7 +43,7 @@ class App extends Component {
 	// logger('info', "loading", this.props.loading);
 
 	return (
-			// !this.props.loading ?
+			!this.props.loading ?
 					<Router>
 					  <Navigation toggleAccessibility={this.toggleAccessibility} />
 
@@ -55,6 +55,11 @@ class App extends Component {
 						  <Route exact path="/" render={props => <HomePage {...props} />} />
 
 						  <Route exact path="/account" render={props => <Account {...props} />} />
+
+						  {/* //TODO remove - for debugging */}
+						  {/*<Route exact path="/"
+										 component={PlantCatalogue}
+										 {...props} />*/}
 
 						  <Authenticated exact path="/catalogue"
 										 component={PlantCatalogue}
@@ -79,8 +84,8 @@ class App extends Component {
 
 					  <ToastContainer newestOnTop={true} />
 					</Router>
-					// :
-					// <Loading />
+					:
+					<Loading />
 	)
   }
 

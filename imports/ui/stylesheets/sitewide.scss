@@ -766,6 +766,29 @@ body {
     }
   }
 
+
+  table {
+    width: 100%;
+
+    thead {
+      background: $powder-blue;
+    }
+
+    td {
+      border: solid 1px $powder-blue;
+    }
+
+    th {
+      border: solid 1px $polished-pine;
+    }
+
+    th,
+    td {
+      padding: 3px;
+      font-size: $font-xs;
+    }
+  }
+
   /*input::-webkit-calendar-picker-indicator{
     display: none;
   }

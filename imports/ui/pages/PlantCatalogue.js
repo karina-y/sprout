@@ -34,7 +34,8 @@ class PlantCatalogue extends Component {
 												 {...props}/>;
 						})
 						:
-						<p className="title-ming" style={{marginTop: '50px', textAlign: 'center'}}>You don't have any plants in your catalogue yet.</p>
+						<p className="title-ming"
+						   style={{marginTop: '50px', textAlign: 'center', padding: '10px'}}>You don't have any plants in your catalogue yet.</p>
 				}
 			  </div>
 			</div>
@@ -48,6 +49,7 @@ PlantCatalogue.propTypes = {
 
 export default withTracker(() => {
   const catalogue = Profile.find({userId: Meteor.userId()}).fetch();
+  // const catalogue = Profile.find().fetch();	//TODO remove - for debugging
 
   //to test locally without hooking up to db, be sure to uncomment import statement for this
   //const catalogue = profiles;
