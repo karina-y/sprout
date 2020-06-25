@@ -44,12 +44,6 @@ Meteor.methods({
 	  switch(type) {
 		case "water":
 		  validationSchema = new SimpleSchema({
-			waterPreference: {
-			  type: String
-			},
-			lightPreference: {
-			  type: String
-			},
 			waterTracker: {
 			  type: Object
 			},
@@ -61,7 +55,25 @@ Meteor.methods({
 			}
 		  });
 
-		  query = {$set: {waterPreference: data.waterPreference, lightPreference: data.lightPreference, updatedAt: data.updatedAt}, $push: {waterTracker: data.waterTracker}}
+		  query = {$set: {updatedAt: data.updatedAt}, $push: {waterTracker: data.waterTracker}}
+		  break;
+		case "water-edit":
+		  validationSchema = new SimpleSchema({
+			waterPreference: {
+			  type: String
+			},
+			lightPreference: {
+			  type: String
+			},
+			waterSchedule: {
+			  type: Number
+			},
+			updatedAt: {
+			  type: Date
+			}
+		  });
+
+		  query = {$set: {waterPreference: data.waterPreference, lightPreference: data.lightPreference, waterSchedule: data.waterSchedule, updatedAt: data.updatedAt}}
 		  break;
 		case "fertilizer":
 		  validationSchema = new SimpleSchema({
@@ -80,6 +92,18 @@ Meteor.methods({
 		  });
 
 		  query = {$set: {updatedAt: data.updatedAt}, $push: {fertilizerTracker: data.fertilizerTracker}}
+		  break;
+		case "fertilizer-edit":
+		  validationSchema = new SimpleSchema({
+			fertilizerSchedule: {
+			  type: Number
+			},
+			updatedAt: {
+			  type: Date
+			}
+		  });
+
+		  query = {$set: {fertilizerSchedule: data.fertilizerSchedule, updatedAt: data.updatedAt}}
 		  break;
 		case "soil composition":
 		  validationSchema = new SimpleSchema({
@@ -136,19 +160,27 @@ Meteor.methods({
 
 		  query = {$set: {updatedAt: data.updatedAt}, $push: {pestTracker: data.pestTracker}}
 		  break;
-		case "notes":
+		case "diary":
 		  validationSchema = new SimpleSchema({
-			notes: {
+			diary: {
+			  type: Object
+			},
+			'diary.entry': {
 			  type: String
+			},
+			'diary.date': {
+			  type: Date,
+			  defaultValue: new Date(),
+			  optional: true
 			},
 			updatedAt: {
 			  type: Date
 			}
 		  })
 
-		  query = {$set: {notes: data.notes, updatedAt: data.updatedAt}};
+		  query = {$set: {updatedAt: data.updatedAt}, $push: {diary: data.diary}};
 		  break;
-		case "etc":
+		case "etc-edit":
 		  validationSchema = new SimpleSchema({
 			location: {
 			  type: String,

@@ -22,7 +22,7 @@ body {
   width: 100% !important;
   min-width: 100% !important;
   height: 100%;
-  background-color: #f8fcff;
+  background-color: $off-white;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: $dark-slate-gray;
@@ -50,6 +50,27 @@ body {
   .groot {
     width: 121px;
     height: 146px;
+  }
+
+  .bottom-nav {
+    border-top: solid 1px $powder-blue;
+    background: $alice-blue-light;
+    padding: 15px 0;
+    text-align: center;
+    //position: relative;
+    bottom: 0;
+    left: 0;
+    position: fixed;
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  .scroll-box {
+    height: 179px;
+    overflow-y: scroll;
+    background: $powder-blue-light;
+    padding: 10px;
+    border-radius: 5px;
   }
 
   .Footer {
@@ -126,6 +147,7 @@ body {
       //text-align: right;
     }
   }
+
   //#endregion
 
   //#region text/fonts
@@ -137,7 +159,7 @@ body {
     font-size: $font-lg;
     margin: 0;
     padding: 20px 0;
-    color: $melon;
+    color: $vivid-tangerine;
     text-align: center;
 
     &.xl {
@@ -160,7 +182,7 @@ body {
     font-family: "Montserrat", sans-serif;
     font-size: $font-md;
     margin-bottom: 20px;
-    color: $melon;
+    color: $vivid-tangerine;
     text-align: center;
   }
 
@@ -191,26 +213,6 @@ body {
     font-size: $font-lg;
   }
 
-  .highlight {
-    background: $light-blue;
-    color: $brand-white;
-  }
-
-  .text-blue {
-    color: $dark-blue;
-  }
-
-  .text-blue-light {
-    color: $light-blue;
-  }
-
-  .text-pink {
-    color: $dark-pink;
-  }
-
-  .text-pink-light {
-    color: $light-pink;
-  }
 
   a {
     transition: color 0.2s ease-in, background 0.2s ease-in;
@@ -241,8 +243,12 @@ body {
     font-size: $font-xs;
   }
 
-  label.pink {
-    background: $magenta;
+  input.small {
+    width: 20%;
+  }
+
+  label.ming {
+    background: $ming;
     font-size: 12px;
     display: inline;
     padding: .2em .6em .3em;
@@ -254,6 +260,7 @@ body {
     vertical-align: baseline;
     border-radius: .25em;
   }
+
   //#endregion
 
   //#region padding/width
@@ -278,11 +285,12 @@ body {
     width: 50vw;
     margin: 0 auto;
   }
+
   //#endregion
 
 
   button {
-    background: $brand-white;
+    background: $white;
     //border-radius: 10px 4px !important;
     border-radius: unset !important;
     text-transform: uppercase;
@@ -292,10 +300,10 @@ body {
 
     &.underline-btn {
       margin: 2px 15px;
-      color: $brand-off-white;
+      color: $dark-white;
       font-size: 14px;
       border: none;
-      border-bottom: solid 1px $brand-off-white;
+      border-bottom: solid 1px $dark-white;
       border-radius: unset !important;
       padding: 0 !important;
       padding-bottom: 5px;
@@ -313,8 +321,8 @@ body {
 
       &.active {
         background: transparent;
-        border-color: $magenta;
-        color: $magenta;
+        border-color: $vivid-tangerine;
+        color: $vivid-tangerine;
       }
 
 
@@ -326,7 +334,7 @@ body {
     &.popup {
       display: inline-block;
       padding: 20px 30px !important;
-      box-shadow: 0 17px 10px -10px rgba(0,0,0,0.4);
+      box-shadow: 0 17px 10px -10px rgba(0, 0, 0, 0.4);
       transition: transform ease-in-out 300ms, box-shadow ease-in-out 300ms;
 
       &:hover {
@@ -360,23 +368,23 @@ body {
     //#region colors
     &.btn-success {
       background: linear-gradient(to right, $success-dark, $success-light);
-      color: $brand-white;
+      color: $white;
       border: none;
       font-weight: bold;
 
       &:hover {
         color: $success-dark;
-        background: linear-gradient(to right, $brand-white, $brand-white);
+        background: linear-gradient(to right, $white, $white);
         border: none;
       }
 
       &.invert {
-        background: linear-gradient(to right, $brand-white, $brand-white);
+        background: linear-gradient(to right, $white, $white);
         color: $success-dark;
         border: none;
 
         &:hover {
-          color: $brand-white;
+          color: $white;
           background: linear-gradient(to right, $success-dark, $success-light);
           border: none;
         }
@@ -385,23 +393,23 @@ body {
 
     &.btn-info {
       background: linear-gradient(to right, $info-dark, $info-light);
-      color: $brand-white;
+      color: $white;
       border: none;
       font-weight: bold;
 
       &:hover {
         color: $info-dark;
-        background: linear-gradient(to right, $brand-white, $brand-white);
+        background: linear-gradient(to right, $white, $white);
         border: none;
       }
 
       &.invert {
-        background: linear-gradient(to right, $brand-white, $brand-white);
+        background: linear-gradient(to right, $white, $white);
         color: $info-dark;
         border: none;
 
         &:hover {
-          color: $brand-white;
+          color: $white;
           background: linear-gradient(to right, $info-dark, $info-light);
           border: none;
         }
@@ -410,23 +418,23 @@ body {
 
     &.btn-warning {
       background: linear-gradient(to right, $warning-dark, $warning-light);
-      color: $brand-white;
+      color: $white;
       border: none;
       font-weight: bold;
 
       &:hover {
         color: $warning-dark;
-        background: linear-gradient(to right, $brand-white, $brand-white);
+        background: linear-gradient(to right, $white, $white);
         border: none;
       }
 
       &.invert {
-        background: linear-gradient(to right, $brand-white, $brand-white);
+        background: linear-gradient(to right, $white, $white);
         color: $warning-dark;
         border: none;
 
         &:hover {
-          color: $brand-white;
+          color: $white;
           background: linear-gradient(to right, $warning-dark, $warning-light);
           border: none;
         }
@@ -435,209 +443,29 @@ body {
 
     &.btn-danger {
       background: linear-gradient(to right, $danger-dark, $danger-light);
-      color: $brand-white;
+      color: $white;
       border: none;
       font-weight: bold;
 
       &:hover {
         color: $danger-dark;
-        background: linear-gradient(to right, $brand-white, $brand-white);
+        background: linear-gradient(to right, $white, $white);
         border: none;
       }
 
       &.invert {
-        background: linear-gradient(to right, $brand-white, $brand-white);
+        background: linear-gradient(to right, $white, $white);
         color: $danger-dark;
         border: none;
 
         &:hover {
-          color: $brand-white;
+          color: $white;
           background: linear-gradient(to right, $danger-dark, $danger-light);
           border: none;
         }
       }
     }
 
-    &.blue-dark-btn {
-      background: $dark-blue;
-      color: $brand-white;
-      border: none;
-      font-weight: bold;
-
-      &:hover {
-        color: $dark-blue;
-        background: $brand-white;
-        border: none;
-      }
-
-      &.invert {
-        background: $brand-white;
-        color: $dark-blue;
-        border: none;
-
-        &:hover {
-          color: $brand-white;
-          background: $dark-blue;
-          border: none;
-        }
-      }
-    }
-
-    &.blue-light-btn {
-      background: $light-blue;
-      color: $brand-white;
-      border: none;
-      font-weight: bold;
-
-      &:hover {
-        color: $light-blue;
-        background: $brand-white;
-        border: none;
-      }
-
-
-      &.invert {
-        background: $brand-white;
-        color: $light-blue;
-        border: none;
-
-        &:hover {
-          color: $brand-white;
-          background: $light-blue;
-          border: none;
-        }
-      }
-    }
-
-    &.purple-light-btn {
-      background: $light-purple;
-      color: $brand-white;
-      border: none;
-      font-weight: bold;
-
-      &:hover {
-        color: $light-purple;
-        background: $brand-white;
-        border: none;
-      }
-
-
-      &.invert {
-        background: $brand-white;
-        color: $light-purple;
-        border: none;
-
-        &:hover {
-          color: $brand-white;
-          background: $light-purple;
-          border: none;
-        }
-      }
-    }
-
-    &.purple-dark-btn {
-      background: $dark-purple;
-      color: $brand-white;
-      border: none;
-      font-weight: bold;
-
-      &:hover {
-        color: $dark-purple;
-        background: $brand-white;
-        border: none;
-      }
-
-
-      &.invert {
-        background: $brand-white;
-        color: $dark-purple;
-        border: none;
-
-        &:hover {
-          color: $brand-white;
-          background: $dark-purple;
-          border: none;
-        }
-      }
-    }
-
-    &.pink-light-btn {
-      background: $light-pink;
-      color: $brand-white;
-      border: none;
-      font-weight: bold;
-
-      &:hover {
-        color: $light-pink;
-        background: $brand-white;
-        border: none;
-      }
-
-
-      &.invert {
-        background: $brand-white;
-        color: $light-pink;
-        border: none;
-
-        &:hover {
-          color: $brand-white;
-          background: $light-pink;
-          border: none;
-        }
-      }
-    }
-
-    &.pink-dark-btn {
-      background: $dark-pink;
-      color: $brand-white;
-      border: none;
-      font-weight: bold;
-
-      &:hover {
-        color: $dark-pink;
-        background: $brand-white;
-        border: none;
-      }
-
-
-      &.invert {
-        background: $brand-white;
-        color: $dark-pink;
-        border: none;
-
-        &:hover {
-          color: $brand-white;
-          background: $dark-pink;
-          border: none;
-        }
-      }
-    }
-
-    &.magenta-btn {
-      background: $magenta;
-      color: $brand-white;
-      border: none;
-      font-weight: bold;
-
-      &:hover {
-        color: $magenta;
-        background: $brand-white;
-        border: none;
-      }
-
-
-      &.invert {
-        background: $brand-white;
-        color: $magenta;
-        border: none;
-
-        &:hover {
-          color: $brand-white;
-          background: $magenta;
-          border: none;
-        }
-      }
-    }
     //#endregion
 
     &:hover,
@@ -702,6 +530,9 @@ body {
 
   }
 
+  .progress-bar {
+    background-color: $vivid-tangerine;
+  }
 
   .react-datepicker {
     width: 100%;
@@ -735,7 +566,7 @@ body {
 
     .react-datepicker__day:hover {
       background-color: $ming;
-      color: $brand-white;
+      color: $white;
     }
   }
 

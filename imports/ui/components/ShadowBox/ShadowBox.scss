@@ -1,7 +1,7 @@
 @import '../../stylesheets/variables.scss';
 
 div.ShadowBox {
-  background: $brand-white;
+  background: $white;
   border-radius: 5px;
   -webkit-transform: translateY(0);
   -webkit-transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);

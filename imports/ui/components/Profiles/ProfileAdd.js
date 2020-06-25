@@ -28,7 +28,7 @@ class ProfileAdd extends Component {
 	this.state = {
 	  profile: {image: selectRandomPlantPicture()},
 	  swipeViewIndex: 0,
-	  showNotesModal: false,
+	  showDiaryModal: false,
 	  currentDateSelection: null
 	};
 
@@ -140,6 +140,11 @@ class ProfileAdd extends Component {
 
 	} else if (type === "dateBought") {
 	  profile[type] = new Date(e);
+	}  else if (type === "diary") {
+	  profile[type] = {
+		entry: e.target.value,
+		date: new Date()
+	  }
 	} else {
 	  profile[type] = e.target.value;
 	}
@@ -417,9 +422,9 @@ class ProfileAdd extends Component {
 				</div>
 
 
-				{/* notes/etc */}
+				{/* diary/etc */}
 				<div className="swipe-slide slide-six">
-				  <p className="swipe-title title-ming">Notes</p>
+				  <p className="swipe-title title-ming">Diary</p>
 
 				  <div className="detail-panel">
 					<div className="icon-side">
@@ -463,9 +468,9 @@ class ProfileAdd extends Component {
 
 					<div className="info-side">
 					  <p><textarea rows="3"
-								   placeholder="Notes"
-								   onChange={(e) => this.updateData(e, 'notes')}
-								   value={profile.notes || ''}/></p>
+								   placeholder="Diary / Notes"
+								   onChange={(e) => this.updateData(e, 'diary')}
+								   value={profile.diary || ''}/></p>
 					</div>
 				  </div>
 				</div>
@@ -507,8 +512,8 @@ class ProfileAdd extends Component {
 
 			  </div>
 
-			  <Modal show={this.state.showNotesModal}
-					 onHide={() => this.setState({showNotesModal: false})}
+			  <Modal show={this.state.showDiaryModal}
+					 onHide={() => this.setState({showDiaryModal: false})}
 					 className="profile-view-data-modal">
 				<Modal.Header closeButton>
 
@@ -519,12 +524,12 @@ class ProfileAdd extends Component {
 				</Modal.Body>
 
 				<Modal.Footer>
-				  <button onClick={() => this.setState({showNotesModal: false})}
+				  <button onClick={() => this.setState({showDiaryModal: false})}
 						  className="flat">
 					Cancel
 				  </button>
 
-				  <button onClick={() => this.setState({showNotesModal: false})}
+				  <button onClick={() => this.setState({showDiaryModal: false})}
 						  className="flat">
 					Save
 				  </button>

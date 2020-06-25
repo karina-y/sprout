@@ -59,10 +59,23 @@ Profile.schema = new SimpleSchema({
 			type: String,
 			label: 'companions.$'
 		  },
-		  notes: {
-			type: String,
+		  diary: {
+			type: Array,
 			optional: true,
-			label: 'notes'
+			label: 'diary'
+		  },
+		  'diary.$': {
+			type: Object,
+			label: 'diary.$'
+		  },
+		  'diary.$.date': {
+			type: Date,
+			label: 'diary.$.date'
+		  },
+		  'diary.$.entry': {
+			type: String,
+			defaultValue: '',
+			label: 'diary.$.entry'
 		  },
 		  image: {
 			type: String,

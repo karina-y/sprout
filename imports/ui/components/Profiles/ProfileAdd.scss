@@ -82,7 +82,7 @@
     padding-bottom: 15px;
 
     .svg-inline--fa {
-      color: $brand-white;
+      color: $white;
       background-color: $success-dark;
       border-radius: 100%;
       padding: 13px;
@@ -121,9 +121,6 @@
     }
   }*/
 
-  input.small {
-    width: 20%;
-  }
 
   input,
   textarea {

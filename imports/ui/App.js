@@ -19,6 +19,8 @@ import Loading from './components/Shared/Loading';
 import logger from '../utils/logger';
 import Account from './pages/Account'
 import Authenticated from './pages/Authenticated';
+import Profile from '/imports/api/Profile/Profile';
+import { Meteor } from "meteor/meteor"
 
 /*
 TODO
@@ -27,6 +29,9 @@ TODO
 - adding notes on a calendar basis, like a diary. this isn't complicated i'm just lazy and haven't done it yet.
 - push notifications that let you know when it's time to water or fertilize your plants
 - the homepage will be a list of your plants that currently need attention instead of the sprout about page
+- add categories for plants
+- be able to filter your catalogue based on location, category
+- sort catalogue based on who needs attn first, date bought, alphabetical, etc
 */
 
 class App extends Component {
@@ -103,6 +108,11 @@ class App extends Component {
 export default withTracker(() => {
 
   let profileSub = Meteor.subscribe('profile');
+ /* console.log("************CALLING START\n")
+  console.log("************data:", Profile.find().fetch())
+  console.log("************userid:", Meteor.userId())
+  console.log("************meteor client status:", Meteor.status().connected)
+  console.log("************CALLING END\n")*/
   // console.log("checking auth", Meteor.userId() ? true : false)
 
   Meteor.isMobile = /(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino/i.test(navigator.userAgent||navigator.vendor||window.opera)||
