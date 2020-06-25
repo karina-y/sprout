@@ -161,7 +161,8 @@ class ProfileViewEdit extends Component {
 	  }
 
 	} else if (type === 'dateBought') {
-	  newProfileData[type] = new Date(e)
+	  // newProfileData[type] = new Date(e)
+	  newProfileData[type] = new Date(e.target.value)
 	} else if (type === 'diary') {
 
 	  if (newProfileData[type]) {
@@ -190,41 +191,16 @@ class ProfileViewEdit extends Component {
 	let data
 
 	switch (type) {
-	  case 'water':
-		data = {
-		  waterSchedule: parseInt(newProfileData.waterSchedule || oldProfileData.waterSchedule)
-		}
-		break
-	  case 'water-edit':
+	  case 'waterTracker-edit':
 		data = {
 		  waterPreference: newProfileData.waterPreference || oldProfileData.waterPreference,
 		  lightPreference: newProfileData.lightPreference || oldProfileData.lightPreference,
 		  waterSchedule: parseInt(newProfileData.waterSchedule || oldProfileData.waterSchedule)
 		}
 		break
-	  case 'fertilizer':
-		data = {
-		  fertilizerTracker: newProfileData.fertilizerTracker
-		}
-		break
-	  case 'fertilizer-edit':
+	  case 'fertilizerTracker-edit':
 		data = {
 		  fertilizerSchedule: parseInt(newProfileData.fertilizerSchedule || oldProfileData.fertilizerSchedule)
-		}
-		break
-	  case 'soil composition':
-		data = {
-		  soilCompositionTracker: newProfileData.soilCompositionTracker
-		}
-		break
-	  case 'pest':
-		data = {
-		  pestTracker: newProfileData.pestTracker
-		}
-		break
-	  case 'diary':
-		data = {
-		  diary: newProfileData.diary
 		}
 		break
 	  case 'etc-edit':
@@ -233,6 +209,11 @@ class ProfileViewEdit extends Component {
 		  locationBought: newProfileData.locationBought || oldProfileData.locationBought,
 		  dateBought: newProfileData.dateBought || oldProfileData.dateBought,
 		  companions: newProfileData.companions || oldProfileData.companions
+		}
+		break
+	  default:
+		data = {
+		  [type]: newProfileData[type]
 		}
 	}
 
@@ -270,19 +251,13 @@ class ProfileViewEdit extends Component {
 
 	switch (this.state.swipeViewIndex) {
 	  case 0:
-		editing = 'water'
+		editing = 'waterTracker'
 		break
 	  case 1:
-		editing = 'fertilizer'
+		editing = 'fertilizerTracker'
 		break
 	  case 2:
-		editing = 'soil composition'
-		break
-	  case 3:
-		editing = 'pest'
-		break
-	  case 4:
-		editing = 'diary'
+		editing = 'soilCompositionTracker'
 		break
 	  case 5:
 		editing = 'etc'
@@ -299,16 +274,16 @@ class ProfileViewEdit extends Component {
 
 	switch (this.state.swipeViewIndex) {
 	  case 0:
-		modalOpen = history ? 'water-history' : 'water'
+		modalOpen = history ? 'waterTracker-history' : 'waterTracker'
 		break
 	  case 1:
-		modalOpen = history ? 'fertilizer-history' : 'fertilizer'
+		modalOpen = history ? 'fertilizerTracker-history' : 'fertilizerTracker'
 		break
 	  case 2:
-		modalOpen = history ? 'soil composition-history' : 'soil composition'
+		modalOpen = history ? 'soilCompositionTracker-history' : 'soilCompositionTracker'
 		break
 	  case 3:
-		modalOpen = history ? 'pest-history' : 'pest'
+		modalOpen = history ? 'pestTracker-history' : 'pestTracker'
 		break
 	  case 4:
 		modalOpen = history ? 'diary-history' : 'diary'
@@ -371,7 +346,7 @@ class ProfileViewEdit extends Component {
 						  alt={profile.waterCondition === 'needs-attn' ? 'sad face with tear' : profile.waterCondition === 'neutral' ? 'neutral face' : profile.waterCondition === 'unsure' ? 'question mark' : 'smiling face'}/>
 				  </p>
 
-				  {this.state.editing === 'water' ?
+				  {this.state.editing === 'waterTracker' ?
 						  <React.Fragment>
 							<SwipePanelContent icon={faCalendarAlt}>
 							  <p>Water every <input type="number"
@@ -425,7 +400,7 @@ class ProfileViewEdit extends Component {
 						  alt={profile.fertilizerCondition === 'needs-attn' ? 'sad face with tear' : profile.fertilizerCondition === 'neutral' ? 'neutral face' : profile.fertilizerCondition === 'unsure' ? 'question mark' : 'smiling face'}/>
 				  </p>
 
-				  {this.state.editing === 'fertilizer' ?
+				  {this.state.editing === 'fertilizerTracker' ?
 						  <SwipePanelContent icon={faCalendarAlt}>
 							<p>Fertilize every <input type="number"
 													  placeholder="30"
@@ -625,7 +600,7 @@ class ProfileViewEdit extends Component {
 			  <ProfileAddEntryModal save={this.updateProfile}
 									cancel={this.resetModal}
 									show={this.state.modalOpen}
-									type="water"
+									type="waterTracker"
 									header="New water entry">
 				<DatePicker
 						selected={this.state.newData.waterTracker ? this.state.newData.waterTracker.date : Date.now()}
@@ -640,7 +615,7 @@ class ProfileViewEdit extends Component {
 
 			  <ProfileViewHistoryModal cancel={this.resetModal}
 									   show={this.state.modalOpen}
-									   type="water-history"
+									   type="waterTracker-history"
 									   header="Watering History">
 
 				{profile.waterTracker && profile.waterTracker.length > 0 ?
@@ -671,7 +646,7 @@ class ProfileViewEdit extends Component {
 			  <ProfileAddEntryModal save={this.updateProfile}
 									cancel={this.resetModal}
 									show={this.state.modalOpen}
-									type="fertilizer"
+									type="fertilizerTracker"
 									header="New fertilizer entry">
 
 				<DatePicker
@@ -690,7 +665,7 @@ class ProfileViewEdit extends Component {
 
 			  <ProfileViewHistoryModal cancel={this.resetModal}
 									   show={this.state.modalOpen}
-									   type="fertilizer-history"
+									   type="fertilizerTracker-history"
 									   header="Fertilizing History">
 
 				{profile.fertilizerTracker && profile.fertilizerTracker.length > 0 ?
@@ -723,7 +698,7 @@ class ProfileViewEdit extends Component {
 			  <ProfileAddEntryModal save={this.updateProfile}
 									cancel={this.resetModal}
 									show={this.state.modalOpen}
-									type="soil composition"
+									type="soilCompositionTracker"
 									header="New soil composition entry">
 
 				<DatePicker
@@ -746,7 +721,7 @@ class ProfileViewEdit extends Component {
 
 			  <ProfileViewHistoryModal cancel={this.resetModal}
 									   show={this.state.modalOpen}
-									   type="soil composition-history"
+									   type="soilCompositionTracker-history"
 									   header="Soil Composition History">
 
 				{profile.soilCompositionTracker && profile.soilCompositionTracker.length > 0 ?
@@ -780,7 +755,7 @@ class ProfileViewEdit extends Component {
 			  <ProfileAddEntryModal save={this.updateProfile}
 									cancel={this.resetModal}
 									show={this.state.modalOpen}
-									type="pest"
+									type="pestTracker"
 									header="New pest entry">
 
 				<DatePicker selected={this.state.newData.pestTracker ? this.state.newData.pestTracker.date : Date.now()}
@@ -803,7 +778,7 @@ class ProfileViewEdit extends Component {
 
 			  <ProfileViewHistoryModal cancel={this.resetModal}
 									   show={this.state.modalOpen}
-									   type="pest-history"
+									   type="pestTracker-history"
 									   header="Pest History">
 
 

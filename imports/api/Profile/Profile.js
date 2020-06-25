@@ -1,24 +1,23 @@
 //sample schema
 
-import { Mongo } from 'meteor/mongo';
-import SimpleSchema from 'simpl-schema';
+import { Mongo } from 'meteor/mongo'
+import SimpleSchema from 'simpl-schema'
 // import ProfileEnums from '../../utils/enums';
 
 // const profileEnums = ProfileEnums.ITEM_ENUM;
-const Profile = new Mongo.Collection('Profile');
+const Profile = new Mongo.Collection('Profile')
 
 Profile.allow({
   insert: () => false,
   update: () => false,
   remove: () => false,
-});
+})
 
 Profile.deny({
   insert: () => true,
   update: () => true,
   remove: () => true,
-});
-
+})
 
 Profile.schema = new SimpleSchema({
 		  userId: {
@@ -156,6 +155,16 @@ Profile.schema = new SimpleSchema({
 			optional: true,
 			label: 'pestTracker.$.treatment'
 		  },
+		  soilType: {
+			type: String,
+			optional: true,
+			label: 'soilType'	//soil that's in the ground
+		  },
+		  soilAmmendment: {
+			type: String,
+			optional: true,
+			label: 'soilAmmendment'	//soil used in pots or in ground
+		  },
 		  soilCompositionTracker: {
 			type: Array,
 			optional: true,
@@ -183,15 +192,15 @@ Profile.schema = new SimpleSchema({
 		  },
 		  createdAt: {
 			type: Date,
-			autoValue() {
-			  if (this.isInsert) return (new Date());
+			autoValue () {
+			  if (this.isInsert) return (new Date())
 			},
 			label: 'createdAt'
 		  },
 		  updatedAt: {
 			type: Date,
-			autoValue() {
-			  if (this.isInsert || this.isUpdate) return (new Date());
+			autoValue () {
+			  if (this.isInsert || this.isUpdate) return (new Date())
 			},
 			label: 'updatedAt'
 		  }
@@ -205,8 +214,8 @@ Profile.schema = new SimpleSchema({
 			getAutoValues: true,
 			removeNullsFromArrays: true,
 		  }
-		});
+		})
 
-Profile.attachSchema(Profile.schema);
+Profile.attachSchema(Profile.schema)
 
-export default Profile;
+export default Profile
