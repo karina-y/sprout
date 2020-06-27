@@ -35,14 +35,19 @@ Profile.schema = new SimpleSchema({
 			defaultValue: '',
 			label: 'latinName'
 		  },
-		  location: {
+		  category: {
 			type: String,
-			defaultValue: '',
-			label: 'location'
+			required: Meteor.isPro,
+			label: 'category'
 		  },
 		  dateBought: {
 			type: Date,
 			label: 'dateBought'
+		  },
+		  location: {
+			type: String,
+			defaultValue: '',
+			label: 'location'
 		  },
 		  locationBought: {
 			type: String,
@@ -81,6 +86,21 @@ Profile.schema = new SimpleSchema({
 			defaultValue: '',
 			label: 'image'
 		  },
+		  compost: {
+			type: String,
+			optional: true,
+			label: 'compost'
+		  },
+		  nutrient: {
+			type: String,
+			optional: true,
+			label: 'nutrient'
+		  },
+		  fertilizer: {
+			type: String,
+			optional: true,
+			label: 'fertilizer'
+		  },
 		  fertilizerSchedule: {
 			type: Number,
 			defaultValue: '',
@@ -100,6 +120,11 @@ Profile.schema = new SimpleSchema({
 			type: String,
 			defaultValue: '',
 			label: 'lightPreference'
+		  },
+		  toxicity: {
+			type: String,
+			defaultValue: '',
+			label: 'toxicity'
 		  },
 		  fertilizerTracker: {
 			type: Array,
@@ -155,12 +180,22 @@ Profile.schema = new SimpleSchema({
 			optional: true,
 			label: 'pestTracker.$.treatment'
 		  },
+		  tilled: {
+			type: Boolean,
+			optional: true,
+			label: 'tilled'	//soil that's in the ground
+		  },
 		  soilType: {
 			type: String,
 			optional: true,
 			label: 'soilType'	//soil that's in the ground
 		  },
-		  soilAmmendment: {
+		  soilAmendment: {
+			type: String,
+			optional: true,
+			label: 'soilAmmendment'	//soil used in pots or in ground
+		  },
+		  soilRecipe: {
 			type: String,
 			optional: true,
 			label: 'soilAmmendment'	//soil used in pots or in ground

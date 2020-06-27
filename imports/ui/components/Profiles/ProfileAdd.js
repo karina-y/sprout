@@ -1,161 +1,175 @@
-import React, { Component } from 'react';
-import autobind from 'react-autobind';
-import "./ProfileAdd.scss";
-import Modal from 'react-bootstrap/Modal';
-import { Session } from 'meteor/session';
-import SwipeableViews from 'react-swipeable-views';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCalendarAlt } from '@fortawesome/free-solid-svg-icons/faCalendarAlt';
-import { faInfoCircle } from '@fortawesome/free-solid-svg-icons/faInfoCircle';
-import { faSun } from '@fortawesome/free-solid-svg-icons/faSun';
-import { faTint } from '@fortawesome/free-solid-svg-icons/faTint';
-import { faBug } from '@fortawesome/free-solid-svg-icons/faBug';
-import { faSprayCan } from '@fortawesome/free-solid-svg-icons/faSprayCan';
-import { faMapMarker } from '@fortawesome/free-solid-svg-icons/faMapMarker';
-import { faHome } from '@fortawesome/free-solid-svg-icons/faHome';
-import { faUserFriends } from '@fortawesome/free-solid-svg-icons/faUserFriends';
-import { faChevronRight } from '@fortawesome/free-solid-svg-icons/faChevronRight';
-import { faChevronLeft } from '@fortawesome/free-solid-svg-icons/faChevronLeft';
-import { faCheck } from '@fortawesome/free-solid-svg-icons/faCheck';
-import { selectRandomPlantPicture } from '/imports/utils/selectRandomPlantPicture';
-import { toast } from 'react-toastify';
+import React, { Component } from 'react'
+import autobind from 'react-autobind'
+import './ProfileAdd.scss'
+import Modal from 'react-bootstrap/Modal'
+import { Session } from 'meteor/session'
+import SwipeableViews from 'react-swipeable-views'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCalendarAlt } from '@fortawesome/free-solid-svg-icons/faCalendarAlt'
+import { faInfoCircle } from '@fortawesome/free-solid-svg-icons/faInfoCircle'
+import { faSun } from '@fortawesome/free-solid-svg-icons/faSun'
+import { faTint } from '@fortawesome/free-solid-svg-icons/faTint'
+import { faSkullCrossbones } from '@fortawesome/free-solid-svg-icons/faSkullCrossbones'
+import { faFilter } from '@fortawesome/free-solid-svg-icons/faFilter'
+import { faLeaf } from '@fortawesome/free-solid-svg-icons/faLeaf'
+import { faMortarPestle } from '@fortawesome/free-solid-svg-icons/faMortarPestle'
+import { faTachometerAlt } from '@fortawesome/free-solid-svg-icons/faTachometerAlt'
+// import { faBug } from '@fortawesome/free-solid-svg-icons/faBug'
+// import { faSprayCan } from '@fortawesome/free-solid-svg-icons/faSprayCan'
+import { faMapMarker } from '@fortawesome/free-solid-svg-icons/faMapMarker'
+import { faHome } from '@fortawesome/free-solid-svg-icons/faHome'
+import { faUserFriends } from '@fortawesome/free-solid-svg-icons/faUserFriends'
+import { selectRandomPlantPicture } from '/imports/utils/selectRandomPlantPicture'
+import { toast } from 'react-toastify'
+import { faTimes } from '@fortawesome/free-solid-svg-icons/faTimes'
+import { faSave } from '@fortawesome/free-solid-svg-icons/faSave'
+import Category from '/imports/api/Category/Category'
+import SoilTypes from '../../../utils/soilTypes'
+import SwipePanelContent from '../Shared/SwipePanelContent'
+
 // import DatePicker from "react-datepicker";
 
 class ProfileAdd extends Component {
-  constructor(props) {
-	super(props);
+  constructor (props) {
+	super(props)
 
 	this.state = {
 	  profile: {image: selectRandomPlantPicture()},
 	  swipeViewIndex: 0,
 	  showDiaryModal: false,
-	  currentDateSelection: null
-	};
+	  currentDateSelection: null,
+	  categories: null
+	}
 
-	autobind(this);
+	autobind(this)
   }
 
-  componentDidMount() {
-	Session.set('pageTitle', this.state.profile.commonName);
+  componentDidMount () {
+	Session.set('pageTitle', this.state.profile.commonName)
+	const categories = Category.find().fetch()
+
+	this.setState({
+	  categories
+	})
   }
 
   //TODO turn into hook
-  static getHighlightDates(items, type) {
-	let dates = [];
+  static getHighlightDates (items, type) {
+	let dates = []
 
-	if (type === "dateBought" && items) {
+	if (type === 'dateBought' && items) {
 	  dates.push(new Date(items))
 	} else if (items && items.length > 0) {
 	  for (let i = 0; i < items.length; i++) {
-		dates.push(new Date(items[i].date));
+		dates.push(new Date(items[i].date))
 	  }
 	}
 
-	return dates;
+	return dates
   }
 
-  addNewProfile() {
-	let profile = this.state.profile;
-	profile.waterSchedule = parseInt(profile.waterSchedule);
-	profile.fertilizerSchedule = parseInt(profile.fertilizerSchedule);
+  addNewProfile () {
+	let profile = this.state.profile
+	profile.waterSchedule = parseInt(profile.waterSchedule)
+	profile.fertilizerSchedule = parseInt(profile.fertilizerSchedule)
 
 	if (profile.soilCompositionTracker && !Array.isArray(profile.soilCompositionTracker)) {
-	  profile.soilCompositionTracker = [profile.soilCompositionTracker];
+	  profile.soilCompositionTracker = [profile.soilCompositionTracker]
 	}
 
 	if (profile.pestTracker && !Array.isArray(profile.pestTracker)) {
-	  profile.pestTracker = [profile.pestTracker];
+	  profile.pestTracker = [profile.pestTracker]
 	}
 
-	let errMsg;
+	let errMsg
 
-	if (!profile.commonName || profile.commonName === "") {
-	  errMsg = "Please enter a common name (eg. Swiss Cheese Plant)."
-	} else if (!profile.latinName || profile.latinName === "") {
-	  errMsg = "Please enter a latin name (eg. Monstera adansonii)."
-	} else if (!profile.waterSchedule || profile.waterSchedule === "") {
-	  errMsg = "Please enter a watering schedule (eg. 7)."
-	} else if (!profile.fertilizerSchedule || profile.fertilizerSchedule === "") {
-	  errMsg = "Please enter a fertilizer schedule (eg. 30)."
-	} else if (!profile.waterPreference || profile.waterPreference === "") {
-	  errMsg = "Please enter a watering preference (eg. Keep soil moist but not soggy, humidity tray helpful)."
-	} else if (!profile.lightPreference || profile.lightPreference === "") {
-	  errMsg = "Please enter a lighting preference (eg. Bright indirect light)."
-	} else if (!profile.locationBought || profile.locationBought === "") {
-	  errMsg = "Please enter a where this plant was purchased (eg. Armstrong Garden Centers)."
-	} else if (!profile.dateBought || profile.dateBought === "") {
-	  errMsg = "Please enter the date this plant was purchased (eg. 5/10/20)."
-	} else if (!profile.location || profile.location === "") {
-	  errMsg = "Please enter where this plant lives in/around your home (eg. Living Room)."
+	if (!profile.commonName || profile.commonName === '') {
+	  errMsg = 'Please enter a common name (eg. Swiss Cheese Plant).'
+	} else if (!profile.latinName || profile.latinName === '') {
+	  errMsg = 'Please enter a latin name (eg. Monstera adansonii).'
+	} else if (!profile.waterSchedule || profile.waterSchedule === '') {
+	  errMsg = 'Please enter a watering schedule (eg. 7).'
+	} else if (!profile.fertilizerSchedule || profile.fertilizerSchedule === '') {
+	  errMsg = 'Please enter a fertilizer schedule (eg. 30).'
+	} else if (!profile.waterPreference || profile.waterPreference === '') {
+	  errMsg = 'Please enter a watering preference (eg. Keep soil moist but not soggy, humidity tray helpful).'
+	} else if (!profile.lightPreference || profile.lightPreference === '') {
+	  errMsg = 'Please enter a lighting preference (eg. Bright indirect light).'
+	} else if (!profile.locationBought || profile.locationBought === '') {
+	  errMsg = 'Please enter a where this plant was purchased (eg. Armstrong Garden Centers).'
+	} else if (!profile.dateBought || profile.dateBought === '') {
+	  errMsg = 'Please enter the date this plant was purchased (eg. 5/10/20).'
+	} else if (!profile.location || profile.location === '') {
+	  errMsg = 'Please enter where this plant lives in/around your home (eg. Living Room).'
 	}
 
 	if (errMsg) {
-	  toast.error(errMsg);
+	  toast.error(errMsg)
 	} else {
 	  Meteor.call('profile.insert', profile, (err, response) => {
 		if (err) {
-		  toast.error(err.message);
+		  toast.error(err.message)
 		} else {
-		  toast.success("Plant added!");
-		  this.props.history.push('/catalogue');
+		  toast.success('Plant added!')
+		  this.props.history.push('/catalogue')
 		}
-	  });
+	  })
 	}
   }
 
-  updateData(e, type) {
-	const profile = this.state.profile;
+  updateData (e, type) {
+	const profile = this.state.profile
 
-	if (type === "companions") {
-	  if (e.target.value === "") {
-		delete profile[type];
+	if (type === 'companions') {
+	  if (e.target.value === '') {
+		delete profile[type]
 	  } else {
-		const stripped = e.target.value.replace(/\s*,\s*/g, ",");
-		profile[type] = stripped.split(',');
+		const stripped = e.target.value.replace(/\s*,\s*/g, ',')
+		profile[type] = stripped.split(',')
 	  }
-	} else if (type === "ph" || type === "moisture") {
-	  let phVal = parseFloat(e.target.value);
+	} else if (type === 'ph' || type === 'moisture') {
+	  let phVal = parseFloat(e.target.value)
 	  let moistureVal = parseFloat((parseInt(e.target.value) / 100).toFixed(2))
 
 	  if (profile.soilCompositionTracker) {
-		profile.soilCompositionTracker[type] = ( type === "moisture" ? moistureVal : phVal );
-	  }
-	  else {
+		profile.soilCompositionTracker[type] = (type === 'moisture' ? moistureVal : phVal)
+	  } else {
 		profile.soilCompositionTracker = {
 		  date: new Date(),
-		  [type]: type === "moisture" ? moistureVal : phVal
+		  [type]: type === 'moisture' ? moistureVal : phVal
 		}
 	  }
 
-	}  else if (type === "pest" || type === "treatment") {
+	} else if (type === 'pest' || type === 'treatment') {
 	  if (profile.pestTracker) {
-		profile.pestTracker[type] = e.target.value;
-	  }
-	  else {
+		profile.pestTracker[type] = e.target.value
+	  } else {
 		profile.pestTracker = {
 		  date: new Date(),
 		  [type]: e.target.value
 		}
 	  }
 
-	} else if (type === "dateBought") {
-	  profile[type] = new Date(e);
-	}  else if (type === "diary") {
+	} else if (type === 'dateBought') {
+	  profile[type] = new Date(e)
+	} else if (type === 'diary') {
 	  profile[type] = {
 		entry: e.target.value,
 		date: new Date()
 	  }
+	} else if (type === 'tilled') {
+	  profile[type] = e.target.value === "true" ? true : false;
 	} else {
-	  profile[type] = e.target.value;
+	  profile[type] = e.target.value
 	}
 
 	this.setState({
 	  profile
-	});
+	})
   }
 
-  render() {
-	const profile = this.state.profile;
+  render () {
+	const profile = this.state.profile
 	//TODO add ability to set plant photo and photo history eventually
 
 	return (
@@ -163,7 +177,7 @@ class ProfileAdd extends Component {
 			  <img src={profile.image}
 				   alt={profile.commonName}
 				   title={profile.commonName}
-				   className="hero-img" />
+				   className="hero-img"/>
 
 
 			  <SwipeableViews className="swipe-view"
@@ -174,40 +188,45 @@ class ProfileAdd extends Component {
 				<div className="swipe-slide slide-zero">
 
 				  <p className="swipe-title title-ming">
-					Plant Name
+					Plant {Meteor.isPro ? 'Details' : 'Name'}
 				  </p>
 
-				  <div className="detail-panel">
-					<div className="icon-side">
-					  <FontAwesomeIcon icon={faInfoCircle}
-									   className="plant-condition-icon"
-									   alt="calendar"/>
-					  <span className="separator">|</span>
-					</div>
+				  <SwipePanelContent icon={faInfoCircle} iconAlt="info" iconTitle="common name">
+					<p>* <input type="text"
+								placeholder="Common Name"
+								onChange={(e) => this.updateData(e, 'commonName')}
+								value={profile.commonName || ''}/></p>
+				  </SwipePanelContent>
 
-					<div className="info-side">
-					  <p>* <input type="text"
-								  placeholder="Common Name"
-								  onChange={(e) => this.updateData(e, 'commonName')}
-								  value={profile.commonName || ''} /></p>
-					</div>
-				  </div>
+				  <SwipePanelContent icon={faInfoCircle} iconAlt="info" iconTitle="latin name">
+					<p>* <input type="text"
+								placeholder="Latin Name"
+								onChange={(e) => this.updateData(e, 'latinName')}
+								value={profile.latinName || ''}/></p>
+				  </SwipePanelContent>
 
-				  <div className="detail-panel">
-					<div className="icon-side">
-					  <FontAwesomeIcon icon={faInfoCircle}
-									   className="plant-condition-icon"
-									   alt="info"/>
-					  <span className="separator">|</span>
-					</div>
+				  {Meteor.isPro &&
+				  <React.Fragment>
+					<SwipePanelContent icon={faFilter} iconAlt="filter" iconTitle="category">
+					  <p>* <select placeholder="Category"
+								   onChange={(e) => this.updateData(e, 'category')}
+								   value={profile.category || ''}>
+						<option value='' disabled={true}>- Select a category -</option>
+						{this.state.categories && this.state.categories.map((item, index) => {
+						  return <option value={item.category} key={index}>{item.displayName}</option>
+						})}
+					  </select>
+					  </p>
+					</SwipePanelContent>
 
-					<div className="info-side">
-					  <p>* <input type="text"
-								  placeholder="Latin Name"
-								  onChange={(e) => this.updateData(e, 'latinName')}
-								  value={profile.latinName || ''} /></p>
-					</div>
-				  </div>
+					<SwipePanelContent icon={faSkullCrossbones} iconAlt="skull and crossbones" iconTitle="toxicity">
+					  <p><input type="text"
+								placeholder="Toxicity (ie poisonous to dogs if leaves are consumed)"
+								onChange={(e) => this.updateData(e, 'toxicity')}
+								value={profile.toxicity || ''}/></p>
+					</SwipePanelContent>
+				  </React.Fragment>
+				  }
 
 				</div>
 
@@ -219,54 +238,27 @@ class ProfileAdd extends Component {
 					Water - Light
 				  </p>
 
-				  <div className="detail-panel">
-					<div className="icon-side">
-					  <FontAwesomeIcon icon={faCalendarAlt}
-									   className="plant-condition-icon"
-									   alt="calendar"/>
-					  <span className="separator">|</span>
-					</div>
+				  <SwipePanelContent icon={faCalendarAlt} iconAlt="calendar" iconTitle="water schedule">
+					<p>* Water every <input type="number"
+											placeholder="4"
+											className="small"
+											onChange={(e) => this.updateData(e, 'waterSchedule')}
+											value={profile.waterSchedule || ''}/> days</p>
+				  </SwipePanelContent>
 
-					<div className="info-side">
-					  <p>* Water every <input type="number"
-											  placeholder="4"
-											  className="small"
-											  onChange={(e) => this.updateData(e, 'waterSchedule')}
-											  value={profile.waterSchedule || ''} /> days</p>
-					</div>
-				  </div>
+				  <SwipePanelContent icon={faTint} iconAlt="water drop" iconTitle="water preference">
+					<p>* <input type="text"
+								placeholder="Watering Preferences"
+								onChange={(e) => this.updateData(e, 'waterPreference')}
+								value={profile.waterPreference || ''}/></p>
+				  </SwipePanelContent>
 
-				  <div className="detail-panel">
-					<div className="icon-side">
-					  <FontAwesomeIcon icon={faTint}
-									   className="plant-condition-icon"
-									   alt="water drop"/>
-					  <span className="separator">|</span>
-					</div>
-
-					<div className="info-side">
-					  <p>* <input type="text"
-								  placeholder="Watering Preferences"
-								  onChange={(e) => this.updateData(e, 'waterPreference')}
-								  value={profile.waterPreference || ''} /></p>
-					</div>
-				  </div>
-
-				  <div className="detail-panel">
-					<div className="icon-side">
-					  <FontAwesomeIcon icon={faSun}
-									   className="plant-condition-icon"
-									   alt="sun"/>
-					  <span className="separator">|</span>
-					</div>
-
-					<div className="info-side">
-					  <p>* <input type="text"
-								  placeholder="Light Preferences"
-								  onChange={(e) => this.updateData(e, 'lightPreference')}
-								  value={profile.lightPreference || ''} /></p>
-					</div>
-				  </div>
+				  <SwipePanelContent icon={faSun} iconAlt="sun" iconTitle="light preference">
+					<p>* <input type="text"
+								placeholder="Light Preferences"
+								onChange={(e) => this.updateData(e, 'lightPreference')}
+								value={profile.lightPreference || ''}/></p>
+				  </SwipePanelContent>
 
 				</div>
 
@@ -277,21 +269,39 @@ class ProfileAdd extends Component {
 					Fertilizer
 				  </p>
 
-				  <div className="detail-panel">
-					<div className="icon-side">
-					  <FontAwesomeIcon icon={faCalendarAlt}
-									   className="plant-condition-icon"
-									   alt="calendar"/>
-					  <span className="separator">|</span>
-					</div>
+				  <SwipePanelContent icon={faCalendarAlt} iconAlt="calendar" iconTitle="fertilizer schedule">
+					<p>* Fertilize every <input type="number"
+												placeholder="30"
+												className="small"
+												onChange={(e) => this.updateData(e, 'fertilizerSchedule')}/> days</p>
+				  </SwipePanelContent>
 
-					<div className="info-side">
-					  <p>* Fertilize every <input type="number"
-												  placeholder="30"
-												  className="small"
-												  onChange={(e) => this.updateData(e, 'fertilizerSchedule')} /> days</p>
-					</div>
-				  </div>
+				  <SwipePanelContent icon={faInfoCircle} iconAlt="info" iconTitle="preferred fertilizer">
+					<p><input type="text"
+							  placeholder="Preferred Fertilizer"
+							  onChange={(e) => this.updateData(e, 'fertilizer')}
+							  value={profile.fertilizer || ''}/></p>
+				  </SwipePanelContent>
+
+
+				  {Meteor.isPro &&
+				  <React.Fragment>
+					<SwipePanelContent icon={faInfoCircle} iconAlt="info" iconTitle="compost">
+					  <p><input type="text"
+								placeholder="Compost"
+								onChange={(e) => this.updateData(e, 'compost')}
+								value={profile.compost || ''}/></p>
+					</SwipePanelContent>
+
+					<SwipePanelContent icon={faLeaf} iconAlt="leaf" iconTitle="other nutrient amendment">
+					  <p><input type="text"
+								placeholder="Other Nutrient Amendment"
+								onChange={(e) => this.updateData(e, 'nutrient')}
+								value={profile.nutrient || ''}/></p>
+					</SwipePanelContent>
+
+				  </React.Fragment>
+				  }
 
 				</div>
 
@@ -302,43 +312,72 @@ class ProfileAdd extends Component {
 					Soil Composition
 				  </p>
 
-				  <div className="detail-panel">
-					<div className="icon-side">
-					  <FontAwesomeIcon icon={faInfoCircle}
-									   className="plant-condition-icon"
-									   alt="info"/>
-					  <span className="separator">|</span>
-					</div>
+				  {Meteor.isPro && profile.category === 'in-ground' ?
+						  <React.Fragment>
 
-					<div className="info-side">
-					  <p>pH <input type="number"
-								   placeholder="6.2"
-								   className="small"
-								   onChange={(e) => this.updateData(e, 'ph')} /></p>
-					</div>
-				  </div>
+							<SwipePanelContent icon={faInfoCircle} iconAlt="info" iconTitle="tilled">
+							  <p><select placeholder="Tilled"
+										 onChange={(e) => this.updateData(e, 'tilled')}
+										 value={profile.tilled || ''}>
+								<option value='' disabled={true}>- Is the soil tilled? -</option>
+								<option value={false}>No</option>
+								<option value={true}>Yes</option>
+							  </select>
+							  </p>
+							</SwipePanelContent>
 
-				  <div className="detail-panel">
-					<div className="icon-side">
-					  <FontAwesomeIcon icon={faInfoCircle}
-									   className="plant-condition-icon"
-									   alt="info"/>
-					  <span className="separator">|</span>
-					</div>
+							<SwipePanelContent icon={faInfoCircle} iconAlt="info" iconTitle="soil type">
+							  <p><select placeholder="Soil Type"
+										 onChange={(e) => this.updateData(e, 'soilType')}
+										 value={profile.soilType || ''}>
+								<option value='' disabled={true}>- Select a ground soil type -</option>
+								{SoilTypes.map((item, index) => {
+								  return <option value={item.type} key={index}>{item.displayName}</option>
+								})}
+							  </select>
+							  </p>
+							</SwipePanelContent>
 
-					<div className="info-side">
-					  <p>Moisture Level <input type="number"
-											   placeholder="40"
-											   className="small"
-											   onChange={(e) => this.updateData(e, 'moisture')} />%</p>
-					</div>
-				  </div>
+							<SwipePanelContent icon={faInfoCircle} iconAlt="info" iconTitle="soil amendment">
+							  <p><input type="text"
+										placeholder="Soil Amendment"
+										onChange={(e) => this.updateData(e, 'soilAmendment')}
+										value={profile.soilAmendment || ''}/></p>
+							</SwipePanelContent>
+
+							<SwipePanelContent icon={faTachometerAlt} iconAlt="tachometer" iconTitle="pH level">
+							  <p>pH <input type="number"
+										   placeholder="6.2"
+										   className="small"
+										   onChange={(e) => this.updateData(e, 'ph')}/></p>
+							</SwipePanelContent>
+
+						  </React.Fragment>
+						  :
+						  (Meteor.isPro && profile.category === 'potted') &&
+						  <React.Fragment>
+							<SwipePanelContent icon={faMortarPestle} iconAlt="mortar and pestle"
+											   iconTitle="soil recipe">
+							  <p><input type="text"
+										placeholder="Soil Recipe"
+										onChange={(e) => this.updateData(e, 'soilRecipe')}
+										value={profile.soilRecipe || ''}/></p>
+							</SwipePanelContent>
+						  </React.Fragment>
+				  }
+
+				  <SwipePanelContent icon={faTint} iconAlt="water drop" iconTitle="soil moisture">
+					<p>Moisture Level <input type="number"
+											 placeholder="40"
+											 className="small"
+											 onChange={(e) => this.updateData(e, 'moisture')}/>%</p>
+				  </SwipePanelContent>
 
 				</div>
 
 
 				{/* pests */}
-				<div className="swipe-slide slide-four">
+				{/*<div className="swipe-slide slide-four">
 				  <p className="swipe-title title-ming">Pests</p>
 
 				  <div className="detail-panel">
@@ -352,7 +391,7 @@ class ProfileAdd extends Component {
 					<div className="info-side">
 					  <p><input type="text"
 								placeholder="Name of pest"
-								onChange={(e) => this.updateData(e, 'pest')} /></p>
+								onChange={(e) => this.updateData(e, 'pest')}/></p>
 					</div>
 				  </div>
 
@@ -367,33 +406,25 @@ class ProfileAdd extends Component {
 					<div className="info-side">
 					  <p><input type="text"
 								placeholder="Pest Treatment"
-								onChange={(e) => this.updateData(e, 'treatment')} /></p>
+								onChange={(e) => this.updateData(e, 'treatment')}/></p>
 					</div>
 				  </div>
 
-				</div>
+				</div>*/}
 
 
 				{/* location/date bought */}
 				<div className="swipe-slide slide-five">
 				  <p className="swipe-title title-ming">Location & Date Bought</p>
 
-				  <div className="detail-panel">
-					<div className="icon-side">
-					  <FontAwesomeIcon icon={faMapMarker}
-									   className="plant-condition-icon"
-									   alt="map marker"/>
-					  <span className="separator">|</span>
-					</div>
+				  <SwipePanelContent icon={faMapMarker} iconAlt="map marker" iconTitle="location bought">
+					<p>* <input type="text"
+								placeholder="Location Bought"
+								onChange={(e) => this.updateData(e, 'locationBought')}
+								value={profile.locationBought || ''}/></p>
+				  </SwipePanelContent>
 
-					<div className="info-side">
-					  <p>* <input type="text"
-								  placeholder="Location Bought"
-								  onChange={(e) => this.updateData(e, 'locationBought')}
-								  value={profile.locationBought || ''} /></p>
-					</div>
-				  </div>
-
+				  {/*need to make this swipepanelcontent with the cusom style*/}
 				  <div className="detail-panel">
 					<div className="icon-side" style={{verticalAlign: 'top'}}>
 					  <FontAwesomeIcon icon={faCalendarAlt}
@@ -426,91 +457,46 @@ class ProfileAdd extends Component {
 				<div className="swipe-slide slide-six">
 				  <p className="swipe-title title-ming">Diary</p>
 
-				  <div className="detail-panel">
-					<div className="icon-side">
-					  <FontAwesomeIcon icon={faHome}
-									   className="plant-condition-icon"
-									   alt="house"/>
-					  <span className="separator">|</span>
-					</div>
+				  <SwipePanelContent icon={faHome} iconAlt="house" iconTitle="location in home">
+					<p>* <input type="text"
+								placeholder="Location in home"
+								onChange={(e) => this.updateData(e, 'location')}
+								value={profile.location || ''}/></p>
+				  </SwipePanelContent>
 
-					<div className="info-side">
-					  <p>* <input type="text"
-								  placeholder="Location in home"
-								  onChange={(e) => this.updateData(e, 'location')}
-								  value={profile.location || ''} /></p>
-					</div>
-				  </div>
+				  <SwipePanelContent icon={faUserFriends} iconAlt="people" iconTitle="companion plants">
+					<p><input type="text"
+							  placeholder="Companion plants"
+							  onChange={(e) => this.updateData(e, 'companions')}
+							  value={profile.companions || ''}/></p>
+				  </SwipePanelContent>
 
-				  <div className="detail-panel">
-					<div className="icon-side">
-					  <FontAwesomeIcon icon={faUserFriends}
-									   className="plant-condition-icon"
-									   alt="people"/>
-					  <span className="separator">|</span>
-					</div>
-
-					<div className="info-side">
-					  <p><input type="text"
-								placeholder="Companion plants"
-								onChange={(e) => this.updateData(e, 'companions')}
-								value={profile.companions || ''} /></p>
-					</div>
-				  </div>
-
-				  <div className="detail-panel">
-					<div className="icon-side">
-					  <FontAwesomeIcon icon={faInfoCircle}
-									   className="plant-condition-icon"
-									   alt="info"/>
-					  <span className="separator">|</span>
-					</div>
-
-					<div className="info-side">
-					  <p><textarea rows="3"
-								   placeholder="Diary / Notes"
-								   onChange={(e) => this.updateData(e, 'diary')}
-								   value={profile.diary || ''}/></p>
-					</div>
-				  </div>
+				 {/* <SwipePanelContent icon={faInfoCircle} iconAlt="info" iconTitle="diary and notes">
+					<p><textarea rows="3"
+								 placeholder="Diary / Notes"
+								 onChange={(e) => this.updateData(e, 'diary')}
+								 value={profile.diary || ''}/></p>
+				  </SwipePanelContent>*/}
 				</div>
 
 			  </SwipeableViews>
 
-			  <div className="add-data flex-around">
-				{this.state.swipeViewIndex === 6 ?
-						<React.Fragment>
-						  <FontAwesomeIcon icon={faChevronLeft}
-										   className="plant-condition-icon"
-										   size='3x'
-										   alt="left arrow"
-										   onClick={() => this.setState({swipeViewIndex: this.state.swipeViewIndex - 1})}/>
 
-						  <FontAwesomeIcon icon={faCheck}
-										   className="plant-condition-icon"
-										   size='3x'
-										   alt="checkmark"
-										   onClick={this.addNewProfile}/>
-						</React.Fragment>
-						:
-						<React.Fragment>
-						  {this.state.swipeViewIndex !== 0 &&
-						  <FontAwesomeIcon icon={faChevronLeft}
-										   className="plant-condition-icon"
-										   size='3x'
-										   alt="left arrow"
-										   onClick={() => this.setState({swipeViewIndex: this.state.swipeViewIndex - 1})}/>
-						  }
+			  <div className="add-data flex-around bottom-nav">
 
-						  <FontAwesomeIcon icon={faChevronRight}
-										   className="plant-condition-icon"
-										   size='3x'
-										   alt="right arrow"
-										   onClick={() => this.setState({swipeViewIndex: this.state.swipeViewIndex + 1})}/>
-						</React.Fragment>
-				}
+				<FontAwesomeIcon icon={faTimes}
+								 className="plant-condition-icon"
+								 alt="times"
+								 title="cancel"
+								 onClick={() => this.setState({swipeViewIndex: this.state.swipeViewIndex - 1})}/>
 
+				<FontAwesomeIcon icon={faSave}
+								 className="plant-condition-icon"
+								 alt="floppy disk"
+								 title="save"
+								 onClick={this.addNewProfile}/>
 			  </div>
+
 
 			  <Modal show={this.state.showDiaryModal}
 					 onHide={() => this.setState({showDiaryModal: false})}
@@ -536,8 +522,8 @@ class ProfileAdd extends Component {
 				</Modal.Footer>
 			  </Modal>
 			</div>
-	);
+	)
   }
 }
 
-export default ProfileAdd;
+export default ProfileAdd

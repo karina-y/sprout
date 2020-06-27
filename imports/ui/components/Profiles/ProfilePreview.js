@@ -15,9 +15,6 @@ function ProfilePreview (props) {
   const waterProgress = (profile.daysSinceWatered / profile.waterSchedule) > 1 ? 5 : ((1 - (profile.daysSinceWatered / profile.waterSchedule)) * 100) || 5;
   const fertilizerProgress = (profile.daysSinceFertilized / profile.fertilizerSchedule) > 1 ? 5 : ((1 - (profile.daysSinceFertilized / profile.fertilizerSchedule)) * 100) || 5;
 
-  if (profile._id === "4kQghW3NGM8jxeotD") {
-    console.log("1")
-  }
   return (
 		  <button onClick={() => props.history.push(`/catalogue/${props.profile._id}`)} className="ProfilePreview naked">
 			<ShadowBox additionalOuterClasses={profile.condition}
@@ -62,9 +59,7 @@ ProfilePreview.propTypes = {
 
 export default withTracker((props) => {
   let profile = props.profile;
-  if (profile._id === "4kQghW3NGM8jxeotD") {
-	console.log("2")
-  }
+
   if (profile.fertilizerTracker && profile.fertilizerTracker.length > 0) {
 	profile.daysSinceFertilized = getDaysSinceAction(profile.fertilizerTracker);
 	profile.fertilizerCondition = getPlantCondition(profile.daysSinceFertilized, profile.fertilizerSchedule);

@@ -1,5 +1,3 @@
-import { Meteor } from 'meteor/meteor';
-import { check } from 'meteor/check';
 import { Accounts } from 'meteor/accounts-base';
 import rateLimit from '../../modules/rate-limit';
 import logger from '/imports/utils/logger';

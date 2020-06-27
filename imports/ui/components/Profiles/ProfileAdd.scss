@@ -2,7 +2,7 @@
 
 .ProfileAdd {
   margin: 0;
-  padding: 0 !important;
+  padding-bottom: $bottom-nav-height;
 
   .ShadowBox {
     width: 100%;
@@ -74,20 +74,9 @@
     }
   }
 
-  .add-data {
-    text-align: center;
-    position: relative;
-    width: 100%;
-    margin: 0 auto;
-    padding-bottom: 15px;
+  .bottom-nav {
 
     .svg-inline--fa {
-      color: $white;
-      background-color: $success-dark;
-      border-radius: 100%;
-      padding: 13px;
-      height: 50px;
-      width: 50px;
 
       &.fa-chevron-right,
       &.fa-check {
@@ -100,30 +89,10 @@
     }
   }
 
-  /*.add-data {
-    text-align: center;
-    position: relative;
-    width: 100%;
-    margin: 0 auto;
-    padding-bottom: 15px;
-
-    .svg-inline--fa {
-      color: $brand-white;
-      background-color: $success-dark;
-      border-radius: 100%;
-      padding: 13px;
-      height: 50px;
-      width: 50px;
-    }
-
-    .fa-trash {
-      background-color: $danger-dark;
-    }
-  }*/
-
 
   input,
-  textarea {
+  textarea,
+  select {
     width: 90%;
   }
 }

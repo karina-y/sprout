@@ -1,4 +1,3 @@
-import { Meteor } from 'meteor/meteor';
 import Profile from '../Profile';
 import logger from '/imports/utils/logger';
 
