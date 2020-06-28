@@ -22,11 +22,11 @@ function ProfilePreview (props) {
 					   popoutHover={false}
 					   shadowLevel={2}>
 			  <img src={profile.image}
-				   alt={profile.latinName}
-				   title={profile.latinName} />
+				   alt={profile.latinName || profile.commonName}
+				   title={profile.latinName || profile.commonName} />
 
 			  <div className="quick-details">
-				<p>{profile.latinName}</p>
+				<p>{profile.latinName || profile.commonName}</p>
 
 				<div style={{position: 'relative', padding: '10px 0'}}>
 				  {/*<img className="plant-condition-icon" src="/images/icons/lovely-garden/watering-can.png" />*/}

@@ -26,6 +26,10 @@ import { faTrash } from '@fortawesome/free-solid-svg-icons/faTrash'
 import { faPencilAlt } from '@fortawesome/free-solid-svg-icons/faPencilAlt'
 import { faSave } from '@fortawesome/free-solid-svg-icons/faSave'
 import { faTimes } from '@fortawesome/free-solid-svg-icons/faTimes'
+import { faLeaf } from '@fortawesome/free-solid-svg-icons/faLeaf'
+import { faMortarPestle } from '@fortawesome/free-solid-svg-icons/faMortarPestle'
+import { faTachometerAlt } from '@fortawesome/free-solid-svg-icons/faTachometerAlt'
+import { faFilter } from '@fortawesome/free-solid-svg-icons/faFilter'
 import {
   getDaysSinceAction, getLastPestName, getLastPestTreatment, getLastSoilMoisture, getLastSoilPh,
   getPlantCondition, getSoilCondition, lastChecked
@@ -35,6 +39,8 @@ import { toast } from 'react-toastify'
 import SwipePanelContent from '../Shared/SwipePanelContent'
 import ProfileAddEntryModal from '../Shared/ProfileAddEntryModal'
 import ProfileViewHistoryModal from '../Shared/ProfileViewHistoryModal'
+import Category from '/imports/api/Category/Category'
+import SoilTypes from '../../../utils/soilTypes'
 
 //TODO order dates in trackers from latest first
 
@@ -54,7 +60,7 @@ class ProfileViewEdit extends Component {
   }
 
   componentDidMount () {
-	Session.set('pageTitle', this.props.profile.latinName)
+	Session.set('pageTitle', this.props.profile.latinName || this.props.profile.commonName)
 
 	//this is to disable keyboard from popping up on android, sometimes you just need good ol vanilla js
 	const inputs = document.getElementsByTagName('input')
@@ -393,32 +399,99 @@ class ProfileViewEdit extends Component {
 				{/* fertilizer */}
 				<div className="swipe-slide slide-two">
 				  <p className="swipe-title title-ming">
-					Fertilizer <FontAwesomeIcon
+					{Meteor.isPro ? 'Fertilizer / Nutrients' : 'Fertilizer'} <FontAwesomeIcon
 						  icon={profile.fertilizerCondition === 'needs-attn' ? faSadTear : profile.fertilizerCondition === 'neutral' ? faMeh : faSmile}
 						  className="plant-condition-icon"
 						  title="fertilizer condition"
 						  alt={profile.fertilizerCondition === 'needs-attn' ? 'sad face with tear' : profile.fertilizerCondition === 'neutral' ? 'neutral face' : profile.fertilizerCondition === 'unsure' ? 'question mark' : 'smiling face'}/>
 				  </p>
 
-				  {this.state.editing === 'fertilizerTracker' ?
+				  {this.state.editing === 'fertilizerTracker' && Meteor.isPro ?
+						  <React.Fragment>
+							<SwipePanelContent icon={faCalendarAlt} iconAlt="calendar" iconTitle="fertilizer schedule">
+							  <p>{Meteor.isPro ? 'Feed' : 'Fertilize'} every <input type="number"
+																					placeholder="30"
+																					className="small"
+																					onChange={(e) => this.updateData(e, 'fertilizerSchedule')}
+																					defaultValue={profile.fertilizerSchedule || ''}/> days
+							  </p>
+							</SwipePanelContent>
+
+							<SwipePanelContent icon={faInfoCircle} iconAlt="info" iconTitle="preferred fertilizer">
+							  <p><input type="text"
+										placeholder="Preferred Fertilizer"
+										onChange={(e) => this.updateData(e, 'fertilizer')}
+										value={profile.fertilizer || ''}/></p>
+							</SwipePanelContent>
+
+							<SwipePanelContent icon={faInfoCircle} iconAlt="info" iconTitle="compost">
+							  <p><input type="text"
+										placeholder="Compost"
+										onChange={(e) => this.updateData(e, 'compost')}
+										value={profile.compost || ''}/></p>
+							</SwipePanelContent>
+
+							<SwipePanelContent icon={faLeaf} iconAlt="leaf" iconTitle="other nutrient amendment">
+							  <p><input type="text"
+										placeholder="Other Nutrient Amendment"
+										onChange={(e) => this.updateData(e, 'nutrient')}
+										value={profile.nutrient || ''}/></p>
+							</SwipePanelContent>
+						  </React.Fragment>
+						  : this.state.editing === 'fertilizerTracker' ?
+								  <React.Fragment>
 						  <SwipePanelContent icon={faCalendarAlt} iconAlt="calendar" iconTitle="fertilizer schedule">
-							<p>Fertilize every <input type="number"
-													  placeholder="30"
-													  className="small"
-													  onChange={(e) => this.updateData(e, 'fertilizerSchedule')}
-													  defaultValue={profile.fertilizerSchedule || ''}/> days
+							<p>{Meteor.isPro ? 'Feed' : 'Fertilize'} every <input type="number"
+																				  placeholder="30"
+																				  className="small"
+																				  onChange={(e) => this.updateData(e, 'fertilizerSchedule')}
+																				  defaultValue={profile.fertilizerSchedule || ''}/> days
 							</p>
 						  </SwipePanelContent>
+
+									<SwipePanelContent icon={faInfoCircle} iconAlt="info" iconTitle="preferred fertilizer">
+									  <p><input type="text"
+												placeholder="Preferred Fertilizer"
+												onChange={(e) => this.updateData(e, 'fertilizer')}
+												value={profile.fertilizer || ''}/></p>
+									</SwipePanelContent>
+								  </React.Fragment>
 						  :
 						  <React.Fragment>
 							<SwipePanelContent icon={faCalendarAlt} iconAlt="calendar" iconTitle="fertilizer schedule">
-							  <p>Fertilize every {profile.fertilizerSchedule} days</p>
+							  <p>{Meteor.isPro ? 'Feed' : 'Fertilize'} every {profile.fertilizerSchedule} days</p>
 							  <p>Due in {profile.fertilizerSchedule - profile.daysSinceFertilized} days</p>
 							</SwipePanelContent>
 
-							<SwipePanelContent icon={faInfoCircle} iconAlt="info" iconTitle="fertilizer">
-							  <p>{fertilizerContent}</p>
-							</SwipePanelContent>
+							{Meteor.isPro ?
+									<React.Fragment>
+									  {(profile.fertilizer || fertilizerContent) &&
+									  <SwipePanelContent icon={faInfoCircle} iconAlt="info"
+														 iconTitle="fertilizer">
+										<p>{profile.fertilizer || fertilizerContent}</p>
+									  </SwipePanelContent>
+									  }
+
+									  {profile.compost &&
+									  <SwipePanelContent icon={faInfoCircle} iconAlt="info" iconTitle="compost">
+										<p>{profile.compost}</p>
+									  </SwipePanelContent>
+									  }
+
+									  {profile.nutrient &&
+									  <SwipePanelContent icon={faLeaf} iconAlt="leaf"
+														 iconTitle="other nutrient amendment">
+										<p>{profile.nutrient}</p>
+									  </SwipePanelContent>
+									  }
+									</React.Fragment>
+									:
+									(profile.fertilizer || fertilizerContent) &&
+									<SwipePanelContent icon={faInfoCircle} iconAlt="info"
+													   iconTitle="fertilizer">
+									  <p>{profile.fertilizer || fertilizerContent}</p>
+									</SwipePanelContent>
+							}
 						  </React.Fragment>
 				  }
 
@@ -432,13 +505,126 @@ class ProfileViewEdit extends Component {
 				  </p>
 
 				  <SwipePanelContent icon={faCalendarAlt} iconAlt="calendar" iconTitle="last checked soil composition">
-					<p>Last checked {soilCompLastChecked}</p>
+					<p>{soilCompLastChecked}</p>
 				  </SwipePanelContent>
 
-				  <SwipePanelContent icon={faInfoCircle} iconAlt="info" iconTitle="pH level">
-					<p>pH {soilPh}</p>
-					<p>Moisture Level {soilMoisture}</p>
-				  </SwipePanelContent>
+				  {this.state.editing === 'soilCompositionTracker' && Meteor.isPro && profile.category === 'in-ground' ?
+						  <React.Fragment>
+
+							<SwipePanelContent icon={faInfoCircle} iconAlt="info" iconTitle="tilled">
+							  <p><select placeholder="Tilled"
+										 onChange={(e) => this.updateData(e, 'tilled')}
+										 value={profile.tilled || ''}>
+								<option value='' disabled={true}>- Is the soil tilled? -</option>
+								<option value={false}>No</option>
+								<option value={true}>Yes</option>
+							  </select>
+							  </p>
+							</SwipePanelContent>
+
+							<SwipePanelContent icon={faInfoCircle} iconAlt="info" iconTitle="soil type">
+							  <p><select placeholder="Soil Type"
+										 onChange={(e) => this.updateData(e, 'soilType')}
+										 value={profile.soilType || ''}>
+								<option value='' disabled={true}>- Select a ground soil type -</option>
+								{SoilTypes.map((item, index) => {
+								  return <option value={item.type} key={index}>{item.displayName}</option>
+								})}
+							  </select>
+							  </p>
+							</SwipePanelContent>
+
+							<SwipePanelContent icon={faInfoCircle} iconAlt="info" iconTitle="soil amendment">
+							  <p><input type="text"
+										placeholder="Soil Amendment"
+										onChange={(e) => this.updateData(e, 'soilAmendment')}
+										value={profile.soilAmendment || ''}/></p>
+							</SwipePanelContent>
+
+							<SwipePanelContent icon={faTachometerAlt} iconAlt="tachometer" iconTitle="pH level">
+							  <p>pH <input type="number"
+										   placeholder="6.2"
+										   className="small"
+										   onChange={(e) => this.updateData(e, 'ph')}/></p>
+							</SwipePanelContent>
+
+						  </React.Fragment>
+						  :
+						  (this.state.editing === 'soilCompositionTracker' && Meteor.isPro && profile.category === 'potted') &&
+						  <React.Fragment>
+							<SwipePanelContent icon={faMortarPestle} iconAlt="mortar and pestle"
+											   iconTitle="soil recipe">
+							  <p><input type="text"
+										placeholder="Soil Recipe"
+										onChange={(e) => this.updateData(e, 'soilRecipe')}
+										value={profile.soilRecipe || ''}/></p>
+							</SwipePanelContent>
+
+							<SwipePanelContent icon={faTint} iconAlt="water drop" iconTitle="soil moisture">
+							  <p>Moisture Level <input type="number"
+													   placeholder="40"
+													   className="small"
+													   onChange={(e) => this.updateData(e, 'moisture')}/>%</p>
+							</SwipePanelContent>
+						  </React.Fragment>
+				  }
+
+				  {!this.state.editing && Meteor.isPro && profile.category === 'potted' ?
+						  <React.Fragment>
+							{profile.soilRecipe &&
+							<SwipePanelContent icon={faMortarPestle} iconAlt="water drop"
+											   iconTitle="soil recipe">
+							  <p>{profile.soilRecipe}</p>
+							</SwipePanelContent>
+							}
+
+							{soilMoisture &&
+							<SwipePanelContent icon={faTint} iconAlt="water drop" iconTitle="soil moisture">
+							  <p>Moisture Level {soilMoisture}</p>
+							</SwipePanelContent>
+							}
+
+							{(!profile.soilRecipe && !soilMoisture) &&
+							<p>No records available</p>
+							}
+						  </React.Fragment>
+						  : !this.state.editing && Meteor.isPro && profile.category === 'in-ground' ?
+								  <React.Fragment>
+									<SwipePanelContent icon={faInfoCircle} iconAlt="info" iconTitle="tilled">
+									  <p>Tilled: {profile.tilled ? 'Yes' : 'No'}</p>
+									</SwipePanelContent>
+
+									{profile.soilType &&
+									<SwipePanelContent icon={faInfoCircle} iconAlt="info" iconTitle="soil type">
+									  <p>Soil Type: {profile.soilType}</p>
+									</SwipePanelContent>
+									}
+
+									{profile.soilAmendment &&
+									<SwipePanelContent icon={faInfoCircle} iconAlt="info" iconTitle="soil amendment">
+									  <p>Soil Amendment: {profile.soilAmendment ? 'Yes' : 'No'}</p>
+									</SwipePanelContent>
+									}
+
+									{soilPh &&
+									<SwipePanelContent icon={faTachometerAlt} iconAlt="tachometer" iconTitle="pH level">
+									  <p>pH {soilPh}</p>
+									</SwipePanelContent>
+									}
+								  </React.Fragment>
+								  : !this.state.editing &&
+								  <React.Fragment>
+
+									{soilMoisture ?
+											<SwipePanelContent icon={faTint} iconAlt="water drop"
+															   iconTitle="soil moisture">
+											  <p>Moisture Level {soilMoisture}</p>
+											</SwipePanelContent>
+											:
+											<p>No records available.</p>
+									}
+								  </React.Fragment>
+				  }
 
 				</div>
 
@@ -447,16 +633,20 @@ class ProfileViewEdit extends Component {
 				  <p className="swipe-title title-ming">Pests</p>
 
 				  <SwipePanelContent icon={faCalendarAlt} iconAlt="calendar" iconTitle="last checked for pests">
-					<p>Last checked {pestLastChecked}</p>
+					<p>{pestLastChecked}</p>
 				  </SwipePanelContent>
 
+				  {pestName &&
 				  <SwipePanelContent icon={faBug} iconAlt="bug" iconTitle="pest name">
 					<p>{pestName}</p>
 				  </SwipePanelContent>
+				  }
 
+				  {pestTreatment &&
 				  <SwipePanelContent icon={faSprayCan} iconAlt="spray can" iconTitle="pest treatment">
 					<p>{pestTreatment}</p>
 				  </SwipePanelContent>
+				  }
 
 				</div>
 
@@ -476,7 +666,7 @@ class ProfileViewEdit extends Component {
 								</div>
 							  })
 							  :
-							  'N/A'
+							  'No records available.'
 					  }
 					</div>
 
@@ -489,6 +679,31 @@ class ProfileViewEdit extends Component {
 
 				  {this.state.editing === 'etc' ?
 						  <React.Fragment>
+							<SwipePanelContent icon={faInfoCircle} iconAlt="info" iconTitle="common name">
+							  <p><input type="text"
+										placeholder="Common Name"
+										onChange={(e) => this.updateData(e, 'commonName')}
+										value={profile.commonName || ''}/></p>
+							</SwipePanelContent>
+
+							<SwipePanelContent icon={faInfoCircle} iconAlt="info" iconTitle="latin name">
+							  <p><input type="text"
+										placeholder="Latin Name"
+										onChange={(e) => this.updateData(e, 'latinName')}
+										value={profile.latinName || ''}/></p>
+							</SwipePanelContent>
+
+							<SwipePanelContent icon={faFilter} iconAlt="filter" iconTitle="category">
+							  <p><select placeholder="Category"
+										 onChange={(e) => this.updateData(e, 'category')}
+										 value={profile.category || ''}>
+								<option value='' disabled={true}>- Select a category -</option>
+								{this.props.categories && this.props.categories.map((item, index) => {
+								  return <option value={item.category} key={index}>{item.displayName}</option>
+								})}
+							  </select></p>
+							</SwipePanelContent>
+
 							<SwipePanelContent icon={faMapMarker} iconAlt="map marker" iconTitle="location bought">
 							  <p><input type="text"
 										placeholder="Location Bought"
@@ -526,21 +741,33 @@ class ProfileViewEdit extends Component {
 						  </React.Fragment>
 						  :
 						  <React.Fragment>
-							<SwipePanelContent icon={faMapMarker} iconAlt="map marker" iconTitle="llocation bought">
+							{Meteor.isPro &&
+							<SwipePanelContent icon={faFilter} iconAlt="filter" iconTitle="category">
+							  <p>{profile.category}</p>
+							</SwipePanelContent>
+							}
+
+							{profile.locationBought &&
+							<SwipePanelContent icon={faMapMarker} iconAlt="map marker" iconTitle="location bought">
 							  <p>{profile.locationBought || 'N/A'}</p>
 							</SwipePanelContent>
+							}
 
+							{profile.dateBought &&
 							<SwipePanelContent icon={faCalendarAlt} iconAlt="calendar" iconTitle="date bought">
 							  <p>{profile.dateBought ? new Date(profile.dateBought).toLocaleDateString() : 'N/A'}</p>
 							</SwipePanelContent>
+							}
 
 							<SwipePanelContent icon={faHome} iconAlt="home" iconTitle="plant location">
 							  <p>{profile.location || 'N/A'}</p>
 							</SwipePanelContent>
 
+							{profile.companions && profile.companions.length > 0 &&
 							<SwipePanelContent icon={faUserFriends} iconAlt="people" iconTitle="companion plants">
-							  <p>{profile.companions && profile.companions.length > 0 ? profile.companions.join(', ') : 'N/A'}</p>
+							  <p>{profile.companions.join(', ')}</p>
 							</SwipePanelContent>
+							}
 						  </React.Fragment>
 				  }
 
@@ -571,7 +798,7 @@ class ProfileViewEdit extends Component {
 				</React.Fragment>
 				}
 
-				{(this.state.swipeViewIndex < 2 || this.state.swipeViewIndex === 5) &&
+				{(this.state.swipeViewIndex < 3 || this.state.swipeViewIndex === 5) &&
 				<React.Fragment>
 				  <FontAwesomeIcon icon={this.state.editing ? faTimes : faPencilAlt}
 								   className="plant-condition-icon"
@@ -901,6 +1128,7 @@ ProfileViewEdit.propTypes = {
 export default withTracker((props) => {
   const id = props.match.params.id
   const profile = Profile.findOne({_id: id})
+  const categories = Category.find({}).fetch()
 
   profile.daysSinceFertilized = getDaysSinceAction(profile.fertilizerTracker)
   profile.fertilizerCondition = getPlantCondition(profile.fertilizerTracker, profile.daysSinceFertilized, profile.fertilizerSchedule)
@@ -911,7 +1139,8 @@ export default withTracker((props) => {
   profile.soilCondition = getSoilCondition(profile.soilCompositionTracker)
 
   return {
-	profile: profile
+	profile: profile,
+	categories
   }
 })(ProfileViewEdit)
 

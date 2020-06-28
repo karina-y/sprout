@@ -49,30 +49,30 @@ export function getSoilCondition(tracker, idealMoistureRange) {
 }
 
 export function lastChecked(tracker) {
-  let lastChecked = "N/A";
+  let lastChecked = "No records available.";
 
   if (tracker && tracker.length > 0) {
-	lastChecked = new Date(tracker[tracker.length-1].date).toLocaleDateString();
+	lastChecked = `Last Checked ${new Date(tracker[tracker.length-1].date).toLocaleDateString()}`;
   }
 
   return lastChecked;
 }
 
 export function getLastSoilPh(tracker) {
-  let soilPh = "N/A";
+  let soilPh;
 
   if (tracker && tracker.length > 0) {
-	soilPh = tracker[tracker.length-1].ph || 'N/A';
+	soilPh = tracker[tracker.length-1].ph;
   }
 
   return soilPh;
 }
 
 export function getLastSoilMoisture(tracker) {
-  let soilMoisture = "N/A";
+  let soilMoisture;
 
   if (tracker && tracker.length > 0) {
-	soilMoisture = tracker[tracker.length-1].moisture ? `${Math.round(tracker[tracker.length-1].moisture * 100)}%` : 'N/A';
+	soilMoisture = tracker[tracker.length-1].moisture ? `${Math.round(tracker[tracker.length-1].moisture * 100)}%` : null;
   }
 
   return soilMoisture;

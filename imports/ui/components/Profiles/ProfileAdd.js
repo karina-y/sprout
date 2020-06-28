@@ -85,16 +85,18 @@ class ProfileAdd extends Component {
 
 	if ((!profile.commonName) && (!profile.latinName)) {
 	  errMsg = 'Please enter either a common or latin name (eg. Swiss Cheese Plant or Monstera adansonii).'
-	} else if (!profile.waterSchedule || profile.waterSchedule === '') {
+	} else if (!profile.waterSchedule) {
 	  errMsg = 'Please enter a watering schedule (eg. 7).'
-	} else if (!profile.fertilizerSchedule || profile.fertilizerSchedule === '') {
+	} else if (!profile.fertilizerSchedule) {
 	  errMsg = 'Please enter a fertilizer schedule (eg. 30).'
-	} else if (!profile.waterPreference || profile.waterPreference === '') {
+	} else if (!profile.waterPreference) {
 	  errMsg = 'Please enter a watering preference (eg. Keep soil moist but not soggy, humidity tray helpful).'
-	} else if (!profile.lightPreference || profile.lightPreference === '') {
+	} else if (!profile.lightPreference) {
 	  errMsg = 'Please enter a lighting preference (eg. Bright indirect light).'
-	} else if (!profile.location || profile.location === '') {
-	  errMsg = 'Please enter where this plant lives in/around your home (eg. Living Room).'
+	} else if (!profile.location) {
+	  errMsg = 'Please enter where this plant lives in/around your home (eg. Living Room or Back Patio).'
+	} else if (Meteor.isPro && !profile.category) {
+	  errMsg = 'Please select a category.'
 	}
 
 	if (errMsg) {
@@ -263,7 +265,8 @@ class ProfileAdd extends Component {
 					{Meteor.isPro ? 'Fertilizer / Nutrients' : 'Fertilizer'}
 				  </p>
 
-				  <SwipePanelContent icon={faCalendarAlt} iconAlt="calendar" iconTitle="fertilizer schedule">
+				  <SwipePanelContent icon={faCalendarAlt} iconAlt="calendar"
+									 iconTitle={Meteor.isPro ? 'feeding schedule' : 'fertilizer schedule'}>
 					<p>* {Meteor.isPro ? 'Feed' : 'Fertilize'} every <input type="number"
 																			placeholder="30"
 																			className="small"
@@ -294,7 +297,6 @@ class ProfileAdd extends Component {
 								onChange={(e) => this.updateData(e, 'nutrient')}
 								value={profile.nutrient || ''}/></p>
 					</SwipePanelContent>
-
 				  </React.Fragment>
 				  }
 
@@ -349,24 +351,42 @@ class ProfileAdd extends Component {
 
 						  </React.Fragment>
 						  :
-						  (Meteor.isPro && profile.category === 'potted') &&
-						  <React.Fragment>
-							<SwipePanelContent icon={faMortarPestle} iconAlt="mortar and pestle"
-											   iconTitle="soil recipe">
-							  <p><input type="text"
-										placeholder="Soil Recipe"
-										onChange={(e) => this.updateData(e, 'soilRecipe')}
-										value={profile.soilRecipe || ''}/></p>
-							</SwipePanelContent>
-						  </React.Fragment>
+						  (Meteor.isPro && profile.category === 'potted') ?
+								  <React.Fragment>
+									<SwipePanelContent icon={faMortarPestle} iconAlt="mortar and pestle"
+													   iconTitle="soil recipe">
+									  <p><input type="text"
+												placeholder="Soil Recipe"
+												onChange={(e) => this.updateData(e, 'soilRecipe')}
+												value={profile.soilRecipe || ''}/></p>
+									</SwipePanelContent>
+
+									<SwipePanelContent icon={faTint} iconAlt="water drop" iconTitle="soil moisture">
+									  <p>Moisture Level <input type="number"
+															   placeholder="40"
+															   className="small"
+															   onChange={(e) => this.updateData(e, 'moisture')}/>%</p>
+									</SwipePanelContent>
+								  </React.Fragment>
+								  :
+								  <React.Fragment>
+									<SwipePanelContent icon={faTachometerAlt} iconAlt="tachometer" iconTitle="pH level">
+									  <p>pH <input type="number"
+												   placeholder="6.2"
+												   className="small"
+												   onChange={(e) => this.updateData(e, 'ph')}/></p>
+									</SwipePanelContent>
+
+
+									<SwipePanelContent icon={faTint} iconAlt="water drop" iconTitle="soil moisture">
+									  <p>Moisture Level <input type="number"
+															   placeholder="40"
+															   className="small"
+															   onChange={(e) => this.updateData(e, 'moisture')}/>%</p>
+									</SwipePanelContent>
+								  </React.Fragment>
 				  }
 
-				  <SwipePanelContent icon={faTint} iconAlt="water drop" iconTitle="soil moisture">
-					<p>Moisture Level <input type="number"
-											 placeholder="40"
-											 className="small"
-											 onChange={(e) => this.updateData(e, 'moisture')}/>%</p>
-				  </SwipePanelContent>
 
 				</div>
 
@@ -414,9 +434,9 @@ class ProfileAdd extends Component {
 
 				  <SwipePanelContent icon={faMapMarker} iconAlt="map marker" iconTitle="location bought">
 					<p><input type="text"
-								placeholder="Location Bought"
-								onChange={(e) => this.updateData(e, 'locationBought')}
-								value={profile.locationBought || ''}/></p>
+							  placeholder="Location Bought"
+							  onChange={(e) => this.updateData(e, 'locationBought')}
+							  value={profile.locationBought || ''}/></p>
 				  </SwipePanelContent>
 
 				  {/*need to make this swipepanelcontent with the cusom style*/}
@@ -430,9 +450,9 @@ class ProfileAdd extends Component {
 
 					<div className="info-side">
 					  <p><input type="date"
-								  placeholder="Date Bought"
-								  onBlur={(e) => this.updateData(e, 'dateBought')}
-								  defaultValue={profile.dateBought || ''}/></p>
+								placeholder="Date Bought"
+								onBlur={(e) => this.updateData(e, 'dateBought')}
+								defaultValue={profile.dateBought || ''}/></p>
 
 					  {/*TODO get datepicker to open over image*/}
 					  {/*<p>* Date Bought</p>

@@ -42,6 +42,7 @@ Profile.schema = new SimpleSchema({
 		  },
 		  dateBought: {
 			type: Date,
+			optional: true,
 			label: 'dateBought'
 		  },
 		  location: {
@@ -51,7 +52,7 @@ Profile.schema = new SimpleSchema({
 		  },
 		  locationBought: {
 			type: String,
-			defaultValue: '',
+			optional: true,
 			label: 'locationBought'
 		  },
 		  companions: {
