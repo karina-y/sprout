@@ -1136,7 +1136,7 @@ export default withTracker((props) => {
   profile.soilCompositionTracker = sortByLastDate(profile.soilCompositionTracker)
   profile.pestTracker = sortByLastDate(profile.pestTracker)
   profile.diary = sortByLastDate(profile.diary)
-  
+
   profile.daysSinceFertilized = getDaysSinceAction(profile.fertilizerTracker)
   profile.fertilizerCondition = getPlantCondition(profile.fertilizerTracker, profile.daysSinceFertilized, profile.fertilizerSchedule)
 

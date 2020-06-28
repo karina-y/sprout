@@ -3,11 +3,11 @@ import logger from '/imports/utils/logger'
 
 Meteor.publish('profile', function profiles () {
   if (Meteor.userId()) {
-	const profiles = Profile.find({userId: Meteor.userId()})
+	const profiles = Profile.find({userId: Meteor.userId()}).fetch();
 
-	if (profiles.fetch() && profiles.fetch().length > 0) {
+	if (profiles && profiles.length > 0) {
 
-	  const stuff = Meteor.call('profile.getByUserId')
+	  // const stuff = Meteor.call('profile.getByUserId')
 
 	  // logger('info', stuff)
 
