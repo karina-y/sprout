@@ -83,10 +83,8 @@ class ProfileAdd extends Component {
 
 	let errMsg
 
-	if (!profile.commonName || profile.commonName === '') {
-	  errMsg = 'Please enter a common name (eg. Swiss Cheese Plant).'
-	} else if (!profile.latinName || profile.latinName === '') {
-	  errMsg = 'Please enter a latin name (eg. Monstera adansonii).'
+	if ((!profile.commonName) && (!profile.latinName)) {
+	  errMsg = 'Please enter either a common or latin name (eg. Swiss Cheese Plant or Monstera adansonii).'
 	} else if (!profile.waterSchedule || profile.waterSchedule === '') {
 	  errMsg = 'Please enter a watering schedule (eg. 7).'
 	} else if (!profile.fertilizerSchedule || profile.fertilizerSchedule === '') {
@@ -95,10 +93,6 @@ class ProfileAdd extends Component {
 	  errMsg = 'Please enter a watering preference (eg. Keep soil moist but not soggy, humidity tray helpful).'
 	} else if (!profile.lightPreference || profile.lightPreference === '') {
 	  errMsg = 'Please enter a lighting preference (eg. Bright indirect light).'
-	} else if (!profile.locationBought || profile.locationBought === '') {
-	  errMsg = 'Please enter a where this plant was purchased (eg. Armstrong Garden Centers).'
-	} else if (!profile.dateBought || profile.dateBought === '') {
-	  errMsg = 'Please enter the date this plant was purchased (eg. 5/10/20).'
 	} else if (!profile.location || profile.location === '') {
 	  errMsg = 'Please enter where this plant lives in/around your home (eg. Living Room).'
 	}
@@ -158,7 +152,7 @@ class ProfileAdd extends Component {
 		date: new Date()
 	  }
 	} else if (type === 'tilled') {
-	  profile[type] = e.target.value === "true" ? true : false;
+	  profile[type] = e.target.value === 'true' ? true : false
 	} else {
 	  profile[type] = e.target.value
 	}
@@ -218,15 +212,15 @@ class ProfileAdd extends Component {
 					  </select>
 					  </p>
 					</SwipePanelContent>
-
-					<SwipePanelContent icon={faSkullCrossbones} iconAlt="skull and crossbones" iconTitle="toxicity">
-					  <p><input type="text"
-								placeholder="Toxicity (ie poisonous to dogs if leaves are consumed)"
-								onChange={(e) => this.updateData(e, 'toxicity')}
-								value={profile.toxicity || ''}/></p>
-					</SwipePanelContent>
 				  </React.Fragment>
 				  }
+
+				  <SwipePanelContent icon={faSkullCrossbones} iconAlt="skull and crossbones" iconTitle="toxicity">
+					<p><input type="text"
+							  placeholder="Toxicity (ie poisonous to dogs if leaves are consumed)"
+							  onChange={(e) => this.updateData(e, 'toxicity')}
+							  value={profile.toxicity || ''}/></p>
+				  </SwipePanelContent>
 
 				</div>
 
@@ -266,14 +260,15 @@ class ProfileAdd extends Component {
 				{/* fertilizer */}
 				<div className="swipe-slide slide-two">
 				  <p className="swipe-title title-ming">
-					Fertilizer
+					{Meteor.isPro ? 'Fertilizer / Nutrients' : 'Fertilizer'}
 				  </p>
 
 				  <SwipePanelContent icon={faCalendarAlt} iconAlt="calendar" iconTitle="fertilizer schedule">
-					<p>* Fertilize every <input type="number"
-												placeholder="30"
-												className="small"
-												onChange={(e) => this.updateData(e, 'fertilizerSchedule')}/> days</p>
+					<p>* {Meteor.isPro ? 'Feed' : 'Fertilize'} every <input type="number"
+																			placeholder="30"
+																			className="small"
+																			onChange={(e) => this.updateData(e, 'fertilizerSchedule')}/> days
+					</p>
 				  </SwipePanelContent>
 
 				  <SwipePanelContent icon={faInfoCircle} iconAlt="info" iconTitle="preferred fertilizer">
@@ -418,7 +413,7 @@ class ProfileAdd extends Component {
 				  <p className="swipe-title title-ming">Location & Date Bought</p>
 
 				  <SwipePanelContent icon={faMapMarker} iconAlt="map marker" iconTitle="location bought">
-					<p>* <input type="text"
+					<p><input type="text"
 								placeholder="Location Bought"
 								onChange={(e) => this.updateData(e, 'locationBought')}
 								value={profile.locationBought || ''}/></p>
@@ -434,7 +429,7 @@ class ProfileAdd extends Component {
 					</div>
 
 					<div className="info-side">
-					  <p>* <input type="date"
+					  <p><input type="date"
 								  placeholder="Date Bought"
 								  onBlur={(e) => this.updateData(e, 'dateBought')}
 								  defaultValue={profile.dateBought || ''}/></p>
@@ -457,9 +452,9 @@ class ProfileAdd extends Component {
 				<div className="swipe-slide slide-six">
 				  <p className="swipe-title title-ming">Diary</p>
 
-				  <SwipePanelContent icon={faHome} iconAlt="house" iconTitle="location in home">
+				  <SwipePanelContent icon={faHome} iconAlt="house" iconTitle="plant location">
 					<p>* <input type="text"
-								placeholder="Location in home"
+								placeholder="Plant location"
 								onChange={(e) => this.updateData(e, 'location')}
 								value={profile.location || ''}/></p>
 				  </SwipePanelContent>
@@ -471,7 +466,7 @@ class ProfileAdd extends Component {
 							  value={profile.companions || ''}/></p>
 				  </SwipePanelContent>
 
-				 {/* <SwipePanelContent icon={faInfoCircle} iconAlt="info" iconTitle="diary and notes">
+				  {/* <SwipePanelContent icon={faInfoCircle} iconAlt="info" iconTitle="diary and notes">
 					<p><textarea rows="3"
 								 placeholder="Diary / Notes"
 								 onChange={(e) => this.updateData(e, 'diary')}

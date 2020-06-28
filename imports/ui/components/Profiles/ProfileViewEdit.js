@@ -348,7 +348,7 @@ class ProfileViewEdit extends Component {
 
 				  {this.state.editing === 'waterTracker' ?
 						  <React.Fragment>
-							<SwipePanelContent icon={faCalendarAlt}>
+							<SwipePanelContent icon={faCalendarAlt} iconAlt="calendar" iconTitle="water schedule">
 							  <p>Water every <input type="number"
 													placeholder="4"
 													className="small"
@@ -356,14 +356,14 @@ class ProfileViewEdit extends Component {
 													defaultValue={profile.waterSchedule || ''}/> days</p>
 							</SwipePanelContent>
 
-							<SwipePanelContent icon={faTint}>
+							<SwipePanelContent icon={faTint} iconAlt="water drop" iconTitle="water preference">
 							  <p><input type="text"
 										placeholder="Watering Preferences"
 										onChange={(e) => this.updateData(e, 'waterPreference')}
 										defaultValue={profile.waterPreference || ''}/></p>
 							</SwipePanelContent>
 
-							<SwipePanelContent icon={faSun}>
+							<SwipePanelContent icon={faSun} iconAlt="sun" iconTitle="light preference">
 							  <p><input type="text"
 										placeholder="Light Preferences"
 										onChange={(e) => this.updateData(e, 'lightPreference')}
@@ -372,16 +372,16 @@ class ProfileViewEdit extends Component {
 						  </React.Fragment>
 						  :
 						  <React.Fragment>
-							<SwipePanelContent icon={faCalendarAlt}>
+							<SwipePanelContent icon={faCalendarAlt} iconAlt="calendar" iconTitle="water schedule">
 							  <p>Water every {profile.waterSchedule} days</p>
 							  <p>Due in {profile.waterSchedule - profile.daysSinceWatered} days</p>
 							</SwipePanelContent>
 
-							<SwipePanelContent icon={faTint}>
+							<SwipePanelContent icon={faTint} iconAlt="water drop" iconTitle="water preference">
 							  <p>{profile.waterPreference}</p>
 							</SwipePanelContent>
 
-							<SwipePanelContent icon={faSun}>
+							<SwipePanelContent icon={faSun} iconAlt="sun" iconTitle="light preference">
 							  <p>{profile.lightPreference}</p>
 							</SwipePanelContent>
 						  </React.Fragment>
@@ -401,7 +401,7 @@ class ProfileViewEdit extends Component {
 				  </p>
 
 				  {this.state.editing === 'fertilizerTracker' ?
-						  <SwipePanelContent icon={faCalendarAlt}>
+						  <SwipePanelContent icon={faCalendarAlt} iconAlt="calendar" iconTitle="fertilizer schedule">
 							<p>Fertilize every <input type="number"
 													  placeholder="30"
 													  className="small"
@@ -411,12 +411,12 @@ class ProfileViewEdit extends Component {
 						  </SwipePanelContent>
 						  :
 						  <React.Fragment>
-							<SwipePanelContent icon={faCalendarAlt}>
+							<SwipePanelContent icon={faCalendarAlt} iconAlt="calendar" iconTitle="fertilizer schedule">
 							  <p>Fertilize every {profile.fertilizerSchedule} days</p>
 							  <p>Due in {profile.fertilizerSchedule - profile.daysSinceFertilized} days</p>
 							</SwipePanelContent>
 
-							<SwipePanelContent icon={faInfoCircle}>
+							<SwipePanelContent icon={faInfoCircle} iconAlt="info" iconTitle="fertilizer">
 							  <p>{fertilizerContent}</p>
 							</SwipePanelContent>
 						  </React.Fragment>
@@ -428,17 +428,14 @@ class ProfileViewEdit extends Component {
 				{/* soil comp */}
 				<div className="swipe-slide slide-three">
 				  <p className="swipe-title title-ming">
-					Soil Composition {/*<FontAwesomeIcon icon={profile.soilCondition === "needs-attn" ? faSadTear : profile.soilCondition === "neutral" ? faMeh : faSmile}
-													  className="plant-condition-icon"
-													  title="soil condition"
-													  alt={profile.soilCondition === "needs-attn" ? "sad face with tear" : profile.soilCondition === "neutral" ? "neutral face" : profile.soilCondition === "unsure" ? "question mark" : "smiling face"} />*/}
+					Soil Composition
 				  </p>
 
-				  <SwipePanelContent icon={faCalendarAlt}>
+				  <SwipePanelContent icon={faCalendarAlt} iconAlt="calendar" iconTitle="last checked soil composition">
 					<p>Last checked {soilCompLastChecked}</p>
 				  </SwipePanelContent>
 
-				  <SwipePanelContent icon={faInfoCircle}>
+				  <SwipePanelContent icon={faInfoCircle} iconAlt="info" iconTitle="pH level">
 					<p>pH {soilPh}</p>
 					<p>Moisture Level {soilMoisture}</p>
 				  </SwipePanelContent>
@@ -449,15 +446,15 @@ class ProfileViewEdit extends Component {
 				<div className="swipe-slide slide-four">
 				  <p className="swipe-title title-ming">Pests</p>
 
-				  <SwipePanelContent icon={faCalendarAlt}>
+				  <SwipePanelContent icon={faCalendarAlt} iconAlt="calendar" iconTitle="last checked for pests">
 					<p>Last checked {pestLastChecked}</p>
 				  </SwipePanelContent>
 
-				  <SwipePanelContent icon={faBug}>
+				  <SwipePanelContent icon={faBug} iconAlt="bug" iconTitle="pest name">
 					<p>{pestName}</p>
 				  </SwipePanelContent>
 
-				  <SwipePanelContent icon={faSprayCan}>
+				  <SwipePanelContent icon={faSprayCan} iconAlt="spray can" iconTitle="pest treatment">
 					<p>{pestTreatment}</p>
 				  </SwipePanelContent>
 
@@ -467,7 +464,7 @@ class ProfileViewEdit extends Component {
 				<div className="swipe-slide slide-five">
 				  <p className="swipe-title title-ming">Diary</p>
 
-				  <SwipePanelContent icon={faInfoCircle}>
+				  <SwipePanelContent icon={faInfoCircle} iconAlt="info" iconTitle="diary">
 					{/*<p>{profile.diary[profile.diary.length - 1].entry || 'N/A'}</p>*/}
 
 					<div className="scroll-box">
@@ -492,14 +489,14 @@ class ProfileViewEdit extends Component {
 
 				  {this.state.editing === 'etc' ?
 						  <React.Fragment>
-							<SwipePanelContent icon={faMapMarker}>
+							<SwipePanelContent icon={faMapMarker} iconAlt="map marker" iconTitle="location bought">
 							  <p><input type="text"
 										placeholder="Location Bought"
 										onChange={(e) => this.updateData(e, 'locationBought')}
 										defaultValue={profile.locationBought}/></p>
 							</SwipePanelContent>
 
-							<SwipePanelContent icon={faCalendarAlt}>
+							<SwipePanelContent icon={faCalendarAlt} iconAlt="calendar" iconTitle="date bought">
 							  <p><input type="date"
 										placeholder="Date Bought"
 										onBlur={(e) => this.updateData(e, 'dateBought')}
@@ -513,14 +510,14 @@ class ProfileViewEdit extends Component {
 										  highlightDates={ProfileViewEdit.getHighlightDates(profile.dateBought, 'dateBought')}/>*/}
 							</SwipePanelContent>
 
-							<SwipePanelContent icon={faHome}>
+							<SwipePanelContent icon={faHome} iconAlt="home" iconTitle="plant location">
 							  <p><input type="text"
-										placeholder="Location In Home"
+										placeholder="Plant Location"
 										onChange={(e) => this.updateData(e, 'location')}
 										defaultValue={profile.location}/></p>
 							</SwipePanelContent>
 
-							<SwipePanelContent icon={faUserFriends}>
+							<SwipePanelContent icon={faUserFriends} iconAlt="people" iconTitle="companion plants">
 							  <p><input type="text"
 										placeholder="Companions"
 										onChange={(e) => this.updateData(e, 'companions')}
@@ -529,19 +526,19 @@ class ProfileViewEdit extends Component {
 						  </React.Fragment>
 						  :
 						  <React.Fragment>
-							<SwipePanelContent icon={faMapMarker}>
+							<SwipePanelContent icon={faMapMarker} iconAlt="map marker" iconTitle="llocation bought">
 							  <p>{profile.locationBought || 'N/A'}</p>
 							</SwipePanelContent>
 
-							<SwipePanelContent icon={faCalendarAlt}>
+							<SwipePanelContent icon={faCalendarAlt} iconAlt="calendar" iconTitle="date bought">
 							  <p>{profile.dateBought ? new Date(profile.dateBought).toLocaleDateString() : 'N/A'}</p>
 							</SwipePanelContent>
 
-							<SwipePanelContent icon={faHome}>
+							<SwipePanelContent icon={faHome} iconAlt="home" iconTitle="plant location">
 							  <p>{profile.location || 'N/A'}</p>
 							</SwipePanelContent>
 
-							<SwipePanelContent icon={faUserFriends}>
+							<SwipePanelContent icon={faUserFriends} iconAlt="people" iconTitle="companion plants">
 							  <p>{profile.companions && profile.companions.length > 0 ? profile.companions.join(', ') : 'N/A'}</p>
 							</SwipePanelContent>
 						  </React.Fragment>

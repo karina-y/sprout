@@ -91,9 +91,9 @@ class App extends Component {
 						  {/*TODO 404*/}
 						</Switch>
 
-						{(!Meteor.isCordova && !Meteor.isMobile) && <div className="Footer">
+						{/*{(!Meteor.isCordova && !Meteor.isMobile) && <div className="Footer">
 						  &copy; sprout 2020 | info@sprout.com
-						</div>}
+						</div>}*/}
 					  </div>
 
 					  <ToastContainer newestOnTop={true} />
