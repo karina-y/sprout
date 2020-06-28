@@ -32,7 +32,7 @@ import { faTachometerAlt } from '@fortawesome/free-solid-svg-icons/faTachometerA
 import { faFilter } from '@fortawesome/free-solid-svg-icons/faFilter'
 import {
   getDaysSinceAction, getLastPestName, getLastPestTreatment, getLastSoilMoisture, getLastSoilPh,
-  getPlantCondition, getSoilCondition, lastChecked
+  getPlantCondition, getSoilCondition, lastChecked, sortByLastDate
 } from '../../../utils/plantData'
 import Profile from '/imports/api/Profile/Profile'
 import { toast } from 'react-toastify'
@@ -1130,6 +1130,13 @@ export default withTracker((props) => {
   const profile = Profile.findOne({_id: id})
   const categories = Category.find({}).fetch()
 
+  //sort the data
+  profile.waterTracker = sortByLastDate(profile.waterTracker)
+  profile.fertilizerTracker = sortByLastDate(profile.fertilizerTracker)
+  profile.soilCompositionTracker = sortByLastDate(profile.soilCompositionTracker)
+  profile.pestTracker = sortByLastDate(profile.pestTracker)
+  profile.diary = sortByLastDate(profile.diary)
+  
   profile.daysSinceFertilized = getDaysSinceAction(profile.fertilizerTracker)
   profile.fertilizerCondition = getPlantCondition(profile.fertilizerTracker, profile.daysSinceFertilized, profile.fertilizerSchedule)
 

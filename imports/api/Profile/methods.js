@@ -2,6 +2,7 @@ import Profile from './Profile'
 import rateLimit from '../../modules/rate-limit'
 import logger from '/imports/utils/logger'
 import SimpleSchema from 'simpl-schema'
+import { Promise } from 'meteor/promise'
 
 Meteor.methods({
   'profile.insert': function profileInsert (data) {
@@ -108,6 +109,123 @@ Meteor.methods({
 
 	}
 
+  },
+  'profile.getByUserId': function profileGetByUserId () {
+	try {
+
+	  if (Meteor.userId()) {
+
+		/*const pipeline = [
+		  {
+			$match: {
+			  userId: Meteor.userId()
+			}
+		  },
+		  {$unwind: '$soilCompositionTracker'},
+		  {$unwind: '$fertilizerTracker'},
+		  {$sort: {'soilCompositionTracker.date': -1, 'fertilizerTracker.date': -1}},
+		  {
+			$group: {
+			  _id: '$_id',
+			  soilCompositionTracker: {$push: '$soilCompositionTracker'},
+			  fertilizerTracker: {$push: '$fertilizerTracker'}
+		  }
+	  }
+		]*/
+
+		const pipeline = [
+		  {
+			$match: {
+			  userId: Meteor.userId()
+			}
+		  },
+		  {
+			$sort: {
+			  'waterTracker.date': -1
+			}
+		  },
+		  {
+			$sort: {
+			  'fertilizerTracker.date': -1
+			}
+		  },
+		  {
+			$sort: {
+			  'soilCompositionTracker.date': -1,
+			}
+		  },
+		  {
+			$sort: {
+			  'pestTracker.date': -1
+			}
+		  },
+		  {
+			$sort: {
+			  'diary.date': -1
+			}
+		  }
+		]
+
+		const data = Promise.await(Profile.rawCollection().aggregate(pipeline).toArray())
+
+		if (data && data.length > 0) {
+		  return data
+		} else {
+		  return []
+		}
+
+	  } else {
+		return []
+	  }
+	} catch (e) {
+	  logger('danger', e.message)
+	  throw new Meteor.Error('500', 'Please check your inputs and try again.')
+
+	}
+
+  },
+  'profile.getByProfileId': function profileGetByProfileId (profileId) {
+	try {
+
+	  if (Meteor.userId()) {
+
+		const pipeline = [
+		  {
+			$match: {
+			  userId: Meteor.userId()
+			}
+		  },
+		  {$unwind: '$soilCompositionTracker'},
+		  {$unwind: '$fertilizerTracker'},
+		  {$sort: {'soilCompositionTracker.date': -1, 'fertilizerTracker.date': -1}},
+		  {
+			$group: {
+			  _id: '$_id',
+			  soilCompositionTracker: {$push: '$soilCompositionTracker'},
+			  fertilizerTracker: {$push: '$fertilizerTracker'}
+			}
+		  }
+		]
+
+		const data = Promise.await(Profile.rawCollection().aggregate(pipeline).toArray())
+
+		// logger('warning', data)
+
+		if (data && data.length > 0) {
+		  return data[0]
+		} else {
+		  return []
+		}
+
+	  } else {
+		return []
+	  }
+	} catch (e) {
+	  logger('danger', e.message)
+	  throw new Meteor.Error('500', 'Please check your inputs and try again.')
+
+	}
+
   }
 })
 
@@ -115,7 +233,9 @@ rateLimit({
   methods: [
 	'profile.insert',
 	'profile.update',
-	'profile.delete'
+	'profile.delete',
+	'profile.getByUserId',
+	'profile.getByProfileId',
   ],
   limit: 5,
   timeRange: 1000,

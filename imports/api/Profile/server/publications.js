@@ -1,25 +1,30 @@
-import Profile from '../Profile';
-import logger from '/imports/utils/logger';
+import Profile from '../Profile'
+import logger from '/imports/utils/logger'
 
-Meteor.publish('profile', function profiles() {
+Meteor.publish('profile', function profiles () {
   if (Meteor.userId()) {
-	const profiles = Profile.find({userId: Meteor.userId()});
+	const profiles = Profile.find({userId: Meteor.userId()})
 
 	if (profiles.fetch() && profiles.fetch().length > 0) {
-	  return profiles;
+
+	  const stuff = Meteor.call('profile.getByUserId')
+
+	  // logger('info', stuff)
+
+	  return profiles
 	} else {
-	  return [];
+	  return []
 	}
   } else {
-    //TODO remove - for debugging
-	const profiles = Profile.find({userId: "r6H5iC6ySRKZZchns"});
+	//TODO remove - for debugging
+	/*const profiles = Profile.find({userId: 'r6H5iC6ySRKZZchns'})
 
 	if (profiles.fetch() && profiles.fetch().length > 0) {
-	  return profiles;
+	  return profiles
 	} else {
-	  return [];
-	}
+	  return []
+	}*/
 
-	// return [];
+	return []
   }
-});
+})
