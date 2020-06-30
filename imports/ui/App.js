@@ -110,11 +110,11 @@ export default withTracker(() => {
   let profileSub = Meteor.subscribe('profile');
   let roleSub = Meteor.subscribe('roles')
   let categorySub = Meteor.subscribe('category')
-  /*console.log("************CALLING START\n")
+  console.log("************CALLING START\n")
   console.log("************data:", Profile.find().fetch())
   console.log("************userid:", Meteor.userId())
   console.log("************meteor client status:", Meteor.status().connected)
-  console.log("************CALLING END\n")*/
+  console.log("************CALLING END\n")
   // console.log("checking auth", Meteor.userId() ? true : false)
 
   Meteor.isMobile = /(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino/i.test(navigator.userAgent||navigator.vendor||window.opera)||

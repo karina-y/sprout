@@ -380,7 +380,7 @@ class ProfileViewEdit extends Component {
 						  <React.Fragment>
 							<SwipePanelContent icon={faCalendarAlt} iconAlt="calendar" iconTitle="water schedule">
 							  <p>Water every {profile.waterSchedule} days</p>
-							  <p>Due in {profile.waterSchedule - profile.daysSinceWatered} days</p>
+							  <p>Due in {profile.waterSchedule - profile.daysSinceWatered - 1} days</p>
 							</SwipePanelContent>
 
 							<SwipePanelContent icon={faTint} iconAlt="water drop" iconTitle="water preference">
@@ -460,7 +460,7 @@ class ProfileViewEdit extends Component {
 						  <React.Fragment>
 							<SwipePanelContent icon={faCalendarAlt} iconAlt="calendar" iconTitle="fertilizer schedule">
 							  <p>{Meteor.isPro ? 'Feed' : 'Fertilize'} every {profile.fertilizerSchedule} days</p>
-							  <p>Due in {profile.fertilizerSchedule - profile.daysSinceFertilized} days</p>
+							  <p>Due in {profile.fertilizerSchedule - profile.daysSinceFertilized - 1} days</p>
 							</SwipePanelContent>
 
 							{Meteor.isPro ?
