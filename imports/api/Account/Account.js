@@ -2,19 +2,19 @@
 
 import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
-// import AccountEnums from '../../utils/enums';
+// import AccountPreferencesEnums from '../../utils/enums';
 
-// const AccountEnums = AccountEnums.ITEM_ENUM;
-const Account = new Mongo.Collection('Account');
+// const AccountPreferencesEnums = AccountPreferencesEnums.ITEM_ENUM;
+const AccountPreferences = new Mongo.Collection('AccountPreferences');
 
-Account.deny({
+AccountPreferences.deny({
   insert: () => false,
   update: () => false,
   remove: () => false,
 });
 
 
-Account.schema = new SimpleSchema({
+AccountPreferences.schema = new SimpleSchema({
 		  _id: {
 			type: String,
 			label: '_id'
@@ -30,6 +30,11 @@ Account.schema = new SimpleSchema({
 		  'profile.name': {
 			type: String,
 			label: 'profile.name'
+		  },
+		  'profile.zip': {
+			type: String,
+			optional: true,
+			label: 'profile.zip'
 		  },
 		  /*emails: {
 			type: Array,
@@ -83,6 +88,6 @@ Account.schema = new SimpleSchema({
 		  }
 		});
 
-Account.attachSchema(Account.schema);
+AccountPreferences.attachSchema(AccountPreferences.schema);
 
-export default Account;
+export default AccountPreferences;

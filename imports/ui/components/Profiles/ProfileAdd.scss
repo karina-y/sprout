@@ -32,7 +32,7 @@
 
     p {
       font-size: $font-xs;
-      color: $dark-slate-gray;
+      color: $med-gray;
     }
 
     .icon-side {
@@ -48,10 +48,6 @@
 
     .separator {
       margin: 0 10px;
-    }
-
-    .detail-panel {
-      margin-bottom: 10px;
     }
 
     .swipe-title {
@@ -94,5 +90,19 @@
   textarea,
   select {
     width: 90%;
+  }
+}
+
+body.dark-theme .ProfileAdd {
+  .swipe-view {
+
+    p,
+    .swipe-title {
+      color: $white;
+    }
+
+    .swipe-title::before {
+      border-top: 7px solid $powder-blue;
+    }
   }
 }

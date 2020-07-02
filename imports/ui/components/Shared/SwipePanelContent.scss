@@ -1,0 +1,43 @@
+@import '../../stylesheets/variables.scss';
+
+.SwipePanelContent {
+    margin-bottom: 10px;
+
+  .swipe-title {
+    text-align: center;
+    margin-bottom: 15px;
+    position: relative;
+
+    &::before {
+      content: "";
+      width: 0;
+      height: 0;
+      border-left: 7px solid transparent;
+      border-right: 7px solid transparent;
+      border-top: 7px solid $ming;
+      position: absolute;
+      top: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+  }
+
+  .svg-inline--fa {
+    color: $ming;
+    width: 15px;
+  }
+
+}
+
+body.dark-theme .SwipePanelContent {
+
+      p {
+        color: $white;
+      }
+
+      .svg-inline--fa {
+        color: $powder-blue;
+      }
+
+}
+

@@ -1,7 +1,6 @@
 @import '../../stylesheets/variables.scss';
 @import url('https://fonts.googleapis.com/css?family=Raleway:400,700,800');
 
-
 .side-navbar-container {
   height: $mobile-nav-height;
   background: $alice-blue-light;
@@ -47,9 +46,6 @@
       width: 250px !important;
     }
 
-    .groot-nav {
-    }
-
     .bm-burger-button {
       position: fixed;
       width: 40px;
@@ -73,17 +69,6 @@
 
     .bm-morph-shape {
       fill: $ming;
-    }
-
-    #elastic {
-      .bm-menu {
-        width: auto !important;
-      }
-
-      .bm-morph-shape {
-        width: 35px;
-        fill: $ming;
-      }
     }
 
     .bm-menu {
@@ -121,8 +106,6 @@
     // Mixins
     //
     #slide,
-    #stack,
-    #reveal,
     .menu-1 {
       .bm-cross {
         background: $ming;
@@ -133,96 +116,6 @@
         font-size: 1.15em;
       }
     }
-
-    #bubble,
-    #push,
-    .menu-2 {
-      .bm-cross {
-        background: #999;
-      }
-
-      .bm-menu {
-        padding: 3.4em 1em 0;
-      }
-
-      a {
-        padding: 1em;
-      }
-
-      i {
-        font-size: 1.7em;
-        vertical-align: middle;
-        color: #282a35;
-      }
-    }
-
-    #elastic,
-    .menu-3 {
-      .bm-cross {
-        background: #888;
-      }
-
-      .bm-menu {
-        padding: 2em 1em;
-        font-size: 1.15em;
-      }
-
-      i {
-        opacity: 0.5;
-      }
-
-      span {
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        font-size: 0.75em;
-      }
-    }
-
-    #scaleDown,
-    #scaleRotate,
-    #pushRotate,
-    #fallDown,
-    .menu-4 {
-      .bm-cross {
-        background: #888;
-      }
-
-      h2 {
-        margin: 0 auto;
-        padding: 2em 1em;
-        color: rgba(0, 0, 0, 0.4);
-        box-shadow: inset 0 -1px rgba(0, 0, 0, 0.2);
-
-        i {
-          margin-left: 0.2em;
-        }
-
-        span {
-          font-size: 1.6em;
-          font-weight: 700;
-        }
-      }
-
-      a {
-        padding: 1em;
-        text-transform: uppercase;
-        transition: background 0.3s, box-shadow 0.3s;
-        box-shadow: inset 0 -1px rgba(0, 0, 0, 0.2);
-
-        span {
-          letter-spacing: 1px;
-          font-weight: 400;
-        }
-
-        &:hover,
-        &:focus {
-          background: rgba(0, 0, 0, 0.2);
-          box-shadow: inset 0 -1px rgba(0, 0, 0, 0);
-          color: #b8b7ad;
-        }
-      }
-    }
-
 
 
     @media screen and (max-width: 40em) {
@@ -238,3 +131,38 @@
   }
 }
 
+body.dark-theme .side-navbar-container {
+  background: $med-gray;
+
+  .side-navbar {
+    .bm-menu {
+      background: $med-gray;
+
+      a,
+      p {
+        color: $powder-blue;
+        text-decoration: none;
+
+        &:hover,
+        &.active {
+          color: $vivid-tangerine;
+        }
+      }
+    }
+
+    .bm-burger-bars {
+      background: $powder-blue;
+    }
+
+    .bm-morph-shape {
+      fill: $powder-blue;
+    }
+
+    #slide,
+    .menu-1 {
+      .bm-cross {
+        background: $powder-blue;
+      }
+    }
+  }
+}

@@ -19,7 +19,7 @@ class Authenticated extends React.Component {
 								   (React.createElement(component, {
 									 ...props, ...rest, authenticated,
 								   })) :
-								   (<Redirect to="/account" />)
+								   (<Redirect to="/login" />)
 				   )}
 			/>
 	);

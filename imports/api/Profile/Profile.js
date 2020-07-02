@@ -40,6 +40,11 @@ Profile.schema = new SimpleSchema({
 			required: Meteor.isPro,
 			label: 'category'
 		  },
+		  datePlanted: {
+			type: Date,
+			optional: true,
+			label: 'datePlanted'
+		  },
 		  dateBought: {
 			type: Date,
 			optional: true,
@@ -112,6 +117,16 @@ Profile.schema = new SimpleSchema({
 			defaultValue: '',
 			label: 'waterSchedule'
 		  },
+		  pruningSchedule: {
+			type: Number,
+			optional: true,
+			label: 'pruningSchedule'
+		  },
+		  deadheadingSchedule: {
+			type: Number,
+			optional: true,
+			label: 'deadheadingSchedule'
+		  },
 		  waterPreference: {
 			type: String,
 			defaultValue: '',
@@ -124,7 +139,7 @@ Profile.schema = new SimpleSchema({
 		  },
 		  toxicity: {
 			type: String,
-			defaultValue: '',
+			optional: true,
 			label: 'toxicity'
 		  },
 		  fertilizerTracker: {
@@ -180,6 +195,32 @@ Profile.schema = new SimpleSchema({
 			type: String,
 			optional: true,
 			label: 'pestTracker.$.treatment'
+		  },
+		  pruningTracker: {
+			type: Array,
+			optional: true,
+			label: 'pruningTracker'
+		  },
+		  'pruningTracker.$': {
+			type: Object,
+			label: 'pruningTracker.$'
+		  },
+		  'pruningTracker.$.date': {
+			type: Date,
+			label: 'pruningTracker.$.date'
+		  },
+		  deadheadingTracker: {
+			type: Array,
+			optional: true,
+			label: 'deadheadingTracker'
+		  },
+		  'deadheadingTracker.$': {
+			type: Object,
+			label: 'deadheadingTracker.$'
+		  },
+		  'deadheadingTracker.$.date': {
+			type: Date,
+			label: 'deadheadingTracker.$.date'
 		  },
 		  tilled: {
 			type: Boolean,

@@ -1,11 +1,10 @@
-import { Accounts } from 'meteor/accounts-base';
 import rateLimit from '../../modules/rate-limit';
 import logger from '/imports/utils/logger';
 import SimpleSchema from 'simpl-schema';
 import handleMethodException from '/imports/utils/handle-method-exception';
 
 Meteor.methods({
-  'account.insert': function accountInsert(data) {
+  'preferences.insert': function preferencesInsert(data) {
 
 	try {
 	  data.createdAt = new Date();
@@ -56,13 +55,7 @@ Meteor.methods({
 		logger('danger', "Validation failed", validationContext.validationErrors());
 		throw new Meteor.Error('500', "Invalid arguments passed");
 	  } else {
-	    //create our user
-		const response = Accounts.createUser(data);
-
-		logger('info', 'acct res', response)
-		//create their preferences profile
-		Preferences.insert({userId: response, createdAt: data.createdAt, updatedAt: data.updatedAt})
-
+		const response = Preferences.createUser(data);
 		return response;
 	  }
 	} catch(e) {
@@ -70,7 +63,7 @@ Meteor.methods({
 	  handleMethodException("Please check your inputs and try again.")
 	}
   },
-  'account.updatePassword': function accountUpdatePassword(password, newPassword) {
+  'preferences.updatePassword': function preferencesUpdatePassword(password, newPassword) {
 
 	try {
 	  const data = {
@@ -97,9 +90,9 @@ Meteor.methods({
 		throw new Meteor.Error('500', "Invalid arguments passed");
 	  } else {
 
-		Accounts.changePassword(data.password, data.newPassword, (err) => {
+		Preferences.changePassword(data.password, data.newPassword, (err) => {
 		  if (err) {
-		    logger('danger', "err in account.updatePassword - ", err.message)
+		    logger('danger', "err in preferences.updatePassword - ", err.message)
 			handleMethodException(err)
 		  }
 		})
@@ -110,7 +103,7 @@ Meteor.methods({
 	  handleMethodException("Please check your inputs and try again.")
 	}
   },
-  'account.updateProfile': function accountUpdateProfile(newProfile, isPro) {
+  'preferences.updateProfile': function preferencesUpdateProfile(newProfile, isPro) {
 
 	try {
 
@@ -141,13 +134,13 @@ Meteor.methods({
 		const userId = Meteor.userId();
 
 		//first remove old email
-		Accounts.removeEmail(userId, Meteor.user().emails[0].address)
+		Preferences.removeEmail(userId, Meteor.user().emails[0].address)
 
 		//then add new one
-		Accounts.addEmail(userId, newProfile.email, false)
+		Preferences.addEmail(userId, newProfile.email, false)
 
 		//then new username
-		// Accounts.setUsername(userId, newProfile.name)
+		// Preferences.setUsername(userId, newProfile.name)
 		Meteor.users.update({_id: userId}, {$set:{'profile.name': newProfile.name, 'profile.zip': newProfile.zip}})
 
 		if (Meteor.isPro !== isPro) {
@@ -172,8 +165,8 @@ Meteor.methods({
 
 rateLimit({
   methods: [
-	'account.insert',
-	'account.updatePassword'
+	'preferences.insert',
+	'preferences.updatePassword'
   ],
   limit: 5,
   timeRange: 1000,

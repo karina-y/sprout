@@ -1,117 +1,202 @@
-import React, { Component } from 'react';
-import autobind from 'react-autobind';
-import "./Account.scss";
-import { Session } from "meteor/session";
-import { toast } from 'react-toastify';
+import React, { Component } from 'react'
+import autobind from 'react-autobind'
+import './Account.scss'
+import { Session } from 'meteor/session'
+import { toast } from 'react-toastify'
+import { Accounts } from 'meteor/accounts-base'
+import logger from '../../utils/logger'
+import handleMethodException from '../../utils/handle-method-exception'
 
 class Account extends Component {
-  constructor(props) {
-	super(props);
+  constructor (props) {
+	super(props)
 
 	this.state = {
+	  name: null,
 	  email: null,
-	  password: null
-	};
+	  zip: null,
+	  currentPassword: null,
+	  editing: false,
+	  changingPassword: false,
+	  pro: false,
+	  newPassword: null,
+	  confirmNewPassword: null,
+	}
 
-	autobind(this);
+	autobind(this)
   }
 
-  componentDidMount() {
-	Session.set('pageTitle', "Account");
+  componentDidMount () {
+	Session.set('pageTitle', 'Account')
 
 	//TODO is there a smarter way to do this?
-	if (this.props.history.action === "REPLACE") {
-	  toast.error("You need to be logged in to perform that action.");
+	if (this.props.history.action === 'REPLACE') {
+	  toast.error('You need to be logged in to perform that action.')
 	}
+
+	this.setState({
+	  pro: Meteor.isPro
+	})
   }
 
-  login() {
-	if (this.state.email && this.state.password) {
-	  const props = this.props;
+  changePassword () {
+	if (!this.state.newPassword || !this.state.confirmNewPassword || !this.state.currentPassword) {
+	  toast.error('Please fill out all fields.')
+	} else if (this.state.newPassword !== this.state.confirmNewPassword) {
+	  toast.error('New passwords do not match, please re-enter your new password.')
+	} else {
 
-	  Meteor.loginWithPassword(this.state.email.toLowerCase(), this.state.password, function (err) {
+	  Accounts.changePassword(this.state.currentPassword, this.state.newPassword, (err) => {
 		if (err) {
-		  //do something if error occurred or
 		  toast.error(err.message)
 		} else {
-		  toast.success(`Welcome back ${Meteor.user().profile.name}!`);
-		  props.history.push('/catalogue');
-		}
-	  });
-	} else {
-	  toast.error("Please check your inputs and try again.")
-	}
-  }
-
-  createUser() {
-	if (this.state.name && this.state.email && this.state.password) {
-	  const data = {
-		profile: {
-		  name: this.state.name
-		},
-		email: this.state.email.toLowerCase(),
-		password: this.state.password
-	  };
-
-	  Meteor.call('account.insert', data, (err, response) => {
-		if (err) {
-		  toast.error(err.message);
-		} else {
-		  //login user
-		  const props = this.props;
-
-		  Meteor.loginWithPassword(this.state.email.toLowerCase(), this.state.password, function(err) {
-			if(err) {
-			  //do something if error occurred or
-			  toast.error(err.message)
-			} else{
-			  toast.success(`Welcome ${data.profile.name}! Let's add your first plant.`);
-			  props.history.push('/catalogue/add');
-			}
-		  });
+		  toast.success('Password successfully changed.')
+		  this.resetProfile()
 		}
 	  })
 
-	} else {
-	  toast.error("Please check your inputs and try again.")
 	}
   }
 
-  render() {
+  saveProfile () {
+	//TODO only update data programmatically
+	let newProfile = {
+	  name: this.state.name || Meteor.user().profile.name,
+	  email: this.state.email || Meteor.user().emails[0].address,
+	}
+
+	if (this.state.zip || Meteor.user().profile.zip) {
+	  newProfile.zip = this.state.zip || Meteor.user().profile.zip;
+	}
+
+	const isPro = this.state.pro
+
+	if (!newProfile.name || !newProfile.email) {
+	  toast.error('Please enter your updated information.')
+	} else {
+	  Meteor.call('account.updateProfile', newProfile, isPro, (err, response) => {
+		if (err) {
+		  toast.error(err.message)
+		} else {
+		  toast.success('Profile successfully updated.')
+		  this.resetProfile()
+		}
+	  })
+	}
+  }
+
+  resetProfile () {
+	this.setState({
+	  newPassword: null,
+	  editing: false,
+	  changingPassword: false,
+	  pro: Meteor.isPro
+	})
+  }
+
+  render () {
+	const name = Meteor.user().profile.name
+	const zip = Meteor.user().profile.zip || 'N/A'
+	const email = Meteor.user().emails[0].address
 
 	return (
-			<div className="Account flex-center">
-			  <p className="acct-title title-ming">Login or Sign up</p>
+			<div className="Account">
+			  <p className="acct-title title-ming">Account</p>
 
-			  <form id="account">
-				<input type="text"
-					   placeholder="Name"
-					   onChange={(e) => this.setState({name: e.target.value})} />
+			  {!this.state.changingPassword &&
+			  <React.Fragment>
+				<p>
+				  <b>Name:</b> {this.state.editing ? <input type="text"
+															placeholder="Name"
+															defaultValue={name}
+															onChange={(e) => this.setState({name: e.target.value})}/> : name}
+				</p>
 
-				<input type="email"
-					   placeholder="E-mail"
-					   onChange={(e) => this.setState({email: e.target.value})} />
+				<p>
+				  <b>E-mail:</b> {this.state.editing ? <input type="email"
+															  placeholder="E-mail"
+															  defaultValue={email}
+															  onChange={(e) => this.setState({email: e.target.value})}/> : email}
+				</p>
 
-				<input type="password"
-					   placeholder="Password"
-					   onChange={(e) => this.setState({password: e.target.value})} />
+				<p>
+				  <b>Zip / Postal Code:</b> {this.state.editing ? <input type="text"
+																		 placeholder="Zip / Postal Code"
+																		 defaultValue={zip}
+																		 onChange={(e) => this.setState({zip: e.target.value})}/> : zip}
+				</p>
+
+				{!this.state.editing &&
+				<p>
+				  <b>Verified?:</b> {this.state.verified ? 'Yes' : 'No'}
+				</p>
+				}
+
+				<p>
+				  <b>Pro?:</b> {this.state.editing ? <input type="checkbox"
+															placeholder="pro"
+															className="checkbox"
+															checked={this.state.pro}
+															onChange={(e) => this.setState({pro: !this.state.pro})}/> : this.state.pro ? 'Yes' : 'No'}
+				</p>
+			  </React.Fragment>
+			  }
+
+			  {this.state.changingPassword &&
+			  <form>
+				<p>
+				  <b>Current Password:</b> <input type="password"
+												  placeholder="Password"
+												  onChange={(e) => this.setState({currentPassword: e.target.value})}/>
+				</p>
+
+				<p>
+				  <b>New Password:</b> <input type="password"
+											  placeholder="Password"
+											  onChange={(e) => this.setState({newPassword: e.target.value})}/>
+				</p>
+
+				<p>
+				  <b>Confirm New Password:</b> <input type="password"
+													  placeholder="Password"
+													  onChange={(e) => this.setState({confirmNewPassword: e.target.value})}/>
+				</p>
 			  </form>
+			  }
 
 			  <div className="buttons-footer flex-between">
-				<button onClick={this.createUser}
+				{!this.state.changingPassword &&
+				<button onClick={() => this.state.editing ? this.saveProfile() : this.setState({
+				  editing: true,
+				  changingPassword: false
+				})}
 						className="flat">
-				  Sign Up
+				  {this.state.editing ? 'Save Profile' : 'Edit Profile'}
 				</button>
+				}
 
-				<button onClick={this.login}
+
+				{!this.state.editing &&
+				<button onClick={() => this.state.changingPassword ? this.changePassword() : this.setState({
+				  editing: false,
+				  changingPassword: true
+				})}
 						className="flat">
-				  Login
+				  {this.state.changingPassword ? 'Save Password' : 'New Password'}
 				</button>
+				}
+
+				{(this.state.editing || this.state.changingPassword) &&
+				<button onClick={this.resetProfile}
+						className="btn-danger">
+				  Cancel
+				</button>
+				}
 			  </div>
+
 			</div>
-	);
+	)
   }
 }
 
-
-export default Account;
+export default Account

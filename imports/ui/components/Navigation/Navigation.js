@@ -23,9 +23,9 @@ class Navigation extends Component {
 	  if(err) {
 		//do something if error occurred or
 		toast.error(err.message)
-	  } else{
+	  } else {
 	    //TODO should be props.history.push but can't access outside switch
-		window.location.href = '/account';
+		window.location.href = '/login';
 
 		//TODO this doesn't hit because of above reason
 		toast.success(`Successfully logged out.`);
@@ -52,8 +52,12 @@ class Navigation extends Component {
 		title: "Add To Catalogue"
 	  },
 	  {
-		href: Meteor.userId() ? "#" : "/account",
-		title: Meteor.userId() ? "Logout" : "Login / Sign Up"
+		href: Meteor.userId() ? "/account" : "/login",
+		title: Meteor.userId() ? "Account" : "Login"
+	  },
+	  {
+		href: Meteor.userId() ? "/logout" : "/sign-up",
+		title: Meteor.userId() ? "Logout" : "Sign Up"
 	  }
 	];
 
@@ -70,7 +74,7 @@ class Navigation extends Component {
 											 alt="baby groot dancing"
 											 title="button to open navigation" />}>
 				  {anchors.map((item, index) => {
-					return item.href === "#" && Meteor.userId() ?
+					return item.href === "/logout" ?
 							<p className="bm-item side-nav-link "
 							   onClick={logout}
 							   key={index}>

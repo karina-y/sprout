@@ -1,10 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-// import './SwipePanelContent.scss';
+import './SwipePanelContent.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 const SwipePanelContent = (props) => (
-		<div className="detail-panel">
+		<div className="SwipePanelContent">
 		  <div className="icon-side">
 			<FontAwesomeIcon icon={props.icon}
 							 className="plant-condition-icon"

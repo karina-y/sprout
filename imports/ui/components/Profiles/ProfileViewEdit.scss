@@ -39,7 +39,7 @@
 
     p {
       font-size: $font-xs;
-      color: $dark-slate-gray;
+      color: $med-gray;
     }
 
     .icon-side {
@@ -74,10 +74,6 @@
       margin: 0 10px;
     }
 
-    .detail-panel {
-      margin-bottom: 10px;
-    }
-
     .swipe-title {
       text-align: center;
       margin-bottom: 15px;
@@ -100,3 +96,39 @@
   }
 
 }
+
+body.dark-theme .ProfileViewEdit {
+
+    .swipe-view {
+
+      p,
+      .swipe-title {
+        color: $white;
+      }
+
+      .scroll-box p {
+        color: $med-gray;
+      }
+
+      .swipe-title::before {
+        border-top: 7px solid $powder-blue;
+      }
+
+      .svg-inline--fa {
+        color: $powder-blue;
+
+        &.fa-sad-tear {
+          color: $danger-dark;
+        }
+
+        &.fa-meh {
+          color: $warning-dark;
+        }
+
+        &.fa-smile {
+          color: $success-dark;
+        }
+      }
+    }
+  }
+

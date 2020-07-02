@@ -6,7 +6,7 @@ import LusciousLocks from '../components/HomePage/LusciousLocks'
 import GodMode from '../components/HomePage/GodMode'
 import SignMeUp from '../components/HomePage/SignMeUp'
 
-const HomePage = () => (
+const HomePage = (props) => (
 		<div className="HomePage">
 			<Hero />
 
@@ -19,7 +19,7 @@ const HomePage = () => (
 
 				<GodMode />
 
-				<SignMeUp />
+				<SignMeUp {...props} />
 			  </React.Fragment>
 			</LazyLoad>
 

@@ -25,8 +25,25 @@ body {
   background-color: $off-white;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  color: $dark-slate-gray;
+  color: $med-gray;
   overflow-x: hidden;
+
+  &.dark-theme {
+    background-color: $dark-gray;
+    color: $off-white;
+
+    .bottom-nav {
+      background: $med-gray;
+    }
+
+    .title-ming {
+      color: $powder-blue;
+    }
+
+    table {
+      color: $med-gray;
+    }
+  }
 
   #root {
     height: 100%;
@@ -254,8 +271,16 @@ body {
     font-size: $font-xs;
   }
 
+  input[type="radio"] {
+    height: 20px;
+  }
+
   input.small {
     width: 20%;
+  }
+
+  .not-required {
+    margin-left: 10px;
   }
 
   label.ming {
@@ -304,10 +329,19 @@ body {
     background: $white;
     //border-radius: 10px 4px !important;
     border-radius: unset !important;
-    text-transform: uppercase;
+    //text-transform: uppercase;
     outline: none !important;
     font-weight: bold !important;
-    padding: 15px !important;
+    //padding: 15px !important;
+    font-family: "Spartan ExtraBold", sans-serif;
+    text-transform: none;
+    position: relative;
+    //outline: none;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    padding: 10px !important;
+    font-size: $font-xs;
 
     &.underline-btn {
       margin: 2px 15px;
@@ -526,17 +560,8 @@ body {
     }
 
     &.flat {
-      font-family: "Spartan ExtraBold", sans-serif;
-      text-transform: none;
-      position: relative;
-      outline: none;
-      text-decoration: none;
-      border: none;
       background: $powder-blue;
       color: $ming;
-      cursor: pointer;
-      padding: 10px !important;
-      font-size: $font-xs;
     }
 
   }
@@ -593,6 +618,10 @@ body {
       border: none;
       padding-top: 0;
       justify-content: space-between;
+    }
+
+    label {
+      color: $med-gray;
     }
 
     &.profile-view-data-modal {

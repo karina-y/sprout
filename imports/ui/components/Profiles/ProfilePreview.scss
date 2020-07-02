@@ -23,14 +23,16 @@
   }
 
   .quick-details {
-    color: $dark-slate-gray;
+    color: $med-gray;
     border-radius: 6px;
     padding: 10px;
     padding-top: 0;
 
     p {
       font-size: 12px;
-      font-weight: bold;
+      font-weight: 700;
+      font-family: "Montserrat", sans-serif;
+      text-transform: uppercase;
     }
 
     .plant-condition-icon {
@@ -48,15 +50,15 @@
 
 
       &.happy .progress-bar {
-        background-color: $success-light;
+        background-color: $success-dark;
       }
 
       &.neutral .progress-bar {
-        background-color: $warning-light;
+        background-color: $warning-dark;
       }
 
       &.needs-attn .progress-bar {
-        background-color: $danger-light;
+        background-color: $danger-dark;
       }
     }
 
