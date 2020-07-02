@@ -186,6 +186,7 @@ class ProfileViewEdit extends Component {
 	const newProfileData = this.state.newData
 	const oldProfileData = this.props.profile
 	let data
+	let changeTitle = false;
 
 	if (!type || !newProfileData || JSON.stringify(newProfileData) === '{}') {
 	  toast.error('No data entered.')
@@ -214,6 +215,8 @@ class ProfileViewEdit extends Component {
 		  break
 		case 'etc-edit':
 		  data = {
+			commonName: newProfileData.commonName || oldProfileData.commonName,
+			latinName: newProfileData.latinName || oldProfileData.latinName,
 			toxicity: newProfileData.toxicity || oldProfileData.toxicity,
 			category: newProfileData.category || oldProfileData.category,
 			location: newProfileData.location || oldProfileData.location,
@@ -221,6 +224,10 @@ class ProfileViewEdit extends Component {
 			dateBought: newProfileData.dateBought || oldProfileData.dateBought,
 			datePlanted: newProfileData.datePlanted || oldProfileData.datePlanted,
 			companions: newProfileData.companions || oldProfileData.companions
+		  }
+
+		  if (newProfileData.latinName !== oldProfileData.latinName || newProfileData.commonName !== oldProfileData.commonName) {
+			changeTitle = true;
 		  }
 		  break
 		case 'pruningDeadheadingTracker':
@@ -243,6 +250,10 @@ class ProfileViewEdit extends Component {
 			toast.error(err.message)
 		  } else {
 			toast.success('Successfully saved new entry.')
+
+			if (changeTitle) {
+			  Session.set('pageTitle', newProfileData.latinName || newProfileData.commonName)
+			}
 
 			//reset the data
 			this.resetModal()

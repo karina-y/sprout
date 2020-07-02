@@ -4,8 +4,8 @@ import './Account.scss'
 import { Session } from 'meteor/session'
 import { toast } from 'react-toastify'
 import { Accounts } from 'meteor/accounts-base'
-import logger from '../../utils/logger'
-import handleMethodException from '../../utils/handle-method-exception'
+import Preferences from '../../api/Preferences/Preferences'
+import { Meteor } from 'meteor/meteor'
 
 class Account extends Component {
   constructor (props) {
@@ -21,6 +21,7 @@ class Account extends Component {
 	  pro: false,
 	  newPassword: null,
 	  confirmNewPassword: null,
+	  theme: null
 	}
 
 	autobind(this)
@@ -28,6 +29,7 @@ class Account extends Component {
 
   componentDidMount () {
 	Session.set('pageTitle', 'Account')
+	const preferences = Preferences.findOne({userId: Meteor.userId()})
 
 	//TODO is there a smarter way to do this?
 	if (this.props.history.action === 'REPLACE') {
@@ -35,7 +37,8 @@ class Account extends Component {
 	}
 
 	this.setState({
-	  pro: Meteor.isPro
+	  pro: Meteor.isPro,
+	  theme: preferences ? preferences.theme || 'light' : 'light'
 	})
   }
 
@@ -66,7 +69,7 @@ class Account extends Component {
 	}
 
 	if (this.state.zip || Meteor.user().profile.zip) {
-	  newProfile.zip = this.state.zip || Meteor.user().profile.zip;
+	  newProfile.zip = this.state.zip || Meteor.user().profile.zip
 	}
 
 	const isPro = this.state.pro
@@ -74,7 +77,7 @@ class Account extends Component {
 	if (!newProfile.name || !newProfile.email) {
 	  toast.error('Please enter your updated information.')
 	} else {
-	  Meteor.call('account.updateProfile', newProfile, isPro, (err, response) => {
+	  Meteor.call('account.updateProfile', newProfile, this.state.theme, isPro, (err, response) => {
 		if (err) {
 		  toast.error(err.message)
 		} else {
@@ -138,6 +141,15 @@ class Account extends Component {
 															className="checkbox"
 															checked={this.state.pro}
 															onChange={(e) => this.setState({pro: !this.state.pro})}/> : this.state.pro ? 'Yes' : 'No'}
+				</p>
+
+				<p>
+				  <b>Theme:</b> {this.state.editing ? <select placeholder="Category"
+															  onChange={(e) => this.setState({theme: e.target.value})}
+															  value={this.state.theme}>
+				  <option value="light">Light Theme</option>
+				  <option value="dark">Dark Theme</option>
+				</select> : this.state.theme}
 				</p>
 			  </React.Fragment>
 			  }

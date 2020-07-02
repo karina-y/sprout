@@ -2,7 +2,6 @@ import Profile from './Profile'
 import rateLimit from '../../modules/rate-limit'
 import logger from '/imports/utils/logger'
 import SimpleSchema from 'simpl-schema'
-import { Promise } from 'meteor/promise'
 
 Meteor.methods({
   'profile.insert': function profileInsert (data) {
@@ -64,20 +63,23 @@ Meteor.methods({
 		  query = {$set: {pruningSchedule: data.pruningSchedule, deadheadingSchedule: data.deadheadingSchedule, updatedAt: data.updatedAt}}
 		  break
 		case 'etc-edit':
-		  validationSchema = Profile.schema.pick('location', 'dateBought', 'datePlanted', 'locationBought', 'toxicity', 'category', 'companions', 'updatedAt')
+		  validationSchema = Profile.schema.pick('commonName', 'latinName', 'location', 'dateBought', 'datePlanted', 'locationBought', 'toxicity', 'category', 'companions', 'updatedAt')
 
 		  query = {
 			$set: {
-			  location: data.location,
-			  dateBought: data.dateBought,
-			  datePlanted: data.datePlanted,
-			  locationBought: data.locationBought,
+			  commonName: data.commonName,
+			  latinName: data.latinName,
 			  toxicity: data.toxicity,
 			  category: data.category,
+			  location: data.location,
+			  locationBought: data.locationBought,
+			  dateBought: data.dateBought,
+			  datePlanted: data.datePlanted,
 			  companions: data.companions,
 			  updatedAt: data.updatedAt
 			}
 		  }
+
 		  break
 		case 'pruningDeadheadingTracker':
 		  //entry for both pruning and deadheading

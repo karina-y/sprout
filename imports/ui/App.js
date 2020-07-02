@@ -24,6 +24,7 @@ import { Meteor } from "meteor/meteor"
 import Login from './pages/Login'
 import Signup from './pages/Signup'
 import Preferences from '../api/Preferences/Preferences'
+import ToDo from './pages/ToDo'
 
 /*
 TODO
@@ -69,7 +70,7 @@ class App extends Component {
 					  <div className={`App ${this.state.accessible ? 'accessible' : ''}`} id="outerContainer">
 
 						<Switch>
-						  <Route exact path="/" render={props => <HomePage {...props} />} />
+						  {/*<Route exact path="/" render={props => <HomePage {...props} />} />*/}
 
 						  <Route exact path="/login" render={props => <Login {...props} />} />
 
@@ -77,6 +78,10 @@ class App extends Component {
 
 
 						  {/* //TODO remove - for debugging */}
+
+						  <Authenticated exact path="/"
+										 component={ToDo}
+										 {...props} />
 
 						  <Authenticated exact path="/account"
 										 component={Account}
@@ -129,7 +134,7 @@ export default withTracker(() => {
 	}
 
 	if (preferencesSub.ready()) {
-	  const pref = Preferences.find({userId: Meteor.userId()}).fetch();
+	  const pref = Preferences.findOne({userId: Meteor.userId()});
 
 	  if (pref && pref.theme === "dark") {
 	    document.getElementsByTagName('body')[0].className = 'dark-theme';
@@ -139,8 +144,6 @@ export default withTracker(() => {
 	}
 
   }
-
-  document.getElementsByTagName('body')[0].className = 'dark-theme';
 
   /*console.log("************CALLING START\n")
   console.log("************data:", Profile.find().fetch())

@@ -13,16 +13,12 @@ Preferences.deny({
 
 
 Preferences.schema = new SimpleSchema({
-		  _id: {
-			type: String,
-			label: '_id'
-		  },
 		  userId: {
 			type: String,
 			label: 'userId'
 		  },
 		  theme: {
-			type: Object,
+			type: String,
 			defaultValue: 'light',
 			label: 'theme'
 		  },
