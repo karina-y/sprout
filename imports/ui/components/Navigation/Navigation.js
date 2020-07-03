@@ -41,7 +41,7 @@ class Navigation extends Component {
 	const anchors = [
 	  {
 		href: "/",
-		title: "About"
+		title: "Today's Tasks"
 	  },
 	  {
 		href: "/catalogue",

@@ -53,6 +53,10 @@
       width: 85%;
     }
 
+    .plant-condition-icon {
+      display: inline-block;
+    }
+
     .svg-inline--fa {
       color: $ming;
       width: 15px;
@@ -67,6 +71,24 @@
 
       &.fa-smile {
         color: $success-dark;
+      }
+    }
+
+    .injected-svg {
+      fill: $ming;
+      width: 20px;
+      height: auto;
+
+      &.fa-sad-tear {
+        fill: $danger-dark;
+      }
+
+      &.fa-meh {
+        fill: $warning-dark;
+      }
+
+      &.fa-smile {
+        fill: $success-dark;
       }
     }
 
@@ -127,6 +149,22 @@ body.dark-theme .ProfileViewEdit {
 
         &.fa-smile {
           color: $success-dark;
+        }
+      }
+
+      .injected-svg {
+        fill: $powder-blue;
+
+        &.fa-sad-tear {
+          fill: $danger-dark;
+        }
+
+        &.fa-meh {
+          fill: $warning-dark;
+        }
+
+        &.fa-smile {
+          fill: $success-dark;
         }
       }
     }
