@@ -25,26 +25,30 @@ function TaskListPreview (props) {
 				<div className="flex-evenly" style={{position: 'relative', padding: '10px 0'}}>
 
 				  {profile.attentionNeeded.water &&
-				  <ReactSVG src={IconList.water}
+				  <ReactSVG src={IconList.water.icon}
 							className="plant-condition-icon info"
+							alt={IconList.water.alt}
 							title="water needed"/>
 				  }
 
 				  {profile.attentionNeeded.fertilizer &&
-				  <ReactSVG src={IconList.fertilizer}
+				  <ReactSVG src={IconList.fertilizer.icon}
 							className="plant-condition-icon warning"
+							alt={IconList.fertilizer.alt}
 							title="fertilizer needed"/>
 				  }
 
 				  {profile.attentionNeeded.pruning &&
-				  <ReactSVG src={IconList.pruning}
-							className="plant-condition-icon danger"
+				  <ReactSVG src={IconList.pruning.icon}
+							className="plant-condition-icon success"
+							alt={IconList.pruning.alt}
 							title="pruning needed"/>
 				  }
 
 				  {profile.attentionNeeded.deadheading &&
-				  <ReactSVG src={IconList.deadheading}
-							className="plant-condition-icon success"
+				  <ReactSVG src={IconList.deadheading.icon}
+							className="plant-condition-icon danger"
+							alt={IconList.deadheading.alt}
 							title="deadheading needed"/>
 				  }
 				</div>
@@ -59,4 +63,4 @@ TaskListPreview.propTypes = {
   profile: PropTypes.object.isRequired
 }
 
-export default TaskListPreview;
+export default TaskListPreview
