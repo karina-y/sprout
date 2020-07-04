@@ -104,7 +104,7 @@ class Account extends Component {
 
 	return (
 			<div className="Account">
-			  <p className="acct-title title-ming">Account</p>
+			  <h4 className="acct-title title-ming">Account</h4>
 
 			  {!this.state.changingPassword &&
 			  <React.Fragment>

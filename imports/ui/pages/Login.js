@@ -1,33 +1,33 @@
-import React, { Component } from 'react';
-import autobind from 'react-autobind';
-import "./Login_Signup.scss";
-import { Session } from "meteor/session";
-import { toast } from 'react-toastify';
+import React, { Component } from 'react'
+import autobind from 'react-autobind'
+import './Login_Signup.scss'
+import { Session } from 'meteor/session'
+import { toast } from 'react-toastify'
 
 class Login extends Component {
-  constructor(props) {
-	super(props);
+  constructor (props) {
+	super(props)
 
 	this.state = {
 	  email: null,
 	  password: null
-	};
+	}
 
-	autobind(this);
+	autobind(this)
   }
 
-  componentDidMount() {
-	Session.set('pageTitle', "Login");
+  componentDidMount () {
+	Session.set('pageTitle', 'Login')
 
 	//TODO is there a smarter way to do this?
-	if (this.props.history.action === "REPLACE") {
-	  toast.error("You need to be logged in to perform that action.");
+	if (this.props.history.action === 'REPLACE') {
+	  toast.error('You need to be logged in to perform that action.')
 	}
   }
 
-  login() {
+  login () {
 	if (this.state.email && this.state.password) {
-	  const props = this.props;
+	  const props = this.props
 
 	  // Meteor.call('account.validateLogin')
 
@@ -36,30 +36,30 @@ class Login extends Component {
 		  //do something if error occurred or
 		  toast.error(err.message)
 		} else {
-		  toast.success(`Welcome back ${Meteor.user().profile.name}!`);
-		  props.history.push('/');
+		  toast.success(`Welcome back ${Meteor.user().profile.name}!`)
+		  props.history.push('/')
 		}
-	  });
+	  })
 	} else {
-	  toast.error("Please check your inputs and try again.")
+	  toast.error('Please check your inputs and try again.')
 	}
   }
 
-  forgotPassword() {
-    if (!this.state.email) {
-      toast.error('Please enter your email.')
+  forgotPassword () {
+	if (!this.state.email) {
+	  toast.error('Please enter your email.')
 	} else {
 	  Accounts.forgotPassword({email: this.state.email}, (err) => {
-	    if (err) {
-	      toast.error(err.message)
+		if (err) {
+		  toast.error(err.message)
 		} else {
-	      toast.success('Please check your email for a password reset link.')
+		  toast.success('Please check your email for a password reset link.')
 		}
 	  })
 	}
   }
 
-  render() {
+  render () {
 
 	return (
 			<div className="Login_Signup flex-center">
@@ -68,28 +68,28 @@ class Login extends Component {
 			  <form id="Login">
 				<input type="email"
 					   placeholder="E-mail"
-					   onChange={(e) => this.setState({email: e.target.value})} />
+					   onChange={(e) => this.setState({email: e.target.value})}/>
 
 				<input type="password"
 					   placeholder="Password"
-					   onChange={(e) => this.setState({password: e.target.value})} />
+					   onChange={(e) => this.setState({password: e.target.value})}/>
 			  </form>
 
-			  <div className="buttons-footer flex-between">
-				<button onClick={this.forgotPassword}
-						className="flat">
-				  Forgot Password
-				</button>
-
+			  <div className="buttons-footer flex-center">
 				<button onClick={this.login}
 						className="flat">
 				  Login
 				</button>
+
+				<button onClick={this.forgotPassword}
+						className="naked">
+				  Forgot Your Password?
+				</button>
 			  </div>
+
 			</div>
-	);
+	)
   }
 }
 
-
-export default Login;
+export default Login

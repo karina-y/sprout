@@ -62,7 +62,8 @@ Meteor.methods({
 		const response = Accounts.createUser(data)
 		Accounts.sendVerificationEmail(response)
 
-		logger('info', 'acct res', response)
+		// logger('info', 'acct res', response)
+
 		//create their preferences profile
 		Preferences.insert({userId: response, createdAt: data.createdAt, updatedAt: data.updatedAt})
 

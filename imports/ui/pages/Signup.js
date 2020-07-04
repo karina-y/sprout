@@ -87,7 +87,7 @@ class Signup extends Component {
 
 	return (
 			<div className="Login_Signup flex-center">
-			  <p className="acct-title title-ming">Sign up</p>
+			  <h4 className="acct-title title-ming">Sign up</h4>
 
 			  <form id="Logout">
 				<input type="text"
