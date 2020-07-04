@@ -8,23 +8,35 @@ import {
   Switch,
   Route
 } from "react-router-dom";
-import Navigation from './components/Navigation/Navigation';
-import PlantCatalogue from './pages/PlantCatalogue';
-import ProfileViewEdit from './components/Profiles/ProfileViewEdit';
-import ProfileAdd from './components/Profiles/ProfileAdd';
-import ScrollToTop from './components/Shared/ScrollToTop';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
 import Loading from './components/Shared/Loading';
 import logger from '../utils/logger';
-import Account from './pages/Account'
-import Authenticated from './pages/Authenticated';
 import Profile from '/imports/api/Profile/Profile';
 import { Meteor } from "meteor/meteor"
-import Login from './pages/Login'
-import Signup from './pages/Signup'
 import Preferences from '../api/Preferences/Preferences'
 import ToDo from './pages/ToDo'
+// import LegalStuff from './pages/LegalStuff'
+// import Login from './pages/Login'
+// import Signup from './pages/Signup'
+// import Account from './pages/Account'
+import Authenticated from './pages/Authenticated';
+import Navigation from './components/Navigation/Navigation';
+// import PlantCatalogue from './pages/PlantCatalogue';
+// import ProfileViewEdit from './components/Profiles/ProfileViewEdit';
+// import ProfileAdd from './components/Profiles/ProfileAdd';
+import ScrollToTop from './components/Shared/ScrollToTop';
+import asyncComponent from './components/Shared/AsyncComponent'
+
+const AsyncLogin = asyncComponent(() => import("./pages/Login"));
+const AsyncSignup = asyncComponent(() => import("./pages/Signup"));
+const AsyncAccount = asyncComponent(() => import("./pages/Account"));
+const AsyncPlantCatalogue = asyncComponent(() => import("./pages/PlantCatalogue"));
+const AsyncLegalStuff = asyncComponent(() => import("./pages/LegalStuff"));
+const AsyncProfileViewEdit = asyncComponent(() => import("./components/Profiles/ProfileViewEdit"));
+const AsyncProfileAdd = asyncComponent(() => import("./components/Profiles/ProfileAdd"));
+
+
 
 /*
 TODO
@@ -72,9 +84,11 @@ class App extends Component {
 						<Switch>
 						  {/*<Route exact path="/" render={props => <HomePage {...props} />} />*/}
 
-						  <Route exact path="/login" render={props => <Login {...props} />} />
+						  <Route exact path="/login" render={props => <AsyncLogin {...props} />} />
 
-						  <Route exact path="/sign-up" render={props => <Signup {...props} />} />
+						  <Route exact path="/sign-up" render={props => <AsyncSignup {...props} />} />
+
+						  <Route exact path="/legal-stuff" render={props => <AsyncLegalStuff {...props} />} />
 
 
 						  {/* //TODO remove - for debugging */}
@@ -84,19 +98,19 @@ class App extends Component {
 										 {...props} />
 
 						  <Authenticated exact path="/account"
-										 component={Account}
+										 component={AsyncAccount}
 										 {...props} />
 
 						  <Authenticated exact path="/catalogue"
-										 component={PlantCatalogue}
+										 component={AsyncPlantCatalogue}
 										 {...props} />
 
 						  <Authenticated exact path="/catalogue/add"
-										 component={ProfileAdd}
+										 component={AsyncProfileAdd}
 										 {...props} />
 
 						  <Authenticated exact path="/catalogue/:id"
-										 component={ProfileViewEdit}
+										 component={AsyncProfileViewEdit}
 										 {...props} />
 
 

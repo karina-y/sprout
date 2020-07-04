@@ -43,9 +43,30 @@ class Signup extends Component {
 		  toast.error(err.message)
 		} else {
 		  //login user
-		  const props = this.props
+		  // const props = this.props
 
-		  Meteor.loginWithPassword(this.state.email.toLowerCase(), this.state.password, function (err) {
+		  // Accounts.sendVerificationEmail(response)
+
+		  toast.success('Please check your email to verify your account.')
+
+		  Accounts.onEmailVerificationLink((token, done) => {
+			console.log("token: ", token);
+
+			Accounts.verifyEmail(token, (err) => {
+			  if (err) {
+				console.log("Error: ", err);
+			  } else {
+				console.log("Calling Meteor.methods.emailSendWelcome", done);
+				/*Meteor.call("Meteor.methods.emailSendWelcome", null, (error, result) => {
+				  if (error) console.log("Error: ", error);
+				});*/
+
+				// done();
+			  }
+			});
+		  });
+
+		  /*Meteor.loginWithPassword(this.state.email.toLowerCase(), this.state.password, function (err) {
 			if (err) {
 			  //do something if error occurred or
 			  toast.error(err.message)
@@ -53,7 +74,7 @@ class Signup extends Component {
 			  toast.success(`Welcome ${data.profile.name}! Let's add your first plant.`)
 			  props.history.push('/catalogue/add')
 			}
-		  })
+		  })*/
 		}
 	  })
 

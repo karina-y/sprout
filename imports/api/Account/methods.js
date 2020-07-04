@@ -60,6 +60,7 @@ Meteor.methods({
 	  } else {
 		//create our user
 		const response = Accounts.createUser(data)
+		Accounts.sendVerificationEmail(response)
 
 		logger('info', 'acct res', response)
 		//create their preferences profile
@@ -172,8 +173,6 @@ Meteor.methods({
 
 		  Meteor.call('preferences.update', pref)
 		}
-
-		//TODO once email is integrated, first ask them to confirm their new email, once confirmed delete the old one
 
 		// return response;
 	  }

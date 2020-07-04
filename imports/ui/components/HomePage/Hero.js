@@ -12,7 +12,7 @@ const Hero = () => (
 			<img src="/images/groot.gif"
 				 className="groot"
 				 alt="baby groot dancing"
-				 title="button to open navigation"/>
+				 title="navigation"/>
 		  </div>
 
 		  <div className="right-panel">

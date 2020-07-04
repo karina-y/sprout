@@ -58,7 +58,11 @@ class Navigation extends Component {
 	  {
 		href: Meteor.userId() ? "/logout" : "/sign-up",
 		title: Meteor.userId() ? "Logout" : "Sign Up"
-	  }
+	  },
+	  {
+		href: "/legal-stuff",
+		title: "Legal Stuff"
+	  },
 	];
 
 
@@ -72,7 +76,7 @@ class Navigation extends Component {
 					  customBurgerIcon={<img src="/images/groot.gif"
 											 className="groot-nav"
 											 alt="baby groot dancing"
-											 title="button to open navigation" />}>
+											 title="navigation" />}>
 				  {anchors.map((item, index) => {
 					return item.href === "/logout" ?
 							<p className="bm-item side-nav-link "

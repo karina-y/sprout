@@ -35,7 +35,7 @@ class Login extends Component {
 		  toast.error(err.message)
 		} else {
 		  toast.success(`Welcome back ${Meteor.user().profile.name}!`);
-		  props.history.push('/catalogue');
+		  props.history.push('/');
 		}
 	  });
 	} else {
@@ -47,7 +47,7 @@ class Login extends Component {
 
 	return (
 			<div className="Login_Signup flex-center">
-			  <p className="acct-title title-ming">Login</p>
+			  <h4 className="acct-title title-ming">Login</h4>
 
 			  <form id="Login">
 				<input type="email"

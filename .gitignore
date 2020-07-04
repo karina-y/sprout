@@ -7,3 +7,4 @@ settings.json
 .meteor/
 .deploy/
 dev-notes.*
+mobile-config.js
