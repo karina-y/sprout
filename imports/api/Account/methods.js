@@ -180,7 +180,7 @@ Meteor.methods({
 	  logger('danger', e.message)
 	  handleMethodException('Please check your inputs and try again.')
 	}
-  }
+  },
 })
 
 rateLimit({

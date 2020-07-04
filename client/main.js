@@ -6,6 +6,10 @@ import * as serviceWorker from './serviceWorker';
 
 Meteor.startup(() => {
   ReactDOM.render(<App />, document.getElementById('root'));
+
+  Accounts.onEmailVerificationLink(function(token,done) {
+    Accounts.verifyEmail(token, done);
+  });
 });
 
 

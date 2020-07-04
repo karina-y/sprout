@@ -32,7 +32,7 @@ class ToDo extends Component {
 						})
 						:
 						<p className="title-ming"
-						   style={{marginTop: '50px', textAlign: 'center', padding: '10px'}}>You don't have any plants that need attention today!</p>
+						   style={{marginTop: '50px', textAlign: 'center', padding: '45px'}}>You don't have any plants that need attention today!</p>
 				}
 			</div>
 	)

@@ -38,7 +38,7 @@ class Navigation extends Component {
 	const Menu = BurgerMenu[this.state.currentMenu];
 	const logout = this.logout;
 
-	const anchors = [
+	const authAnchors = [
 	  {
 		href: "/",
 		title: "Today's Tasks"
@@ -52,18 +52,35 @@ class Navigation extends Component {
 		title: "Add To Catalogue"
 	  },
 	  {
-		href: Meteor.userId() ? "/account" : "/login",
-		title: Meteor.userId() ? "Account" : "Login"
+		href: "/account",
+		title: "Account"
 	  },
 	  {
-		href: Meteor.userId() ? "/logout" : "/sign-up",
-		title: Meteor.userId() ? "Logout" : "Sign Up"
+		href: "/logout",
+		title: "Logout"
 	  },
 	  {
 		href: "/legal-stuff",
 		title: "Legal Stuff"
 	  },
 	];
+
+	const unauthAnchors = [
+	  {
+		href: "/login",
+		title: "Login"
+	  },
+	  {
+		href: "/sign-up",
+		title: "Sign Up"
+	  },
+	  {
+		href: "/legal-stuff",
+		title: "Legal Stuff"
+	  },
+	];
+
+	const anchors = Meteor.userId() ? authAnchors : unauthAnchors;
 
 
 	return (

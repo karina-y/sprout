@@ -29,6 +29,8 @@ class Login extends Component {
 	if (this.state.email && this.state.password) {
 	  const props = this.props;
 
+	  // Meteor.call('account.validateLogin')
+
 	  Meteor.loginWithPassword(this.state.email.toLowerCase(), this.state.password, function (err) {
 		if (err) {
 		  //do something if error occurred or
@@ -40,6 +42,20 @@ class Login extends Component {
 	  });
 	} else {
 	  toast.error("Please check your inputs and try again.")
+	}
+  }
+
+  forgotPassword() {
+    if (!this.state.email) {
+      toast.error('Please enter your email.')
+	} else {
+	  Accounts.forgotPassword({email: this.state.email}, (err) => {
+	    if (err) {
+	      toast.error(err.message)
+		} else {
+	      toast.success('Please check your email for a password reset link.')
+		}
+	  })
 	}
   }
 
@@ -59,7 +75,12 @@ class Login extends Component {
 					   onChange={(e) => this.setState({password: e.target.value})} />
 			  </form>
 
-			  <div className="buttons-footer flex-center">
+			  <div className="buttons-footer flex-between">
+				<button onClick={this.forgotPassword}
+						className="flat">
+				  Forgot Password
+				</button>
+
 				<button onClick={this.login}
 						className="flat">
 				  Login
