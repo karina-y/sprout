@@ -208,8 +208,8 @@ class ProfileViewEdit extends Component {
 			category: newProfileData.category || oldProfileData.category,
 			location: newProfileData.location || oldProfileData.location,
 			locationBought: newProfileData.locationBought || oldProfileData.locationBought,
-			dateBought: newProfileData.dateBought || oldProfileData.dateBought,
-			datePlanted: newProfileData.datePlanted || oldProfileData.datePlanted,
+			dateBought: new Date(newProfileData.dateBought || oldProfileData.dateBought),
+			datePlanted: new Date(newProfileData.datePlanted || oldProfileData.datePlanted),
 			companions: newProfileData.companions || oldProfileData.companions
 		  }
 
