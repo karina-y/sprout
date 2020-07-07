@@ -13,9 +13,7 @@ import { faSave } from '@fortawesome/free-solid-svg-icons/faSave'
 import Category from '/imports/api/Category/Category'
 import SoilTypes from '../../../utils/soilTypes'
 import SwipePanelContent from '../Shared/SwipePanelContent'
-import IconList from '../../../utils/iconList'
 
-// import DatePicker from "react-datepicker";
 
 class ProfileAdd extends Component {
   constructor (props) {

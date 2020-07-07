@@ -4,8 +4,6 @@
 .side-navbar-container {
   height: $mobile-nav-height;
   background: $alice-blue-light;
-  //background: $powder-blue-light;
-  //box-shadow: 0px 20px 20px 3px rgba(0, 109, 119, 0.05);
   z-index: 1000;
   width: 100%;
   position: fixed;
@@ -37,13 +35,6 @@
     .nav-icon {
       width: 40px;
       height: auto;
-    }
-
-    //
-    // Burger menu custom styles
-    //
-    .bm-menu-wrap {
-      width: 250px !important;
     }
 
     .bm-burger-button {
@@ -102,18 +93,21 @@
       outline: none;
     }
 
-    //
-    // Mixins
-    //
-    #slide,
-    .menu-1 {
+    .bm-menu-wrap {
+      width: 250px !important;
+
       .bm-cross {
         background: $ming;
       }
 
       .bm-menu {
         padding: 2.5em 1.5em 0;
-        font-size: 1.15em;
+        //font-size: 1.15em;
+        font-size: $font-xs;
+
+        .nav-link-container {
+          font-size: $font-xs;
+        }
       }
     }
 
@@ -158,8 +152,7 @@ body.dark-theme .side-navbar-container {
       fill: $powder-blue;
     }
 
-    #slide,
-    .menu-1 {
+    .bm-menu-wrap {
       .bm-cross {
         background: $powder-blue;
       }

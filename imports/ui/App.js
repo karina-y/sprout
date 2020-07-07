@@ -11,20 +11,11 @@ import {
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify'
 import Loading from './components/Shared/Loading';
-// import logger from '../utils/logger';
-// import Profile from '/imports/api/Profile/Profile';
 import { Meteor } from "meteor/meteor"
 import Preferences from '../api/Preferences/Preferences'
 import ToDo from './pages/ToDo'
-// import LegalStuff from './pages/LegalStuff'
-// import Login from './pages/Login'
-// import Signup from './pages/Signup'
-// import Account from './pages/Account'
 import Authenticated from './pages/Authenticated';
 import Navigation from './components/Navigation/Navigation';
-// import PlantCatalogue from './pages/PlantCatalogue';
-// import ProfileViewEdit from './components/Profiles/ProfileViewEdit';
-// import ProfileAdd from './components/Profiles/ProfileAdd';
 import ScrollToTop from './components/Shared/ScrollToTop';
 import asyncComponent from './components/Shared/AsyncComponent'
 
@@ -37,25 +28,13 @@ const AsyncProfileViewEdit = asyncComponent(() => import("./components/Profiles/
 const AsyncProfileAdd = asyncComponent(() => import("./components/Profiles/ProfileAdd"));
 
 
-
-/*
-TODO
-- add your own photo of the plant
-- edit the plant's name (tbh i just don't know where to put this, the notes section maybe? what do y'all think?)
-- adding notes on a calendar basis, like a diary. this isn't complicated i'm just lazy and haven't done it yet.
-- push notifications that let you know when it's time to water or fertilize your plants
-- the homepage will be a list of your plants that currently need attention instead of the sprout about page
-- add categories for plants
-- be able to filter your catalogue based on location, category
-- sort catalogue based on who needs attn first, date bought, alphabetical, etc
-*/
-
 class App extends Component {
   constructor(props) {
 	super(props);
 
 	this.state = {
-	  accessible: false
+	  accessible: false,
+	  loading: true
 	}
 
 	autobind(this);
@@ -79,7 +58,7 @@ class App extends Component {
 
 					  <ScrollToTop />
 
-					  <div className={`App ${this.state.accessible ? 'accessible' : ''}`} id="outerContainer">
+					  <div className={`App ${this.state.accessible ? 'accessible' : ''}`} id="pageWrap">
 
 						<Switch>
 
@@ -129,9 +108,11 @@ class App extends Component {
 
 }
 
+// export default App;
+
 export default withTracker(() => {
   let loading = false;
-
+console.log("in tracker")
   if (Meteor.userId()) {
 	const profileSub = Meteor.subscribe('profile');
 	const roleSub = Meteor.subscribe('roles')
@@ -157,12 +138,6 @@ export default withTracker(() => {
 
   }
 
-  /*console.log("************CALLING START\n")
-  console.log("************data:", Profile.find().fetch())
-  console.log("************userid:", Meteor.userId())
-  console.log("************meteor client status:", Meteor.status().connected)
-  console.log("************CALLING END\n")*/
-  // console.log("checking auth", Meteor.userId() ? true : false)
 
   //just for debugging, remove in prod
   Meteor.isMobile = /(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino/i.test(navigator.userAgent||navigator.vendor||window.opera)||
