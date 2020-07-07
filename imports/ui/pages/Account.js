@@ -104,52 +104,61 @@ class Account extends Component {
 
 	return (
 			<div className="Account">
-			  <h4 className="acct-title title-ming">Account</h4>
+			  <h4 className="acct-title page-title-ming">Account</h4>
 
 			  {!this.state.changingPassword &&
 			  <React.Fragment>
 				<p>
-				  <b>Name:</b> {this.state.editing ? <input type="text"
-															placeholder="Name"
-															defaultValue={name}
-															onChange={(e) => this.setState({name: e.target.value})}/> : name}
+				  <label>E-mail:</label>
+				  {this.state.editing ? <input type="email"
+											   placeholder="E-mail"
+											   defaultValue={email}
+											   onChange={(e) => this.setState({email: e.target.value})}/> : email}
 				</p>
 
 				<p>
-				  <b>E-mail:</b> {this.state.editing ? <input type="email"
-															  placeholder="E-mail"
-															  defaultValue={email}
-															  onChange={(e) => this.setState({email: e.target.value})}/> : email}
+				  <label>Name</label>
+				  {this.state.editing ? <input type="text"
+											   placeholder="Name"
+											   defaultValue={name}
+											   onChange={(e) => this.setState({name: e.target.value})}/> : name}
 				</p>
 
 				<p>
-				  <b>Zip / Postal Code:</b> {this.state.editing ? <input type="text"
-																		 placeholder="Zip / Postal Code"
-																		 defaultValue={zip}
-																		 onChange={(e) => this.setState({zip: e.target.value})}/> : zip}
+				  <label>Zip / Postal Code:</label>
+				  {this.state.editing ? <input type="text"
+											   placeholder="Zip / Postal Code"
+											   defaultValue={zip}
+											   onChange={(e) => this.setState({zip: e.target.value})}/> : zip}
 				</p>
 
+				<p>
+				  <label>Theme:</label>
+				  {this.state.editing ? <select placeholder="Category"
+												onChange={(e) => this.setState({theme: e.target.value})}
+												value={this.state.theme}>
+					<option value="light">Light Theme</option>
+					<option value="dark">Dark Theme</option>
+				  </select> : this.state.theme}
+				</p>
+
+				{/*TODO remove for prod, just for testing*/}
 				{!this.state.editing &&
 				<p>
-				  <b>Verified?:</b> {this.state.verified ? 'Yes' : 'No'}
+				  <label>Verified?:</label>
+				  {this.state.verified ? 'Yes' : 'No'}
 				</p>
 				}
 
-				<p>
-				  <b>Pro?:</b> {this.state.editing ? <input type="checkbox"
-															placeholder="pro"
-															className="checkbox"
-															checked={this.state.pro}
-															onChange={(e) => this.setState({pro: !this.state.pro})}/> : this.state.pro ? 'Yes' : 'No'}
-				</p>
 
+				{/*TODO remove for prod, just for testing*/}
 				<p>
-				  <b>Theme:</b> {this.state.editing ? <select placeholder="Category"
-															  onChange={(e) => this.setState({theme: e.target.value})}
-															  value={this.state.theme}>
-				  <option value="light">Light Theme</option>
-				  <option value="dark">Dark Theme</option>
-				</select> : this.state.theme}
+				  <label>Pro?:</label>
+				  {this.state.editing ? <input type="checkbox"
+											   placeholder="pro"
+											   className="checkbox"
+											   checked={this.state.pro}
+											   onChange={(e) => this.setState({pro: !this.state.pro})}/> : this.state.pro ? 'Yes' : 'No'}
 				</p>
 			  </React.Fragment>
 			  }
@@ -157,31 +166,31 @@ class Account extends Component {
 			  {this.state.changingPassword &&
 			  <form>
 				<p>
-				  <b>Current Password:</b> <input type="password"
-												  placeholder="Password"
-												  onChange={(e) => this.setState({currentPassword: e.target.value})}/>
+				  <label>Current Password:</label>
+				  <input type="password"
+						 placeholder="Password"
+						 onChange={(e) => this.setState({currentPassword: e.target.value})}/>
 				</p>
 
 				<p>
-				  <b>New Password:</b> <input type="password"
-											  placeholder="Password"
-											  onChange={(e) => this.setState({newPassword: e.target.value})}/>
+				  <label>New Password:</label>
+				  <input type="password"
+						 placeholder="Password"
+						 onChange={(e) => this.setState({newPassword: e.target.value})}/>
 				</p>
 
 				<p>
-				  <b>Confirm New Password:</b> <input type="password"
-													  placeholder="Password"
-													  onChange={(e) => this.setState({confirmNewPassword: e.target.value})}/>
+				  <label>Confirm New Password:</label>
+				  <input type="password"
+						 placeholder="Password"
+						 onChange={(e) => this.setState({confirmNewPassword: e.target.value})}/>
 				</p>
 			  </form>
 			  }
 
-			  <div className="buttons-footer flex-between">
+			  <div className="buttons-footer">
 				{!this.state.changingPassword &&
-				<button onClick={() => this.state.editing ? this.saveProfile() : this.setState({
-				  editing: true,
-				  changingPassword: false
-				})}
+				<button onClick={() => this.state.editing ? this.saveProfile() : this.setState({ editing: true, changingPassword: false })}
 						className="flat">
 				  {this.state.editing ? 'Save Profile' : 'Edit Profile'}
 				</button>
@@ -189,10 +198,7 @@ class Account extends Component {
 
 
 				{!this.state.editing &&
-				<button onClick={() => this.state.changingPassword ? this.changePassword() : this.setState({
-				  editing: false,
-				  changingPassword: true
-				})}
+				<button onClick={() => this.state.changingPassword ? this.changePassword() : this.setState({ editing: false, changingPassword: true })}
 						className="flat">
 				  {this.state.changingPassword ? 'Save Password' : 'New Password'}
 				</button>

@@ -4,10 +4,9 @@ import { withTracker } from 'meteor/react-meteor-data';
 import "./ProfilePreview.scss";
 import ShadowBox from '../ShadowBox/ShadowBox';
 import ProgressBar from 'react-bootstrap/ProgressBar';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFish } from '@fortawesome/free-solid-svg-icons/faFish';
-import { faTint } from '@fortawesome/free-solid-svg-icons/faTint';
 import { getDaysSinceAction, getPlantCondition } from '../../../utils/plantData';
+import IconList from '../../../utils/iconList'
+import { ReactSVG } from 'react-svg'
 
 
 function ProfilePreview (props) {
@@ -28,22 +27,21 @@ function ProfilePreview (props) {
 			  <div className="quick-details">
 				<p>{profile.latinName || profile.commonName}</p>
 
-				<div style={{position: 'relative', padding: '10px 0'}}>
-				  {/*<img className="plant-condition-icon" src="/images/icons/lovely-garden/watering-can.png" />*/}
-				  <FontAwesomeIcon icon={faTint}
-								   className="plant-condition-icon"
-								   title="water level"
-								   alt="water drop"/>
+				<div>
+				  <ReactSVG src={IconList.water.icon}
+							className="plant-condition-icon"
+							alt={IconList.water.alt}
+							title={IconList.water.title}/>
+
 				  <ProgressBar now={waterProgress === 0 ? 5 : waterProgress}
 							   className={`water ${profile.waterCondition}`} />
 				</div>
 
-				<div style={{position: 'relative', padding: '10px 0'}}>
-				  {/*<img className="plant-condition-icon" src="/images/icons/lovely-garden/fertilizer.png" />*/}
-				  <FontAwesomeIcon icon={faFish}
-								   className="plant-condition-icon"
-								   title="fertilizer level"
-								   alt="fish"/>
+				<div>
+				  <ReactSVG src={IconList.fertilizer.icon}
+							className="plant-condition-icon fertilizer"
+							alt={IconList.fertilizer.alt}
+							title={IconList.fertilizer.title}/>
 				  <ProgressBar now={fertilizerProgress}
 							   className={`fertilizer ${profile.fertilizerCondition}`} />
 				</div>

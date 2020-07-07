@@ -165,8 +165,6 @@ class ProfileViewEdit extends Component {
   }
 
   updateProfile (type) {
-	console.log('type', this.state.pruneType)
-	console.log('this.state.pruneType', this.state.pruneType)
 
 	if (type === 'pruningDeadheadingTracker') {
 	  type = this.state.pruneType

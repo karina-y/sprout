@@ -28,6 +28,11 @@
     padding: 10px;
     padding-top: 0;
 
+    & > div {
+      position: relative;
+      padding: 10px 0;
+    }
+
     p {
       font-size: 12px;
       font-weight: 700;
@@ -36,11 +41,14 @@
     }
 
     .plant-condition-icon {
-      width: 15px;
-      height: 15px;
       position: absolute;
       left: 0;
-      top: 4px;
+      top: 2px;
+
+      &.fertilizer .injected-svg {
+        width: 18px;
+        height: 18px;
+      }
     }
 
     .progress {
@@ -60,14 +68,6 @@
       &.needs-attn .progress-bar {
         background-color: $danger-dark;
       }
-    }
-
-    .water-level {
-
-    }
-
-    .fertilizer-level {
-
     }
   }
 

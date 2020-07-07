@@ -19,7 +19,7 @@ class Signup extends Component {
   }
 
   componentDidMount () {
-	Session.set('pageTitle', 'Logout')
+	Session.set('pageTitle', 'Sign Up')
 
 	//TODO is there a smarter way to do this?
 	if (this.props.history.action === 'REPLACE') {
@@ -29,6 +29,9 @@ class Signup extends Component {
 
   createUser () {
 	if (this.state.name && this.state.email && this.state.password) {
+	  //TODO const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+	  //password constraints
+
 	  const data = {
 		profile: {
 		  name: this.state.name,
@@ -54,9 +57,12 @@ class Signup extends Component {
 
 			Accounts.verifyEmail(token, (err) => {
 			  if (err) {
-				console.log("Error: ", err);
+			    toast.error(err.message)
+				// console.log("Error: ", err);
 			  } else {
-				console.log("Calling Meteor.methods.emailSendWelcome", done);
+			    //TODO send welcome email
+				console.log("props", props)
+				// console.log("Calling Meteor.methods.emailSendWelcome", done);
 				/*Meteor.call("Meteor.methods.emailSendWelcome", null, (error, result) => {
 				  if (error) console.log("Error: ", error);
 				});*/
@@ -87,7 +93,7 @@ class Signup extends Component {
 
 	return (
 			<div className="Login_Signup flex-center">
-			  <h4 className="acct-title title-ming">Sign up</h4>
+			  <h4 className="acct-title page-title-ming">Sign up</h4>
 
 			  <form id="Logout">
 				<input type="text"

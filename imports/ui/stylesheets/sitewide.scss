@@ -109,6 +109,13 @@ body {
     font-weight: bold;
   }
 
+  //standard sizing for custom svg icons
+  .injected-svg {
+    width: 20px;
+    height: 20px;
+    fill: $med-gray;
+  }
+
   .flex-center {
     display: flex;
     justify-content: center;
@@ -153,7 +160,6 @@ body {
     justify-content: center;
     width: 50%;
     margin: 45px 0;
-    //padding: 45px;
 
     .panel-title {
       padding: 45px;
@@ -208,6 +214,13 @@ body {
   .title-ming {
     font-weight: bold;
     font-size: 17px;
+    color: $ming;
+    font-family: "Spartan ExtraBold", sans-serif;
+  }
+
+  .page-title-ming {
+    font-weight: bold;
+    font-size: $font-sm;
     color: $ming;
     font-family: "Spartan ExtraBold", sans-serif;
   }

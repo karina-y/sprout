@@ -3,13 +3,15 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from '../imports/ui/App';
 import * as serviceWorker from './serviceWorker';
+import { toast } from 'react-toastify'
 
 Meteor.startup(() => {
   ReactDOM.render(<App />, document.getElementById('root'));
 
-  Accounts.onEmailVerificationLink(function(token,done) {
+  /*Accounts.onEmailVerificationLink(function(token,done) {
     Accounts.verifyEmail(token, done);
-  });
+  });*/
+
 });
 
 

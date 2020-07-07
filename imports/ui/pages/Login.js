@@ -20,9 +20,9 @@ class Login extends Component {
 	Session.set('pageTitle', 'Login')
 
 	//TODO is there a smarter way to do this?
-	if (this.props.history.action === 'REPLACE') {
+	/*if (this.props.history.action === 'REPLACE') {
 	  toast.error('You need to be logged in to perform that action.')
-	}
+	}*/
   }
 
   login () {
@@ -63,7 +63,7 @@ class Login extends Component {
 
 	return (
 			<div className="Login_Signup flex-center">
-			  <h4 className="acct-title title-ming">Login</h4>
+			  <h4 className="acct-title page-title-ming">Login</h4>
 
 			  <form id="Login">
 				<input type="email"
