@@ -909,7 +909,7 @@ class ProfileViewEdit extends Component {
 				</React.Fragment>
 				}
 
-				{(this.state.swipeViewIndex < 3 || this.state.swipeViewIndex > 5) ?
+				{(this.state.swipeViewIndex < 4 || this.state.swipeViewIndex > 5) ?
 						<React.Fragment>
 						  <FontAwesomeIcon icon={this.state.editing ? faTimes : faPencilAlt}
 										   className="plant-condition-icon"
@@ -925,23 +925,7 @@ class ProfileViewEdit extends Component {
 										   onClick={() => this.updateProfile(`${this.state.editing}-edit`)}/>
 						  }
 						</React.Fragment>
-						: (this.state.swipeViewIndex === 3 && profile.category === 'in-ground') ?
-								<React.Fragment>
-								  <FontAwesomeIcon icon={this.state.editing ? faTimes : faPencilAlt}
-												   className="plant-condition-icon"
-												   alt={this.state.editing ? 'times' : 'pencil'}
-												   title={this.state.editing ? 'cancel' : 'edit'}
-												   onClick={() => this.state.editing ? this.resetModal() : this.handleEdit()}/>
-
-								  {this.state.editing &&
-								  <FontAwesomeIcon icon={faSave}
-												   className="plant-condition-icon"
-												   alt="floppy disk"
-												   title="save"
-												   onClick={() => this.updateProfile(`${this.state.editing}-edit`)}/>
-								  }
-								</React.Fragment>
-								: ''
+						: ''
 				}
 
 			  </div>
