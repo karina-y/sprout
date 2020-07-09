@@ -35,7 +35,7 @@ Meteor.startup(() => {
 
   });
 
-  Accounts.emailTemplates.siteName = 'sprout';
+  Accounts.emailTemplates.siteName = 'http://sprout.karinacodes.com';
   Accounts.emailTemplates.from = Meteor.settings.private.mail_from;
 
   /*Accounts.emailTemplates.enrollAccount.subject = (user) => {

@@ -89,6 +89,11 @@ Meteor.methods({
 		  data.pruningTracker = [data.pruningTracker]
 		  data.deadheadingTracker = [data.deadheadingTracker]
 		  break
+		case 'soilCompositionTracker-edit':
+		  //entry for both pruning and deadheading
+		  validationSchema = profile.category === 'in-ground' ? Profile.schema.pick('soilAmendment', 'soilType', 'tilled', 'updatedAt') : Profile.schema.pick('soilRecipe', 'updatedAt');
+		  query = profile.category === 'in-ground' ? {$set: {soilAmendment: data.soilAmendment, soilType: data.soilType, tilled: data.tilled, updatedAt: data.updatedAt}} : {$set: {soilRecipe: data.soilRecipe, updatedAt: data.updatedAt}}
+		  break
 		default:
 		  validationSchema = Profile.schema.pick(type, 'updatedAt')
 		  query = {$set: {updatedAt: data.updatedAt}, $push: {[type]: data[type]}}

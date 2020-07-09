@@ -223,6 +223,19 @@ class ProfileViewEdit extends Component {
 			deadheadingTracker: newProfileData.deadheadingTracker,
 		  }
 		  break
+		case 'soilCompositionTracker-edit':
+		  if (newProfileData.category === 'in-ground' || (!newProfileData.category && oldProfileData.category === 'in-ground')) {
+			data = {
+			  soilAmendment: newProfileData.soilAmendment,
+			  soilType: newProfileData.soilType,
+			  tilled: newProfileData.tilled === 'true'
+			}
+		  } else {
+			data = {
+			  soilRecipe: newProfileData.soilRecipe
+			}
+		  }
+		  break
 		default:
 		  data = {
 			[type]: newProfileData[type]
@@ -580,7 +593,7 @@ class ProfileViewEdit extends Component {
 							<SwipePanelContent icon="tilling">
 							  <p><select placeholder="Tilled"
 										 onChange={(e) => this.updateData(e, 'tilled')}
-										 value={profile.tilled || ''}>
+										 defaultValue={profile.tilled || ''}>
 								<option value='' disabled={true}>- Is the soil tilled? -</option>
 								<option value={false}>No</option>
 								<option value={true}>Yes</option>
@@ -591,7 +604,7 @@ class ProfileViewEdit extends Component {
 							<SwipePanelContent icon="soilType">
 							  <p><select placeholder="Soil Type"
 										 onChange={(e) => this.updateData(e, 'soilType')}
-										 value={profile.soilType || ''}>
+										 defaultValue={profile.soilType || ''}>
 								<option value='' disabled={true}>- Select a ground soil type -</option>
 								{SoilTypes.map((item, index) => {
 								  return <option value={item.type} key={index}>{item.displayName}</option>
@@ -604,15 +617,15 @@ class ProfileViewEdit extends Component {
 							  <p><input type="text"
 										placeholder="Soil Amendment"
 										onChange={(e) => this.updateData(e, 'soilAmendment')}
-										value={profile.soilAmendment || ''}/></p>
+										defaultValue={profile.soilAmendment || ''}/></p>
 							</SwipePanelContent>
 
-							<SwipePanelContent icon="ph">
+							{/*<SwipePanelContent icon="ph">
 							  <p>pH <input type="number"
 										   placeholder="6.2"
 										   className="small"
 										   onChange={(e) => this.updateData(e, 'ph')}/></p>
-							</SwipePanelContent>
+							</SwipePanelContent>*/}
 
 						  </React.Fragment>
 						  :
@@ -622,15 +635,15 @@ class ProfileViewEdit extends Component {
 							  <p><input type="text"
 										placeholder="Soil Recipe"
 										onChange={(e) => this.updateData(e, 'soilRecipe')}
-										value={profile.soilRecipe || ''}/></p>
+										defaultValue={profile.soilRecipe || ''}/></p>
 							</SwipePanelContent>
 
-							<SwipePanelContent icon="soilMoisture">
+							{/*<SwipePanelContent icon="soilMoisture">
 							  <p>Moisture Level <input type="number"
 													   placeholder="40"
 													   className="small"
 													   onChange={(e) => this.updateData(e, 'moisture')}/>%</p>
-							</SwipePanelContent>
+							</SwipePanelContent>*/}
 						  </React.Fragment>
 				  }
 
@@ -786,9 +799,9 @@ class ProfileViewEdit extends Component {
 								<i>Date Bought</i>
 
 								<input type="date"
-										placeholder="Date Bought"
-										onBlur={(e) => this.updateData(e, 'dateBought')}
-										defaultValue={profile.dateBought ? new Date(profile.dateBought).toJSON().slice(0, 10) : new Date().toJSON().slice(0, 10)}/>
+									   placeholder="Date Bought"
+									   onBlur={(e) => this.updateData(e, 'dateBought')}
+									   defaultValue={profile.dateBought ? new Date(profile.dateBought).toJSON().slice(0, 10) : new Date().toJSON().slice(0, 10)}/>
 							  </p>
 
 							  {/*<DatePicker selected={this.state.newData.dateBought || Date.now()}
@@ -799,7 +812,8 @@ class ProfileViewEdit extends Component {
 										  highlightDates={ProfileViewEdit.getHighlightDates(profile.dateBought, 'dateBought')}/>*/}
 							</SwipePanelContent>
 
-							<SwipePanelContent icon="schedule" iconTitle={profile.category === 'potted' ? 'Date Potted' : 'Date Planted'}>
+							<SwipePanelContent icon="schedule"
+											   iconTitle={profile.category === 'potted' ? 'Date Potted' : 'Date Planted'}>
 							  <p>
 								<i>{profile.category === 'potted' ? 'Date Potted' : 'Date Planted'}</i>
 
@@ -1123,13 +1137,17 @@ class ProfileViewEdit extends Component {
 						onSelect={(e) => this.updateData(e, 'soilDate', 'soilCompositionTracker')}
 						highlightDates={ProfileViewEdit.getHighlightDates(profile.soilCompositionTracker)}/>
 
-				<input type="number"
-					   placeholder="pH Reading"
-					   onChange={(e) => this.updateData(e, 'ph')}/>
+				{profile.category === 'potted' ?
+						<input type="number"
+							   placeholder="Soil Moisture %"
+							   onChange={(e) => this.updateData(e, 'moisture')}/>
+						:
+						<input type="number"
+							   placeholder="pH Reading"
+							   onChange={(e) => this.updateData(e, 'ph')}/>
+				}
 
-				<input type="number"
-					   placeholder="Soil Moisture %"
-					   onChange={(e) => this.updateData(e, 'moisture')}/>
+
 			  </ProfileAddEntryModal>
 
 			  <ProfileViewHistoryModal cancel={this.resetModal}
@@ -1141,9 +1159,12 @@ class ProfileViewEdit extends Component {
 						<table>
 						  <thead>
 						  <tr>
-							<th>Date</th>
-							<th>pH</th>
-							<th>Moisture</th>
+							<th width="50%">Date</th>
+							{profile.category === 'potted' ?
+									<th width="50%">Moisture</th>
+									:
+									<th width="50%">pH</th>
+							}
 						  </tr>
 						  </thead>
 						  <tbody>
@@ -1151,8 +1172,11 @@ class ProfileViewEdit extends Component {
 						  {profile.soilCompositionTracker.map((item, index) => {
 							return <tr key={index}>
 							  <td>{new Date(item.date).toLocaleDateString()}</td>
-							  <td>{item.ph || 'N/A'}</td>
-							  <td>{item.moisture ? `${Math.round(item.moisture * 100)}%` : 'N/A'}</td>
+							  {profile.category === 'potted' ?
+									  <td>{item.moisture ? `${Math.round(item.moisture * 100)}%` : 'N/A'}</td>
+									  :
+									  <td>{item.ph || 'N/A'}</td>
+							  }
 							</tr>
 						  })}
 						  </tbody>
