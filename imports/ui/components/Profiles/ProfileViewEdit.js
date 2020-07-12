@@ -157,8 +157,8 @@ class ProfileViewEdit extends Component {
 
 	} else if (type === 'waterScheduleAuto') {
 	  if (newProfileData[type]) {
-		newProfileData[type] = !newProfileData[type];
-	  }  else {
+		newProfileData[type] = !newProfileData[type]
+	  } else {
 		newProfileData[type] = !this.props.profile[type]
 	  }
 	} else {
@@ -404,13 +404,13 @@ class ProfileViewEdit extends Component {
 											   iconTitle="automatic water schedule">
 							  <p>
 								<label>
-								<input type="checkbox"
-									   className="small-checkbox"
-									   onChange={(e) => this.updateData(e, 'waterScheduleAuto')}
-									   defaultChecked={profile.waterScheduleAuto || false}/>
+								  <input type="checkbox"
+										 className="small-checkbox"
+										 onChange={(e) => this.updateData(e, 'waterScheduleAuto')}
+										 defaultChecked={profile.waterScheduleAuto || false}/>
 
-								Automatic watering
-							  </label>
+								  Automatic watering
+								</label>
 							  </p>
 							</SwipePanelContent>
 							}
@@ -434,7 +434,9 @@ class ProfileViewEdit extends Component {
 							<SwipePanelContent icon="schedule"
 											   iconTitle="water schedule">
 							  <p>Water every {profile.waterSchedule} days</p>
+							  {!profile.waterScheduleAuto &&
 							  <p>Due in {profile.waterSchedule - profile.daysSinceWatered - 1} days</p>
+							  }
 							</SwipePanelContent>
 
 							{(Meteor.isPro && profile.waterScheduleAuto) &&

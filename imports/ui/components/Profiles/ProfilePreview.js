@@ -11,7 +11,7 @@ import { ReactSVG } from 'react-svg'
 
 function ProfilePreview (props) {
   const profile = props.profile;
-  const waterProgress = (profile.daysSinceWatered / profile.waterSchedule) > 1 ? 5 : ((1 - (profile.daysSinceWatered / profile.waterSchedule)) * 100) || 5;
+  const waterProgress = profile.waterScheduleAuto ? 100 : (profile.daysSinceWatered / profile.waterSchedule) > 1 ? 5 : ((1 - (profile.daysSinceWatered / profile.waterSchedule)) * 100) || 5;
   const fertilizerProgress = (profile.daysSinceFertilized / profile.fertilizerSchedule) > 1 ? 5 : ((1 - (profile.daysSinceFertilized / profile.fertilizerSchedule)) * 100) || 5;
 
   return (
