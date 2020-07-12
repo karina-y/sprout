@@ -78,6 +78,7 @@
       fill: $ming;
       width: 20px;
       height: auto;
+      margin-left: -4px;
 
       &.fa-sad-tear {
         fill: $danger-dark;
@@ -115,6 +116,12 @@
       }
     }
 
+    .small-checkbox {
+      height: 15px;
+      width: 15px;
+      vertical-align: top;
+      margin-right: 5px;
+    }
   }
 
 }

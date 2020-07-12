@@ -21,7 +21,7 @@ import { faQuestionCircle } from '@fortawesome/free-solid-svg-icons/faQuestionCi
 import { faCalendar } from '@fortawesome/free-solid-svg-icons/faCalendar'
 import {
   getDaysSinceAction, getLastPestName, getLastPestTreatment, getLastSoilMoisture, getLastSoilPh,
-  getPlantCondition, lastChecked, sortByLastDate
+  getPlantCondition, lastChecked, lastFertilizerUsed, sortByLastDate
 } from '../../../utils/plantData'
 import Profile from '/imports/api/Profile/Profile'
 import { toast } from 'react-toastify'
@@ -155,6 +155,12 @@ class ProfileViewEdit extends Component {
 		}
 	  }
 
+	} else if (type === 'waterScheduleAuto') {
+	  if (newProfileData[type]) {
+		newProfileData[type] = !newProfileData[type];
+	  }  else {
+		newProfileData[type] = !this.props.profile[type]
+	  }
 	} else {
 	  newProfileData[type] = e.target.value
 	}
@@ -180,10 +186,12 @@ class ProfileViewEdit extends Component {
 	} else {
 	  switch (type) {
 		case 'waterTracker-edit':
+		  //doing the waterscheduleauto checks because they're bools
 		  data = {
 			waterPreference: newProfileData.waterPreference || oldProfileData.waterPreference,
 			lightPreference: newProfileData.lightPreference || oldProfileData.lightPreference,
-			waterSchedule: parseInt(newProfileData.waterSchedule || oldProfileData.waterSchedule)
+			waterSchedule: parseInt(newProfileData.waterSchedule || oldProfileData.waterSchedule),
+			waterScheduleAuto: newProfileData.waterScheduleAuto !== null ? newProfileData.waterScheduleAuto : oldProfileData.waterScheduleAuto !== null ? oldProfileData.waterScheduleAuto : false
 		  }
 		  break
 		case 'fertilizerTracker-edit':
@@ -348,7 +356,7 @@ class ProfileViewEdit extends Component {
 
   render () {
 	const profile = this.props.profile
-	const fertilizerContent = profile.fertilizerTracker && profile.fertilizerTracker.length > 0 ? profile.fertilizerTracker[profile.fertilizerTracker.length - 1].fertilizer : 'N/A'
+	const fertilizerContent = lastFertilizerUsed(profile.fertilizerTracker)
 	let soilCompLastChecked = lastChecked(profile.soilCompositionTracker)
 	let soilPh = getLastSoilPh(profile.soilCompositionTracker)
 	let soilMoisture = getLastSoilMoisture(profile.soilCompositionTracker)
@@ -364,7 +372,6 @@ class ProfileViewEdit extends Component {
 				   alt={profile.commonName}
 				   title={profile.commonName}
 				   className="hero-img"/>
-
 
 			  <SwipeableViews className={`swipe-view ${this.state.editing && 'editing'}`}
 							  index={this.state.swipeViewIndex}
@@ -392,6 +399,22 @@ class ProfileViewEdit extends Component {
 													defaultValue={profile.waterSchedule || ''}/> days</p>
 							</SwipePanelContent>
 
+							{Meteor.isPro &&
+							<SwipePanelContent icon="waterAuto"
+											   iconTitle="automatic water schedule">
+							  <p>
+								<label>
+								<input type="checkbox"
+									   className="small-checkbox"
+									   onChange={(e) => this.updateData(e, 'waterScheduleAuto')}
+									   defaultChecked={profile.waterScheduleAuto || false}/>
+
+								Automatic watering
+							  </label>
+							  </p>
+							</SwipePanelContent>
+							}
+
 							<SwipePanelContent icon="water">
 							  <p><input type="text"
 										placeholder="Watering Preferences"
@@ -414,6 +437,13 @@ class ProfileViewEdit extends Component {
 							  <p>Due in {profile.waterSchedule - profile.daysSinceWatered - 1} days</p>
 							</SwipePanelContent>
 
+							{(Meteor.isPro && profile.waterScheduleAuto) &&
+							<SwipePanelContent icon="waterAuto"
+											   iconTitle="automatic water schedule">
+							  <p>Watering is automated</p>
+							</SwipePanelContent>
+							}
+
 							<SwipePanelContent icon="water"
 											   iconTitle="water preference">
 							  <p>{profile.waterPreference}</p>
@@ -424,7 +454,6 @@ class ProfileViewEdit extends Component {
 							</SwipePanelContent>
 						  </React.Fragment>
 				  }
-
 
 				</div>
 
@@ -1202,7 +1231,6 @@ class ProfileViewEdit extends Component {
 									   type="pestTracker-history"
 									   header="Pest History">
 
-
 				{profile.pestTracker && profile.pestTracker.length > 0 ?
 						<table>
 						  <thead>
@@ -1247,7 +1275,6 @@ class ProfileViewEdit extends Component {
 									   show={this.state.modalOpen}
 									   type="diary-history"
 									   header="Diary History">
-
 
 				{profile.diary && profile.diary.length > 0 ?
 						<table>

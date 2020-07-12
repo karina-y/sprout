@@ -118,6 +118,11 @@ Profile.schema = new SimpleSchema({
 			defaultValue: '',
 			label: 'waterSchedule'
 		  },
+		  waterScheduleAuto: {
+			type: Boolean,
+			defaultValue: false,
+			label: 'waterScheduleAuto'
+		  },
 		  pruningSchedule: {
 			type: Number,
 			optional: true,

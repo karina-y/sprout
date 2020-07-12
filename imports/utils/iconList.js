@@ -13,6 +13,7 @@ import { faLeaf } from '@fortawesome/free-solid-svg-icons/faLeaf'
 import { faFilter } from '@fortawesome/free-solid-svg-icons/faFilter'
 import { faMapMarker } from '@fortawesome/free-solid-svg-icons/faMapMarker'
 import { faHome } from '@fortawesome/free-solid-svg-icons/faHome'
+import { faHistory } from '@fortawesome/free-solid-svg-icons/faHistory'
 
 const IconList = {
   category: {icon: faFilter, alt: 'filter', title: 'category', isCustom: false},
@@ -38,6 +39,8 @@ const IconList = {
   water: {icon: '/icons/farm_01/046-watering can.svg', alt: 'watering can', title: 'watering preference', isCustom: true},
   tilling: {icon: '/icons/farm_01/017-farming tools.svg', alt: 'farming tools', title: 'tilling', isCustom: true},
   toxicity: {icon: faSkullCrossbones, alt: 'skull and crossbones', title: 'toxicity', isCustom: false},
+  waterAuto: {icon: faHistory, alt: 'auto', title: 'automatic watering schedule', isCustom: false},
+  // waterAuto: {icon: '/icons/farm_02/013-hose.svg', alt: 'watering hose', title: 'automatic watering scheudle', isCustom: true},
 }
 
 export default IconList

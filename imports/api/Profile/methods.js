@@ -43,13 +43,14 @@ Meteor.methods({
 
 	  switch (type) {
 		case 'waterTracker-edit':
-		  validationSchema = Profile.schema.pick('waterPreference', 'lightPreference', 'waterSchedule', 'updatedAt')
+		  validationSchema = Profile.schema.pick('waterPreference', 'lightPreference', 'waterSchedule', 'waterScheduleAuto', 'updatedAt')
 
 		  query = {
 			$set: {
 			  waterPreference: data.waterPreference,
 			  lightPreference: data.lightPreference,
 			  waterSchedule: data.waterSchedule,
+			  waterScheduleAuto: data.waterScheduleAuto,
 			  updatedAt: data.updatedAt
 			}
 		  }

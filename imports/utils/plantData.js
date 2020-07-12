@@ -58,6 +58,16 @@ export function lastChecked(tracker) {
   return lastChecked;
 }
 
+export function lastFertilizerUsed(tracker) {
+  let fertilizer = 'N/A';
+
+  if (tracker && tracker.length > 0) {
+    fertilizer = tracker[tracker.length - 1].fertilizer;
+  }
+
+  return fertilizer;
+}
+
 export function getLastSoilPh(tracker) {
   let soilPh;
 

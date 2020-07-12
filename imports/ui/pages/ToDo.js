@@ -51,7 +51,7 @@ export default withTracker(() => {
   //profile.waterSchedule - profile.daysSinceWatered - 1
   for (let i = 0; i < catalogue.length; i++) {
 	let currProfile = catalogue[i]
-	let waterDue = currProfile.waterSchedule - getDaysSinceAction(currProfile.waterTracker) - 1
+	let waterDue = currProfile.waterScheduleAuto ? 2 : currProfile.waterSchedule - getDaysSinceAction(currProfile.waterTracker) - 1
 	let fertilizerDue = currProfile.fertilizerSchedule - getDaysSinceAction(currProfile.fertilizerTracker) - 1
 	let pruningDue = currProfile.pruningSchedule - getDaysSinceAction(currProfile.pruningTracker) - 1
 	let deadheadingDue = currProfile.deadheadingSchedule - getDaysSinceAction(currProfile.deadheadingTracker) - 1
