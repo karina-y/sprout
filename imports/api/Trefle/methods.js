@@ -12,13 +12,13 @@ Meteor.methods({
 		logger('danger', "Validation failed");
 		throw new Meteor.Error('500', "Invalid arguments passed");
 	  } else {
-		const commonPlants = HTTP.call("GET", `https://trefle.io/api/plants/?token=${Meteor.settings.private.trefleToken}&common_name=${data.commonName}`, {
+		const commonPlants = HTTP.call("GET", `https://trefle.io/api/plants/?token=${Meteor.settings.private.apiTokens.trefleToken}&common_name=${data.commonName}`, {
 		  headers: {
 			"Accept": "application/json"
 		  }
 		});
 
-		const latinPlants = HTTP.call("GET", `https://trefle.io/api/plants/?token=${Meteor.settings.private.trefleToken}&scientific_name=${data.latinName}`, {
+		const latinPlants = HTTP.call("GET", `https://trefle.io/api/plants/?token=${Meteor.settings.private.apiTokens.trefleToken}&scientific_name=${data.latinName}`, {
 		  headers: {
 			"Accept": "application/json"
 		  }

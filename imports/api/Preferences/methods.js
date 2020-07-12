@@ -18,7 +18,8 @@ Meteor.methods({
 
 	  if (!validationContext.isValid()) {
 		logger('danger', 'Validation failed', validationContext.validationErrors())
-		throw new Meteor.Error('500', 'Invalid arguments passed')
+		handleMethodException(`Validation failed, ${validationContext.validationErrors()}`)
+		// throw new Meteor.Error('500', 'Invalid arguments passed')
 	  } else {
 	    let response;
 

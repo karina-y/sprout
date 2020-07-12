@@ -2,6 +2,7 @@ import Category from './Category'
 import rateLimit from '../../modules/rate-limit'
 import logger from '/imports/utils/logger'
 import SimpleSchema from 'simpl-schema'
+import handleMethodException from '../../utils/handle-method-exception'
 
 Meteor.methods({
   'profile.insert': function profileInsert (data) {
@@ -16,14 +17,16 @@ Meteor.methods({
 
 	  if (!validationContext.isValid()) {
 		logger('danger', 'Validation failed', validationContext.validationErrors())
-		throw new Meteor.Error('500', 'Invalid arguments passed')
+		handleMethodException(`Validation failed, ${validationContext.validationErrors()}`)
+		// throw new Meteor.Error('500', 'Invalid arguments passed')
 	  } else {
 		const response = Category.insert(data)
 		return response
 	  }
 	} catch (e) {
 	  logger('danger', e.message)
-	  throw new Meteor.Error('500', 'Please check your inputs and try again.')
+	  handleMethodException(e.message)
+	  // throw new Meteor.Error('500', 'Please check your inputs and try again.')
 
 	}
   },
@@ -81,7 +84,8 @@ Meteor.methods({
 
 	  if (!validationContext.isValid()) {
 		logger('danger', 'Validation failed', validationContext.validationErrors())
-		throw new Meteor.Error('500')
+		handleMethodException(`Validation failed, ${validationContext.validationErrors()}`)
+		// throw new Meteor.Error('500')
 	  } else {
 		logger('success', 'passed', data)
 		const response = Category.update({_id: profile._id}, query)
@@ -89,7 +93,8 @@ Meteor.methods({
 	  }
 	} catch (e) {
 	  logger('danger', e.message)
-	  throw new Meteor.Error('500', 'Please check your inputs and try again.')
+	  handleMethodException(e.message)
+	  // throw new Meteor.Error('500', 'Please check your inputs and try again.')
 	}
   },
   'profile.delete': function profileDelete (data) {
@@ -104,7 +109,8 @@ Meteor.methods({
 	  }
 	} catch (e) {
 	  logger('danger', e.message)
-	  throw new Meteor.Error('500', 'Please check your inputs and try again.')
+	  handleMethodException(e.message)
+	  // throw new Meteor.Error('500', 'Please check your inputs and try again.')
 
 	}
 

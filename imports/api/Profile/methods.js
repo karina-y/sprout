@@ -2,6 +2,7 @@ import Profile from './Profile'
 import rateLimit from '../../modules/rate-limit'
 import logger from '/imports/utils/logger'
 import SimpleSchema from 'simpl-schema'
+import handleMethodException from '/imports/utils/handle-method-exception'
 
 Meteor.methods({
   'profile.insert': function profileInsert (data) {
@@ -16,14 +17,15 @@ Meteor.methods({
 
 	  if (!validationContext.isValid()) {
 		logger('danger', 'Validation failed', validationContext.validationErrors())
-		throw new Meteor.Error('500', 'Invalid arguments passed')
+		handleMethodException('Invalid arguments passed')
 	  } else {
 		const response = Profile.insert(data)
 		return response
 	  }
 	} catch (e) {
 	  logger('danger', e.message)
-	  throw new Meteor.Error('500', 'Please check your inputs and try again.')
+	  handleMethodException(e.message)
+	  // throw new Meteor.Error('500', 'Please check your inputs and try again.')
 
 	}
   },
@@ -105,7 +107,8 @@ Meteor.methods({
 
 	  if (!validationContext.isValid()) {
 		logger('danger', 'Validation failed', validationContext.validationErrors())
-		throw new Meteor.Error('500')
+		handleMethodException(`'Validation failed', ${validationContext.validationErrors()}`)
+		// throw new Meteor.Error('500')
 	  } else {
 		logger('success', 'passed', data)
 		const response = Profile.update({_id: profile._id}, query)
@@ -113,22 +116,25 @@ Meteor.methods({
 	  }
 	} catch (e) {
 	  logger('danger', e.message)
-	  throw new Meteor.Error('500', 'Please check your inputs and try again.')
+	  handleMethodException(e.message)
+	  // throw new Meteor.Error('500', 'Please check your inputs and try again.')
 	}
   },
   'profile.delete': function profileDelete (data) {
 	try {
 
-	  if (typeof data !== 'string') {
-		logger('danger', 'Validation failed')
-		throw new Meteor.Error('500', 'Invalid arguments passed')
+	  if (typeof data !== 'string' || !data) {
+		logger('danger', 'Invalid arguments passed')
+		handleMethodException('Invalid arguments passed')
+		// throw new Meteor.Error('500', 'Invalid arguments passed')
 	  } else {
 		const response = Profile.remove({_id: data})
 		return response
 	  }
 	} catch (e) {
 	  logger('danger', e.message)
-	  throw new Meteor.Error('500', 'Please check your inputs and try again.')
+	  handleMethodException(e.message)
+	  // throw new Meteor.Error('500', 'Please check your inputs and try again.')
 
 	}
 

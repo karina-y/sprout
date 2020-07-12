@@ -2,6 +2,8 @@ import { Meteor } from 'meteor/meteor';
 import colors from 'colors';
 import './api';
 import logger from '../imports/utils/logger'
+import handleMethodException from '../imports/utils/handle-method-exception'
+import './monti'
 
 Meteor.startup(() => {
   colors.enable();
@@ -30,13 +32,14 @@ Meteor.startup(() => {
     if (options.user.emails[0].verified === true) {
       return true;
     } else {
-      throw new Meteor.Error('You must verify your email address before you can log in');
+      handleMethodException('You must verify your email address before you can log in')
+      // throw new Meteor.Error('You must verify your email address before you can log in');
     }
 
   });
 
   Accounts.emailTemplates.siteName = 'http://sprout.karinacodes.com';
-  Accounts.emailTemplates.from = Meteor.settings.private.mail_from;
+  Accounts.emailTemplates.from = Meteor.settings.private.awsSmtp.mail_from;
 
   /*Accounts.emailTemplates.enrollAccount.subject = (user) => {
     return `Welcome to sprout, ${user.profile.name}`;
@@ -65,7 +68,7 @@ Meteor.startup(() => {
 
   //MAIL_URL=smtp://AKIA3E3PBV2OGGYRXQ6D:BDIEBIbFYZ6WnwYvqptpp8rzzoB/6+fKf5FZJIJ0B3Gi@email-smtp.us-west-2.amazonaws.com:465
 
-  process.env.MAIL_URL = 'smtp://' + encodeURIComponent(Meteor.settings.private.mail_username) + ':' + encodeURIComponent(Meteor.settings.private.mail_password) + '@' + encodeURIComponent(Meteor.settings.private.mail_server) + ':' + Meteor.settings.private.mail_port;
+  process.env.MAIL_URL = 'smtp://' + encodeURIComponent(Meteor.settings.private.awsSmtp.mail_username) + ':' + encodeURIComponent(Meteor.settings.private.awsSmtp.mail_password) + '@' + encodeURIComponent(Meteor.settings.private.awsSmtp.mail_server) + ':' + Meteor.settings.private.awsSmtp.mail_port;
 
   // process.env.MOBILE_DDP_URL = 'http://1.1.1.1:3000 1';
   // process.env.MOBILE_ROOT_URL = 'http://1.1.1.1:3000 1';

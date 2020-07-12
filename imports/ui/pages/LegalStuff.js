@@ -1,6 +1,8 @@
 import React, {memo} from 'react';
 import './LegalStuff.scss'
 
+//TODO make this more official
+
 const LegalStuff = () => (
 		<div className="LegalStuff">
 			<h5><b>Credits:</b></h5>

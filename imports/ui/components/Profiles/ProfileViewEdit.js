@@ -1310,7 +1310,7 @@ class ProfileViewEdit extends Component {
 									cancel={this.resetModal}
 									show={this.state.modalOpen}
 									type="delete"
-									header="Are you sure you want to delete this profile?">
+									header="Are you sure you want to delete this plant's entire profile?">
 
 			  </ProfileAddEntryModal>
 			</div>

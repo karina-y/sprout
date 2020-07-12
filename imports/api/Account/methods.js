@@ -56,7 +56,8 @@ Meteor.methods({
 
 	  if (!validationContext.isValid()) {
 		logger('danger', 'Validation failed', validationContext.validationErrors())
-		throw new Meteor.Error('500', 'Invalid arguments passed')
+		handleMethodException(`Validation failed, ${validationContext.validationErrors()}`)
+		// throw new Meteor.Error('500', 'Invalid arguments passed')
 	  } else {
 		//create our user
 		const response = Accounts.createUser(data)
@@ -71,7 +72,8 @@ Meteor.methods({
 	  }
 	} catch (e) {
 	  logger('danger', e.message)
-	  handleMethodException('Please check your inputs and try again.')
+	  handleMethodException(e.message)
+	  // handleMethodException('Please check your inputs and try again.')
 	}
   },
   'account.updatePassword': function accountUpdatePassword (password, newPassword) {
@@ -98,7 +100,8 @@ Meteor.methods({
 
 	  if (!validationContext.isValid()) {
 		logger('danger', 'Validation failed', validationContext.validationErrors())
-		throw new Meteor.Error('500', 'Invalid arguments passed')
+		handleMethodException(`Validation failed, ${validationContext.validationErrors()}`)
+		// throw new Meteor.Error('500', 'Invalid arguments passed')
 	  } else {
 
 		Accounts.changePassword(data.password, data.newPassword, (err) => {
@@ -111,7 +114,8 @@ Meteor.methods({
 	  }
 	} catch (e) {
 	  logger('danger', e.message)
-	  handleMethodException('Please check your inputs and try again.')
+	  handleMethodException(e.message)
+	  // handleMethodException('Please check your inputs and try again.')
 	}
   },
   'account.updateProfile': function accountUpdateProfile (newProfile, theme, isPro) {

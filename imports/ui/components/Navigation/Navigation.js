@@ -91,10 +91,10 @@ class Navigation extends Component {
 				<Menu pageWrapId="pageWrap"
 					  outerContainerId="root"
 					  isOpen={this.state.menuOpen}
-					  customBurgerIcon={<img src="/images/groot.gif"
+					  /*customBurgerIcon={<img src="/images/groot.gif"
 											 className="groot-nav"
 											 alt="baby groot dancing"
-											 title="navigation"/>}>
+											 title="navigation"/>}*/>
 				  {anchors.map((item, index) => {
 					return item.href === '/logout' ?
 							<p className="bm-item side-nav-link "

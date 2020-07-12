@@ -27,6 +27,11 @@ const AsyncLegalStuff = asyncComponent(() => import("./pages/LegalStuff"));
 const AsyncProfileViewEdit = asyncComponent(() => import("./components/Profiles/ProfileViewEdit"));
 const AsyncProfileAdd = asyncComponent(() => import("./components/Profiles/ProfileAdd"));
 
+/*
+TODO
+ - generic errors from server for prod, not actual messages
+ - crash reports, either kadira/monti or google? idk which will be best, need to test them both
+ */
 
 class App extends Component {
   constructor(props) {

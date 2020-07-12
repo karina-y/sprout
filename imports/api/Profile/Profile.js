@@ -35,6 +35,7 @@ Profile.schema = new SimpleSchema({
 			defaultValue: '',
 			label: 'latinName'
 		  },
+		  //TODO isoneof (list categories)
 		  category: {
 			type: String,
 			required: Meteor.isPro,
