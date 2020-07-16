@@ -298,6 +298,13 @@ body {
     width: 20%;
   }
 
+  input.small-checkbox {
+    height: 15px;
+    width: 15px;
+    vertical-align: top;
+    margin-right: 5px;
+  }
+
   .not-required {
     margin-left: 10px;
   }

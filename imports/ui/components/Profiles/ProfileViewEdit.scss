@@ -14,15 +14,48 @@
     min-height: 200px;
   }
 
-  .hero-img {
-    width: 100%;
-    height: 250px;
-    object-fit: cover;
-    object-position: center;
-    margin-bottom: 10px;
-    border-bottom-right-radius: 50%;
-    border-bottom-left-radius: 50%;
-    //filter: drop-shadow(0 10px 40px rgba(0, 109, 119, 0.3));
+  .plant-photo {
+
+    img {
+        width: 100%;
+        height: 250px;
+        object-fit: cover;
+        object-position: center;
+        margin-bottom: 10px;
+        border-bottom-right-radius: 50%;
+        border-bottom-left-radius: 50%;
+    }
+
+    &.editing {
+
+      &::before {
+        width: 100%;
+        height: 250px;
+        border-bottom-right-radius: 50%;
+        border-bottom-left-radius: 50%;
+        background-color: $ming;
+        opacity: .5;
+        content: '';
+        position: absolute;
+      }
+
+      input {
+        position: absolute;
+        top: $mobile-nav-height;
+        left: 0;
+        width: 100%;
+        height: 250px;
+        opacity: 0;
+      }
+
+      .svg-inline--fa {
+        color: $alice-blue-light;
+        position: absolute;
+        top: 150px; //this feels wrong
+        left: 50%;
+        transform: translateX(-50%);
+      }
+    }
   }
 
   .swipe-view {
@@ -116,12 +149,6 @@
       }
     }
 
-    .small-checkbox {
-      height: 15px;
-      width: 15px;
-      vertical-align: top;
-      margin-right: 5px;
-    }
   }
 
 }

@@ -11,8 +11,6 @@ import { ReactSVG } from 'react-svg'
 
 function ProfilePreview (props) {
   const profile = props.profile;
-  const waterProgress = profile.waterScheduleAuto ? 100 : (profile.daysSinceWatered / profile.waterSchedule) > 1 ? 5 : ((1 - (profile.daysSinceWatered / profile.waterSchedule)) * 100) || 5;
-  const fertilizerProgress = (profile.daysSinceFertilized / profile.fertilizerSchedule) > 1 ? 5 : ((1 - (profile.daysSinceFertilized / profile.fertilizerSchedule)) * 100) || 5;
 
   return (
 		  <button onClick={() => props.history.push(`/catalogue/${props.profile._id}`)} className="ProfilePreview naked">
@@ -33,7 +31,7 @@ function ProfilePreview (props) {
 							alt={IconList.water.alt}
 							title={IconList.water.title}/>
 
-				  <ProgressBar now={waterProgress === 0 ? 5 : waterProgress}
+				  <ProgressBar now={profile.waterProgress === 0 ? 5 : profile.waterProgress}
 							   className={`water ${profile.waterCondition}`} />
 				</div>
 
@@ -42,7 +40,7 @@ function ProfilePreview (props) {
 							className="plant-condition-icon fertilizer"
 							alt={IconList.fertilizer.alt}
 							title={IconList.fertilizer.title}/>
-				  <ProgressBar now={fertilizerProgress}
+				  <ProgressBar now={profile.fertilizerProgress === 0 ? 5 : profile.fertilizerProgress}
 							   className={`fertilizer ${profile.fertilizerCondition}`} />
 				</div>
 
@@ -64,15 +62,23 @@ export default withTracker((props) => {
   if (profile.fertilizerTracker && profile.fertilizerTracker.length > 0) {
 	profile.daysSinceFertilized = getDaysSinceAction(profile.fertilizerTracker);
 	profile.fertilizerCondition = getPlantCondition(profile.fertilizerTracker, profile.daysSinceFertilized, profile.fertilizerSchedule)
+	profile.fertilizerProgress = (profile.daysSinceFertilized / profile.fertilizerSchedule) > 1 ? 5 : ((1 - (profile.daysSinceFertilized / profile.fertilizerSchedule)) * 100) || 5;
+  } else {
+	profile.fertilizerCondition = "happy";
+	profile.fertilizerProgress = 100;
   }
 
   if (profile.waterTracker && profile.waterTracker.length > 0) {
 	profile.daysSinceWatered = getDaysSinceAction(profile.waterTracker);
-	profile.waterCondition = getPlantCondition(profile.waterTracker, profile.daysSinceWatered, profile.waterSchedule)
+	profile.waterCondition = profile.waterScheduleAuto ? "happy" : getPlantCondition(profile.waterTracker, profile.daysSinceWatered, profile.waterSchedule)
+	profile.waterProgress = profile.waterScheduleAuto ? 100 : (profile.daysSinceWatered / profile.waterSchedule) > 1 ? 5 : ((1 - (profile.daysSinceWatered / profile.waterSchedule)) * 100) || 5;
+  } else {
+	profile.waterCondition = "happy";
+	profile.waterProgress = 100;
   }
 
 
   return {
-	profile: profile
+	profile
   };
 })(ProfilePreview);

@@ -38,7 +38,7 @@ Profile.schema = new SimpleSchema({
 		  //TODO isoneof (list categories)
 		  category: {
 			type: String,
-			required: Meteor.isPro,
+			optional: !Meteor.isPro,
 			label: 'category'
 		  },
 		  datePlanted: {
@@ -110,12 +110,12 @@ Profile.schema = new SimpleSchema({
 		  },
 		  fertilizerSchedule: {
 			type: Number,
-			defaultValue: '',
+			optional: true,
 			label: 'fertilizerSchedule'
 		  },
 		  waterSchedule: {
 			type: Number,
-			defaultValue: '',
+			optional: true,
 			label: 'waterSchedule'
 		  },
 		  waterScheduleAuto: {

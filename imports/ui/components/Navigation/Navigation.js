@@ -21,11 +21,7 @@ class Navigation extends Component {
 		//do something if error occurred or
 		toast.error(err.message)
 	  } else {
-		//TODO should be props.history.push but can't access outside switch
-		window.location.href = '/login'
-
-		//TODO this doesn't hit because of above reason
-		toast.success(`Successfully logged out.`)
+		window.location.href = '/login';
 	  }
 	})
   }

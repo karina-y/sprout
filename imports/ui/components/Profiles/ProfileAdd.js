@@ -14,13 +14,15 @@ import Category from '/imports/api/Category/Category'
 import SoilTypes from '../../../utils/soilTypes'
 import SwipePanelContent from '../Shared/SwipePanelContent'
 
-
 class ProfileAdd extends Component {
   constructor (props) {
 	super(props)
 
 	this.state = {
-	  profile: {image: selectRandomPlantPicture()},
+	  profile: {
+		image: selectRandomPlantPicture(),
+		waterScheduleAuto: false
+	  },
 	  swipeViewIndex: 0,
 	  showDiaryModal: false,
 	  currentDateSelection: null,
@@ -41,8 +43,16 @@ class ProfileAdd extends Component {
 
   addNewProfile () {
 	let profile = this.state.profile
-	profile.waterSchedule = parseInt(profile.waterSchedule)
-	profile.fertilizerSchedule = parseInt(profile.fertilizerSchedule)
+	// profile.waterSchedule = parseInt(profile.waterSchedule)
+	// profile.fertilizerSchedule = parseInt(profile.fertilizerSchedule)
+
+	if (profile.waterSchedule) {
+	  profile.waterSchedule = parseInt(profile.waterSchedule)
+	}
+
+	if (profile.fertilizerSchedule) {
+	  profile.fertilizerSchedule = parseInt(profile.fertilizerSchedule)
+	}
 
 	if (profile.pruningSchedule) {
 	  profile.pruningSchedule = parseInt(profile.pruningSchedule)
@@ -64,11 +74,11 @@ class ProfileAdd extends Component {
 
 	if ((!profile.commonName) && (!profile.latinName)) {
 	  errMsg = 'Please enter either a common or latin name (eg. Swiss Cheese Plant or Monstera adansonii).'
-	} else if (!profile.waterSchedule) {
+	} /*else if (!profile.waterSchedule) {
 	  errMsg = 'Please enter a watering schedule (eg. 7).'
 	} else if (!profile.fertilizerSchedule) {
 	  errMsg = 'Please enter a fertilizer schedule (eg. 30).'
-	} else if (!profile.waterPreference) {
+	}*/ else if (!profile.waterPreference) {
 	  errMsg = 'Please enter a watering preference (eg. Keep soil moist but not soggy, humidity tray helpful).'
 	} else if (!profile.lightPreference) {
 	  errMsg = 'Please enter a lighting preference (eg. Bright indirect light).'
@@ -134,6 +144,8 @@ class ProfileAdd extends Component {
 	  }
 	}*/ else if (type === 'tilled') {
 	  profile[type] = e.target.value === 'true' ? true : false
+	} else if (type === 'waterScheduleAuto') {
+	  profile[type] = !profile[type]
 	} else {
 	  profile[type] = e.target.value
 	}
@@ -215,12 +227,27 @@ class ProfileAdd extends Component {
 				  </p>
 
 				  <SwipePanelContent icon="schedule" iconTitle="watering schedule">
-					<p>* Water every <input type="number"
-											placeholder="4"
-											className="small"
-											onChange={(e) => this.updateData(e, 'waterSchedule')}
-											value={profile.waterSchedule || ''}/> days</p>
+					<p>Water every <input type="number"
+										  placeholder="4"
+										  className="small"
+										  onChange={(e) => this.updateData(e, 'waterSchedule')}
+										  value={profile.waterSchedule || ''}/> days</p>
 				  </SwipePanelContent>
+
+				  {Meteor.isPro &&
+				  <SwipePanelContent icon="waterAuto"
+									 iconTitle="automatic water schedule">
+					<p>
+					  <label>
+						<input type="checkbox"
+							   className="small-checkbox"
+							   onChange={(e) => this.updateData(e, 'waterScheduleAuto')}/>
+
+						Automatic watering
+					  </label>
+					</p>
+				  </SwipePanelContent>
+				  }
 
 				  <SwipePanelContent icon="water">
 					<p>* <input type="text"
@@ -246,10 +273,10 @@ class ProfileAdd extends Component {
 				  </p>
 
 				  <SwipePanelContent icon="schedule" iconTitle={`${Meteor.isPro ? 'feeding' : 'fertilizer'} schedule`}>
-					<p>* {Meteor.isPro ? 'Feed' : 'Fertilize'} every <input type="number"
-																			placeholder="30"
-																			className="small"
-																			onChange={(e) => this.updateData(e, 'fertilizerSchedule')}/> days
+					<p>{Meteor.isPro ? 'Feed' : 'Fertilize'} every <input type="number"
+																		  placeholder="30"
+																		  className="small"
+																		  onChange={(e) => this.updateData(e, 'fertilizerSchedule')}/> days
 					</p>
 				  </SwipePanelContent>
 

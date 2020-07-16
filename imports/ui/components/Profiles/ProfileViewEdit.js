@@ -30,9 +30,7 @@ import ProfileAddEntryModal from '../Shared/ProfileAddEntryModal'
 import ProfileViewHistoryModal from '../Shared/ProfileViewHistoryModal'
 import Category from '/imports/api/Category/Category'
 import SoilTypes from '../../../utils/soilTypes'
-// import IconList from '../../../utils/iconList'
-
-//TODO order dates in trackers from latest first
+import { faCamera } from '@fortawesome/free-solid-svg-icons/faCamera'
 
 class ProfileViewEdit extends Component {
   constructor (props) {
@@ -73,6 +71,26 @@ class ProfileViewEdit extends Component {
 	}
 
 	return dates
+  }
+
+  updatePhoto (e) {
+	let files = e.target.files
+
+	if (files.length === 0) {
+	  return
+	}
+
+	let file = files[0]
+
+	let fileReader = new FileReader()
+
+	fileReader.onload = function (event) {
+	  let dataUrl = event.target.result;
+
+	  console.log("dataUrl", dataUrl)
+	}
+
+	fileReader.readAsDataURL(file);
   }
 
   updateData (e, type, tracker, addingEntry) {
@@ -156,7 +174,7 @@ class ProfileViewEdit extends Component {
 	  }
 
 	} else if (type === 'waterScheduleAuto') {
-	  if (newProfileData[type]) {
+	  if (newProfileData[type] != null) {
 		newProfileData[type] = !newProfileData[type]
 	  } else {
 		newProfileData[type] = !this.props.profile[type]
@@ -368,10 +386,33 @@ class ProfileViewEdit extends Component {
 
 	return (
 			<div className="ProfileViewEdit">
-			  <img src={profile.image}
-				   alt={profile.commonName}
-				   title={profile.commonName}
-				   className="hero-img"/>
+			  {/*{this.state.editing ?
+					  <div className="plant-photo editing">
+						<img src={profile.image}
+							 alt={profile.commonName}
+							 title={profile.commonName}/>
+
+						<FontAwesomeIcon icon={faCamera}
+										 size="3x"
+										 className="plant-condition-icon"
+										 alt="camera"
+										 title="update photo"/>
+
+						<input type="file" name="plant photo" onChange={this.updatePhoto}/>
+					  </div>
+					  :
+					  <div className="plant-photo">
+						<img src={profile.image}
+							 alt={profile.commonName}
+							 title={profile.commonName}/>
+					  </div>
+			  }*/}
+
+			  <div className="plant-photo">
+				<img src={profile.image}
+					 alt={profile.commonName}
+					 title={profile.commonName}/>
+			  </div>
 
 			  <SwipeableViews className={`swipe-view ${this.state.editing && 'editing'}`}
 							  index={this.state.swipeViewIndex}

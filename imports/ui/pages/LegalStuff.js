@@ -20,7 +20,15 @@ const LegalStuff = () => (
 			<br/>
 
 		  <h5><b>Data Collection:</b></h5>
-		  <div className="credit-item">I don't collect your data. Your plant information is stored on a secure cloud database. All passwords are encrypted. The only data collected is the data entered and it is only for your use, I do not sell or use the information in any way.</div>
+		  <div className="credit-item">
+			I don't collect your data. Your plant information is stored on a secure cloud database. All passwords are encrypted. The only data collected is the data entered and it is only for your use, I do not sell or use the information in any way.
+			<br/>
+			The only thing that is tracked are errors and crashes.
+		  </div>
+
+		  {/*TODO get sprout email*/}
+		  <h5><b>Contact:</b></h5>
+		  <div className="credit-item">&copy; sprout 2020 | info@sprout.karinacodes.com</div>
 		</div>
 );
 

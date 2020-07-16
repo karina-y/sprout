@@ -11,15 +11,6 @@ Meteor.publish('profile', function profiles () {
 	  return []
 	}
   } else {
-	//TODO remove - for debugging
-	/*const profiles = Profile.find({userId: 'r6H5iC6ySRKZZchns'})
-
-	if (profiles.fetch() && profiles.fetch().length > 0) {
-	  return profiles
-	} else {
-	  return []
-	}*/
-
 	return []
   }
 })

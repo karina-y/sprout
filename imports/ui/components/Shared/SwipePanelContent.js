@@ -11,7 +11,7 @@ const SwipePanelContent = (props) => (
 			{!IconList[props.icon] ? `COULD NOT FIND ${props.icon}` :
 			  IconList[props.icon].isCustom ?
 					<ReactSVG src={IconList[props.icon].icon}
-							  className="plant-condition-icon warning"
+							  className="plant-condition-icon custom-icon warning"
 							  alt={IconList[props.icon].alt}
 							  title={props.iconTitle || IconList[props.icon].title}/>
 					:

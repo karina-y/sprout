@@ -62,19 +62,24 @@ class Account extends Component {
   }
 
   saveProfile () {
-	//TODO only update data programmatically
-	let newProfile = {
-	  name: this.state.name || Meteor.user().profile.name,
-	  email: this.state.email || Meteor.user().emails[0].address,
+	let newProfile = {};
+
+	if (this.state.name) {
+	  newProfile.name = this.state.name;
 	}
 
-	if (this.state.zip || Meteor.user().profile.zip) {
-	  newProfile.zip = this.state.zip || Meteor.user().profile.zip
+	if (this.state.email) {
+	  newProfile.email = this.state.email;
+	}
+
+	if (this.state.zip) {
+	  newProfile.zip = this.state.zip;
 	}
 
 	const isPro = this.state.pro
 
-	if (!newProfile.name || !newProfile.email) {
+	if (JSON.stringify(newProfile) === "{}" && isPro === Meteor.isPro) {
+	  //no updates made
 	  toast.error('Please enter your updated information.')
 	} else {
 	  Meteor.call('account.updateProfile', newProfile, this.state.theme, isPro, (err, response) => {
