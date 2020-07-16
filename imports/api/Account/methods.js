@@ -120,87 +120,110 @@ Meteor.methods({
   },
   'account.updateProfile': function accountUpdateProfile (newProfile, theme, isPro) {
 
-    if (!newProfile || JSON.stringify(newProfile) === "{}") {
+    if (!newProfile && JSON.stringify(newProfile) === "{}" && theme == null && isPro == null) {
 	  logger('danger', 'No Data entered.')
 	  handleMethodException('Please check your inputs and try again.')
 	} else {
-	  try {
-		logger('success', 'data', newProfile)
 
-		const validationSchema = new SimpleSchema({
-		  email: {
-			type: String,
-			optional: true,
-			label: 'email'
-		  },
-		  name: {
-			type: String,
-			optional: true,
-			label: 'name'
-		  },
-		  zip: {
-			type: String,
-			optional: true,
-			label: 'zip'
-		  },
-		})
-
-		const validationContext = new SimpleSchema(validationSchema).newContext()
-		validationContext.validate(newProfile)
-
-		if (!validationContext.isValid()) {
-		  logger('danger', 'Validation failed', validationContext.validationErrors())
-		  handleMethodException('Invalid arguments passed')
-		} else {
-		  const userId = Meteor.userId()
-		  const oldEmail = Meteor.user().emails[0].address
-		  const oldName = Meteor.user().profile.name
-		  const oldZip = Meteor.user().profile.zip
-
-		  if (newProfile.email && newProfile.email !== oldEmail) {
-			//first remove old email
-			Accounts.removeEmail(userId, oldEmail)
-
-			//then add new one
-			Accounts.addEmail(userId, newProfile.email, false)
+      if (!newProfile && JSON.stringify(newProfile) === "{}") {
+        //just theme and/or pro change
+		//TODO clean this up
+		if (Meteor.isPro !== isPro) {
+		  if (isPro) {
+			Roles.addUsersToRoles(userId, 'pro')
+		  } else {
+			Roles.removeUsersFromRoles(userId, 'pro')
 		  }
-
-		  if ((newProfile.zip && newProfile.zip !== oldZip) || (newProfile.name && newProfile.name !== oldName)) {
-		    let query = {};
-
-		    if (newProfile.name) {
-		      query['profile.name'] = newProfile.name;
-			}
-
-		    if (newProfile.zip) {
-			  query['profile.zip'] = newProfile.zip;
-			}
-
-			Meteor.users.update({_id: userId}, {$set: query})
-		  }
-
-		  if (Meteor.isPro !== isPro) {
-			if (isPro) {
-			  Roles.addUsersToRoles(userId, 'pro')
-			} else {
-			  Roles.removeUsersFromRoles(userId, 'pro')
-			}
-		  }
-
-		  if (theme) {
-			const pref = {
-			  theme: theme
-			}
-
-			Meteor.call('preferences.update', pref)
-		  }
-
-		  // return response;
 		}
-	  } catch (e) {
-		logger('danger', e.message)
-		handleMethodException('Please check your inputs and try again.')
+
+		//TODO this shouldn't run unless we have a real change
+		if (theme) {
+		  const pref = {
+			theme: theme
+		  }
+
+		  Meteor.call('preferences.update', pref)
+		}
+	  } else {
+		try {
+		  logger('success', 'data', newProfile)
+
+		  const validationSchema = new SimpleSchema({
+			email: {
+			  type: String,
+			  optional: true,
+			  label: 'email'
+			},
+			name: {
+			  type: String,
+			  optional: true,
+			  label: 'name'
+			},
+			zip: {
+			  type: String,
+			  optional: true,
+			  label: 'zip'
+			},
+		  })
+
+		  const validationContext = new SimpleSchema(validationSchema).newContext()
+		  validationContext.validate(newProfile)
+
+		  if (!validationContext.isValid()) {
+			logger('danger', 'Validation failed', validationContext.validationErrors())
+			handleMethodException('Invalid arguments passed')
+		  } else {
+			const userId = Meteor.userId()
+			const oldEmail = Meteor.user().emails[0].address
+			const oldName = Meteor.user().profile.name
+			const oldZip = Meteor.user().profile.zip
+
+			if (newProfile.email && newProfile.email !== oldEmail) {
+			  //first remove old email
+			  Accounts.removeEmail(userId, oldEmail)
+
+			  //then add new one
+			  Accounts.addEmail(userId, newProfile.email, false)
+			}
+
+			if ((newProfile.zip && newProfile.zip !== oldZip) || (newProfile.name && newProfile.name !== oldName)) {
+			  let query = {};
+
+			  if (newProfile.name) {
+				query['profile.name'] = newProfile.name;
+			  }
+
+			  if (newProfile.zip) {
+				query['profile.zip'] = newProfile.zip;
+			  }
+
+			  Meteor.users.update({_id: userId}, {$set: query})
+			}
+
+			if (Meteor.isPro !== isPro) {
+			  if (isPro) {
+				Roles.addUsersToRoles(userId, 'pro')
+			  } else {
+				Roles.removeUsersFromRoles(userId, 'pro')
+			  }
+			}
+
+			if (theme) {
+			  const pref = {
+				theme: theme
+			  }
+
+			  Meteor.call('preferences.update', pref)
+			}
+
+			// return response;
+		  }
+		} catch (e) {
+		  logger('danger', e.message)
+		  handleMethodException('Please check your inputs and try again.')
+		}
 	  }
+
 	}
 
   },

@@ -49,6 +49,7 @@ class ProfileAddEntryModal extends Component {
 			<Modal show={this.state.show}
 				   onHide={this.close}
 				   className="profile-view-data-modal">
+
 			  <Modal.Header closeButton>
 				{this.props.header}
 			  </Modal.Header>
@@ -91,7 +92,7 @@ ProfileAddEntryModal.propTypes = {
   save: PropTypes.func.isRequired,
   cancel: PropTypes.func.isRequired,
   type: PropTypes.string,
-  header: PropTypes.string.isRequired,
+  header: PropTypes.string,
   modalOpen: PropTypes.string
 }
 

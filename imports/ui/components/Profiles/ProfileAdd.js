@@ -179,41 +179,46 @@ class ProfileAdd extends Component {
 				  </p>
 
 				  <SwipePanelContent icon="info" iconTitle="common name">
-					<p>* <input type="text"
-								placeholder="Common Name"
-								onChange={(e) => this.updateData(e, 'commonName')}
-								value={profile.commonName || ''}/></p>
+					<p className="modern-input">
+					  <label>common name *</label>
+					  <input type="text"
+							 onChange={(e) => this.updateData(e, 'commonName')}
+							 value={profile.commonName || ''}/></p>
 				  </SwipePanelContent>
 
 				  <SwipePanelContent icon="info" iconTitle="latin name">
-					<p>* <input type="text"
-								placeholder="Latin Name"
-								onChange={(e) => this.updateData(e, 'latinName')}
-								value={profile.latinName || ''}/></p>
+					<p className="modern-input">
+					  <label>latin name *</label>
+					  <input type="text"
+							 onChange={(e) => this.updateData(e, 'latinName')}
+							 value={profile.latinName || ''}/></p>
 				  </SwipePanelContent>
 
 				  {Meteor.isPro &&
 				  <React.Fragment>
 					<SwipePanelContent icon="category">
-					  <p>* <select placeholder="Category"
-								   onChange={(e) => this.updateData(e, 'category')}
-								   value={profile.category || ''}>
-						<option value='' disabled={true}>- Select a category -</option>
-						{this.state.categories && this.state.categories.map((item, index) => {
-						  return <option value={item.category} key={index}>{item.displayName}</option>
-						})}
-					  </select>
+					  <p className="modern-input">
+						<label>category *</label>
+						<select placeholder="Category"
+								onChange={(e) => this.updateData(e, 'category')}
+								value={profile.category || ''}>
+						  <option value='' disabled={true}>- Select a category -</option>
+						  {this.state.categories && this.state.categories.map((item, index) => {
+							return <option value={item.category} key={index}>{item.displayName}</option>
+						  })}
+						</select>
 					  </p>
 					</SwipePanelContent>
 				  </React.Fragment>
 				  }
 
 				  <SwipePanelContent icon="toxicity">
-					<p><input type="text"
-							  className="not-required"
-							  placeholder="Toxicity (ie poisonous to dogs if leaves are consumed)"
-							  onChange={(e) => this.updateData(e, 'toxicity')}
-							  value={profile.toxicity || ''}/></p>
+					<p className="modern-input">
+					  <label>toxicity</label>
+					  <input type="text"
+							 placeholder="Toxicity (ie poisonous to dogs if leaves are consumed)"
+							 onChange={(e) => this.updateData(e, 'toxicity')}
+							 value={profile.toxicity || ''}/></p>
 				  </SwipePanelContent>
 
 				</div>
@@ -227,11 +232,14 @@ class ProfileAdd extends Component {
 				  </p>
 
 				  <SwipePanelContent icon="schedule" iconTitle="watering schedule">
-					<p>Water every <input type="number"
-										  placeholder="4"
-										  className="small"
-										  onChange={(e) => this.updateData(e, 'waterSchedule')}
-										  value={profile.waterSchedule || ''}/> days</p>
+					<p className="modern-input">Water every <input type="number"
+																   min="0"
+																   inputMode="numeric"
+																   pattern="[0-9]*"
+																   placeholder="4"
+																   className="small"
+																   onChange={(e) => this.updateData(e, 'waterSchedule')}
+																   value={profile.waterSchedule || ''}/> days</p>
 				  </SwipePanelContent>
 
 				  {Meteor.isPro &&
@@ -250,17 +258,19 @@ class ProfileAdd extends Component {
 				  }
 
 				  <SwipePanelContent icon="water">
-					<p>* <input type="text"
-								placeholder="Watering Preferences"
-								onChange={(e) => this.updateData(e, 'waterPreference')}
-								value={profile.waterPreference || ''}/></p>
+					<p className="modern-input">
+					  <label>watering preferences *</label>
+					  <input type="text"
+							 onChange={(e) => this.updateData(e, 'waterPreference')}
+							 value={profile.waterPreference || ''}/></p>
 				  </SwipePanelContent>
 
 				  <SwipePanelContent icon="lightPreference">
-					<p>* <input type="text"
-								placeholder="Light Preferences"
-								onChange={(e) => this.updateData(e, 'lightPreference')}
-								value={profile.lightPreference || ''}/></p>
+					<p className="modern-input">
+					  <label>light preferences *</label>
+					  <input type="text"
+							 onChange={(e) => this.updateData(e, 'lightPreference')}
+							 value={profile.lightPreference || ''}/></p>
 				  </SwipePanelContent>
 
 				</div>
@@ -273,38 +283,41 @@ class ProfileAdd extends Component {
 				  </p>
 
 				  <SwipePanelContent icon="schedule" iconTitle={`${Meteor.isPro ? 'feeding' : 'fertilizer'} schedule`}>
-					<p>{Meteor.isPro ? 'Feed' : 'Fertilize'} every <input type="number"
-																		  placeholder="30"
-																		  className="small"
-																		  onChange={(e) => this.updateData(e, 'fertilizerSchedule')}/> days
+					<p className="modern-input">{Meteor.isPro ? 'Feed' : 'Fertilize'} every <input type="number"
+																								   min="0"
+																								   inputMode="numeric"
+																								   pattern="[0-9]*"
+																								   placeholder="30"
+																								   className="small"
+																								   onChange={(e) => this.updateData(e, 'fertilizerSchedule')}/> days
 					</p>
 				  </SwipePanelContent>
 
 				  <SwipePanelContent icon="fertilizer">
-					<p><input type="text"
-							  className="not-required"
-							  placeholder="Preferred Fertilizer"
-							  onChange={(e) => this.updateData(e, 'fertilizer')}
-							  value={profile.fertilizer || ''}/></p>
+					<p className="modern-input">
+					  <label>preferred fertilizer</label>
+					  <input type="text"
+							 onChange={(e) => this.updateData(e, 'fertilizer')}
+							 value={profile.fertilizer || ''}/></p>
 				  </SwipePanelContent>
 
 
 				  {Meteor.isPro &&
 				  <React.Fragment>
 					<SwipePanelContent icon="compost">
-					  <p><input type="text"
-								className="not-required"
-								placeholder="Compost"
-								onChange={(e) => this.updateData(e, 'compost')}
-								value={profile.compost || ''}/></p>
+					  <p className="modern-input">
+						<label>compost</label>
+						<input type="text"
+							   onChange={(e) => this.updateData(e, 'compost')}
+							   value={profile.compost || ''}/></p>
 					</SwipePanelContent>
 
 					<SwipePanelContent icon="nutrients">
-					  <p><input type="text"
-								className="not-required"
-								placeholder="Other Nutrient Amendment"
-								onChange={(e) => this.updateData(e, 'nutrient')}
-								value={profile.nutrient || ''}/></p>
+					  <p className="modern-input">
+						<label>other nutrient amendment</label>
+						<input type="text"
+							   onChange={(e) => this.updateData(e, 'nutrient')}
+							   value={profile.nutrient || ''}/></p>
 					</SwipePanelContent>
 				  </React.Fragment>
 				  }
@@ -320,18 +333,24 @@ class ProfileAdd extends Component {
 				  </p>
 
 				  <SwipePanelContent icon="schedule" iconTitle="pruning schedule">
-					<p>Prune every <input type="number"
-										  className="small not-required"
-										  placeholder="30"
-										  onChange={(e) => this.updateData(e, 'pruningSchedule')}/> days
+					<p className="modern-input">Prune every <input type="number"
+																   min="0"
+																   inputMode="numeric"
+																   pattern="[0-9]*"
+																   className="small"
+																   placeholder="30"
+																   onChange={(e) => this.updateData(e, 'pruningSchedule')}/> days
 					</p>
 				  </SwipePanelContent>
 
 				  <SwipePanelContent icon="schedule" iconTitle="deadheading schedule">
-					<p>Deadhead every <input type="number"
-											 className="small not-required"
-											 placeholder="30"
-											 onChange={(e) => this.updateData(e, 'deadheadingSchedule')}/> days
+					<p className="modern-input">Deadhead every <input type="number"
+																	  min="0"
+																	  inputMode="numeric"
+																	  pattern="[0-9]*"
+																	  className="small"
+																	  placeholder="30"
+																	  onChange={(e) => this.updateData(e, 'deadheadingSchedule')}/> days
 					</p>
 				  </SwipePanelContent>
 
@@ -349,43 +368,46 @@ class ProfileAdd extends Component {
 						  <React.Fragment>
 
 							<SwipePanelContent icon="tilling">
-							  <p><select placeholder="Tilled"
-										 className="not-required"
-										 onChange={(e) => this.updateData(e, 'tilled')}
-										 value={profile.tilled || ''}>
-								<option value='' disabled={true}>- Is the soil tilled? -</option>
-								<option value={false}>No</option>
-								<option value={true}>Yes</option>
-							  </select>
+							  <p className="modern-input">
+								<label>is the soil tilled</label>
+								<select onChange={(e) => this.updateData(e, 'tilled')}
+										value={profile.tilled || ''}>
+								  <option value='' disabled={true}>- Is the soil tilled? -</option>
+								  <option value={false}>No</option>
+								  <option value={true}>Yes</option>
+								</select>
 							  </p>
 							</SwipePanelContent>
 
 							<SwipePanelContent icon="soilType">
-							  <p><select placeholder="Soil Type"
-										 className="not-required"
-										 onChange={(e) => this.updateData(e, 'soilType')}
-										 value={profile.soilType || ''}>
-								<option value='' disabled={true}>- Select a ground soil type -</option>
-								{SoilTypes.map((item, index) => {
-								  return <option value={item.type} key={index}>{item.displayName}</option>
-								})}
-							  </select>
+							  <p className="modern-input">
+								<label>ground soil type</label>
+								<select onChange={(e) => this.updateData(e, 'soilType')}
+										value={profile.soilType || ''}>
+								  <option value='' disabled={true}>- Select a ground soil type -</option>
+								  {SoilTypes.map((item, index) => {
+									return <option value={item.type} key={index}>{item.displayName}</option>
+								  })}
+								</select>
 							  </p>
 							</SwipePanelContent>
 
 							<SwipePanelContent icon="soilAmendment">
-							  <p><input type="text"
-										className="not-required"
-										placeholder="Soil Amendment"
-										onChange={(e) => this.updateData(e, 'soilAmendment')}
-										value={profile.soilAmendment || ''}/></p>
+							  <p className="modern-input">
+								<label>soil amendment</label>
+								<input type="text"
+									   onChange={(e) => this.updateData(e, 'soilAmendment')}
+									   value={profile.soilAmendment || ''}/></p>
 							</SwipePanelContent>
 
 							<SwipePanelContent icon="ph">
-							  <p>pH <input type="number"
-										   className="not-required small"
-										   placeholder="6.2"
-										   onChange={(e) => this.updateData(e, 'ph')}/></p>
+							  <p className="modern-input">pH <input type="number"
+																	min="0"
+																	inputMode="numeric"
+																	pattern="[0-9]*"
+																	className="small"
+																	placeholder="6.2"
+																	onChange={(e) => this.updateData(e, 'ph')}/></p>
 							</SwipePanelContent>
 
 						  </React.Fragment>
@@ -393,36 +415,47 @@ class ProfileAdd extends Component {
 						  (Meteor.isPro && profile.category === 'potted') ?
 								  <React.Fragment>
 									<SwipePanelContent icon="soilRecipe">
-									  <p><input type="text"
-												className="not-required"
-												placeholder="Soil Recipe"
-												onChange={(e) => this.updateData(e, 'soilRecipe')}
-												value={profile.soilRecipe || ''}/></p>
+									  <p className="modern-input">
+										<label>soil recipe</label>
+										<input type="text"
+											   onChange={(e) => this.updateData(e, 'soilRecipe')}
+											   value={profile.soilRecipe || ''}/></p>
 									</SwipePanelContent>
 
 									<SwipePanelContent icon="soilMoisture">
-									  <p>Moisture Level <input type="number"
-															   className="not-required small"
-															   placeholder="40"
-															   onChange={(e) => this.updateData(e, 'moisture')}/>%</p>
+									  <p className="modern-input">Moisture Level <input type="number"
+																						min="0"
+																						inputMode="numeric"
+																						pattern="[0-9]*"
+																						className="small"
+																						placeholder="40"
+																						onChange={(e) => this.updateData(e, 'moisture')}/>%
+									  </p>
 									</SwipePanelContent>
 								  </React.Fragment>
 								  :
 								  profile.category === 'in-ground' ?
 										  <React.Fragment>
 											<SwipePanelContent icon="ph">
-											  <p>pH <input type="number"
-														   className="not-required small"
-														   placeholder="6.2"
-														   onChange={(e) => this.updateData(e, 'ph')}/></p>
+											  <p className="modern-input">pH <input type="number"
+																					min="0"
+																					inputMode="numeric"
+																					pattern="[0-9]*"
+																					className="small"
+																					placeholder="6.2"
+																					onChange={(e) => this.updateData(e, 'ph')}/>
+											  </p>
 											</SwipePanelContent>
 
 
 											<SwipePanelContent icon="soilMoisture">
-											  <p>Moisture Level <input type="number"
-																	   className="not-required small"
-																	   placeholder="40"
-																	   onChange={(e) => this.updateData(e, 'moisture')}/>%
+											  <p className="modern-input">Moisture Level <input type="number"
+																								min="0"
+																								inputMode="numeric"
+																								pattern="[0-9]*"
+																								className="small"
+																								placeholder="40"
+																								onChange={(e) => this.updateData(e, 'moisture')}/>%
 											  </p>
 											</SwipePanelContent>
 										  </React.Fragment>
@@ -476,11 +509,11 @@ class ProfileAdd extends Component {
 				  <p className="swipe-title title-ming">Location & Date Bought</p>
 
 				  <SwipePanelContent icon="locationBought">
-					<p><input type="text"
-							  className="not-required"
-							  placeholder="Location Bought"
-							  onChange={(e) => this.updateData(e, 'locationBought')}
-							  value={profile.locationBought || ''}/></p>
+					<p className="modern-input">
+					  <label>location bought</label>
+					  <input type="text"
+							 onChange={(e) => this.updateData(e, 'locationBought')}
+							 value={profile.locationBought || ''}/></p>
 				  </SwipePanelContent>
 
 				  {/*need to make this swipepanelcontent with the custom style*/}
@@ -493,11 +526,11 @@ class ProfileAdd extends Component {
 					</div>
 
 					<div className="info-side">
-					  <p><input type="date"
-								className="not-required"
-								placeholder="Date Bought"
-								onBlur={(e) => this.updateData(e, 'dateBought')}
-								defaultValue={profile.dateBought || ''}/></p>
+					  <p className="modern-input">
+						<label>date bought</label>
+						<input type="date"
+							   onBlur={(e) => this.updateData(e, 'dateBought')}
+							   defaultValue={profile.dateBought || ''}/></p>
 
 					  {/*TODO get datepicker to open over image*/}
 					  {/*<p>* Date Bought</p>
@@ -518,11 +551,10 @@ class ProfileAdd extends Component {
 				  <p className="swipe-title title-ming">Etc</p>
 				  <SwipePanelContent icon="category"
 									 iconTitle={profile.category === 'potted' ? 'Date Potted' : 'Date Planted'}>
-					<p>
-					  <i className="not-required">{profile.category === 'potted' ? 'Date Potted' : 'Date Planted'}</i>
+					<p className="modern-input">
+					  <label>{profile.category === 'potted' ? 'date potted' : 'date planted'}</label>
 
 					  <input type="date"
-							 className="not-required"
 							 placeholder={profile.category === 'potted' ? 'Date Potted' : 'Date Planted'}
 							 onBlur={(e) => this.updateData(e, 'datePlanted')}
 							 defaultValue={profile.datePlanted || ''}/>
@@ -530,18 +562,19 @@ class ProfileAdd extends Component {
 				  </SwipePanelContent>
 
 				  <SwipePanelContent icon="plantLocation">
-					<p>* <input type="text"
-								placeholder="Plant location"
-								onChange={(e) => this.updateData(e, 'location')}
-								value={profile.location || ''}/></p>
+					<p className="modern-input">
+					  <label>plant location *</label>
+					  <input type="text"
+							 onChange={(e) => this.updateData(e, 'location')}
+							 value={profile.location || ''}/></p>
 				  </SwipePanelContent>
 
 				  <SwipePanelContent icon="companions">
-					<p><input type="text"
-							  className="not-required"
-							  placeholder="Companion plants"
-							  onChange={(e) => this.updateData(e, 'companions')}
-							  value={profile.companions || ''}/></p>
+					<p className="modern-input">
+					  <label>companion plants</label>
+					  <input type="text"
+							 onChange={(e) => this.updateData(e, 'companions')}
+							 value={profile.companions || ''}/></p>
 				  </SwipePanelContent>
 
 				  {/* <SwipePanelContent icon={IconList.info.icon} iconAlt={IconList.info.alt} customIcon={IconList.info.isCustom} iconTitle="diary and notes">

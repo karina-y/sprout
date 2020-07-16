@@ -22,7 +22,7 @@ body {
   width: 100% !important;
   min-width: 100% !important;
   height: 100%;
-  background-color: #f8fcff;
+  background-color: $off-white;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: $med-gray;
@@ -96,9 +96,10 @@ body {
   .scroll-box {
     height: 179px;
     overflow-y: scroll;
-    background: $powder-blue-light;
     padding: 10px;
-    border-radius: 5px;
+    border-radius: 15px;
+    border: solid 1px $powder-blue;
+    background: $off-white;
   }
 
   .Footer {
@@ -270,9 +271,14 @@ body {
   }
 
   a,
-  input {
+  input,
+  textarea,
+  select,
+  option {
     &:focus,
-    &:active {
+    &:active,
+    &:hover,
+    &:visited {
       outline: none !important;
     }
   }
@@ -303,6 +309,42 @@ body {
     width: 15px;
     vertical-align: top;
     margin-right: 5px;
+  }
+
+  p.modern-input {
+    position: relative;
+
+    label {
+      position: absolute;
+      top: -9px;
+      left: 13px;
+      background: $off-white;
+      padding: 2px 5px;
+      font-size: 13px;
+      color: $polished-pine;
+    }
+
+    input,
+    select,
+    textarea {
+      background-color: $off-white !important;
+      border: solid $powder-blue 1px !important;
+      border-radius: 30px !important;
+      padding: 5px 15px;
+    }
+
+    &.for-modal {
+      label {
+        top: 0;
+        background: $white;
+      }
+
+      input,
+      select,
+      textarea {
+        background-color: $white !important;
+      }
+    }
   }
 
   .not-required {

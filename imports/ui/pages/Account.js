@@ -113,32 +113,32 @@ class Account extends Component {
 
 			  {!this.state.changingPassword &&
 			  <React.Fragment>
-				<p>
-				  <label>E-mail:</label>
+				<p className={this.state.editing ? 'modern-input' : ''}>
+				  <label>e-mail</label>
 				  {this.state.editing ? <input type="email"
 											   placeholder="E-mail"
 											   defaultValue={email}
 											   onChange={(e) => this.setState({email: e.target.value})}/> : email}
 				</p>
 
-				<p>
-				  <label>Name</label>
+				<p className={this.state.editing ? 'modern-input' : ''}>
+				  <label>name</label>
 				  {this.state.editing ? <input type="text"
 											   placeholder="Name"
 											   defaultValue={name}
 											   onChange={(e) => this.setState({name: e.target.value})}/> : name}
 				</p>
 
-				<p>
-				  <label>Zip / Postal Code:</label>
+				<p className={this.state.editing ? 'modern-input' : ''}>
+				  <label>zip / postal code</label>
 				  {this.state.editing ? <input type="text"
 											   placeholder="Zip / Postal Code"
 											   defaultValue={zip}
 											   onChange={(e) => this.setState({zip: e.target.value})}/> : zip}
 				</p>
 
-				<p>
-				  <label>Theme:</label>
+				<p className={this.state.editing ? 'modern-input' : ''}>
+				  <label>theme</label>
 				  {this.state.editing ? <select placeholder="Category"
 												onChange={(e) => this.setState({theme: e.target.value})}
 												value={this.state.theme}>
@@ -150,18 +150,18 @@ class Account extends Component {
 				{/*TODO remove for prod, just for testing*/}
 				{!this.state.editing &&
 				<p>
-				  <label>Verified?:</label>
+				  <label>Verified?</label>
 				  {this.state.verified ? 'Yes' : 'No'}
 				</p>
 				}
 
 
 				{/*TODO remove for prod, just for testing*/}
-				<p>
-				  <label>Pro?:</label>
+				<p className="pro-checkbox">
+				  <label>pro?</label>
 				  {this.state.editing ? <input type="checkbox"
 											   placeholder="pro"
-											   className="checkbox"
+											   className="small-checkbox"
 											   checked={this.state.pro}
 											   onChange={(e) => this.setState({pro: !this.state.pro})}/> : this.state.pro ? 'Yes' : 'No'}
 				</p>
@@ -170,22 +170,22 @@ class Account extends Component {
 
 			  {this.state.changingPassword &&
 			  <form>
-				<p>
-				  <label>Current Password:</label>
+				<p className={this.state.changingPassword ? 'modern-input' : ''}>
+				  <label>current password</label>
 				  <input type="password"
 						 placeholder="Password"
 						 onChange={(e) => this.setState({currentPassword: e.target.value})}/>
 				</p>
 
-				<p>
-				  <label>New Password:</label>
+				<p className={this.state.changingPassword ? 'modern-input' : ''}>
+				  <label>new password</label>
 				  <input type="password"
 						 placeholder="Password"
 						 onChange={(e) => this.setState({newPassword: e.target.value})}/>
 				</p>
 
-				<p>
-				  <label>Confirm New Password:</label>
+				<p className={this.state.changingPassword ? 'modern-input' : ''}>
+				  <label>confirm new password</label>
 				  <input type="password"
 						 placeholder="Password"
 						 onChange={(e) => this.setState({confirmNewPassword: e.target.value})}/>

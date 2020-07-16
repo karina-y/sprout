@@ -3,12 +3,20 @@
 .Account {
   padding: 45px;
 
+  p.modern-input {
+    label {
+      display: inherit;
+      font-weight: inherit;
+      width: inherit;
+      border-radius: inherit;
+    }
+  }
+
   label {
     display: block;
     font-weight: bold;
     width: fit-content;
     border-radius: 5px;
-    color: $med-gray;
   }
 
   .acct-title {
@@ -27,8 +35,15 @@
     text-align: center;
   }
 
-  input[type="checkbox"] {
-    width: auto;
+  .pro-checkbox {
+    label {
+      margin-right: 5px;
+      display: inline;
+    }
+
+    input {
+      width: auto;
+    }
   }
 
   .checkbox {
