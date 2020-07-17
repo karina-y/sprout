@@ -14,10 +14,6 @@ import { faPencilAlt } from '@fortawesome/free-solid-svg-icons/faPencilAlt'
 import { faSave } from '@fortawesome/free-solid-svg-icons/faSave'
 import { faTimes } from '@fortawesome/free-solid-svg-icons/faTimes'
 import { faPlus } from '@fortawesome/free-solid-svg-icons/faPlus'
-import { faMeh } from '@fortawesome/free-solid-svg-icons/faMeh'
-import { faSadTear } from '@fortawesome/free-solid-svg-icons/faSadTear'
-import { faSmile } from '@fortawesome/free-solid-svg-icons/faSmile'
-import { faQuestionCircle } from '@fortawesome/free-solid-svg-icons/faQuestionCircle'
 import { faCalendar } from '@fortawesome/free-solid-svg-icons/faCalendar'
 import {
   getDaysSinceAction, getLastPestName, getLastPestTreatment, getLastSoilMoisture, getLastSoilPh,
@@ -25,12 +21,19 @@ import {
 } from '../../../utils/plantData'
 import Profile from '/imports/api/Profile/Profile'
 import { toast } from 'react-toastify'
-import SwipePanelContent from '../Shared/SwipePanelContent'
 import ProfileAddEntryModal from '../Shared/ProfileAddEntryModal'
 import ProfileViewHistoryModal from '../Shared/ProfileViewHistoryModal'
 import Category from '/imports/api/Category/Category'
-import SoilTypes from '../../../utils/soilTypes'
-import { faCamera } from '@fortawesome/free-solid-svg-icons/faCamera'
+import WaterPro from '../SharedProfile/SwipeViews/WaterPro'
+import FertilizerPro from '../SharedProfile/SwipeViews/FertilizerPro'
+import PruningDeadheadingPro from '../SharedProfile/SwipeViews/PruningDeadheadingPro'
+import SoilCompPro from '../SharedProfile/SwipeViews/SoilCompPro'
+import Pest from '../SharedProfile/SwipeViews/Pest'
+import Diary from '../SharedProfile/SwipeViews/Diary'
+import Etc from '../SharedProfile/SwipeViews/Etc'
+import Water from '../SharedProfile/SwipeViews/Water'
+import Fertilizer from '../SharedProfile/SwipeViews/Fertilizer'
+import SoilComp from '../SharedProfile/SwipeViews/SoilComp'
 
 class ProfileViewEdit extends Component {
   constructor (props) {
@@ -107,6 +110,21 @@ class ProfileViewEdit extends Component {
 	  }
 
 	} else if (tracker) {
+	  //special case here where the client is pruning and deadheading in the same date entry
+	  if (type === 'pruningDeadheadingTracker') {
+		tracker = 'pruningTracker'
+
+		if (newProfileData[tracker]) {
+		  newProfileData[tracker].date = new Date(e)
+		} else {
+		  newProfileData[tracker] = {
+			date: new Date(e)
+		  }
+		}
+
+		tracker = 'deadheadingTracker'
+		//will add the next one below
+	  }
 
 	  //this is a new date entry only
 	  if (newProfileData[tracker]) {
@@ -120,6 +138,16 @@ class ProfileViewEdit extends Component {
 
 	  const stripped = e.target.value.replace(/\s*,\s*/g, ',')
 	  newProfileData[type] = stripped.split(',')
+
+	} else if (type === 'pruning') {
+
+	  if (newProfileData.pruningTracker) {
+		newProfileData.pruningTracker[type] = e.target.value
+	  } else {
+		newProfileData.pruningTracker = {
+		  [type]: e.target.value
+		}
+	  }
 
 	} else if (type === 'ph' || type === 'moisture') {
 	  let phVal = parseFloat(e.target.value)
@@ -164,6 +192,10 @@ class ProfileViewEdit extends Component {
 
   updateProfile (type) {
 
+	if (type === 'pruningDeadheadingTracker') {
+	  type = this.state.pruneType
+	}
+
 	const newProfileData = this.state.newData
 	const oldProfileData = this.props.profile
 	let data
@@ -190,6 +222,12 @@ class ProfileViewEdit extends Component {
 			nutrient: newProfileData.nutrient,
 		  }
 		  break
+		case 'pruningDeadheadingTracker-edit':
+		  data = {
+			pruningSchedule: parseInt(newProfileData.pruningSchedule || oldProfileData.pruningSchedule),
+			deadheadingSchedule: parseInt(newProfileData.deadheadingSchedule || oldProfileData.deadheadingSchedule),
+		  }
+		  break
 		case 'etc-edit':
 		  data = {
 			commonName: newProfileData.commonName || oldProfileData.commonName,
@@ -205,6 +243,12 @@ class ProfileViewEdit extends Component {
 
 		  if (newProfileData.latinName !== oldProfileData.latinName || newProfileData.commonName !== oldProfileData.commonName) {
 			changeTitle = true
+		  }
+		  break
+		case 'pruningDeadheadingTracker':
+		  data = {
+			pruningTracker: newProfileData.pruningTracker,
+			deadheadingTracker: newProfileData.deadheadingTracker,
 		  }
 		  break
 		case 'soilCompositionTracker-edit':
@@ -270,9 +314,12 @@ class ProfileViewEdit extends Component {
 		editing = 'fertilizerTracker'
 		break
 	  case 2:
+		editing = 'pruningDeadheadingTracker'
+		break
+	  case 3:
 		editing = 'soilCompositionTracker'
 		break
-	  case 5:
+	  case 6:
 		editing = 'etc'
 		break
 	}
@@ -293,12 +340,15 @@ class ProfileViewEdit extends Component {
 		modalOpen = history ? 'fertilizerTracker-history' : 'fertilizerTracker'
 		break
 	  case 2:
-		modalOpen = history ? 'soilCompositionTracker-history' : 'soilCompositionTracker'
+		modalOpen = history ? 'pruningDeadheadingTracker-history' : 'pruningDeadheadingTracker'
 		break
 	  case 3:
-		modalOpen = history ? 'pestTracker-history' : 'pestTracker'
+		modalOpen = history ? 'soilCompositionTracker-history' : 'soilCompositionTracker'
 		break
 	  case 4:
+		modalOpen = history ? 'pestTracker-history' : 'pestTracker'
+		break
+	  case 5:
 		modalOpen = history ? 'diary-history' : 'diary'
 		break
 	}
@@ -364,326 +414,66 @@ class ProfileViewEdit extends Component {
 							  index={this.state.swipeViewIndex}
 							  onChangeIndex={(e) => this.setState({swipeViewIndex: e, editing: null})}>
 
+
 				{/* water */}
-				<div className="swipe-slide">
+				{Meteor.isPro ?
+						<WaterPro profile={profile} updateData={this.updateData} editing={this.state.editing}/>
+						:
+						<Water profile={profile} updateData={this.updateData} editing={this.state.editing}/>
+				}
 
-				  <p className="swipe-title title-ming">
-					Water - Light <FontAwesomeIcon
-						  icon={profile.waterCondition === 'needs-attn' ? faSadTear : profile.waterCondition === 'neutral' ? faMeh : profile.waterCondition === 'unsure' ? faQuestionCircle : faSmile}
-						  className="plant-condition-icon"
-						  title="water condition"
-						  alt={profile.waterCondition === 'needs-attn' ? 'sad face with tear' : profile.waterCondition === 'neutral' ? 'neutral face' : profile.waterCondition === 'unsure' ? 'question mark' : 'smiling face'}/>
-				  </p>
-
-				  {this.state.editing === 'waterTracker' ?
-						  <React.Fragment>
-							<SwipePanelContent icon="schedule"
-											   iconTitle="water schedule">
-							  <p className="modern-input">Water every <input type="number"
-																			 placeholder="4"
-																			 className="small"
-																			 onChange={(e) => this.updateData(e, 'waterSchedule')}
-																			 defaultValue={profile.waterSchedule || ''}/> days
-							  </p>
-							</SwipePanelContent>
-
-							<SwipePanelContent icon="water">
-							  <p className="modern-input">
-								<label>watering preferences</label>
-								<input type="text" placeholder="Watering Preferences"
-									   onChange={(e) => this.updateData(e, 'waterPreference')}
-									   defaultValue={profile.waterPreference || ''}/></p>
-							</SwipePanelContent>
-
-							<SwipePanelContent icon="lightPreference">
-							  <p className="modern-input">
-								<label>light preferences</label>
-								<input type="text"
-									   onChange={(e) => this.updateData(e, 'lightPreference')}
-									   defaultValue={profile.lightPreference || ''}/></p>
-							</SwipePanelContent>
-						  </React.Fragment>
-						  :
-						  <React.Fragment>
-							<SwipePanelContent icon="schedule"
-											   iconTitle="water schedule">
-							  <p>Water every {profile.waterSchedule} days</p>
-							  {!profile.waterScheduleAuto &&
-							  <p>Due in {profile.waterSchedule - profile.daysSinceWatered - 1} days</p>
-							  }
-							</SwipePanelContent>
-
-							<SwipePanelContent icon="water"
-											   iconTitle="water preference">
-							  <p>{profile.waterPreference}</p>
-							</SwipePanelContent>
-
-							<SwipePanelContent icon="lightPreference">
-							  <p>{profile.lightPreference}</p>
-							</SwipePanelContent>
-						  </React.Fragment>
-				  }
-
-				</div>
 
 				{/* fertilizer */}
-				<div className="swipe-slide">
-				  <p className="swipe-title title-ming">
-					Fertilizer <FontAwesomeIcon
-						  icon={profile.fertilizerCondition === 'needs-attn' ? faSadTear : profile.fertilizerCondition === 'neutral' ? faMeh : faSmile}
-						  className="plant-condition-icon"
-						  title="fertilizer condition"
-						  alt={profile.fertilizerCondition === 'needs-attn' ? 'sad face with tear' : profile.fertilizerCondition === 'neutral' ? 'neutral face' : profile.fertilizerCondition === 'unsure' ? 'question mark' : 'smiling face'}/>
-				  </p>
+				{Meteor.isPro ?
+						<FertilizerPro profile={profile}
+									   updateData={this.updateData}
+									   fertilizerContent={fertilizerContent}
+									   editing={this.state.editing}/>
+						:
+						<Fertilizer profile={profile}
+									updateData={this.updateData}
+									fertilizerContent={fertilizerContent}
+									editing={this.state.editing}/>
+				}
 
-
-				  <SwipePanelContent icon="schedule" iconTitle="fertilizer schedule">
-					{this.state.editing === 'fertilizerTracker' ?
-							<p className="modern-input">Fertilize every <input type="number"
-																			   placeholder="30"
-																			   className="small"
-																			   onChange={(e) => this.updateData(e, 'fertilizerSchedule')}
-																			   defaultValue={profile.fertilizerSchedule || ''}/> days
-							</p>
-							: profile.fertilizerSchedule ?
-									<React.Fragment>
-									  <p>Fertilize every {profile.fertilizerSchedule} days</p>
-									  <p>Due in {profile.fertilizerSchedule - profile.daysSinceFertilized - 1} days</p>
-									</React.Fragment>
-									:
-									<p>No schedule set</p>
-					}
-				  </SwipePanelContent>
-
-				  {this.state.editing === 'fertilizerTracker' ?
-						  <SwipePanelContent icon="fertilizer">
-							<p className="modern-input">
-							  <label>preferred fertilizer</label>
-							  <input type="text"
-									 onChange={(e) => this.updateData(e, 'fertilizer')}
-									 defaultValue={profile.fertilizer || ''}/></p>
-						  </SwipePanelContent>
-						  : (profile.fertilizer || fertilizerContent) &&
-						  <SwipePanelContent icon="fertilizer">
-							<p>{profile.fertilizer || fertilizerContent}</p>
-						  </SwipePanelContent>
-				  }
-
-				</div>
+				{/* pruning/deadheading */}
+				{Meteor.isPro &&
+				<PruningDeadheadingPro profile={profile}
+									   updateData={this.updateData}
+									   editing={this.state.editing}/>
+				}
 
 				{/* soil comp */}
-				<div className="swipe-slide slide-three">
-				  <p className="swipe-title title-ming">
-					Soil Composition
-				  </p>
+				{Meteor.isPro ?
+						<SoilCompPro profile={profile}
+									 updateData={this.updateData}
+									 soilCompLastChecked={soilCompLastChecked}
+									 soilMoisture={soilMoisture}
+									 soilPh={soilPh}
+									 editing={this.state.editing}/>
+						:
+						<SoilComp profile={profile}
+								  updateData={this.updateData}
+								  soilCompLastChecked={soilCompLastChecked}
+								  soilMoisture={soilMoisture}
+								  soilPh={soilPh}
+								  editing={this.state.editing}/>
+				}
 
-				  <SwipePanelContent icon="schedule"
-									 iconTitle="last checked soil composition">
-					<p>{soilCompLastChecked}</p>
-				  </SwipePanelContent>
-
-
-				  {profile.category === 'in-ground' ?
-						  <SwipePanelContent icon="soilMoisture">
-							{soilMoisture ?
-									<p>Moisture Level {soilMoisture}</p>
-									:
-									<p>No records available.</p>
-							}
-						  </SwipePanelContent>
-						  :
-						  <SwipePanelContent icon="soilMoisture">
-							{soilPh ?
-									<p>Soil pH {soilPh}</p>
-									:
-									<p>No records available.</p>
-							}
-						  </SwipePanelContent>
-				  }
-
-				</div>
 
 				{/* pest */}
-				<div className="swipe-slide slide-four">
-				  <p className="swipe-title title-ming">Pests</p>
-
-				  <SwipePanelContent icon="schedule" iconTitle="last checked for pests">
-					<p>{pestLastChecked}</p>
-				  </SwipePanelContent>
-
-				  {pestName &&
-				  <SwipePanelContent icon="pest">
-					<p>{pestName}</p>
-				  </SwipePanelContent>
-				  }
-
-				  {pestTreatment &&
-				  <SwipePanelContent icon="pestTreatment">
-					<p>{pestTreatment}</p>
-				  </SwipePanelContent>
-				  }
-
-				</div>
+				<Pest profile={profile}
+					  updateData={this.updateData}
+					  pestLastChecked={pestLastChecked}
+					  pestName={pestName}
+					  pestTreatment={pestTreatment}/>
 
 				{/* diary */}
-				<div className="swipe-slide slide-five">
-				  <p className="swipe-title title-ming">Diary</p>
-
-				  <SwipePanelContent icon="diary">
-					{/*<p>{profile.diary[profile.diary.length - 1].entry || 'N/A'}</p>*/}
-
-					<div className="scroll-box">
-					  {profile.diary && profile.diary.length > 0 ?
-							  profile.diary.map((item, index) => {
-								return <div key={index}>
-								  <p style={{padding: 0}}><b>Date: {new Date(item.date).toLocaleDateString()}</b></p>
-								  <p>{item.entry || 'N/A'}</p>
-								</div>
-							  })
-							  :
-							  'No records available.'
-					  }
-					</div>
-
-				  </SwipePanelContent>
-				</div>
+				<Diary profile={profile} updateData={this.updateData}/>
 
 				{/* etc */}
-				<div className="swipe-slide slide-six">
-				  <p className="swipe-title title-ming">Etc</p>
+				<Etc profile={profile} updateData={this.updateData} editing={this.state.editing}/>
 
-				  {this.state.editing === 'etc' ?
-						  <React.Fragment>
-							<SwipePanelContent icon="info" iconTitle="common name">
-							  <p className="modern-input">
-								<label>common name</label>
-								<input type="text"
-									   onChange={(e) => this.updateData(e, 'commonName')}
-									   defaultValue={profile.commonName || ''}/></p>
-							</SwipePanelContent>
-
-							<SwipePanelContent icon="info" iconTitle="latin name">
-							  <p className="modern-input">
-								<label>latin name</label>
-								<input type="text"
-									   onChange={(e) => this.updateData(e, 'latinName')}
-									   defaultValue={profile.latinName || ''}/></p>
-							</SwipePanelContent>
-
-							<SwipePanelContent icon="category">
-							  <p className="modern-input">
-								<label>category</label>
-								<select onChange={(e) => this.updateData(e, 'category')}
-										defaultValue={profile.category || ''}>
-								  <option value='' disabled={true}>- Select a category -</option>
-								  {this.props.categories && this.props.categories.map((item, index) => {
-									return <option value={item.category} key={index}>{item.displayName}</option>
-								  })}
-								</select></p>
-							</SwipePanelContent>
-
-							<SwipePanelContent icon="toxicity">
-							  <p className="modern-input">
-								<label>toxicity</label>
-								<input type="text"
-									   placeholder="Toxicity (ie poisonous to dogs if leaves are consumed)"
-									   onChange={(e) => this.updateData(e, 'toxicity')}
-									   defaultValue={profile.toxicity || ''}/></p>
-							</SwipePanelContent>
-
-							<SwipePanelContent icon="locationBought">
-							  <p className="modern-input">
-								<label>location bought</label>
-								<input type="text"
-									   onChange={(e) => this.updateData(e, 'locationBought')}
-									   defaultValue={profile.locationBought}/></p>
-							</SwipePanelContent>
-
-							<SwipePanelContent icon="schedule" iconTitle="date bought">
-							  <p className="modern-input">
-								<label>date bought</label>
-								<input type="date"
-									   onBlur={(e) => this.updateData(e, 'dateBought')}
-									   defaultValue={profile.dateBought ? new Date(profile.dateBought).toJSON().slice(0, 10) : new Date().toJSON().slice(0, 10)}/>
-							  </p>
-
-							  {/*<DatePicker selected={this.state.newData.dateBought || Date.now()}
-										  className="react-datepicker-wrapper"
-										  dateFormat="dd-MMMM-yyyy"
-										  inline
-										  onSelect={(e) => this.updateData(e, 'dateBought')}
-										  highlightDates={ProfileViewEdit.getHighlightDates(profile.dateBought, 'dateBought')}/>*/}
-							</SwipePanelContent>
-
-							<SwipePanelContent icon="schedule"
-											   iconTitle={profile.category === 'potted' ? 'Date Potted' : 'Date Planted'}>
-							  <p className="modern-input">
-								<label>{profile.category === 'potted' ? 'date potted' : 'date planted'}</label>
-								<input type="date"
-									   onBlur={(e) => this.updateData(e, 'datePlanted')}
-									   defaultValue={profile.datePlanted ? new Date(profile.datePlanted).toJSON().slice(0, 10) : new Date().toJSON().slice(0, 10)}/>
-							  </p>
-							</SwipePanelContent>
-
-							<SwipePanelContent icon="plantLocation">
-							  <p className="modern-input">
-								<label>plant location</label>
-								<input type="text"
-									   onChange={(e) => this.updateData(e, 'location')}
-									   defaultValue={profile.location}/></p>
-							</SwipePanelContent>
-
-							<SwipePanelContent icon="companions">
-							  <p className="modern-input">
-								<label>companions</label>
-								<input type="text"
-									   onChange={(e) => this.updateData(e, 'companions')}
-									   defaultValue={profile.companions ? profile.companions.join(', ') : null}/></p>
-							</SwipePanelContent>
-						  </React.Fragment>
-						  :
-						  <React.Fragment>
-							<SwipePanelContent icon="category">
-							  <p>{profile.category}</p>
-							</SwipePanelContent>
-
-							{profile.toxicity &&
-							<SwipePanelContent icon="toxicity">
-							  <p>{profile.toxicity || 'N/A'}</p>
-							</SwipePanelContent>
-							}
-
-							{profile.locationBought &&
-							<SwipePanelContent icon="locationBought">
-							  <p>{profile.locationBought || 'N/A'}</p>
-							</SwipePanelContent>
-							}
-
-							{profile.dateBought &&
-							<SwipePanelContent icon="schedule" iconTitle="date bought">
-							  <p>{profile.dateBought ? new Date(profile.dateBought).toLocaleDateString() : 'N/A'}</p>
-							</SwipePanelContent>
-							}
-
-							{profile.datePlanted &&
-							<SwipePanelContent icon="schedule" iconTitle="date planted">
-							  <p>{profile.datePlanted ? new Date(profile.datePlanted).toLocaleDateString() : 'N/A'}</p>
-							</SwipePanelContent>
-							}
-
-							<SwipePanelContent icon="plantLocation">
-							  <p>{profile.location || 'N/A'}</p>
-							</SwipePanelContent>
-
-							{profile.companions && profile.companions.length > 0 &&
-							<SwipePanelContent icon="companions">
-							  <p>{profile.companions.join(', ')}</p>
-							</SwipePanelContent>
-							}
-						  </React.Fragment>
-				  }
-
-				</div>
 			  </SwipeableViews>
 
 			  {/* buttons */}
@@ -694,7 +484,7 @@ class ProfileViewEdit extends Component {
 								 title="delete"
 								 onClick={() => this.setState({modalOpen: 'delete'})}/>
 
-				{this.state.swipeViewIndex < 5 &&
+				{this.state.swipeViewIndex < 6 &&
 				<React.Fragment>
 				  <FontAwesomeIcon icon={faPlus}
 								   className="plant-condition-icon"
@@ -710,7 +500,7 @@ class ProfileViewEdit extends Component {
 				</React.Fragment>
 				}
 
-				{(this.state.swipeViewIndex < 2 || this.state.swipeViewIndex === 5) ?
+				{(this.state.swipeViewIndex < 4 || this.state.swipeViewIndex > 5) ?
 						<React.Fragment>
 						  <FontAwesomeIcon icon={this.state.editing ? faTimes : faPencilAlt}
 										   className="plant-condition-icon"
@@ -734,49 +524,6 @@ class ProfileViewEdit extends Component {
 
 			  {/* TODO - make modal situation more efficient, i should really be able to decrease this code, too much repetition */}
 			  {/* water */}
-			  <ProfileAddEntryModal save={this.updateProfile}
-									cancel={this.resetModal}
-									show={this.state.modalOpen}
-									type="waterTracker"
-									header="New water entry">
-				<DatePicker
-						selected={this.state.newData.waterTracker ? this.state.newData.waterTracker.date : Date.now()}
-						className="react-datepicker-wrapper"
-						dateFormat="dd-MMMM-yyyy"
-						popperPlacement="bottom"
-						inline
-						onSelect={(e) => this.updateData(e, 'waterDate', 'waterTracker')}
-						highlightDates={ProfileViewEdit.getHighlightDates(profile.waterTracker)}/>
-			  </ProfileAddEntryModal>
-
-
-			  <ProfileViewHistoryModal cancel={this.resetModal}
-									   show={this.state.modalOpen}
-									   type="waterTracker-history"
-									   header="Watering History">
-
-				{profile.waterTracker && profile.waterTracker.length > 0 ?
-						<table>
-						  <thead>
-						  <tr>
-							<th>Date</th>
-						  </tr>
-						  </thead>
-						  <tbody>
-
-						  {profile.waterTracker.map((item, index) => {
-							return <tr key={index}>
-							  <td>{new Date(item.date).toLocaleDateString()}</td>
-							</tr>
-						  })}
-
-						  </tbody>
-						</table>
-						:
-						<p>No entries recorded</p>
-				}
-
-			  </ProfileViewHistoryModal>
 
 
 			  {/* fertilizer */}
@@ -833,6 +580,81 @@ class ProfileViewEdit extends Component {
 			  </ProfileViewHistoryModal>
 
 
+			  {/* pruning */}
+			  <ProfileAddEntryModal save={this.updateProfile}
+									cancel={this.resetModal}
+									show={this.state.modalOpen}
+									type="pruningDeadheadingTracker"
+									header="New pruning or deadheading entry">
+
+				{!this.state.pruneType &&
+				<div className="flex-between">
+				  <label>Pruned <input type="radio"
+									   checked={this.state.pruneType === 'pruningTracker'}
+									   onChange={() => this.state.pruneType !== 'pruningTracker' ? this.setState({pruneType: 'pruningTracker'}) : this.setState({
+										 pruneType: null,
+										 newData: null
+									   })}/></label>
+				  <label>Deadheaded <input type="radio"
+										   checked={this.state.pruneType === 'deadheadingTracker'}
+										   onChange={() => this.state.pruneType !== 'deadheadingTracker' ? this.setState({pruneType: 'deadheadingTracker'}) : this.setState({
+											 pruneType: null,
+											 newData: null
+										   })}/></label>
+				  <label>Both <input type="radio"
+									 checked={this.state.pruneType === 'pruningDeadheadingTracker'}
+									 onChange={() => this.state.pruneType !== 'pruningDeadheadingTracker' ? this.setState({pruneType: 'pruningDeadheadingTracker'}) : this.setState({
+									   pruneType: null,
+									   newData: null
+									 })}/></label>
+				</div>
+				}
+
+				{this.state.pruneType &&
+				<DatePicker
+						selected={this.state.newData.pruningDeadheadingTracker ? this.state.newData.pruningDeadheadingTracker.date : Date.now()}
+						className="react-datepicker-wrapper"
+						dateFormat="dd-MMMM-yyyy"
+						popperPlacement="bottom"
+						inline
+						onSelect={(e) => this.state.pruneType ? this.updateData(e, this.state.pruneType, this.state.pruneType) : toast.warning('Please select an action below first.')}
+						highlightDates={ProfileViewEdit.getHighlightDates(profile.pruningDeadheadingTracker, 'pruning')}/>
+				}
+
+			  </ProfileAddEntryModal>
+
+
+			  <ProfileViewHistoryModal cancel={this.resetModal}
+									   show={this.state.modalOpen}
+									   type="pruningDeadheadingTracker-history"
+									   header="Pruning - Deadheading History">
+
+				{profile.pruningDeadheadingTracker && profile.pruningDeadheadingTracker.length > 0 ?
+						<table>
+						  <thead>
+						  <tr>
+							<th>Date</th>
+							<th>Action</th>
+						  </tr>
+						  </thead>
+						  <tbody>
+
+						  {profile.pruningDeadheadingTracker.map((item, index) => {
+							return <tr key={index}>
+							  <td>{new Date(item.date).toLocaleDateString()}</td>
+							  <td>{item.action}</td>
+							</tr>
+						  })}
+
+						  </tbody>
+						</table>
+						:
+						<p>No entries recorded</p>
+				}
+
+			  </ProfileViewHistoryModal>
+
+
 			  {/* soil comp */}
 			  <ProfileAddEntryModal save={this.updateProfile}
 									cancel={this.resetModal}
@@ -849,19 +671,17 @@ class ProfileViewEdit extends Component {
 						onSelect={(e) => this.updateData(e, 'soilDate', 'soilCompositionTracker')}
 						highlightDates={ProfileViewEdit.getHighlightDates(profile.soilCompositionTracker)}/>
 
-				{profile.category === 'potted' ?
-						<p className="modern-input for-modal">
-						  <label>soil moisture %</label>
+				<p className="modern-input">
+				  {profile.category === 'potted' ?
 						  <input type="number"
+								 placeholder="Soil Moisture %"
 								 onChange={(e) => this.updateData(e, 'moisture')}/>
-						</p>
-						:
-						<p className="modern-input for-modal">
-						  <label>pH reading</label>
+						  :
 						  <input type="number"
+								 placeholder="pH Reading"
 								 onChange={(e) => this.updateData(e, 'ph')}/>
-						</p>
-				}
+				  }
+				</p>
 
 			  </ProfileAddEntryModal>
 
@@ -1073,6 +893,27 @@ export default withTracker((props) => {
 
   profile.daysSinceFertilized = getDaysSinceAction(profile.fertilizerTracker)
   profile.fertilizerCondition = getPlantCondition(profile.fertilizerTracker, profile.daysSinceFertilized, profile.fertilizerSchedule)
+
+  profile.daysSincePruned = getDaysSinceAction(profile.pruningTracker)
+  profile.daysSinceDeadheaded = getDaysSinceAction(profile.deadheadingTracker)
+
+  if (profile.pruningTracker || profile.deadheadingTracker) {
+	const pruning = profile.pruningTracker || []
+	const deadheading = profile.deadheadingTracker || []
+
+	for (let i = 0; i < pruning.length; i++) {
+	  pruning[i].action = 'Pruned'
+	}
+
+	for (let i = 0; i < deadheading.length; i++) {
+	  deadheading[i].action = 'Deadheaded'
+	}
+
+	profile.pruningDeadheadingTracker = sortByLastDate(pruning.concat(deadheading))
+  } else {
+	profile.pruningDeadheadingTracker = null
+  }
+  // profile.soilCondition = getSoilCondition(profile.soilCompositionTracker)
 
   return {
 	profile: profile,

@@ -20,7 +20,7 @@ const SwipePanelContent = (props) => (
 									 alt={IconList[props.icon].alt}
 									 title={props.iconTitle || IconList[props.icon].title}/>
 			}
-			<span className="separator">|</span>
+			{/*<span className="separator">|</span>*/}
 		  </div>
 
 		  <div className="info-side">

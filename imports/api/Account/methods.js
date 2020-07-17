@@ -68,6 +68,10 @@ Meteor.methods({
 		//create their preferences profile
 		Preferences.insert({userId: response, createdAt: data.createdAt, updatedAt: data.updatedAt})
 
+		//TODO remove before prod, this is for testers
+		Roles.addUsersToRoles(response, 'pro');
+		Roles.addUsersToRoles(response, 'tester');
+
 		return response
 	  }
 	} catch (e) {

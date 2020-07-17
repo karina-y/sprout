@@ -4,7 +4,7 @@ import autobind from 'react-autobind';
 import { withTracker } from 'meteor/react-meteor-data'
 // import "./PlantCatalogue.scss";
 // import profiles  from '../../dummydata/profiles.json';
-import ProfilePreview from '../components/Profiles/ProfilePreview'
+import ProfilePreview from '../components/ProfilePreview/ProfilePreview'
 import { Session } from 'meteor/session'
 import Profile from '/imports/api/Profile/Profile'
 

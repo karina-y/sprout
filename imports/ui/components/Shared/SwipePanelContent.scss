@@ -1,7 +1,7 @@
 @import '../../stylesheets/variables.scss';
 
 .SwipePanelContent {
-    margin-bottom: 10px;
+  margin-bottom: 10px;
 
   .swipe-title {
     text-align: center;
@@ -27,21 +27,103 @@
     width: 15px;
   }
 
-  .custom-icon {
-    //margin-left: -5px;
-    //display: inline-block;
+
+
+
+
+
+
+
+  //
+  //
+  //
+  //profileviewedit
+
+  .info-side {
+    display: inline-block;
+    //width: 85%;
+    width: 90%;
   }
+
+  .plant-condition-icon {
+    display: inline-block;
+  }
+
+  .svg-inline--fa {
+    color: $ming;
+    width: 15px;
+
+    &.fa-sad-tear {
+      color: $danger-dark;
+    }
+
+    &.fa-meh {
+      color: $warning-dark;
+    }
+
+    &.fa-smile {
+      color: $success-dark;
+    }
+  }
+
+  .injected-svg {
+    fill: $ming;
+    width: 20px;
+    height: auto;
+    margin-left: -4px;
+
+    &.fa-sad-tear {
+      fill: $danger-dark;
+    }
+
+    &.fa-meh {
+      fill: $warning-dark;
+    }
+
+    &.fa-smile {
+      fill: $success-dark;
+    }
+  }
+
+
+
+
+
+  //
+  //
+  //
+  //profileadd
+  //TODO consolidate this css in swipepanel
+  .icon-side {
+    display: inline-block;
+    vertical-align: middle;
+    //width: 15%;
+    width: 10%;
+  }
+
+  &.top-align {
+    .icon-side {
+      vertical-align: top;
+    }
+  }
+
+  .info-side {
+    display: inline-block;
+    //width: 85%;
+    width: 90%;
+  }
+
 }
 
 body.dark-theme .SwipePanelContent {
 
-      p {
-        color: $white;
-      }
+  p {
+    color: $white;
+  }
 
-      .svg-inline--fa {
-        color: $powder-blue;
-      }
+  .svg-inline--fa {
+    color: $powder-blue;
+  }
 
 }
 

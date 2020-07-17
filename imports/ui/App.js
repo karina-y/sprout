@@ -24,9 +24,8 @@ const AsyncSignup = asyncComponent(() => import("./pages/Signup"));
 const AsyncAccount = asyncComponent(() => import("./pages/Account"));
 const AsyncPlantCatalogue = asyncComponent(() => import("./pages/PlantCatalogue"));
 const AsyncLegalStuff = asyncComponent(() => import("./pages/LegalStuff"));
-const AsyncProfileViewEdit = asyncComponent(() => import("./components/Profiles/ProfileViewEdit"));
-const AsyncProfileViewEditPro = asyncComponent(() => import("./components/Profiles/ProfileViewEditPro"));
-const AsyncProfileAdd = asyncComponent(() => import("./components/Profiles/ProfileAdd"));
+const AsyncProfileViewEdit = asyncComponent(() => import("./components/ProfileViewEdit/ProfileViewEdit"));
+const AsyncProfileAdd = asyncComponent(() => import("./components/ProfileAdd/ProfileAdd"));
 
 /*
 TODO
@@ -86,7 +85,7 @@ class App extends Component {
 										 {...props} />
 
 						  <Authenticated exact path="/catalogue/:id"
-										 component={Meteor.isPro ? AsyncProfileViewEditPro : AsyncProfileViewEdit}
+										 component={AsyncProfileViewEdit}
 										 {...props} />
 
 						  <Route exact path="/login" render={props => <AsyncLogin {...props} />} />

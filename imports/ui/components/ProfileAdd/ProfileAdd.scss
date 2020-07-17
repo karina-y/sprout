@@ -1,4 +1,4 @@
-@import '../../stylesheets/variables.scss';
+@import '../../stylesheets/variables';
 
 .ProfileAdd {
   margin: 0;
@@ -33,21 +33,6 @@
     p {
       font-size: $font-xs;
       color: $med-gray;
-    }
-
-    .icon-side {
-      display: inline-block;
-      vertical-align: middle;
-      width: 15%;
-    }
-
-    .info-side {
-      display: inline-block;
-      width: 85%;
-    }
-
-    .separator {
-      margin: 0 10px;
     }
 
     .swipe-title {

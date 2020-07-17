@@ -1,4 +1,4 @@
-@import '../../stylesheets/variables.scss';
+@import '../../stylesheets/variables';
 
 .ProfileViewEdit {
   margin: 0;
@@ -76,58 +76,7 @@
     }
 
     .icon-side {
-      display: inline-block;
       vertical-align: top;
-      width: 15%;
-    }
-
-    .info-side {
-      display: inline-block;
-      width: 85%;
-    }
-
-    .plant-condition-icon {
-      display: inline-block;
-    }
-
-    .svg-inline--fa {
-      color: $ming;
-      width: 15px;
-
-      &.fa-sad-tear {
-        color: $danger-dark;
-      }
-
-      &.fa-meh {
-        color: $warning-dark;
-      }
-
-      &.fa-smile {
-        color: $success-dark;
-      }
-    }
-
-    .injected-svg {
-      fill: $ming;
-      width: 20px;
-      height: auto;
-      margin-left: -4px;
-
-      &.fa-sad-tear {
-        fill: $danger-dark;
-      }
-
-      &.fa-meh {
-        fill: $warning-dark;
-      }
-
-      &.fa-smile {
-        fill: $success-dark;
-      }
-    }
-
-    .separator {
-      margin: 0 10px;
     }
 
     .swipe-title {

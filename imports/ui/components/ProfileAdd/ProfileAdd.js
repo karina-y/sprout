@@ -517,31 +517,13 @@ class ProfileAdd extends Component {
 				  </SwipePanelContent>
 
 				  {/*need to make this swipepanelcontent with the custom style*/}
-				  <div className="detail-panel">
-					<div className="icon-side">
-					  <FontAwesomeIcon icon={faCalendarAlt}
-									   className="plant-condition-icon"
-									   alt="calendar"/>
-					  <span className="separator">|</span>
-					</div>
-
-					<div className="info-side">
-					  <p className="modern-input">
-						<label>date bought</label>
-						<input type="date"
-							   onBlur={(e) => this.updateData(e, 'dateBought')}
-							   defaultValue={profile.dateBought || ''}/></p>
-
-					  {/*TODO get datepicker to open over image*/}
-					  {/*<p>* Date Bought</p>
-					  <DatePicker selected={profile.dateBought || Date.now()}
-								  className="react-datepicker-wrapper"
-								  dateFormat="dd-MMMM-yyyy"
-								  popperPlacement="bottom"
-								  onSelect={(e) => this.updateData(e, 'dateBought')}
-								  highlightDates={ProfileAdd.getHighlightDates(profile.dateBought, 'dateBought')} />*/}
-					</div>
-				  </div>
+				  <SwipePanelContent icon="schedule">
+					<p className="modern-input">
+					  <label>date bought</label>
+					  <input type="date"
+							 onBlur={(e) => this.updateData(e, 'dateBought')}
+							 defaultValue={profile.dateBought || ''}/></p>
+				  </SwipePanelContent>
 
 				</div>
 
