@@ -5,7 +5,7 @@ import SimpleSchema from 'simpl-schema'
 import handleMethodException from '../../utils/handle-method-exception'
 
 Meteor.methods({
-  'profile.insert': function profileInsert (data) {
+  'category.insert': function categoryInsert (data) {
 
 	try {
 	  data.createdAt = new Date()
@@ -30,7 +30,7 @@ Meteor.methods({
 
 	}
   },
-  'profile.update': function profileUpdate (type, data) {
+  'category.update': function categoryUpdate (type, data) {
 	logger('info', 'type', type)
 	logger('info', 'data', data)
 
@@ -88,7 +88,7 @@ Meteor.methods({
 		// throw new Meteor.Error('500')
 	  } else {
 		logger('success', 'passed', data)
-		const response = Category.update({_id: profile._id}, query)
+		const response = Category.update({_id: plant._id}, query)
 		return response
 	  }
 	} catch (e) {
@@ -97,7 +97,7 @@ Meteor.methods({
 	  // throw new Meteor.Error('500', 'Please check your inputs and try again.')
 	}
   },
-  'profile.delete': function profileDelete (data) {
+  'category.delete': function categoryDelete (data) {
 	try {
 
 	  if (typeof data !== 'string') {
@@ -119,9 +119,9 @@ Meteor.methods({
 
 rateLimit({
   methods: [
-	'profile.insert',
-	'profile.update',
-	'profile.delete'
+	'category.insert',
+	'category.update',
+	'category.delete'
   ],
   limit: 5,
   timeRange: 1000,

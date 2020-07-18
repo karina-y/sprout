@@ -10,10 +10,10 @@ import {
 } from "react-router-dom";
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify'
-import Loading from './components/Shared/Loading';
+import Loading from './components/Shared/Loading/Loading';
 import { Meteor } from "meteor/meteor"
 import Preferences from '../api/Preferences/Preferences'
-import ToDo from './pages/ToDo'
+import ToDo from './pages/PlantToDo/PlantToDo'
 import Authenticated from './pages/Authenticated';
 import Navigation from './components/Navigation/Navigation';
 import ScrollToTop from './components/Shared/ScrollToTop';
@@ -21,11 +21,11 @@ import asyncComponent from './components/Shared/AsyncComponent'
 
 const AsyncLogin = asyncComponent(() => import("./pages/Login"));
 const AsyncSignup = asyncComponent(() => import("./pages/Signup"));
-const AsyncAccount = asyncComponent(() => import("./pages/Account"));
-const AsyncPlantCatalogue = asyncComponent(() => import("./pages/PlantCatalogue"));
-const AsyncLegalStuff = asyncComponent(() => import("./pages/LegalStuff"));
-const AsyncProfileViewEdit = asyncComponent(() => import("./components/ProfileViewEdit/ProfileViewEdit"));
-const AsyncProfileAdd = asyncComponent(() => import("./components/ProfileAdd/ProfileAdd"));
+const AsyncAccount = asyncComponent(() => import("./pages/Account/Account"));
+const AsyncPlantCatalogue = asyncComponent(() => import("./pages/PlantCatalogue/PlantCatalogue"));
+const AsyncLegalStuff = asyncComponent(() => import("./pages/LegalStuff/LegalStuff"));
+const AsyncPlantViewEdit = asyncComponent(() => import("./components/PlantViewEdit/PlantViewEdit"));
+const AsyncPlantAdd = asyncComponent(() => import("./pages/PlantAdd/PlantAdd"));
 
 /*
 TODO
@@ -81,11 +81,11 @@ class App extends Component {
 										 {...props} />
 
 						  <Authenticated exact path="/catalogue/add"
-										 component={AsyncProfileAdd}
+										 component={AsyncPlantAdd}
 										 {...props} />
 
 						  <Authenticated exact path="/catalogue/:id"
-										 component={AsyncProfileViewEdit}
+										 component={AsyncPlantViewEdit}
 										 {...props} />
 
 						  <Route exact path="/login" render={props => <AsyncLogin {...props} />} />
@@ -112,12 +112,12 @@ export default withTracker(() => {
   let loading = false;
 
   if (Meteor.userId()) {
-	const profileSub = Meteor.subscribe('profile');
+	const plantSub = Meteor.subscribe('plant');
 	const roleSub = Meteor.subscribe('roles')
 	const categorySub = Meteor.subscribe('category')
 	const preferencesSub = Meteor.subscribe('preferences')
 
-	loading = !profileSub.ready() || !roleSub.ready() || !categorySub.ready() || !preferencesSub.ready();
+	loading = !plantSub.ready() || !roleSub.ready() || !categorySub.ready() || !preferencesSub.ready();
 
 	if (roleSub.ready()) {
 	  Meteor.isPro = Roles.userIsInRole(Meteor.userId(), 'pro');
