@@ -1,20 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSadTear } from '@fortawesome/free-solid-svg-icons/faSadTear'
-import { faMeh } from '@fortawesome/free-solid-svg-icons/faMeh'
-import { faSmile } from '@fortawesome/free-solid-svg-icons/faSmile'
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+// import { faSadTear } from '@fortawesome/free-solid-svg-icons/faSadTear'
+// import { faMeh } from '@fortawesome/free-solid-svg-icons/faMeh'
+// import { faSmile } from '@fortawesome/free-solid-svg-icons/faSmile'
 import SwipePanelContent from '../../Shared/SwipePanelContent'
 
 
 const FertilizerPro = (props) => (
 		<div className="swipe-slide">
 		  <p className="swipe-title title-ming">
-			Fertilizer - Nutrients <FontAwesomeIcon
+			Fertilizer - Nutrients
+			{/*<FontAwesomeIcon
 				  icon={props.profile.fertilizerCondition === 'needs-attn' ? faSadTear : props.profile.fertilizerCondition === 'neutral' ? faMeh : faSmile}
 				  className="plant-condition-icon"
 				  title="fertilizer condition"
-				  alt={props.profile.fertilizerCondition === 'needs-attn' ? 'sad face with tear' : props.profile.fertilizerCondition === 'neutral' ? 'neutral face' : props.profile.fertilizerCondition === 'unsure' ? 'question mark' : 'smiling face'}/>
+				  alt={props.profile.fertilizerCondition === 'needs-attn' ? 'sad face with tear' : props.profile.fertilizerCondition === 'neutral' ? 'neutral face' : props.profile.fertilizerCondition === 'unsure' ? 'question mark' : 'smiling face'}/>*/}
 		  </p>
 
 		  {props.editing === 'fertilizerTracker' ?

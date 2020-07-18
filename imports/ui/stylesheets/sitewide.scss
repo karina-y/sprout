@@ -286,14 +286,14 @@ body {
   input,
   textarea,
   select {
-    background-color: $powder-blue !important;
     color: $ming !important;
-    padding: 5px;
-    border-radius: unset !important;
-    border: none !important;
     height: 40px;
     width: 100%;
     font-size: $font-xs;
+    background-color: $off-white;
+    border: solid $powder-blue 1px;
+    border-radius: 30px;
+    padding: 5px 15px;
   }
 
   input[type="radio"] {
@@ -322,15 +322,6 @@ body {
       padding: 2px 5px;
       font-size: 13px;
       color: $polished-pine;
-    }
-
-    input,
-    select,
-    textarea {
-      background-color: $off-white !important;
-      border: solid $powder-blue 1px !important;
-      border-radius: 30px !important;
-      padding: 5px 15px;
     }
 
     &.for-modal {
@@ -395,16 +386,12 @@ body {
 
   button {
     background: $white;
-    //border-radius: 10px 4px !important;
     border-radius: unset !important;
-    //text-transform: uppercase;
     outline: none !important;
     font-weight: bold !important;
-    //padding: 15px !important;
-    font-family: "Spartan ExtraBold", sans-serif;
+    font-family: "Montserrat", sans-serif;
     text-transform: none;
     position: relative;
-    //outline: none;
     text-decoration: none;
     border: none;
     cursor: pointer;
@@ -630,6 +617,7 @@ body {
     &.flat {
       background: $powder-blue;
       color: $ming;
+      min-width: 75px;
     }
 
   }

@@ -98,6 +98,20 @@
       }
     }
 
+    .svg-inline--fa {
+
+      &.fa-sad-tear {
+        color: $danger-dark;
+      }
+
+      &.fa-meh {
+        color: $warning-dark;
+      }
+
+      &.fa-smile {
+        color: $success-dark;
+      }
+    }
   }
 
 }

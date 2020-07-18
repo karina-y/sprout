@@ -216,7 +216,6 @@ class ProfileAdd extends Component {
 					<p className="modern-input">
 					  <label>toxicity</label>
 					  <input type="text"
-							 placeholder="Toxicity (ie poisonous to dogs if leaves are consumed)"
 							 onChange={(e) => this.updateData(e, 'toxicity')}
 							 value={profile.toxicity || ''}/></p>
 				  </SwipePanelContent>

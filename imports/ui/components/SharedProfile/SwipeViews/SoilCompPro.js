@@ -99,7 +99,7 @@ const SoilCompPro = (props) => (
 							}
 
 							{props.soilMoisture &&
-							<SwipePanelContent icon="props.soilMoisture">
+							<SwipePanelContent icon="soilMoisture">
 							  <p>Moisture Level {props.soilMoisture}</p>
 							</SwipePanelContent>
 							}

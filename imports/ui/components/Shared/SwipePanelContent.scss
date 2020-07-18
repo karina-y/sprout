@@ -3,41 +3,17 @@
 .SwipePanelContent {
   margin-bottom: 10px;
 
-  .swipe-title {
-    text-align: center;
-    margin-bottom: 15px;
-    position: relative;
-
-    &::before {
-      content: "";
-      width: 0;
-      height: 0;
-      border-left: 7px solid transparent;
-      border-right: 7px solid transparent;
-      border-top: 7px solid $ming;
-      position: absolute;
-      top: -10px;
-      left: 50%;
-      transform: translateX(-50%);
-    }
-  }
-
   .svg-inline--fa {
     color: $ming;
     width: 15px;
   }
 
-
-
-
-
-
-
-
-  //
-  //
-  //
-  //profileviewedit
+  .icon-side {
+    display: inline-block;
+    vertical-align: middle;
+    //width: 15%;
+    width: 10%;
+  }
 
   .info-side {
     display: inline-block;
@@ -52,18 +28,6 @@
   .svg-inline--fa {
     color: $ming;
     width: 15px;
-
-    &.fa-sad-tear {
-      color: $danger-dark;
-    }
-
-    &.fa-meh {
-      color: $warning-dark;
-    }
-
-    &.fa-smile {
-      color: $success-dark;
-    }
   }
 
   .injected-svg {
@@ -71,46 +35,12 @@
     width: 20px;
     height: auto;
     margin-left: -4px;
-
-    &.fa-sad-tear {
-      fill: $danger-dark;
-    }
-
-    &.fa-meh {
-      fill: $warning-dark;
-    }
-
-    &.fa-smile {
-      fill: $success-dark;
-    }
-  }
-
-
-
-
-
-  //
-  //
-  //
-  //profileadd
-  //TODO consolidate this css in swipepanel
-  .icon-side {
-    display: inline-block;
-    vertical-align: middle;
-    //width: 15%;
-    width: 10%;
   }
 
   &.top-align {
     .icon-side {
       vertical-align: top;
     }
-  }
-
-  .info-side {
-    display: inline-block;
-    //width: 85%;
-    width: 90%;
   }
 
 }

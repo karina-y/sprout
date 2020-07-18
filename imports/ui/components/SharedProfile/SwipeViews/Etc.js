@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import SwipePanelContent from '../../Shared/SwipePanelContent'
+import { withTracker } from 'meteor/react-meteor-data'
+import Category from '../../../../api/Category/Category'
 
 
 const Etc = (props) => (
@@ -31,7 +33,7 @@ const Etc = (props) => (
 						<select onChange={(e) => props.updateData(e, 'category')}
 								defaultValue={props.profile.category || ''}>
 						  <option value='' disabled={true}>- Select a category -</option>
-						  {props.props.categories && props.props.categories.map((item, index) => {
+						  {props.categories && props.categories.map((item, index) => {
 							return <option value={item.category} key={index}>{item.displayName}</option>
 						  })}
 						</select></p>
@@ -147,7 +149,14 @@ const Etc = (props) => (
 Etc.propTypes = {
   profile: PropTypes.object.isRequired,
   updateData: PropTypes.func.isRequired,
-  editing: PropTypes.string
+  editing: PropTypes.string,
+  categories: PropTypes.array.isRequired
 };
 
-export default Etc;
+export default withTracker((props) => {
+  const categories = Category.find({}).fetch()
+
+  return {
+	categories
+  }
+})(Etc)

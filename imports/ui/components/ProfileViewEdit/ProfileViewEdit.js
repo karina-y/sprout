@@ -524,6 +524,49 @@ class ProfileViewEdit extends Component {
 
 			  {/* TODO - make modal situation more efficient, i should really be able to decrease this code, too much repetition */}
 			  {/* water */}
+			  <ProfileAddEntryModal save={this.updateProfile}
+									cancel={this.resetModal}
+									show={this.state.modalOpen}
+									type="waterTracker"
+									header="New water entry">
+				<DatePicker
+						selected={this.state.newData.waterTracker ? this.state.newData.waterTracker.date : Date.now()}
+						className="react-datepicker-wrapper"
+						dateFormat="dd-MMMM-yyyy"
+						popperPlacement="bottom"
+						inline
+						onSelect={(e) => this.updateData(e, 'waterDate', 'waterTracker')}
+						highlightDates={ProfileViewEdit.getHighlightDates(profile.waterTracker)}/>
+			  </ProfileAddEntryModal>
+
+
+			  <ProfileViewHistoryModal cancel={this.resetModal}
+									   show={this.state.modalOpen}
+									   type="waterTracker-history"
+									   header="Watering History">
+
+				{profile.waterTracker && profile.waterTracker.length > 0 ?
+						<table>
+						  <thead>
+						  <tr>
+							<th>Date</th>
+						  </tr>
+						  </thead>
+						  <tbody>
+
+						  {profile.waterTracker.map((item, index) => {
+							return <tr key={index}>
+							  <td>{new Date(item.date).toLocaleDateString()}</td>
+							</tr>
+						  })}
+
+						  </tbody>
+						</table>
+						:
+						<p>No entries recorded</p>
+				}
+
+			  </ProfileViewHistoryModal>
 
 
 			  {/* fertilizer */}
