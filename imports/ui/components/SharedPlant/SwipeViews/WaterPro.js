@@ -67,9 +67,10 @@ const WaterPro = (props) => (
 					<SwipePanelContent icon="schedule"
 									   iconTitle="water schedule"
 									   additionalOuterClasses={!props.plant.waterScheduleAuto ? 'top-align' : ''}>
-					  <p>Water every {props.plant.waterSchedule} days</p>
-					  {!props.plant.waterScheduleAuto &&
+					  <p>{props.plant.waterSchedule != null ? `Water every ${props.plant.waterSchedule} days` : 'No schedule set'}</p>
+					  {!props.plant.waterScheduleAuto && props.plant.waterSchedule != null && rops.plant.daysSinceWatered != null ?
 					  <p>Due in {props.plant.waterSchedule - props.plant.daysSinceWatered - 1} days</p>
+							  : ''
 					  }
 					</SwipePanelContent>
 

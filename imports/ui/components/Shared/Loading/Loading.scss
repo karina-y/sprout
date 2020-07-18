@@ -1,25 +1,43 @@
 @import '../../../stylesheets/variables';
 
 .Loading {
-  //height: 100vh;
-  position: absolute;
-  top: calc(50% - 4em);
-  left: calc(50% - 4em);
-  width: 6em;
-  height: 6em;
-  border: 1.1em solid rgba(0, 109, 119, 0.2);
-  //border-left: 1.1em solid $ming;
-  border-radius: 50%;
-  animation: load8 1.1s infinite linear;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  height: 100%;
+  overflow: hidden;
+
+  .cactus-gif {
+    //height: 100%;
+  }
+
+  .plant-gif {
+    width: 150px;
+    height: auto;
+  }
+
+  &.circle-animation {
+    //height: 100vh;
+    position: absolute;
+    top: calc(50% - 4em);
+    left: calc(50% - 4em);
+    width: 6em;
+    height: 6em;
+    border: 1.1em solid rgba(0, 109, 119, 0.2);
+    //border-left: 1.1em solid $ming;
+    border-radius: 50%;
+    animation: load8 1.1s infinite linear;
 
 
-  @keyframes load8 {
-    0% {
-      transform: rotate(0deg);
-    }
+    @keyframes load8 {
+      0% {
+        transform: rotate(0deg);
+      }
 
-    100% {
-      transform: rotate(360deg);
+      100% {
+        transform: rotate(360deg);
+      }
     }
   }
+
 }

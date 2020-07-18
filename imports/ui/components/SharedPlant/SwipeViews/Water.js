@@ -51,7 +51,7 @@ const Water = (props) => (
 				  <React.Fragment>
 					<SwipePanelContent icon="schedule"
 									   iconTitle="water schedule">
-					  <p>Water every {props.plant.waterSchedule} days</p>
+					  <p>{props.plant.waterSchedule != null ? `Water every ${props.plant.waterSchedule} days` : 'No schedule set'}</p>
 					</SwipePanelContent>
 
 					<SwipePanelContent icon="water"

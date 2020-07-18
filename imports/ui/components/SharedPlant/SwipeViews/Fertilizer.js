@@ -29,7 +29,7 @@ const Fertilizer = (props) => (
 																	   onChange={(e) => props.updateData(e, 'fertilizerSchedule')}
 																	   defaultValue={props.plant.fertilizerSchedule || ''}/> days
 					</p>
-					: props.plant.fertilizerSchedule ?
+					: props.plant.fertilizerSchedule && props.plant.daysSinceFertilized ?
 							<React.Fragment>
 							  <p>Fertilize every {props.plant.fertilizerSchedule} days</p>
 							  <p>Due in {props.plant.fertilizerSchedule - props.plant.daysSinceFertilized - 1} days</p>

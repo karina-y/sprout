@@ -54,17 +54,17 @@
 	<!--to optimize first contentful paint metrics-->
 	<style>
 		body {
-			background-color: $off-white;
+			background-color: #f8fcff;
 		}
 
-		div#root:empty {
+		/*div#root:empty {
 			position: absolute;
 			top: calc(50% - 4em);
 			left: calc(50% - 4em);
 			width: 6em;
 			height: 6em;
 			border: 1.1em solid rgba(0, 109, 119, 0.2);
-			/*border-left: 1.1em solid #006d77;*/
+			!*border-left: 1.1em solid #006d77;*!
 			border-radius: 50%;
 			animation: load8 1.1s infinite linear;
 		}
@@ -78,6 +78,19 @@
 			100% {
 				transform: rotate(360deg);
 			}
+		}*/
+
+		.intro-loader {
+			overflow: hidden;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			height: 100vh;
+		}
+
+		.intro-loader > img {
+			width: 150px;
+			height: auto;
 		}
 	</style>
 
@@ -85,7 +98,7 @@
 
 <body id="hi">
 <noscript>You need to enable JavaScript to run this app.</noscript>
-<div id="root"><img style="position: absolute; top: 35%; right: 35%;" src="/images/groot.gif" title="loading" /></div>
+<div id="root"><div class="intro-loader"><img src="/images/loading.gif" title="loading" /></div></div>
 <!--
   This HTML file is a template.
   If you open it directly in the browser, you will see an empty page.

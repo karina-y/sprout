@@ -122,7 +122,7 @@ SoilCompPro.propTypes = {
   plant: PropTypes.object.isRequired,
   updateData: PropTypes.func.isRequired,
   soilCompLastChecked: PropTypes.string.isRequired,
-  soilMoisture: PropTypes.string.isRequired,
+  soilMoisture: PropTypes.string,
   soilPh: PropTypes.number
 };
 

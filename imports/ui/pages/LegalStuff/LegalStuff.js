@@ -15,9 +15,11 @@ const LegalStuff = () => (
 
 		  <div className="credit-item">Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
 
-		  <div className="credit-item">Dancing Groot by <a href="https://dribbble.com/shots/1777402-I-Am-Groot?1414061591" title="dribbble">Sunako</a></div>
+		  {/*<div className="credit-item">Dancing Groot by <a href="https://dribbble.com/shots/1777402-I-Am-Groot?1414061591" title="dribbble">Sunako</a></div>*/}
 
-			<br/>
+		  <div className="credit-item">Plant loading gif found online, if you created this gif and would like credit or for me to remove it, please contact me.</div>
+
+		  <br/>
 
 		  <h5><b>Data Collection:</b></h5>
 		  <div className="credit-item">

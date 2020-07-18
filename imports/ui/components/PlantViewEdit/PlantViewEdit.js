@@ -96,6 +96,7 @@ class PlantViewEdit extends Component {
   }
 
   updateData (e, type, tracker, addingEntry) {
+    console.log("update")
 
 	const newPlantData = this.state.newData
 
@@ -191,6 +192,7 @@ class PlantViewEdit extends Component {
   }
 
   updatePlant (type) {
+    console.log("profile")
 
 	if (type === 'pruningDeadheadingTracker') {
 	  type = this.state.pruneType
@@ -210,13 +212,13 @@ class PlantViewEdit extends Component {
 		  data = {
 			waterPreference: newPlantData.waterPreference || oldPlantData.waterPreference,
 			lightPreference: newPlantData.lightPreference || oldPlantData.lightPreference,
-			waterSchedule: parseInt(newPlantData.waterSchedule || oldPlantData.waterSchedule),
-			waterScheduleAuto: newPlantData.waterScheduleAuto !== null ? newPlantData.waterScheduleAuto : oldPlantData.waterScheduleAuto !== null ? oldPlantData.waterScheduleAuto : false
+			waterSchedule: (newPlantData.waterSchedule === "" && oldPlantData.waterSchedule > 0) ? null : (newPlantData.waterSchedule || oldPlantData.waterSchedule) ? parseInt(newPlantData.waterSchedule || oldPlantData.waterSchedule) : newPlantData.waterSchedule || oldPlantData.waterSchedule,
+			waterScheduleAuto: newPlantData.waterScheduleAuto != null ? newPlantData.waterScheduleAuto : oldPlantData.waterScheduleAuto != null ? oldPlantData.waterScheduleAuto : false
 		  }
 		  break
 		case 'fertilizerTracker-edit':
 		  data = {
-			fertilizerSchedule: parseInt(newPlantData.fertilizerSchedule || oldPlantData.fertilizerSchedule),
+			fertilizerSchedule: (newPlantData.fertilizerSchedule === "" && oldPlantData.fertilizerSchedule > 0) ? null : (newPlantData.fertilizerSchedule || oldPlantData.fertilizerSchedule) ? parseInt(newPlantData.fertilizerSchedule || oldPlantData.fertilizerSchedule) : newPlantData.fertilizerSchedule || oldPlantData.fertilizerSchedule,
 			fertilizer: newPlantData.fertilizer,
 			compost: newPlantData.compost,
 			nutrient: newPlantData.nutrient,
@@ -492,11 +494,13 @@ class PlantViewEdit extends Component {
 								   title="add"
 								   onClick={() => this.openModal(false)}/>
 
+				  {!this.state.editing &&
 				  <FontAwesomeIcon icon={faCalendar}
 								   className="plant-condition-icon"
 								   alt={'calendar'}
 								   title="view history"
 								   onClick={() => this.openModal(true)}/>
+				  }
 				</React.Fragment>
 				}
 

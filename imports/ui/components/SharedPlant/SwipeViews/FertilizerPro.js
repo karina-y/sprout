@@ -57,11 +57,15 @@ const FertilizerPro = (props) => (
 				  </React.Fragment>
 				  :
 				  <React.Fragment>
+
 					<SwipePanelContent icon="schedule"
 									   iconTitle="fertilizer schedule"
 									   additionalOuterClasses="top-align">
-					  <p>Feed every {props.plant.fertilizerSchedule} days</p>
-					  <p>Due in {props.plant.fertilizerSchedule - props.plant.daysSinceFertilized - 1} days</p>
+					  <p>{props.plant.fertilizerSchedule != null ? `Feed every ${props.plant.fertilizerSchedule} days` : 'No schedule set'}</p>
+					  {!props.plant.waterScheduleAuto && props.plant.fertilizerSchedule != null && rops.plant.daysSinceFertilized != null ?
+							  <p>Due in {props.plant.fertilizerSchedule - props.plant.daysSinceFertilized - 1} days</p>
+							  : ''
+					  }
 					</SwipePanelContent>
 
 					<React.Fragment>
