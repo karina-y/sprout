@@ -198,8 +198,7 @@ class PlantAdd extends Component {
 					<SwipePanelContent icon="category">
 					  <p className="modern-input">
 						<label>category *</label>
-						<select placeholder="Category"
-								onChange={(e) => this.updateData(e, 'category')}
+						<select onChange={(e) => this.updateData(e, 'category')}
 								value={plant.category || ''}>
 						  <option value='' disabled={true}>- Select a category -</option>
 						  {this.state.categories && this.state.categories.map((item, index) => {

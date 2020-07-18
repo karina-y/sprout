@@ -42,8 +42,6 @@ class SeedlingAdd extends Component {
 
   addNewProfile () {
 	let seedling = this.state.seedling
-	// seedling.waterSchedule = parseInt(seedling.waterSchedule)
-	// seedling.fertilizerSchedule = parseInt(seedling.fertilizerSchedule)
 
 	if (seedling.waterSchedule) {
 	  seedling.waterSchedule = parseInt(seedling.waterSchedule)
@@ -53,37 +51,23 @@ class SeedlingAdd extends Component {
 	  seedling.fertilizerSchedule = parseInt(seedling.fertilizerSchedule)
 	}
 
-	if (seedling.pruningSchedule) {
-	  seedling.pruningSchedule = parseInt(seedling.pruningSchedule)
-	}
-
-	if (seedling.deadheadingSchedule) {
-	  seedling.deadheadingSchedule = parseInt(seedling.deadheadingSchedule)
-	}
-
 	if (seedling.soilCompositionTracker && !Array.isArray(seedling.soilCompositionTracker)) {
 	  seedling.soilCompositionTracker = [seedling.soilCompositionTracker]
 	}
-
-	/*if (seedling.pestTracker && !Array.isArray(seedling.pestTracker)) {
-	  seedling.pestTracker = [seedling.pestTracker]
-	}*/
 
 	let errMsg
 
 	if ((!seedling.commonName) && (!seedling.latinName)) {
 	  errMsg = 'Please enter either a common or latin name (eg. Swiss Cheese Plant or Monstera adansonii).'
-	} /*else if (!seedling.waterSchedule) {
-	  errMsg = 'Please enter a watering schedule (eg. 7).'
-	} else if (!seedling.fertilizerSchedule) {
-	  errMsg = 'Please enter a fertilizer schedule (eg. 30).'
-	}*/ else if (!seedling.waterPreference) {
+	} else if (!seedling.method) {
+	  errMsg = 'Please enter a seed starting method (eg. used jiffy pot and greenhouse method)'
+	} else if (!seedling.waterPreference) {
 	  errMsg = 'Please enter a watering preference (eg. Keep soil moist but not soggy, humidity tray helpful).'
 	} else if (!seedling.lightPreference) {
 	  errMsg = 'Please enter a lighting preference (eg. Bright indirect light).'
 	} else if (!seedling.location) {
 	  errMsg = 'Please enter where this plant lives in/around your home (eg. Living Room or Back Patio).'
-	} else if (Meteor.isPro && !seedling.category) {
+	} else if (seedling.category) {
 	  errMsg = 'Please select a category.'
 	}
 
@@ -94,8 +78,8 @@ class SeedlingAdd extends Component {
 		if (err) {
 		  toast.error(err.message)
 		} else {
-		  toast.success('Plant added!')
-		  this.props.history.push('/catalogue')
+		  toast.success('Seedling added!')
+		  this.props.history.push('/seedlings')
 		}
 	  })
 	}
@@ -104,14 +88,7 @@ class SeedlingAdd extends Component {
   updateData (e, type) {
 	const seedling = this.state.seedling
 
-	if (type === 'companions') {
-	  if (e.target.value === '') {
-		delete seedling[type]
-	  } else {
-		const stripped = e.target.value.replace(/\s*,\s*/g, ',')
-		seedling[type] = stripped.split(',')
-	  }
-	} else if (type === 'ph' || type === 'moisture') {
+	if (type === 'ph' || type === 'moisture') {
 	  let phVal = parseFloat(e.target.value)
 	  let moistureVal = parseFloat((parseInt(e.target.value) / 100).toFixed(2))
 
@@ -124,27 +101,12 @@ class SeedlingAdd extends Component {
 		}
 	  }
 
-	} /*else if (type === 'pest' || type === 'treatment') {
-	  if (seedling.pestTracker) {
-		seedling.pestTracker[type] = e.target.value
-	  } else {
-		seedling.pestTracker = {
-		  date: new Date(),
-		  [type]: e.target.value
-		}
-	  }
-
-	}*/ else if (type === 'dateBought' || type === 'datePlanted') {
+	} else if (type === 'daysToGerminate' || type === 'daysToHarvest') {
+	  seedling[type] = parseInt(e.target.value)
+	} else if (type === 'dateExpires' || type === 'dateBought' || type === 'startDate' || type === 'sproutDate' || type === 'trueLeavesDate' || type === 'transplantDate' || type === 'estHarvestDate' || type === 'actualHarvestDate') {
 	  seedling[type] = new Date(e)
-	} /*else if (type === 'diary') {
-	  seedling[type] = {
-		entry: e.target.value,
-		date: new Date()
-	  }
-	}*/ else if (type === 'tilled') {
+	} else if (type === 'tilled') {
 	  seedling[type] = e.target.value === 'true' ? true : false
-	} else if (type === 'waterScheduleAuto') {
-	  seedling[type] = !seedling[type]
 	} else {
 	  seedling[type] = e.target.value
 	}
@@ -159,7 +121,7 @@ class SeedlingAdd extends Component {
 	//TODO add ability to set plant photo and photo history eventually
 
 	return (
-			<div className="PlantAdd">
+			<div className="SeedlingAdd">
 			  <img src={seedling.image}
 				   alt={seedling.commonName}
 				   title={seedling.commonName}
@@ -174,7 +136,7 @@ class SeedlingAdd extends Component {
 				<div className="swipe-slide">
 
 				  <p className="swipe-title title-ming">
-					Plant {Meteor.isPro ? 'Details' : 'Name'}
+					Seedling Details
 				  </p>
 
 				  <SwipePanelContent icon="info" iconTitle="common name">
@@ -193,30 +155,49 @@ class SeedlingAdd extends Component {
 							 value={seedling.latinName || ''}/></p>
 				  </SwipePanelContent>
 
-				  {Meteor.isPro &&
+				  <SwipePanelContent icon="category">
+					<p className="modern-input">
+					  <label>category *</label>
+					  <select onChange={(e) => this.updateData(e, 'category')}
+							  value={seedling.category || ''}>
+						<option value='' disabled={true}>- Select a category -</option>
+						{this.state.categories && this.state.categories.map((item, index) => {
+						  return <option value={item.category} key={index}>{item.displayName}</option>
+						})}
+					  </select>
+					</p>
+				  </SwipePanelContent>
+
 				  <React.Fragment>
-					<SwipePanelContent icon="category">
+					<SwipePanelContent icon="methodSeedStart">
 					  <p className="modern-input">
-						<label>category *</label>
-						<select placeholder="Category"
-								onChange={(e) => this.updateData(e, 'category')}
-								value={seedling.category || ''}>
-						  <option value='' disabled={true}>- Select a category -</option>
-						  {this.state.categories && this.state.categories.map((item, index) => {
-							return <option value={item.category} key={index}>{item.displayName}</option>
-						  })}
-						</select>
+						<label>method to start seed *</label>
+						<input type="text"
+							   onChange={(e) => this.updateData(e, 'method')}
+							   value={seedling.method || ''}/>
 					  </p>
 					</SwipePanelContent>
 				  </React.Fragment>
-				  }
 
-				  <SwipePanelContent icon="toxicity">
+				  <SwipePanelContent icon="indoorOutdoor">
 					<p className="modern-input">
-					  <label>toxicity</label>
+					  <label>started indoor or outdoor</label>
+					  <select onChange={(e) => this.updateData(e, 'startedIndoorOutdoor')}
+							  value={seedling.startedIndoorOutdoor || ''}>
+						<option value='' disabled={true}>- Select a start location -</option>
+						<option value="indoor">Indoor</option>
+						<option value="outdoor">Outdoor</option>
+
+					  </select>
+					</p>
+				  </SwipePanelContent>
+
+				  <SwipePanelContent icon="seedBrand">
+					<p className="modern-input">
+					  <label>seed brand</label>
 					  <input type="text"
-							 onChange={(e) => this.updateData(e, 'toxicity')}
-							 value={seedling.toxicity || ''}/></p>
+							 onChange={(e) => this.updateData(e, 'seedBrand')}
+							 value={seedling.seedBrand || ''}/></p>
 				  </SwipePanelContent>
 
 				</div>
@@ -229,6 +210,7 @@ class SeedlingAdd extends Component {
 					Water - Light
 				  </p>
 
+
 				  <SwipePanelContent icon="schedule" iconTitle="watering schedule">
 					<p className="modern-input">Water every <input type="number"
 																   min="0"
@@ -239,21 +221,6 @@ class SeedlingAdd extends Component {
 																   onChange={(e) => this.updateData(e, 'waterSchedule')}
 																   value={seedling.waterSchedule || ''}/> days</p>
 				  </SwipePanelContent>
-
-				  {Meteor.isPro &&
-				  <SwipePanelContent icon="waterAuto"
-									 iconTitle="automatic water schedule">
-					<p>
-					  <label>
-						<input type="checkbox"
-							   className="small-checkbox"
-							   onChange={(e) => this.updateData(e, 'waterScheduleAuto')}/>
-
-						Automatic watering
-					  </label>
-					</p>
-				  </SwipePanelContent>
-				  }
 
 				  <SwipePanelContent icon="water">
 					<p className="modern-input">
@@ -277,17 +244,17 @@ class SeedlingAdd extends Component {
 				{/* fertilizer */}
 				<div className="swipe-slide">
 				  <p className="swipe-title title-ming">
-					{Meteor.isPro ? 'Fertilizer / Nutrients' : 'Fertilizer'}
+					Fertilizer / Nutrients
 				  </p>
 
-				  <SwipePanelContent icon="schedule" iconTitle={`${Meteor.isPro ? 'feeding' : 'fertilizer'} schedule`}>
-					<p className="modern-input">{Meteor.isPro ? 'Feed' : 'Fertilize'} every <input type="number"
-																								   min="0"
-																								   inputMode="numeric"
-																								   pattern="[0-9]*"
-																								   placeholder="30"
-																								   className="small"
-																								   onChange={(e) => this.updateData(e, 'fertilizerSchedule')}/> days
+				  <SwipePanelContent icon="schedule" iconTitle="feeding schedule">
+					<p className="modern-input">Feed every <input type="number"
+																  min="0"
+																  inputMode="numeric"
+																  pattern="[0-9]*"
+																  placeholder="30"
+																  className="small"
+																  onChange={(e) => this.updateData(e, 'fertilizerSchedule')}/> days
 					</p>
 				  </SwipePanelContent>
 
@@ -300,7 +267,6 @@ class SeedlingAdd extends Component {
 				  </SwipePanelContent>
 
 
-				  {Meteor.isPro &&
 				  <React.Fragment>
 					<SwipePanelContent icon="compost">
 					  <p className="modern-input">
@@ -318,42 +284,95 @@ class SeedlingAdd extends Component {
 							   value={seedling.nutrient || ''}/></p>
 					</SwipePanelContent>
 				  </React.Fragment>
-				  }
 
 				</div>
 
 
-				{/* pruning/deadheading schedule */}
-				{Meteor.isPro &&
+				{/* notable dates */}
 				<div className="swipe-slide">
 				  <p className="swipe-title title-ming">
-					Pruning - Deadheading
+					Notable Dates
 				  </p>
 
-				  <SwipePanelContent icon="schedule" iconTitle="pruning schedule">
-					<p className="modern-input">Prune every <input type="number"
-																   min="0"
-																   inputMode="numeric"
-																   pattern="[0-9]*"
-																   className="small"
-																   placeholder="30"
-																   onChange={(e) => this.updateData(e, 'pruningSchedule')}/> days
+				  <SwipePanelContent icon="schedule">
+					<p className="modern-input">
+					  <label>start date</label>
+					  <input type="date"
+							 onBlur={(e) => this.updateData(e, 'startDate')}
+							 defaultValue={seedling.startDate || ''}/></p>
+				  </SwipePanelContent>
+
+				  {/*<SwipePanelContent icon="schedule">
+					<p className="modern-input">
+					  <label>sprout date</label>
+					  <input type="date"
+							 onBlur={(e) => this.updateData(e, 'sproutDate')}
+							 defaultValue={seedling.sproutDate || ''}/></p>
+				  </SwipePanelContent>
+
+				  <SwipePanelContent icon="schedule">
+					<p className="modern-input">
+					  <label>true leaves date</label>
+					  <input type="date"
+							 onBlur={(e) => this.updateData(e, 'trueLeavesDate')}
+							 defaultValue={seedling.trueLeavesDate || ''}/></p>
+				  </SwipePanelContent>*/}
+
+				  <SwipePanelContent icon="schedule" iconTitle="days to germinate">
+					<p className="modern-input">Days to germinate: <input type="number"
+																		  min="0"
+																		  inputMode="numeric"
+																		  pattern="[0-9]*"
+																		  placeholder="4"
+																		  className="small"
+																		  onChange={(e) => this.updateData(e, 'daysToGerminate')}
+																		  value={seedling.daysToGerminate || ''}/> days
 					</p>
 				  </SwipePanelContent>
 
-				  <SwipePanelContent icon="schedule" iconTitle="deadheading schedule">
-					<p className="modern-input">Deadhead every <input type="number"
-																	  min="0"
-																	  inputMode="numeric"
-																	  pattern="[0-9]*"
-																	  className="small"
-																	  placeholder="30"
-																	  onChange={(e) => this.updateData(e, 'deadheadingSchedule')}/> days
-					</p>
+				  {/*<SwipePanelContent icon="schedule">
+					<p className="modern-input">
+					  <label>transplant date</label>
+					  <input type="date"
+							 onBlur={(e) => this.updateData(e, 'transplantDate')}
+							 defaultValue={seedling.transplantDate || ''}/></p>
 				  </SwipePanelContent>
 
+				  <SwipePanelContent icon="schedule" iconTitle="days to germinate">
+					<p className="modern-input">Days to harvest: <input type="number"
+																		min="0"
+																		inputMode="numeric"
+																		pattern="[0-9]*"
+																		placeholder="4"
+																		className="small"
+																		onChange={(e) => this.updateData(e, 'daysToHarvest')}
+																		value={seedling.daysToHarvest || ''}/> days</p>
+				  </SwipePanelContent>*/}
+
+				  <SwipePanelContent icon="schedule">
+					<p className="modern-input">
+					  <label>estimated harvest date</label>
+					  <input type="date"
+							 onBlur={(e) => this.updateData(e, 'estHarvestDate')}
+							 defaultValue={seedling.estHarvestDate || ''}/></p>
+				  </SwipePanelContent>
+
+				  {/*<SwipePanelContent icon="schedule">
+					<p className="modern-input">
+					  <label>actual harvest date</label>
+					  <input type="date"
+							 onBlur={(e) => this.updateData(e, 'actualHarvestDate')}
+							 defaultValue={seedling.actualHarvestDate || ''}/></p>
+				  </SwipePanelContent>*/}
+
+				  <SwipePanelContent icon="schedule">
+					<p className="modern-input">
+					  <label>date seed expires</label>
+					  <input type="date"
+							 onBlur={(e) => this.updateData(e, 'dateExpires')}
+							 defaultValue={seedling.dateExpires || ''}/></p>
+				  </SwipePanelContent>
 				</div>
-				}
 
 
 				{/* soil comp */}
@@ -362,7 +381,7 @@ class SeedlingAdd extends Component {
 					Soil Composition
 				  </p>
 
-				  {Meteor.isPro && seedling.category === 'in-ground' ?
+				  {seedling.category === 'in-ground' ?
 						  <React.Fragment>
 
 							<SwipePanelContent icon="tilling">
@@ -410,7 +429,7 @@ class SeedlingAdd extends Component {
 
 						  </React.Fragment>
 						  :
-						  (Meteor.isPro && seedling.category === 'potted') ?
+						  (seedling.category === 'potted') ?
 								  <React.Fragment>
 									<SwipePanelContent icon="soilRecipe">
 									  <p className="modern-input">
@@ -464,44 +483,6 @@ class SeedlingAdd extends Component {
 
 				</div>
 
-
-				{/* pests */}
-				{/*<div className="swipe-slide slide-four">
-				  <p className="swipe-title title-ming">Pests</p>
-
-				  <div className="detail-panel">
-					<div className="icon-side">
-					  <FontAwesomeIcon icon={faBug}
-									   className="plant-condition-icon"
-									   alt="bug"/>
-					  <span className="separator">|</span>
-					</div>
-
-					<div className="info-side">
-					  <p><input type="text"
-								placeholder="Name of pest"
-								onChange={(e) => this.updateData(e, 'pest')}/></p>
-					</div>
-				  </div>
-
-				  <div className="detail-panel">
-					<div className="icon-side">
-					  <FontAwesomeIcon icon={faSprayCan}
-									   className="plant-condition-icon"
-									   alt="spray can"/>
-					  <span className="separator">|</span>
-					</div>
-
-					<div className="info-side">
-					  <p><input type="text"
-								placeholder="Pest Treatment"
-								onChange={(e) => this.updateData(e, 'treatment')}/></p>
-					</div>
-				  </div>
-
-				</div>*/}
-
-
 				{/* location/date bought */}
 				<div className="swipe-slide">
 				  <p className="swipe-title title-ming">Location & Date Bought</p>
@@ -514,7 +495,6 @@ class SeedlingAdd extends Component {
 							 value={seedling.locationBought || ''}/></p>
 				  </SwipePanelContent>
 
-				  {/*need to make this swipepanelcontent with the custom style*/}
 				  <SwipePanelContent icon="schedule">
 					<p className="modern-input">
 					  <label>date bought</label>
@@ -525,45 +505,6 @@ class SeedlingAdd extends Component {
 
 				</div>
 
-
-				{/* etc */}
-				<div className="swipe-slide">
-				  <p className="swipe-title title-ming">Etc</p>
-				  <SwipePanelContent icon="category"
-									 iconTitle={seedling.category === 'potted' ? 'Date Potted' : 'Date Planted'}>
-					<p className="modern-input">
-					  <label>{seedling.category === 'potted' ? 'date potted' : 'date planted'}</label>
-
-					  <input type="date"
-							 placeholder={seedling.category === 'potted' ? 'Date Potted' : 'Date Planted'}
-							 onBlur={(e) => this.updateData(e, 'datePlanted')}
-							 defaultValue={seedling.datePlanted || ''}/>
-					</p>
-				  </SwipePanelContent>
-
-				  <SwipePanelContent icon="plantLocation">
-					<p className="modern-input">
-					  <label>plant location *</label>
-					  <input type="text"
-							 onChange={(e) => this.updateData(e, 'location')}
-							 value={seedling.location || ''}/></p>
-				  </SwipePanelContent>
-
-				  <SwipePanelContent icon="companions">
-					<p className="modern-input">
-					  <label>companion plants</label>
-					  <input type="text"
-							 onChange={(e) => this.updateData(e, 'companions')}
-							 value={seedling.companions || ''}/></p>
-				  </SwipePanelContent>
-
-				  {/* <SwipePanelContent icon={IconList.info.icon} iconAlt={IconList.info.alt} customIcon={IconList.info.isCustom} iconTitle="diary and notes">
-					<p><textarea rows="3"
-								 placeholder="Diary / Notes"
-								 onChange={(e) => this.updateData(e, 'diary')}
-								 value={seedling.diary || ''}/></p>
-				  </SwipePanelContent>*/}
-				</div>
 
 			  </SwipeableViews>
 

@@ -68,7 +68,7 @@ const WaterPro = (props) => (
 									   iconTitle="water schedule"
 									   additionalOuterClasses={!props.plant.waterScheduleAuto ? 'top-align' : ''}>
 					  <p>{props.plant.waterSchedule != null ? `Water every ${props.plant.waterSchedule} days` : 'No schedule set'}</p>
-					  {!props.plant.waterScheduleAuto && props.plant.waterSchedule != null && rops.plant.daysSinceWatered != null ?
+					  {!props.plant.waterScheduleAuto && props.plant.waterSchedule != null && props.plant.daysSinceWatered != null ?
 					  <p>Due in {props.plant.waterSchedule - props.plant.daysSinceWatered - 1} days</p>
 							  : ''
 					  }

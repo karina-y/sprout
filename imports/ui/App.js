@@ -18,6 +18,7 @@ import Authenticated from './pages/Authenticated';
 import Navigation from './components/Navigation/Navigation';
 import ScrollToTop from './components/Shared/ScrollToTop';
 import asyncComponent from './components/Shared/AsyncComponent'
+import Authorized from './pages/Authorized'
 
 const AsyncLogin = asyncComponent(() => import("./pages/Login"));
 const AsyncSignup = asyncComponent(() => import("./pages/Signup"));
@@ -26,6 +27,7 @@ const AsyncPlantCatalogue = asyncComponent(() => import("./pages/PlantCatalogue/
 const AsyncLegalStuff = asyncComponent(() => import("./pages/LegalStuff/LegalStuff"));
 const AsyncPlantViewEdit = asyncComponent(() => import("./components/PlantViewEdit/PlantViewEdit"));
 const AsyncPlantAdd = asyncComponent(() => import("./pages/PlantAdd/PlantAdd"));
+const AsyncSeedlingAdd = asyncComponent(() => import("./pages/SeedlingAdd/SeedlingAdd"));
 
 /*
 TODO
@@ -82,6 +84,10 @@ class App extends Component {
 
 						  <Authenticated exact path="/catalogue/add"
 										 component={AsyncPlantAdd}
+										 {...props} />
+
+						  <Authorized exact path="/seedling/add"
+										 component={AsyncSeedlingAdd}
 										 {...props} />
 
 						  <Authenticated exact path="/catalogue/:id"

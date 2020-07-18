@@ -62,7 +62,7 @@ const FertilizerPro = (props) => (
 									   iconTitle="fertilizer schedule"
 									   additionalOuterClasses="top-align">
 					  <p>{props.plant.fertilizerSchedule != null ? `Feed every ${props.plant.fertilizerSchedule} days` : 'No schedule set'}</p>
-					  {!props.plant.waterScheduleAuto && props.plant.fertilizerSchedule != null && rops.plant.daysSinceFertilized != null ?
+					  {!props.plant.waterScheduleAuto && props.plant.fertilizerSchedule != null && props.plant.daysSinceFertilized != null ?
 							  <p>Due in {props.plant.fertilizerSchedule - props.plant.daysSinceFertilized - 1} days</p>
 							  : ''
 					  }

@@ -51,6 +51,10 @@ class Navigation extends Component {
 		title: 'Add To Catalogue'
 	  },
 	  {
+		href: '/seedling/add',
+		title: 'Add Seedling'
+	  },
+	  {
 		href: '/account',
 		title: 'Account'
 	  },

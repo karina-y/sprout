@@ -41,6 +41,9 @@ const IconList = {
   toxicity: {icon: faSkullCrossbones, alt: 'skull and crossbones', title: 'toxicity', isCustom: false},
   waterAuto: {icon: faHistory, alt: 'auto', title: 'automatic watering schedule', isCustom: false},
   // waterAuto: {icon: '/icons/farm_02/013-hose.svg', alt: 'watering hose', title: 'automatic watering scheudle', isCustom: true},
+  indoorOutdoor: {icon: '/icons/farm_01/039-sprout.svg', alt: 'plant growing', title: 'method to start seed', isCustom: true},
+  methodSeedStart: {icon: '/icons/farm_02/019-hand-seed.svg', alt: 'planting seeds', title: 'started indoor or outdoor', isCustom: true},
+  seedBrand: {icon: '/icons/farm_02/018-signal.svg', alt: 'sign', title: 'seed brand', isCustom: true},
 }
 
 export default IconList
