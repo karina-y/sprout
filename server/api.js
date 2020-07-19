@@ -5,3 +5,5 @@ import '../imports/api/Roles/server/publications';
 import '../imports/api/Category/server/publications';
 import '../imports/api/Preferences/methods';
 import '../imports/api/Preferences/server/publications';
+import '../imports/api/Seedling/methods';
+import '../imports/api/Seedling/server/publications';

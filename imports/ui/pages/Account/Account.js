@@ -4,7 +4,7 @@ import './Account.scss'
 import { Session } from 'meteor/session'
 import { toast } from 'react-toastify'
 import { Accounts } from 'meteor/accounts-base'
-import Preferences from '../../api/Preferences/Preferences'
+import Preferences from '/imports/api/Preferences/Preferences'
 import { Meteor } from 'meteor/meteor'
 
 class Account extends Component {
@@ -21,7 +21,8 @@ class Account extends Component {
 	  pro: false,
 	  newPassword: null,
 	  confirmNewPassword: null,
-	  theme: null
+	  currentTheme: null,
+	  newTheme: null,
 	}
 
 	autobind(this)
@@ -38,7 +39,7 @@ class Account extends Component {
 
 	this.setState({
 	  pro: Meteor.isPro,
-	  theme: preferences ? preferences.theme || 'light' : 'light'
+	  currentTheme: preferences ? preferences.theme || 'light' : 'light'
 	})
   }
 
@@ -62,6 +63,7 @@ class Account extends Component {
   }
 
   saveProfile () {
+    console.log("sdf")
 	let newProfile = {};
 
 	if (this.state.name) {
@@ -78,11 +80,11 @@ class Account extends Component {
 
 	const isPro = this.state.pro
 
-	if (JSON.stringify(newProfile) === "{}" && isPro === Meteor.isPro) {
+	if (JSON.stringify(newProfile) === "{}" && isPro === Meteor.isPro && (this.state.newTheme === this.state.currentTheme)) {
 	  //no updates made
 	  toast.error('Please enter your updated information.')
 	} else {
-	  Meteor.call('account.updateProfile', newProfile, this.state.theme, isPro, (err, response) => {
+	  Meteor.call('account.updateProfile', newProfile, this.state.newTheme, isPro, (err, response) => {
 		if (err) {
 		  toast.error(err.message)
 		} else {
@@ -140,11 +142,11 @@ class Account extends Component {
 				<p className={this.state.editing ? 'modern-input' : ''}>
 				  <label>theme</label>
 				  {this.state.editing ? <select placeholder="Category"
-												onChange={(e) => this.setState({theme: e.target.value})}
-												value={this.state.theme}>
+												onChange={(e) => this.setState({newTheme: e.target.value})}
+												defaultValue={this.state.currentTheme}>
 					<option value="light">Light Theme</option>
 					<option value="dark">Dark Theme</option>
-				  </select> : this.state.theme}
+				  </select> : this.state.currentTheme}
 				</p>
 
 				{/*TODO remove for prod, just for testing*/}

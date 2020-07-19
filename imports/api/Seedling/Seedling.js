@@ -33,24 +33,29 @@ Seedling.schema = new SimpleSchema({
 			defaultValue: '',
 			label: 'latinName'
 		  },
-		  seedBrand: {
+		  category: {
 			type: String,
 			defaultValue: '',
+			label: 'category'
+		  },
+		  seedBrand: {
+			type: String,
+			optional: true,
 			label: 'seedBrand'
 		  },
 		  locationBought: {
 			type: String,
-			defaultValue: '',
+			optional: true,
 			label: 'locationBought'
 		  },
 		  dateBought: {
 			type: Date,
-			defaultValue: '',
+			optional: true,
 			label: 'dateBought'
 		  },
 		  dateExpires: {
 			type: Date,
-			defaultValue: '',
+			optional: true,
 			label: 'dateExpires'
 		  },
 		  method: {
@@ -61,10 +66,9 @@ Seedling.schema = new SimpleSchema({
 		  //TODO isoneof "indoor" "outdoor"
 		  startedIndoorOutdoor: {
 			type: String,
-			defaultValue: '',
+			optional: true,
 			label: 'startedIndoorOutdoor'
 		  },
-
 		  startDate: {
 			type: Date,
 			optional: true,

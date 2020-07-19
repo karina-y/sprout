@@ -59,16 +59,14 @@ class SeedlingAdd extends Component {
 
 	if ((!seedling.commonName) && (!seedling.latinName)) {
 	  errMsg = 'Please enter either a common or latin name (eg. Swiss Cheese Plant or Monstera adansonii).'
+	} else if (!seedling.category) {
+	  errMsg = 'Please select a category.'
 	} else if (!seedling.method) {
 	  errMsg = 'Please enter a seed starting method (eg. used jiffy pot and greenhouse method)'
 	} else if (!seedling.waterPreference) {
 	  errMsg = 'Please enter a watering preference (eg. Keep soil moist but not soggy, humidity tray helpful).'
 	} else if (!seedling.lightPreference) {
 	  errMsg = 'Please enter a lighting preference (eg. Bright indirect light).'
-	} else if (!seedling.location) {
-	  errMsg = 'Please enter where this plant lives in/around your home (eg. Living Room or Back Patio).'
-	} else if (seedling.category) {
-	  errMsg = 'Please select a category.'
 	}
 
 	if (errMsg) {
@@ -79,7 +77,7 @@ class SeedlingAdd extends Component {
 		  toast.error(err.message)
 		} else {
 		  toast.success('Seedling added!')
-		  this.props.history.push('/seedlings')
+		  this.props.history.push('/catalogue/seedling')
 		}
 	  })
 	}
@@ -365,13 +363,13 @@ class SeedlingAdd extends Component {
 							 defaultValue={seedling.actualHarvestDate || ''}/></p>
 				  </SwipePanelContent>*/}
 
-				  <SwipePanelContent icon="schedule">
+				  {/*<SwipePanelContent icon="schedule">
 					<p className="modern-input">
 					  <label>date seed expires</label>
 					  <input type="date"
 							 onBlur={(e) => this.updateData(e, 'dateExpires')}
 							 defaultValue={seedling.dateExpires || ''}/></p>
-				  </SwipePanelContent>
+				  </SwipePanelContent>*/}
 				</div>
 
 

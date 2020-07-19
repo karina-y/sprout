@@ -2,11 +2,13 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import autobind from 'react-autobind'
 import { withTracker } from 'meteor/react-meteor-data'
-import PlantPreview from '../../components/PlantPreview/PlantPreview'
+import ItemPreview from '../../components/ItemPreview/ItemPreview'
 import { Session } from 'meteor/session'
 import Plant from '/imports/api/Plant/Plant'
+import Seedling from '../../../api/Seedling/Seedling'
+import './ItemCatalogue.scss'
 
-class PlantCatalogue extends Component {
+class ItemCatalogue extends Component {
   constructor (props) {
 	super(props)
 
@@ -142,26 +144,27 @@ class PlantCatalogue extends Component {
 	const props = this.props
 
 	return (
-			<div className="PlantCatalogue">
+			<div className="ItemCatalogue">
 			  {/* TODO add sorting and filtering */}
 			  <div>
 				<input name="catalogueFilter"
 					   type="text"
 					   placeholder="Search by latin or common name"
+					   className="search-bar"
 					   value={this.state.catalogueFilter}
 					   onChange={this.filterCatalogue}/>
 			  </div>
 
 			  <div className="flex-around flex-wrap">
 				{this.props.catalogue && this.props.catalogue.length > 0 ?
-						this.state.filteredOrSortedCatalogue.map(function (plant, index) {
-						  return <PlantPreview plant={plant}
+						this.state.filteredOrSortedCatalogue.map(function (item, index) {
+						  return <ItemPreview item={item}
 											   key={index}
 											   {...props}/>
 						})
 						:
 						<p className="title-ming"
-						   style={{marginTop: '50px', textAlign: 'center', padding: '10px'}}>You don't have any plants in your catalogue yet.</p>
+						   style={{marginTop: '50px', textAlign: 'center', padding: '10px'}}>You don't have any ${this.props.type}s in your catalogue yet.</p>
 				}
 			  </div>
 			</div>
@@ -169,14 +172,23 @@ class PlantCatalogue extends Component {
   }
 }
 
-PlantCatalogue.propTypes = {
+ItemCatalogue.propTypes = {
   catalogue: PropTypes.array.isRequired,
+  type: PropTypes.string.isRequired,
 }
 
-export default withTracker(() => {
-  const catalogue = Plant.find({userId: Meteor.userId()}).fetch();
+export default withTracker((props) => {
+  const type = props.match.params.type;
+  let catalogue = [];
+
+  if (type === "plant") {
+	catalogue = Plant.find({userId: Meteor.userId()}).fetch();
+  } else {
+	catalogue = Seedling.find({userId: Meteor.userId()}).fetch();
+  }
 
   return {
-	catalogue
+	catalogue,
+	type
   }
-})(PlantCatalogue)
+})(ItemCatalogue)

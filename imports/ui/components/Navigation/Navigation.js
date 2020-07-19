@@ -43,16 +43,20 @@ class Navigation extends Component {
 		title: 'Today\'s Tasks'
 	  },
 	  {
-		href: '/catalogue',
+		href: '/catalogue/plant',
 		title: 'Plant Catalogue'
 	  },
 	  {
-		href: '/catalogue/add',
+		href: '/plant',
 		title: 'Add To Catalogue'
 	  },
 	  {
-		href: '/seedling/add',
-		title: 'Add Seedling'
+		href: '/catalogue/seedling',
+		title: 'Seedling Catalogue - UNDER DEVELOPMENT'
+	  },
+	  {
+		href: '/seedling',
+		title: 'Add Seedling - UNDER DEVELOPMENT'
 	  },
 	  {
 		href: '/account',

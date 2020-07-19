@@ -10,7 +10,7 @@ function PlantTaskList (props) {
 
   return (
 		  <button className="PlantTaskList naked"
-				  onClick={() => props.history.push(`/catalogue/${plant._id}`)}>
+				  onClick={() => props.history.push(`/plant/${plant._id}`)}>
 			<ShadowBox additionalOuterClasses={plant.condition}
 					   hoverAction={false}
 					   popoutHover={false}

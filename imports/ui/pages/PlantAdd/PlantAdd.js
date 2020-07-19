@@ -95,7 +95,7 @@ class PlantAdd extends Component {
 		  toast.error(err.message)
 		} else {
 		  toast.success('Plant added!')
-		  this.props.history.push('/catalogue')
+		  this.props.history.push('/catalogue/plant')
 		}
 	  })
 	}

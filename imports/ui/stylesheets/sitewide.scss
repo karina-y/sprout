@@ -37,12 +37,44 @@ body {
     }
 
     .title-ming {
-      color: $powder-blue;
+      color: $powder-blue !important;
     }
 
     table {
       color: $med-gray;
     }
+
+    p.modern-input {
+
+      label {
+        background: $dark-gray;
+        color: $off-white;
+      }
+
+      &.for-modal {
+        label {
+          background: $dark-gray;
+        }
+
+        input,
+        select,
+        textarea {
+          background-color: $dark-gray !important;
+        }
+      }
+    }
+
+    input,
+    select,
+    textarea {
+      background-color: $dark-gray !important;
+      color: $off-white;
+    }
+
+    input::-webkit-calendar-picker-indicator {
+      //filter: drop-shadow(0px 0px .8px rgba(255,255,255,.9))
+    }
+
   }
 
   #root {
@@ -286,7 +318,7 @@ body {
   input,
   textarea,
   select {
-    color: $ming !important;
+    color: $ming;
     height: 40px;
     width: 100%;
     font-size: $font-xs;

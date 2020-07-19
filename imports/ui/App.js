@@ -23,11 +23,12 @@ import Authorized from './pages/Authorized'
 const AsyncLogin = asyncComponent(() => import("./pages/Login"));
 const AsyncSignup = asyncComponent(() => import("./pages/Signup"));
 const AsyncAccount = asyncComponent(() => import("./pages/Account/Account"));
-const AsyncPlantCatalogue = asyncComponent(() => import("./pages/PlantCatalogue/PlantCatalogue"));
+const AsyncItemCatalogue = asyncComponent(() => import("./pages/ItemCatalogue/ItemCatalogue"));
 const AsyncLegalStuff = asyncComponent(() => import("./pages/LegalStuff/LegalStuff"));
 const AsyncPlantViewEdit = asyncComponent(() => import("./components/PlantViewEdit/PlantViewEdit"));
 const AsyncPlantAdd = asyncComponent(() => import("./pages/PlantAdd/PlantAdd"));
 const AsyncSeedlingAdd = asyncComponent(() => import("./pages/SeedlingAdd/SeedlingAdd"));
+const AsyncNoMatch = asyncComponent(() => import("./pages/NoMatch"));
 
 /*
 TODO
@@ -78,19 +79,19 @@ class App extends Component {
 										 component={AsyncAccount}
 										 {...props} />
 
-						  <Authenticated exact path="/catalogue"
-										 component={AsyncPlantCatalogue}
+						  <Authenticated exact path="/catalogue/:type"
+										 component={AsyncItemCatalogue}
 										 {...props} />
 
-						  <Authenticated exact path="/catalogue/add"
+						  <Authorized exact path="/seedling"
+									  component={AsyncSeedlingAdd}
+									  {...props} />
+
+						  <Authenticated exact path="/plant"
 										 component={AsyncPlantAdd}
 										 {...props} />
 
-						  <Authorized exact path="/seedling/add"
-										 component={AsyncSeedlingAdd}
-										 {...props} />
-
-						  <Authenticated exact path="/catalogue/:id"
+						  <Authenticated exact path="/plant/:id"
 										 component={AsyncPlantViewEdit}
 										 {...props} />
 
@@ -101,7 +102,7 @@ class App extends Component {
 						  <Route exact path="/legal-stuff" render={props => <AsyncLegalStuff {...props} />} />
 
 						  {/*TODO 404*/}
-						{/*  <Route component={NoMatchPage} /> */}
+						  <Route component={AsyncNoMatch} />
 						</Switch>
 					  </div>
 
@@ -122,8 +123,9 @@ export default withTracker(() => {
 	const roleSub = Meteor.subscribe('roles')
 	const categorySub = Meteor.subscribe('category')
 	const preferencesSub = Meteor.subscribe('preferences')
+	const seedlingsSub = Meteor.subscribe('seedling')
 
-	loading = !plantSub.ready() || !roleSub.ready() || !categorySub.ready() || !preferencesSub.ready();
+	loading = !plantSub.ready() || !roleSub.ready() || !categorySub.ready() || !preferencesSub.ready() || !seedlingsSub.ready();
 
 	if (roleSub.ready()) {
 	  Meteor.isPro = Roles.userIsInRole(Meteor.userId(), 'pro');

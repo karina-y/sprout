@@ -78,7 +78,7 @@ class Signup extends Component {
 			  toast.error(err.message)
 			} else {
 			  toast.success(`Welcome ${data.profile.name}! Let's add your first plant.`)
-			  props.history.push('/catalogue/add')
+			  props.history.push('/plant/add')
 			}
 		  })*/
 		}
