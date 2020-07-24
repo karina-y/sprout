@@ -33,7 +33,7 @@ export function getSoilCondition(tracker, idealMoistureRange) {
   let condition = "unknown";
 
   if (tracker && Array.isArray(tracker) && tracker.length > 0) {
-    const lastSoilComp = tracker[tracker.length-1];
+	const lastSoilComp = tracker[tracker.length-1];
 
 	//scale of 3.5 to 8, calculate percentage
 	if (lastSoilComp.ph >= 6.0 || lastSoilComp.ph <= 5.4 || lastSoilComp.moisture < .3) {
@@ -52,7 +52,7 @@ export function lastChecked(tracker) {
   let lastChecked = "No records available.";
 
   if (tracker && Array.isArray(tracker) && tracker.length > 0) {
-	lastChecked = `Last Checked ${new Date(tracker[tracker.length-1].date).toLocaleDateString()}`;
+	lastChecked = `Last Checked ${parseDate(tracker[tracker.length-1].date)}`;
   }
 
   return lastChecked;
@@ -62,7 +62,7 @@ export function lastFertilizerUsed(tracker) {
   let fertilizer = 'N/A';
 
   if (tracker && tracker.length > 0) {
-    fertilizer = tracker[tracker.length - 1].fertilizer;
+	fertilizer = tracker[tracker.length - 1].fertilizer;
   }
 
   return fertilizer;
@@ -119,4 +119,14 @@ export function sortByLastDate(data) {
   }
 
   return sortedData;
+}
+
+export function parseDate(date) {
+  let parsedDate = "N/A";
+
+  if (date && new Date(date) && new Date(date).getYear() + 1900 > 1969) {
+	parsedDate = new Date(date).toLocaleDateString();
+  }
+
+  return parsedDate;
 }

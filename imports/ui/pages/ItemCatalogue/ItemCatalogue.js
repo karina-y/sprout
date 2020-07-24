@@ -164,7 +164,7 @@ class ItemCatalogue extends Component {
 						})
 						:
 						<p className="title-ming"
-						   style={{marginTop: '50px', textAlign: 'center', padding: '10px'}}>You don't have any ${this.props.type}s in your catalogue yet.</p>
+						   style={{marginTop: '50px', textAlign: 'center', padding: '10px'}}>{this.props.msg}</p>
 				}
 			  </div>
 			</div>
@@ -180,15 +180,19 @@ ItemCatalogue.propTypes = {
 export default withTracker((props) => {
   const type = props.match.params.type;
   let catalogue = [];
+  let msg = `You don't have any ${type}s in your catalogue yet.`
 
   if (type === "plant") {
 	catalogue = Plant.find({userId: Meteor.userId()}).fetch();
-  } else {
+  } else if (type === "seedling" && Meteor.isPro) {
 	catalogue = Seedling.find({userId: Meteor.userId()}).fetch();
+  } else {
+    msg = "You need to upgrade to a pro account to use this feature";
   }
 
   return {
 	catalogue,
-	type
+	type,
+	msg
   }
 })(ItemCatalogue)

@@ -10,8 +10,13 @@ import { toast } from 'react-toastify'
 import { faTimes } from '@fortawesome/free-solid-svg-icons/faTimes'
 import { faSave } from '@fortawesome/free-solid-svg-icons/faSave'
 import Category from '/imports/api/Category/Category'
-import SoilTypes from '../../../utils/soilTypes'
 import SwipePanelContent from '../../components/Shared/SwipePanelContent/SwipePanelContent'
+import Water from '../../components/SharedPlantSeedling/SwipeViewsAdd/Water'
+import WaterPro from '../../components/SharedPlantSeedling/SwipeViewsAdd/WaterPro'
+import FertilizerPro from '../../components/SharedPlantSeedling/SwipeViewsAdd/FertilizerPro'
+import Fertilizer from '../../components/SharedPlantSeedling/SwipeViewsAdd/Fertilizer'
+import SoilCompPro from '../../components/SharedPlantSeedling/SwipeViewsAdd/SoilCompPro'
+import SoilComp from '../../components/SharedPlantSeedling/SwipeViewsAdd/SoilComp'
 
 class SeedlingAdd extends Component {
   constructor (props) {
@@ -32,7 +37,8 @@ class SeedlingAdd extends Component {
   }
 
   componentDidMount () {
-	Session.set('pageTitle', this.state.seedling.commonName)
+	toast.warning('This feature is not complete, use at your own risk.')
+	Session.set('pageTitle', "New Seedling")
 	const categories = Category.find().fetch()
 
 	this.setState({
@@ -66,7 +72,7 @@ class SeedlingAdd extends Component {
 	} else if (!seedling.waterPreference) {
 	  errMsg = 'Please enter a watering preference (eg. Keep soil moist but not soggy, humidity tray helpful).'
 	} else if (!seedling.lightPreference) {
-	  errMsg = 'Please enter a lighting preference (eg. Bright indirect light).'
+	  errMsg = 'Please enter a lighting preference (eg. sun light or grow light).'
 	}
 
 	if (errMsg) {
@@ -166,16 +172,14 @@ class SeedlingAdd extends Component {
 					</p>
 				  </SwipePanelContent>
 
-				  <React.Fragment>
-					<SwipePanelContent icon="methodSeedStart">
-					  <p className="modern-input">
-						<label>method to start seed *</label>
-						<input type="text"
-							   onChange={(e) => this.updateData(e, 'method')}
-							   value={seedling.method || ''}/>
-					  </p>
-					</SwipePanelContent>
-				  </React.Fragment>
+				  <SwipePanelContent icon="methodSeedStart">
+					<p className="modern-input">
+					  <label>method to start seed *</label>
+					  <input type="text"
+							 onChange={(e) => this.updateData(e, 'method')}
+							 value={seedling.method || ''}/>
+					</p>
+				  </SwipePanelContent>
 
 				  <SwipePanelContent icon="indoorOutdoor">
 					<p className="modern-input">
@@ -202,89 +206,26 @@ class SeedlingAdd extends Component {
 
 
 				{/* water */}
-				<div className="swipe-slide">
-
-				  <p className="swipe-title title-ming">
-					Water - Light
-				  </p>
-
-
-				  <SwipePanelContent icon="schedule" iconTitle="watering schedule">
-					<p className="modern-input">Water every <input type="number"
-																   min="0"
-																   inputMode="numeric"
-																   pattern="[0-9]*"
-																   placeholder="4"
-																   className="small"
-																   onChange={(e) => this.updateData(e, 'waterSchedule')}
-																   value={seedling.waterSchedule || ''}/> days</p>
-				  </SwipePanelContent>
-
-				  <SwipePanelContent icon="water">
-					<p className="modern-input">
-					  <label>watering preferences *</label>
-					  <input type="text"
-							 onChange={(e) => this.updateData(e, 'waterPreference')}
-							 value={seedling.waterPreference || ''}/></p>
-				  </SwipePanelContent>
-
-				  <SwipePanelContent icon="lightPreference">
-					<p className="modern-input">
-					  <label>light preferences *</label>
-					  <input type="text"
-							 onChange={(e) => this.updateData(e, 'lightPreference')}
-							 value={seedling.lightPreference || ''}/></p>
-				  </SwipePanelContent>
-
-				</div>
+				{Meteor.isPro ?
+						<WaterPro item={seedling} updateData={this.updateData} type={"seedling"} />
+						:
+						<Water item={seedling} updateData={this.updateData} />
+				}
 
 
 				{/* fertilizer */}
-				<div className="swipe-slide">
-				  <p className="swipe-title title-ming">
-					Fertilizer / Nutrients
-				  </p>
+				{Meteor.isPro ?
+						<FertilizerPro item={seedling} updateData={this.updateData} />
+						:
+						<Fertilizer item={seedling} updateData={this.updateData} />
+				}
 
-				  <SwipePanelContent icon="schedule" iconTitle="feeding schedule">
-					<p className="modern-input">Feed every <input type="number"
-																  min="0"
-																  inputMode="numeric"
-																  pattern="[0-9]*"
-																  placeholder="30"
-																  className="small"
-																  onChange={(e) => this.updateData(e, 'fertilizerSchedule')}/> days
-					</p>
-				  </SwipePanelContent>
-
-				  <SwipePanelContent icon="fertilizer">
-					<p className="modern-input">
-					  <label>preferred fertilizer</label>
-					  <input type="text"
-							 onChange={(e) => this.updateData(e, 'fertilizer')}
-							 value={seedling.fertilizer || ''}/></p>
-				  </SwipePanelContent>
-
-
-				  <React.Fragment>
-					<SwipePanelContent icon="compost">
-					  <p className="modern-input">
-						<label>compost</label>
-						<input type="text"
-							   onChange={(e) => this.updateData(e, 'compost')}
-							   value={seedling.compost || ''}/></p>
-					</SwipePanelContent>
-
-					<SwipePanelContent icon="nutrients">
-					  <p className="modern-input">
-						<label>other nutrient amendment</label>
-						<input type="text"
-							   onChange={(e) => this.updateData(e, 'nutrient')}
-							   value={seedling.nutrient || ''}/></p>
-					</SwipePanelContent>
-				  </React.Fragment>
-
-				</div>
-
+				{/* soil comp */}
+				{Meteor.isPro ?
+						<SoilCompPro item={seedling} updateData={this.updateData}/>
+						:
+						<SoilComp item={seedling} updateData={this.updateData}/>
+				}
 
 				{/* notable dates */}
 				<div className="swipe-slide">
@@ -317,14 +258,11 @@ class SeedlingAdd extends Component {
 				  </SwipePanelContent>*/}
 
 				  <SwipePanelContent icon="schedule" iconTitle="days to germinate">
-					<p className="modern-input">Days to germinate: <input type="number"
-																		  min="0"
-																		  inputMode="numeric"
-																		  pattern="[0-9]*"
-																		  placeholder="4"
-																		  className="small"
-																		  onChange={(e) => this.updateData(e, 'daysToGerminate')}
-																		  value={seedling.daysToGerminate || ''}/> days
+					<p className="modern-input">
+					  <label>days to germinate (7-14 days)</label>
+					  <input type="text"
+							 onChange={(e) => props.updateData(e, 'daysToGerminate')}
+							 defaultValue={seedling.daysToGerminate || ''}/>
 					</p>
 				  </SwipePanelContent>
 
@@ -370,137 +308,6 @@ class SeedlingAdd extends Component {
 							 onBlur={(e) => this.updateData(e, 'dateExpires')}
 							 defaultValue={seedling.dateExpires || ''}/></p>
 				  </SwipePanelContent>*/}
-				</div>
-
-
-				{/* soil comp */}
-				<div className="swipe-slide">
-				  <p className="swipe-title title-ming">
-					Soil Composition
-				  </p>
-
-				  {seedling.category === 'in-ground' ?
-						  <React.Fragment>
-
-							<SwipePanelContent icon="tilling">
-							  <p className="modern-input">
-								<label>is the soil tilled</label>
-								<select onChange={(e) => this.updateData(e, 'tilled')}
-										value={seedling.tilled || ''}>
-								  <option value='' disabled={true}>- Is the soil tilled? -</option>
-								  <option value={false}>No</option>
-								  <option value={true}>Yes</option>
-								</select>
-							  </p>
-							</SwipePanelContent>
-
-							<SwipePanelContent icon="soilType">
-							  <p className="modern-input">
-								<label>ground soil type</label>
-								<select onChange={(e) => this.updateData(e, 'soilType')}
-										value={seedling.soilType || ''}>
-								  <option value='' disabled={true}>- Select a ground soil type -</option>
-								  {SoilTypes.map((item, index) => {
-									return <option value={item.type} key={index}>{item.displayName}</option>
-								  })}
-								</select>
-							  </p>
-							</SwipePanelContent>
-
-							<SwipePanelContent icon="soilAmendment">
-							  <p className="modern-input">
-								<label>soil amendment</label>
-								<input type="text"
-									   onChange={(e) => this.updateData(e, 'soilAmendment')}
-									   value={seedling.soilAmendment || ''}/></p>
-							</SwipePanelContent>
-
-							<SwipePanelContent icon="ph">
-							  <p className="modern-input">pH <input type="number"
-																	min="0"
-																	inputMode="numeric"
-																	pattern="[0-9]*"
-																	className="small"
-																	placeholder="6.2"
-																	onChange={(e) => this.updateData(e, 'ph')}/></p>
-							</SwipePanelContent>
-
-						  </React.Fragment>
-						  :
-						  (seedling.category === 'potted') ?
-								  <React.Fragment>
-									<SwipePanelContent icon="soilRecipe">
-									  <p className="modern-input">
-										<label>soil recipe</label>
-										<input type="text"
-											   onChange={(e) => this.updateData(e, 'soilRecipe')}
-											   value={seedling.soilRecipe || ''}/></p>
-									</SwipePanelContent>
-
-									<SwipePanelContent icon="soilMoisture">
-									  <p className="modern-input">Moisture Level <input type="number"
-																						min="0"
-																						inputMode="numeric"
-																						pattern="[0-9]*"
-																						className="small"
-																						placeholder="40"
-																						onChange={(e) => this.updateData(e, 'moisture')}/>%
-									  </p>
-									</SwipePanelContent>
-								  </React.Fragment>
-								  :
-								  seedling.category === 'in-ground' ?
-										  <React.Fragment>
-											<SwipePanelContent icon="ph">
-											  <p className="modern-input">pH <input type="number"
-																					min="0"
-																					inputMode="numeric"
-																					pattern="[0-9]*"
-																					className="small"
-																					placeholder="6.2"
-																					onChange={(e) => this.updateData(e, 'ph')}/>
-											  </p>
-											</SwipePanelContent>
-
-
-											<SwipePanelContent icon="soilMoisture">
-											  <p className="modern-input">Moisture Level <input type="number"
-																								min="0"
-																								inputMode="numeric"
-																								pattern="[0-9]*"
-																								className="small"
-																								placeholder="40"
-																								onChange={(e) => this.updateData(e, 'moisture')}/>%
-											  </p>
-											</SwipePanelContent>
-										  </React.Fragment>
-										  :
-										  <p>Please select a category on the first panel.</p>
-				  }
-
-
-				</div>
-
-				{/* location/date bought */}
-				<div className="swipe-slide">
-				  <p className="swipe-title title-ming">Location & Date Bought</p>
-
-				  <SwipePanelContent icon="locationBought">
-					<p className="modern-input">
-					  <label>location bought</label>
-					  <input type="text"
-							 onChange={(e) => this.updateData(e, 'locationBought')}
-							 value={seedling.locationBought || ''}/></p>
-				  </SwipePanelContent>
-
-				  <SwipePanelContent icon="schedule">
-					<p className="modern-input">
-					  <label>date bought</label>
-					  <input type="date"
-							 onBlur={(e) => this.updateData(e, 'dateBought')}
-							 defaultValue={seedling.dateBought || ''}/></p>
-				  </SwipePanelContent>
-
 				</div>
 
 

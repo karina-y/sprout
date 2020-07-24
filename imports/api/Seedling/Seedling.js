@@ -43,16 +43,6 @@ Seedling.schema = new SimpleSchema({
 			optional: true,
 			label: 'seedBrand'
 		  },
-		  locationBought: {
-			type: String,
-			optional: true,
-			label: 'locationBought'
-		  },
-		  dateBought: {
-			type: Date,
-			optional: true,
-			label: 'dateBought'
-		  },
 		  dateExpires: {
 			type: Date,
 			optional: true,
@@ -69,10 +59,10 @@ Seedling.schema = new SimpleSchema({
 			optional: true,
 			label: 'startedIndoorOutdoor'
 		  },
-		  startDate: {
+		  sowDate: {
 			type: Date,
 			optional: true,
-			label: 'startDate'
+			label: 'sowDate'
 		  },
 		  sproutDate: {
 			type: Date,
@@ -85,7 +75,7 @@ Seedling.schema = new SimpleSchema({
 			label: 'trueLeavesDate'
 		  },
 		  daysToGerminate: {
-			type: Number,
+			type: String,
 			optional: true,
 			label: 'daysToGerminate'
 		  },
@@ -95,7 +85,7 @@ Seedling.schema = new SimpleSchema({
 			label: 'transplantDate'
 		  },
 		  daysToHarvest: {
-			type: Number,
+			type: String,
 			optional: true,
 			label: 'daysToHarvest'
 		  },

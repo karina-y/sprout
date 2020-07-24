@@ -3,6 +3,7 @@ import rateLimit from '../../modules/rate-limit'
 import logger from '/imports/utils/logger'
 import SimpleSchema from 'simpl-schema'
 import handleMethodException from '/imports/utils/handle-method-exception'
+import Seedling from '../Seedling/Seedling'
 
 Meteor.methods({
   'plant.insert': function plantInsert (data) {
@@ -16,7 +17,7 @@ Meteor.methods({
 	  validationContext.validate(data)
 
 	  if (!validationContext.isValid()) {
-		logger('danger', 'Validation failed', validationContext.validationErrors())
+		logger('danger', 'Validation failed', JSON.stringify(validationContext.validationErrors()))
 		handleMethodException('Invalid arguments passed')
 	  } else {
 		const response = Plant.insert(data)
@@ -56,9 +57,17 @@ Meteor.methods({
 		  }
 		  break
 		case 'fertilizerTracker-edit':
-		  validationSchema = Plant.schema.pick('fertilizerSchedule', 'updatedAt')
+		  validationSchema = Seedling.schema.pick('fertilizerSchedule', 'compost', 'fertilizer', 'nutrient', 'updatedAt')
 
-		  query = {$set: {fertilizerSchedule: data.fertilizerSchedule, updatedAt: data.updatedAt}}
+		  query = {
+			$set: {
+			  fertilizerSchedule: data.fertilizerSchedule,
+			  compost: data.compost,
+			  fertilizer: data.fertilizer,
+			  nutrient: data.nutrient,
+			  updatedAt: data.updatedAt
+			}
+		  }
 		  break
 		case 'pruningDeadheadingTracker-edit':
 		  validationSchema = Plant.schema.pick('pruningSchedule', 'deadheadingSchedule', 'updatedAt')
@@ -107,8 +116,8 @@ Meteor.methods({
 	  validationContext.validate(data)
 
 	  if (!validationContext.isValid()) {
-		logger('danger', 'Validation failed', validationContext.validationErrors())
-		handleMethodException(`'Validation failed', ${validationContext.validationErrors()}`)
+		logger('danger', 'Validation failed', JSON.stringify(validationContext.validationErrors()))
+		handleMethodException(`'Validation failed', ${JSON.stringify(validationContext.validationErrors())}`)
 		// throw new Meteor.Error('500')
 	  } else {
 		logger('success', 'passed', data)

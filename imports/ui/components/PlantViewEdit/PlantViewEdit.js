@@ -2,13 +2,12 @@ import React, { Component } from 'react'
 import { withTracker } from 'meteor/react-meteor-data'
 import PropTypes from 'prop-types'
 import autobind from 'react-autobind'
-import './PlantViewEdit.scss'
+import './PlantSeedlingViewEdit.scss'
 import { Session } from 'meteor/session'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import SwipeableViews from 'react-swipeable-views'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-
 import { faTrash } from '@fortawesome/free-solid-svg-icons/faTrash'
 import { faPencilAlt } from '@fortawesome/free-solid-svg-icons/faPencilAlt'
 import { faSave } from '@fortawesome/free-solid-svg-icons/faSave'
@@ -17,23 +16,28 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons/faPlus'
 import { faCalendar } from '@fortawesome/free-solid-svg-icons/faCalendar'
 import {
   getDaysSinceAction, getLastPestName, getLastPestTreatment, getLastSoilMoisture, getLastSoilPh,
-  getPlantCondition, lastChecked, lastFertilizerUsed, sortByLastDate
+  getPlantCondition, lastChecked, lastFertilizerUsed, parseDate, sortByLastDate
 } from '../../../utils/plantData'
 import Plant from '/imports/api/Plant/Plant'
 import { toast } from 'react-toastify'
-import PlantAddEntryModal from '../Shared/PlantAddEntryModal'
-import PlantViewHistoryModal from '../Shared/PlantViewHistoryModal'
+import ItemAddEntryModal from '../Shared/ItemAddEntryModal'
+import ItemViewHistoryModal from '../Shared/ItemViewHistoryModal'
 import Category from '/imports/api/Category/Category'
-import WaterPro from '../SharedPlant/SwipeViews/WaterPro'
-import FertilizerPro from '../SharedPlant/SwipeViews/FertilizerPro'
-import PruningDeadheadingPro from '../SharedPlant/SwipeViews/PruningDeadheadingPro'
-import SoilCompPro from '../SharedPlant/SwipeViews/SoilCompPro'
-import Pest from '../SharedPlant/SwipeViews/Pest'
-import Diary from '../SharedPlant/SwipeViews/Diary'
-import Etc from '../SharedPlant/SwipeViews/Etc'
-import Water from '../SharedPlant/SwipeViews/Water'
-import Fertilizer from '../SharedPlant/SwipeViews/Fertilizer'
-import SoilComp from '../SharedPlant/SwipeViews/SoilComp'
+import WaterPro from '../SharedPlantSeedling/SwipeViewsEdit/WaterPro'
+import FertilizerPro from '../SharedPlantSeedling/SwipeViewsEdit/FertilizerPro'
+import PruningDeadheadingPro from '../SharedPlantSeedling/SwipeViewsEdit/PruningDeadheadingPro'
+import SoilCompPro from '../SharedPlantSeedling/SwipeViewsEdit/SoilCompPro'
+import Pest from '../SharedPlantSeedling/SwipeViewsEdit/Pest'
+import Diary from '../SharedPlantSeedling/SwipeViewsEdit/Diary'
+import EtcPlant from '../SharedPlantSeedling/SwipeViewsEdit/EtcPlant'
+import Water from '../SharedPlantSeedling/SwipeViewsEdit/Water'
+import Fertilizer from '../SharedPlantSeedling/SwipeViewsEdit/Fertilizer'
+import SoilComp from '../SharedPlantSeedling/SwipeViewsEdit/SoilComp'
+import WaterModals from '../SharedPlantSeedling/SwipeModals/WaterModals'
+import FertilizerModals from '../SharedPlantSeedling/SwipeModals/FertilizerModals'
+import SoilCompModals from '../SharedPlantSeedling/SwipeModals/SoilCompModals'
+import PestModals from '../SharedPlantSeedling/SwipeModals/PestModals'
+import DiaryModals from '../SharedPlantSeedling/SwipeModals/DiaryModals'
 
 class PlantViewEdit extends Component {
   constructor (props) {
@@ -96,7 +100,7 @@ class PlantViewEdit extends Component {
   }
 
   updateData (e, type, tracker, addingEntry) {
-    console.log("update")
+	console.log('update')
 
 	const newPlantData = this.state.newData
 
@@ -192,7 +196,7 @@ class PlantViewEdit extends Component {
   }
 
   updatePlant (type) {
-    console.log("profile")
+	console.log('profile')
 
 	if (type === 'pruningDeadheadingTracker') {
 	  type = this.state.pruneType
@@ -212,13 +216,13 @@ class PlantViewEdit extends Component {
 		  data = {
 			waterPreference: newPlantData.waterPreference || oldPlantData.waterPreference,
 			lightPreference: newPlantData.lightPreference || oldPlantData.lightPreference,
-			waterSchedule: (newPlantData.waterSchedule === "" && oldPlantData.waterSchedule > 0) ? null : (newPlantData.waterSchedule || oldPlantData.waterSchedule) ? parseInt(newPlantData.waterSchedule || oldPlantData.waterSchedule) : newPlantData.waterSchedule || oldPlantData.waterSchedule,
+			waterSchedule: (newPlantData.waterSchedule === '' && oldPlantData.waterSchedule > 0) ? null : (newPlantData.waterSchedule || oldPlantData.waterSchedule) ? parseInt(newPlantData.waterSchedule || oldPlantData.waterSchedule) : newPlantData.waterSchedule || oldPlantData.waterSchedule,
 			waterScheduleAuto: newPlantData.waterScheduleAuto != null ? newPlantData.waterScheduleAuto : oldPlantData.waterScheduleAuto != null ? oldPlantData.waterScheduleAuto : false
 		  }
 		  break
 		case 'fertilizerTracker-edit':
 		  data = {
-			fertilizerSchedule: (newPlantData.fertilizerSchedule === "" && oldPlantData.fertilizerSchedule > 0) ? null : (newPlantData.fertilizerSchedule || oldPlantData.fertilizerSchedule) ? parseInt(newPlantData.fertilizerSchedule || oldPlantData.fertilizerSchedule) : newPlantData.fertilizerSchedule || oldPlantData.fertilizerSchedule,
+			fertilizerSchedule: (newPlantData.fertilizerSchedule === '' && oldPlantData.fertilizerSchedule > 0) ? null : (newPlantData.fertilizerSchedule || oldPlantData.fertilizerSchedule) ? parseInt(newPlantData.fertilizerSchedule || oldPlantData.fertilizerSchedule) : newPlantData.fertilizerSchedule || oldPlantData.fertilizerSchedule,
 			fertilizer: newPlantData.fertilizer,
 			compost: newPlantData.compost,
 			nutrient: newPlantData.nutrient,
@@ -389,7 +393,7 @@ class PlantViewEdit extends Component {
 	//TODO add ability to add more plant photos and view calendar with details for each view (ie fertilizerTracker with date and fertilizer used)
 
 	return (
-			<div className="PlantViewEdit">
+			<div className="PlantSeedlingViewEdit">
 			  {this.state.editing === 'etc' ?
 					  <div className="plant-photo editing">
 						<img src={plant.image}
@@ -419,20 +423,20 @@ class PlantViewEdit extends Component {
 
 				{/* water */}
 				{Meteor.isPro ?
-						<WaterPro plant={plant} updateData={this.updateData} editing={this.state.editing}/>
+						<WaterPro item={plant} updateData={this.updateData} editing={this.state.editing}/>
 						:
-						<Water plant={plant} updateData={this.updateData} editing={this.state.editing}/>
+						<Water item={plant} updateData={this.updateData} editing={this.state.editing}/>
 				}
 
 
 				{/* fertilizer */}
 				{Meteor.isPro ?
-						<FertilizerPro plant={plant}
+						<FertilizerPro item={plant}
 									   updateData={this.updateData}
 									   fertilizerContent={fertilizerContent}
 									   editing={this.state.editing}/>
 						:
-						<Fertilizer plant={plant}
+						<Fertilizer item={plant}
 									updateData={this.updateData}
 									fertilizerContent={fertilizerContent}
 									editing={this.state.editing}/>
@@ -447,14 +451,14 @@ class PlantViewEdit extends Component {
 
 				{/* soil comp */}
 				{Meteor.isPro ?
-						<SoilCompPro plant={plant}
+						<SoilCompPro item={plant}
 									 updateData={this.updateData}
 									 soilCompLastChecked={soilCompLastChecked}
 									 soilMoisture={soilMoisture}
 									 soilPh={soilPh}
 									 editing={this.state.editing}/>
 						:
-						<SoilComp plant={plant}
+						<SoilComp item={plant}
 								  updateData={this.updateData}
 								  soilCompLastChecked={soilCompLastChecked}
 								  soilMoisture={soilMoisture}
@@ -464,17 +468,17 @@ class PlantViewEdit extends Component {
 
 
 				{/* pest */}
-				<Pest plant={plant}
+				<Pest item={plant}
 					  updateData={this.updateData}
 					  pestLastChecked={pestLastChecked}
 					  pestName={pestName}
 					  pestTreatment={pestTreatment}/>
 
 				{/* diary */}
-				<Diary plant={plant} updateData={this.updateData}/>
+				<Diary item={plant} updateData={this.updateData}/>
 
 				{/* etc */}
-				<Etc plant={plant} updateData={this.updateData} editing={this.state.editing}/>
+				<EtcPlant plant={plant} updateData={this.updateData} editing={this.state.editing}/>
 
 			  </SwipeableViews>
 
@@ -528,111 +532,31 @@ class PlantViewEdit extends Component {
 
 			  {/* TODO - make modal situation more efficient, i should really be able to decrease this code, too much repetition */}
 			  {/* water */}
-			  <PlantAddEntryModal save={this.updatePlant}
-								  cancel={this.resetModal}
-								  show={this.state.modalOpen}
-								  type="waterTracker"
-								  header="New water entry">
-				<DatePicker
-						selected={this.state.newData.waterTracker ? this.state.newData.waterTracker.date : Date.now()}
-						className="react-datepicker-wrapper"
-						dateFormat="dd-MMMM-yyyy"
-						popperPlacement="bottom"
-						inline
-						onSelect={(e) => this.updateData(e, 'waterDate', 'waterTracker')}
-						highlightDates={PlantViewEdit.getHighlightDates(plant.waterTracker)}/>
-			  </PlantAddEntryModal>
-
-
-			  <PlantViewHistoryModal cancel={this.resetModal}
-									 show={this.state.modalOpen}
-									 type="waterTracker-history"
-									 header="Watering History">
-
-				{plant.waterTracker && plant.waterTracker.length > 0 ?
-						<table>
-						  <thead>
-						  <tr>
-							<th>Date</th>
-						  </tr>
-						  </thead>
-						  <tbody>
-
-						  {plant.waterTracker.map((item, index) => {
-							return <tr key={index}>
-							  <td>{new Date(item.date).toLocaleDateString()}</td>
-							</tr>
-						  })}
-
-						  </tbody>
-						</table>
-						:
-						<p>No entries recorded</p>
-				}
-
-			  </PlantViewHistoryModal>
+			  <WaterModals updateData={this.updateData}
+						   save={this.updatePlant}
+						   resetModal={this.resetModal}
+						   modalOpen={this.state.modalOpen}
+						   newDataTracker={this.state.newData.waterTracker}
+						   tracker={plant.waterTracker}
+						   highlightDates={PlantViewEdit.getHighlightDates(plant.waterTracker)}/>
 
 
 			  {/* fertilizer */}
-			  <PlantAddEntryModal save={this.updatePlant}
-								  cancel={this.resetModal}
-								  show={this.state.modalOpen}
-								  type="fertilizerTracker"
-								  header="New fertilizer entry">
-
-				<DatePicker
-						selected={this.state.newData.fertilizerTracker ? this.state.newData.fertilizerTracker.date : Date.now()}
-						className="react-datepicker-wrapper"
-						dateFormat="dd-MMMM-yyyy"
-						popperPlacement="bottom"
-						inline
-						onSelect={(e) => this.updateData(e, 'fertilizerDate', 'fertilizerTracker')}
-						highlightDates={PlantViewEdit.getHighlightDates(plant.fertilizerTracker, 'fertilizer')}/>
-
-				<p className="modern-input for-modal">
-				  <label>fertilizer used</label>
-				  <input type="text"
-						 onChange={(e) => this.updateData(e, 'fertilizer', 'fertilizerTracker', true)}/>
-				</p>
-			  </PlantAddEntryModal>
-
-			  <PlantViewHistoryModal cancel={this.resetModal}
-									 show={this.state.modalOpen}
-									 type="fertilizerTracker-history"
-									 header="Fertilizing History">
-
-				{plant.fertilizerTracker && plant.fertilizerTracker.length > 0 ?
-						<table>
-						  <thead>
-						  <tr>
-							<th>Date</th>
-							<th>Fertilizer</th>
-						  </tr>
-						  </thead>
-						  <tbody>
-
-						  {plant.fertilizerTracker.map((item, index) => {
-							return <tr key={index}>
-							  <td>{new Date(item.date).toLocaleDateString()}</td>
-							  <td>{item.fertilizer}</td>
-							</tr>
-						  })}
-
-						  </tbody>
-						</table>
-						:
-						<p>No entries recorded</p>
-				}
-
-			  </PlantViewHistoryModal>
+			  <FertilizerModals updateData={this.updateData}
+								save={this.updatePlant}
+								resetModal={this.resetModal}
+								modalOpen={this.state.modalOpen}
+								newDataTracker={this.state.newData.fertilizerTracker}
+								tracker={plant.fertilizerTracker}
+								highlightDates={PlantViewEdit.getHighlightDates(plant.fertilizerTracker)}/>
 
 
 			  {/* pruning */}
-			  <PlantAddEntryModal save={this.updatePlant}
-								  cancel={this.resetModal}
-								  show={this.state.modalOpen}
-								  type="pruningDeadheadingTracker"
-								  header="New pruning or deadheading entry">
+			  <ItemAddEntryModal save={this.updatePlant}
+								 cancel={this.resetModal}
+								 show={this.state.modalOpen}
+								 type="pruningDeadheadingTracker"
+								 header="New pruning or deadheading entry">
 
 				{!this.state.pruneType &&
 				<div className="flex-between">
@@ -668,13 +592,13 @@ class PlantViewEdit extends Component {
 						highlightDates={PlantViewEdit.getHighlightDates(plant.pruningDeadheadingTracker, 'pruning')}/>
 				}
 
-			  </PlantAddEntryModal>
+			  </ItemAddEntryModal>
 
 
-			  <PlantViewHistoryModal cancel={this.resetModal}
-									 show={this.state.modalOpen}
-									 type="pruningDeadheadingTracker-history"
-									 header="Pruning - Deadheading History">
+			  <ItemViewHistoryModal cancel={this.resetModal}
+									show={this.state.modalOpen}
+									type="pruningDeadheadingTracker-history"
+									header="Pruning - Deadheading History">
 
 				{plant.pruningDeadheadingTracker && plant.pruningDeadheadingTracker.length > 0 ?
 						<table>
@@ -688,7 +612,7 @@ class PlantViewEdit extends Component {
 
 						  {plant.pruningDeadheadingTracker.map((item, index) => {
 							return <tr key={index}>
-							  <td>{new Date(item.date).toLocaleDateString()}</td>
+							  <td>{parseDate(item.date)}</td>
 							  <td>{item.action}</td>
 							</tr>
 						  })}
@@ -699,181 +623,37 @@ class PlantViewEdit extends Component {
 						<p>No entries recorded</p>
 				}
 
-			  </PlantViewHistoryModal>
+			  </ItemViewHistoryModal>
 
 
 			  {/* soil comp */}
-			  <PlantAddEntryModal save={this.updatePlant}
-								  cancel={this.resetModal}
-								  show={this.state.modalOpen}
-								  type="soilCompositionTracker"
-								  header="New soil composition entry">
-
-				<DatePicker
-						selected={this.state.newData.soilCompositionTracker ? this.state.newData.soilCompositionTracker.date : Date.now()}
-						className="react-datepicker-wrapper"
-						dateFormat="dd-MMMM-yyyy"
-						popperPlacement="bottom"
-						inline
-						onSelect={(e) => this.updateData(e, 'soilDate', 'soilCompositionTracker')}
-						highlightDates={PlantViewEdit.getHighlightDates(plant.soilCompositionTracker)}/>
-
-				<p className="modern-input">
-				  {plant.category === 'potted' ?
-						  <input type="number"
-								 placeholder="Soil Moisture %"
-								 onChange={(e) => this.updateData(e, 'moisture')}/>
-						  :
-						  <input type="number"
-								 placeholder="pH Reading"
-								 onChange={(e) => this.updateData(e, 'ph')}/>
-				  }
-				</p>
-
-			  </PlantAddEntryModal>
-
-			  <PlantViewHistoryModal cancel={this.resetModal}
-									 show={this.state.modalOpen}
-									 type="soilCompositionTracker-history"
-									 header="Soil Composition History">
-
-				{plant.soilCompositionTracker && plant.soilCompositionTracker.length > 0 ?
-						<table>
-						  <thead>
-						  <tr>
-							<th width="50%">Date</th>
-							{plant.category === 'potted' ?
-									<th width="50%">Moisture</th>
-									:
-									<th width="50%">pH</th>
-							}
-						  </tr>
-						  </thead>
-						  <tbody>
-
-						  {plant.soilCompositionTracker.map((item, index) => {
-							return <tr key={index}>
-							  <td>{new Date(item.date).toLocaleDateString()}</td>
-							  {plant.category === 'potted' ?
-									  <td>{item.moisture ? `${Math.round(item.moisture * 100)}%` : 'N/A'}</td>
-									  :
-									  <td>{item.ph || 'N/A'}</td>
-							  }
-							</tr>
-						  })}
-						  </tbody>
-						</table>
-						:
-						<p>No entries recorded</p>
-				}
-
-			  </PlantViewHistoryModal>
+			  <SoilCompModals updateData={this.updateData}
+							  save={this.updatePlant}
+							  resetModal={this.resetModal}
+							  modalOpen={this.state.modalOpen}
+							  newDataTracker={this.state.newData.soilCompositionTracker}
+							  tracker={plant.soilCompositionTracker}
+							  category={plant.category}
+							  highlightDates={PlantViewEdit.getHighlightDates(plant.soilCompositionTracker)}/>
 
 
 			  {/* pests */}
-			  <PlantAddEntryModal save={this.updatePlant}
-								  cancel={this.resetModal}
-								  show={this.state.modalOpen}
-								  type="pestTracker"
-								  header="New pest entry">
-
-				<DatePicker selected={this.state.newData.pestTracker ? this.state.newData.pestTracker.date : Date.now()}
-							className="react-datepicker-wrapper"
-							dateFormat="dd-MMMM-yyyy"
-							popperPlacement="bottom"
-							inline
-							onSelect={(e) => this.updateData(e, 'pestDate', 'pestTracker')}
-							highlightDates={PlantViewEdit.getHighlightDates(plant.pestTracker)}/>
-
-				<p className="modern-input for-modal">
-				  <label>pest treated</label>
-				  <input type="text"
-						 onChange={(e) => this.updateData(e, 'pest', 'pestTracker', true)}/>
-				</p>
-
-				<p className="modern-input for-modal">
-				  <label>treatment method</label>
-				  <input type="text"
-						 onChange={(e) => this.updateData(e, 'treatment', 'pestTracker', true)}/>
-				</p>
-			  </PlantAddEntryModal>
-
-
-			  <PlantViewHistoryModal cancel={this.resetModal}
-									 show={this.state.modalOpen}
-									 type="pestTracker-history"
-									 header="Pest History">
-
-				{plant.pestTracker && plant.pestTracker.length > 0 ?
-						<table>
-						  <thead>
-						  <tr>
-							<th>Date</th>
-							<th>Pest</th>
-							<th>Treatment</th>
-						  </tr>
-						  </thead>
-						  <tbody>
-
-						  {plant.pestTracker.map((item, index) => {
-							return <tr key={index}>
-							  <td>{new Date(item.date).toLocaleDateString()}</td>
-							  <td>{item.pest || 'N/A'}</td>
-							  <td>{item.treatment || 'N/A'}</td>
-							</tr>
-						  })}
-
-						  </tbody>
-						</table>
-						:
-						<p>No entries recorded</p>
-				}
-
-			  </PlantViewHistoryModal>
+			  <PestModals updateData={this.updateData}
+						  save={this.updatePlant}
+						  resetModal={this.resetModal}
+						  modalOpen={this.state.modalOpen}
+						  newDataTracker={this.state.newData.pestTracker}
+						  tracker={plant.pestTracker}
+						  highlightDates={PlantViewEdit.getHighlightDates(plant.pestTracker)}/>
 
 
 			  {/* diary */}
-			  <PlantAddEntryModal save={this.updatePlant}
-								  cancel={this.resetModal}
-								  show={this.state.modalOpen}
-								  type="diary">
+			  <DiaryModals updateData={this.updateData}
+						  save={this.updatePlant}
+						  resetModal={this.resetModal}
+						  modalOpen={this.state.modalOpen}
+						  diary={plant.diary}/>
 
-				<p className="modern-input for-modal">
-				  <label>new diary entry</label>
-				  <textarea rows="6"
-							onChange={(e) => this.updateData(e, 'diary')}/>
-				</p>
-			  </PlantAddEntryModal>
-
-			  <PlantViewHistoryModal cancel={this.resetModal}
-									 show={this.state.modalOpen}
-									 type="diary-history"
-									 header="Diary History">
-
-				{plant.diary && plant.diary.length > 0 ?
-						<table>
-						  <thead>
-						  <tr>
-							<th>Date</th>
-							<th>Entry</th>
-						  </tr>
-						  </thead>
-						  <tbody>
-
-						  {plant.diary.map((item, index) => {
-							return <tr key={index}>
-							  <td>{new Date(item.date).toLocaleDateString()}</td>
-							  <td>{item.entry || 'N/A'}</td>
-							</tr>
-						  })}
-
-						  </tbody>
-						</table>
-						:
-						<p>No diary recorded</p>
-				}
-
-			  </PlantViewHistoryModal>
 
 
 			  {/* the rest */}
@@ -907,13 +687,11 @@ class PlantViewEdit extends Component {
 			  </PlantAddEntryModal>*/}
 
 
-			  <PlantAddEntryModal save={this.deletePlant}
-								  cancel={this.resetModal}
-								  show={this.state.modalOpen}
-								  type="delete"
-								  header="Are you sure you want to delete this plant's entire profile?">
-
-			  </PlantAddEntryModal>
+			  <ItemAddEntryModal save={this.deletePlant}
+								 cancel={this.resetModal}
+								 show={this.state.modalOpen}
+								 type="delete"
+								 header="Are you sure you want to delete this plant's entire profile?" />
 			</div>
 	)
   }
@@ -963,7 +741,7 @@ export default withTracker((props) => {
   // plant.soilCondition = getSoilCondition(plant.soilCompositionTracker)
 
   return {
-	plant: plant,
+	plant,
 	categories
   }
 })(PlantViewEdit)

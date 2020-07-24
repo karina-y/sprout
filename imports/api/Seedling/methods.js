@@ -16,7 +16,7 @@ Meteor.methods({
 	  validationContext.validate(data)
 
 	  if (!validationContext.isValid()) {
-		logger('danger', 'Validation failed', validationContext.validationErrors())
+		logger('danger', 'Validation failed', JSON.stringify(validationContext.validationErrors()))
 		handleMethodException('Invalid arguments passed')
 	  } else {
 		const response = Seedling.insert(data)
@@ -56,17 +56,38 @@ Meteor.methods({
 		  }
 		  break
 		case 'fertilizerTracker-edit':
-		  validationSchema = Seedling.schema.pick('fertilizerSchedule', 'updatedAt')
+		  validationSchema = Seedling.schema.pick('fertilizerSchedule', 'compost', 'fertilizer', 'nutrient', 'updatedAt')
 
-		  query = {$set: {fertilizerSchedule: data.fertilizerSchedule, updatedAt: data.updatedAt}}
+		  query = {
+		    $set: {
+		      fertilizerSchedule: data.fertilizerSchedule,
+			  compost: data.compost,
+			  fertilizer: data.fertilizer,
+			  nutrient: data.nutrient,
+			  updatedAt: data.updatedAt
+		    }
+		  }
 		  break
-		case 'pruningDeadheadingTracker-edit':
-		  validationSchema = Seedling.schema.pick('pruningSchedule', 'deadheadingSchedule', 'updatedAt')
+		case 'dates-edit':
+		  validationSchema = Seedling.schema.pick('sowDate', 'sproutDate', 'trueLeavesDate', 'daysToGerminate', 'transplantDate', 'daysToHarvest', 'estHarvestDate', 'actualHarvestDate', 'updatedAt')
 
-		  query = {$set: {pruningSchedule: data.pruningSchedule, deadheadingSchedule: data.deadheadingSchedule, updatedAt: data.updatedAt}}
-		  break
+		  query = {
+			$set: {
+			  sowDate: data.sowDate,
+			  sproutDate: data.sproutDate,
+			  trueLeavesDate: data.trueLeavesDate,
+			  daysToGerminate: data.daysToGerminate,
+			  transplantDate: data.transplantDate,
+			  daysToHarvest: data.daysToHarvest,
+			  estHarvestDate: data.estHarvestDate,
+			  actualHarvestDate: data.actualHarvestDate,
+			  updatedAt: data.updatedAt
+			}
+		  }
+
+		  break;
 		case 'etc-edit':
-		  validationSchema = Seedling.schema.pick('commonName', 'latinName', 'location', 'dateBought', 'dateSeedlinged', 'locationBought', 'toxicity', 'category', 'companions', 'updatedAt')
+		  validationSchema = Seedling.schema.pick('commonName', 'latinName', 'toxicity', 'category', 'method', 'startedIndoorOutdoor', 'seedBrand', 'updatedAt')
 
 		  query = {
 			$set: {
@@ -74,23 +95,13 @@ Meteor.methods({
 			  latinName: data.latinName,
 			  toxicity: data.toxicity,
 			  category: data.category,
-			  location: data.location,
-			  locationBought: data.locationBought,
-			  dateBought: data.dateBought,
-			  dateSeedlinged: data.dateSeedlinged,
-			  companions: data.companions,
+			  method: data.method,
+			  startedIndoorOutdoor: data.startedIndoorOutdoor,
+			  seedBrand: data.seedBrand,
 			  updatedAt: data.updatedAt
 			}
 		  }
 
-		  break
-		case 'pruningDeadheadingTracker':
-		  //entry for both pruning and deadheading
-		  validationSchema = Seedling.schema.pick('pruningTracker', 'deadheadingTracker', 'updatedAt');
-		  query = {$set: {updatedAt: data.updatedAt}, $push: {pruningTracker: data.pruningTracker, deadheadingTracker: data.deadheadingTracker}}
-
-		  data.pruningTracker = [data.pruningTracker]
-		  data.deadheadingTracker = [data.deadheadingTracker]
 		  break
 		case 'soilCompositionTracker-edit':
 		  //entry for both pruning and deadheading
@@ -107,8 +118,8 @@ Meteor.methods({
 	  validationContext.validate(data)
 
 	  if (!validationContext.isValid()) {
-		logger('danger', 'Validation failed', validationContext.validationErrors())
-		handleMethodException(`'Validation failed', ${validationContext.validationErrors()}`)
+		logger('danger', 'Validation failed', JSON.stringify(validationContext.validationErrors()))
+		handleMethodException(`'Validation failed', ${JSON.stringify(validationContext.validationErrors())}`)
 		// throw new Meteor.Error('500')
 	  } else {
 		logger('success', 'passed', data)

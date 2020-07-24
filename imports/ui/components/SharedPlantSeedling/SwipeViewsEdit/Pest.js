@@ -29,7 +29,7 @@ const Pest = (props) => (
 
 
 Pest.propTypes = {
-  plant: PropTypes.object.isRequired,
+  item: PropTypes.object.isRequired,
   updateData: PropTypes.func.isRequired,
   pestLastChecked: PropTypes.string.isRequired,
   pestName: PropTypes.string.isRequired,

@@ -57,10 +57,10 @@ class Signup extends Component {
 
 			Accounts.verifyEmail(token, (err) => {
 			  if (err) {
-			    toast.error(err.message)
+				toast.error(err.message)
 				// console.log("Error: ", err);
 			  } else {
-			    //TODO send welcome email
+				//TODO send welcome email
 				console.log("props", props)
 				// console.log("Calling Meteor.methods.emailSendWelcome", done);
 				/*Meteor.call("Meteor.methods.emailSendWelcome", null, (error, result) => {
@@ -92,29 +92,36 @@ class Signup extends Component {
   render () {
 
 	return (
-			<div className="Login_Signup flex-center">
+			<div className="Login_Signup flex-center flex-wrap">
 			  <h4 className="acct-title page-title-ming">Sign up</h4>
 
 			  <form id="Logout">
-				<input type="text"
-					   placeholder="Name"
-					   onChange={(e) => this.setState({name: e.target.value})}/>
+				<p className="modern-input">
+				  <label>name</label>
+				  <input type="text"
+						 onChange={(e) => this.setState({name: e.target.value})}/>
+				</p>
 
-				<input type="email"
-					   placeholder="E-mail"
-					   onChange={(e) => this.setState({email: e.target.value})}/>
+				<p className="modern-input">
+				  <label>e-mail</label>
+				  <input type="email"
+						 onChange={(e) => this.setState({email: e.target.value})}/>
+				</p>
 
+				<p className="modern-input">
+				  <label>zip / postal code (optional)</label>
+				  <input type="text"
+						 onChange={(e) => this.setState({zip: e.target.value})}/>
+				</p>
 
-				<input type="text"
-					   placeholder="Zip / Postal Code (optional)"
-					   onChange={(e) => this.setState({zip: e.target.value})}/>
-
-				<input type="password"
-					   placeholder="Password"
-					   onChange={(e) => this.setState({password: e.target.value})}/>
+				<p className="modern-input">
+				  <label>password</label>
+				  <input type="password"
+						 onChange={(e) => this.setState({password: e.target.value})}/>
+				</p>
 			  </form>
 
-			  <div className="buttons-footer flex-center">
+			  <div className="buttons-footer text-center">
 				<button onClick={this.createUser}
 						className="flat">
 				  Sign Up

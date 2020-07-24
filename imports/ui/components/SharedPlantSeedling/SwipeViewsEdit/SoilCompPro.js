@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import SwipePanelContent from '../../Shared/SwipePanelContent/SwipePanelContent'
 import SoilTypes from '../../../../utils/soilTypes'
 
-
 const SoilCompPro = (props) => (
 		<div className="swipe-slide">
 		  <p className="swipe-title title-ming">
@@ -15,7 +14,7 @@ const SoilCompPro = (props) => (
 			<p>{props.soilCompLastChecked}</p>
 		  </SwipePanelContent>
 
-		  {props.plant.category === 'in-ground' ?
+		  {props.item.category === 'in-ground' ?
 				  props.editing === 'soilCompositionTracker' ?
 						  <React.Fragment>
 
@@ -23,7 +22,7 @@ const SoilCompPro = (props) => (
 							  <p className="modern-input">
 								<label>tilled</label>
 								<select onChange={(e) => props.updateData(e, 'tilled')}
-										defaultValue={props.plant.tilled || ''}>
+										defaultValue={props.item.tilled || ''}>
 								  <option value='' disabled={true}>- Is the soil tilled? -</option>
 								  <option value={false}>No</option>
 								  <option value={true}>Yes</option>
@@ -35,7 +34,7 @@ const SoilCompPro = (props) => (
 							  <p className="modern-input">
 								<label>soil type</label>
 								<select onChange={(e) => props.updateData(e, 'soilType')}
-										defaultValue={props.plant.soilType || ''}>
+										defaultValue={props.item.soilType || ''}>
 								  <option value='' disabled={true}>- Select a ground soil type -</option>
 								  {SoilTypes.map((item, index) => {
 									return <option value={item.type} key={index}>{item.displayName}</option>
@@ -49,25 +48,25 @@ const SoilCompPro = (props) => (
 								<label>soil amendment</label>
 								<input type="text"
 									   onChange={(e) => props.updateData(e, 'soilAmendment')}
-									   defaultValue={props.plant.soilAmendment || ''}/></p>
+									   defaultValue={props.item.soilAmendment || ''}/></p>
 							</SwipePanelContent>
 
 						  </React.Fragment>
 						  :
 						  <React.Fragment>
 							<SwipePanelContent icon="tilling">
-							  <p>Tilled: {props.plant.tilled ? 'Yes' : 'No'}</p>
+							  <p>Tilled: {props.item.tilled ? 'Yes' : 'No'}</p>
 							</SwipePanelContent>
 
-							{props.plant.soilType &&
+							{props.item.soilType &&
 							<SwipePanelContent icon="soilType">
-							  <p>Soil Type: {props.plant.soilType}</p>
+							  <p>Soil Type: {props.item.soilType}</p>
 							</SwipePanelContent>
 							}
 
-							{props.plant.soilAmendment &&
+							{props.item.soilAmendment &&
 							<SwipePanelContent icon="soilAmendment">
-							  <p>Soil Amendment: {props.plant.soilAmendment}</p>
+							  <p>Soil Amendment: {props.item.soilAmendment}</p>
 							</SwipePanelContent>
 							}
 
@@ -81,20 +80,20 @@ const SoilCompPro = (props) => (
 				  ''
 		  }
 
-		  {props.plant.category === 'potted' ?
+		  {props.item.category === 'potted' ?
 				  props.editing === 'soilCompositionTracker' ?
 						  <SwipePanelContent icon="soilRecipe">
 							<p className="modern-input">
 							  <label>soil recipe</label>
 							  <input type="text"
 									 onChange={(e) => props.updateData(e, 'soilRecipe')}
-									 defaultValue={props.plant.soilRecipe || ''}/></p>
+									 defaultValue={props.item.soilRecipe || ''}/></p>
 						  </SwipePanelContent>
 						  :
 						  <React.Fragment>
-							{props.plant.soilRecipe &&
+							{props.item.soilRecipe &&
 							<SwipePanelContent icon="soilRecipe">
-							  <p>{props.plant.soilRecipe}</p>
+							  <p>{props.item.soilRecipe}</p>
 							</SwipePanelContent>
 							}
 
@@ -104,8 +103,10 @@ const SoilCompPro = (props) => (
 							</SwipePanelContent>
 							}
 
-							{(!props.plant.soilRecipe && !props.soilMoisture) &&
-							<p>No records available</p>
+							{(!props.item.soilRecipe && !props.soilMoisture) &&
+							<SwipePanelContent icon="info">
+							  <p>No records available</p>
+							</SwipePanelContent>
 							}
 						  </React.Fragment>
 				  :
@@ -119,7 +120,7 @@ const SoilCompPro = (props) => (
 
 
 SoilCompPro.propTypes = {
-  plant: PropTypes.object.isRequired,
+  item: PropTypes.object.isRequired,
   updateData: PropTypes.func.isRequired,
   soilCompLastChecked: PropTypes.string.isRequired,
   soilMoisture: PropTypes.string,

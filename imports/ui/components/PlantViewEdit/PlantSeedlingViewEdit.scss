@@ -1,6 +1,6 @@
 @import '../../stylesheets/variables';
 
-.PlantViewEdit {
+.PlantSeedlingViewEdit {
   margin: 0;
   //padding: 0 !important;
   padding-bottom: $bottom-nav-height;
@@ -114,9 +114,12 @@
     }
   }
 
+  .adjust-icons .icon-side {
+    margin-top: 5px;
+  }
 }
 
-body.dark-theme .PlantViewEdit {
+body.dark-theme .PlantSeedlingViewEdit {
 
     .swipe-view {
 
@@ -125,10 +128,10 @@ body.dark-theme .PlantViewEdit {
         color: $white;
       }
 
-      .scroll-box,
+      /*.scroll-box,
       .scroll-box p {
         color: $med-gray;
-      }
+      }*/
 
       .swipe-title::before {
         border-top: 7px solid $powder-blue;

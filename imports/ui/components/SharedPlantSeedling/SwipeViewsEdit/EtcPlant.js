@@ -3,9 +3,10 @@ import PropTypes from 'prop-types';
 import SwipePanelContent from '../../Shared/SwipePanelContent/SwipePanelContent'
 import { withTracker } from 'meteor/react-meteor-data'
 import Category from '../../../../api/Category/Category'
+import { parseDate } from '../../../../utils/plantData'
 
 
-const Etc = (props) => (
+const EtcPlant = (props) => (
 		<div className="swipe-slide">
 		  <p className="swipe-title title-ming">Etc</p>
 
@@ -62,13 +63,6 @@ const Etc = (props) => (
 							   onBlur={(e) => props.updateData(e, 'dateBought')}
 							   defaultValue={props.plant.dateBought ? new Date(props.plant.dateBought).toJSON().slice(0, 10) : new Date().toJSON().slice(0, 10)}/>
 					  </p>
-
-					  {/*<DatePicker selected={props.state.newData.dateBought || Date.now()}
-										  className="react-datepicker-wrapper"
-										  dateFormat="dd-MMMM-yyyy"
-										  inline
-										  onSelect={(e) => props.updateData(e, 'dateBought')}
-										  highlightDates={PlantViewEdit.getHighlightDates(props.plant.dateBought, 'dateBought')}/>*/}
 					</SwipePanelContent>
 
 					<SwipePanelContent icon="schedule"
@@ -119,13 +113,13 @@ const Etc = (props) => (
 
 					{props.plant.dateBought &&
 					<SwipePanelContent icon="schedule" iconTitle="date bought">
-					  <p>{props.plant.dateBought ? new Date(props.plant.dateBought).toLocaleDateString() : 'N/A'}</p>
+					  <p>{parseDate(props.plant.dateBought)}</p>
 					</SwipePanelContent>
 					}
 
 					{props.plant.datePlanted &&
 					<SwipePanelContent icon="schedule" iconTitle="date planted">
-					  <p>{props.plant.datePlanted ? new Date(props.plant.datePlanted).toLocaleDateString() : 'N/A'}</p>
+					  <p>{parseDate(props.plant.datePlanted)}</p>
 					</SwipePanelContent>
 					}
 
@@ -146,7 +140,7 @@ const Etc = (props) => (
 
 
 
-Etc.propTypes = {
+EtcPlant.propTypes = {
   plant: PropTypes.object.isRequired,
   updateData: PropTypes.func.isRequired,
   editing: PropTypes.string,
@@ -159,4 +153,4 @@ export default withTracker((props) => {
   return {
 	categories
   }
-})(Etc)
+})(EtcPlant)

@@ -55,8 +55,8 @@ Meteor.methods({
 	  validationContext.validate(data)
 
 	  if (!validationContext.isValid()) {
-		logger('danger', 'Validation failed', validationContext.validationErrors())
-		handleMethodException(`Validation failed, ${validationContext.validationErrors()}`)
+		logger('danger', 'Validation failed', JSON.stringify(validationContext.validationErrors()))
+		handleMethodException(`Validation failed, ${JSON.stringify(validationContext.validationErrors())}`)
 		// throw new Meteor.Error('500', 'Invalid arguments passed')
 	  } else {
 		//create our user
@@ -103,8 +103,8 @@ Meteor.methods({
 	  validationContext.validate(data)
 
 	  if (!validationContext.isValid()) {
-		logger('danger', 'Validation failed', validationContext.validationErrors())
-		handleMethodException(`Validation failed, ${validationContext.validationErrors()}`)
+		logger('danger', 'Validation failed', JSON.stringify(validationContext.validationErrors()))
+		handleMethodException(`Validation failed, ${JSON.stringify(validationContext.validationErrors())}`)
 		// throw new Meteor.Error('500', 'Invalid arguments passed')
 	  } else {
 
@@ -174,7 +174,7 @@ Meteor.methods({
 		  validationContext.validate(newProfile)
 
 		  if (!validationContext.isValid()) {
-			logger('danger', 'Validation failed', validationContext.validationErrors())
+			logger('danger', 'Validation failed', JSON.stringify(validationContext.validationErrors()))
 			handleMethodException('Invalid arguments passed')
 		  } else {
 			const userId = Meteor.userId()

@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import SwipePanelContent from '../../Shared/SwipePanelContent/SwipePanelContent'
 
-
 const SoilComp = (props) => (
 		<div className="swipe-slide">
 		  <p className="swipe-title title-ming">
@@ -15,7 +14,7 @@ const SoilComp = (props) => (
 		  </SwipePanelContent>
 
 
-		  {props.plant.category === 'in-ground' ?
+		  {props.item.category === 'in-ground' ?
 				  <SwipePanelContent icon="soilMoisture">
 					{props.soilMoisture ?
 							<p>Moisture Level {props.soilMoisture}</p>
@@ -39,7 +38,7 @@ const SoilComp = (props) => (
 
 
 SoilComp.propTypes = {
-  plant: PropTypes.object.isRequired,
+  item: PropTypes.object.isRequired,
   updateData: PropTypes.func.isRequired,
   soilCompLastChecked: PropTypes.string.isRequired,
   soilMoisture: PropTypes.string.isRequired,

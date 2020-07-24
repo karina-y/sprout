@@ -62,24 +62,31 @@ class Login extends Component {
   render () {
 
 	return (
-			<div className="Login_Signup flex-center">
+			<div className="Login_Signup flex-center flex-wrap">
 			  <h4 className="acct-title page-title-ming">Login</h4>
 
 			  <form id="Login">
+				<p className="modern-input">
+				  <label>e-mail</label>
 				<input type="email"
-					   placeholder="E-mail"
 					   onChange={(e) => this.setState({email: e.target.value})}/>
+				</p>
 
-				<input type="password"
-					   placeholder="Password"
-					   onChange={(e) => this.setState({password: e.target.value})}/>
+				<p className="modern-input">
+				  <label>password</label>
+				  <input type="password"
+						 onChange={(e) => this.setState({password: e.target.value})}/>
+				</p>
 			  </form>
 
-			  <div className="buttons-footer flex-center">
+			  <div className="buttons-footer text-center">
 				<button onClick={this.login}
 						className="flat">
 				  Login
 				</button>
+
+				<br/>
+				<br/>
 
 				<button onClick={this.forgotPassword}
 						className="naked">

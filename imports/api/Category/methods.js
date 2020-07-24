@@ -16,8 +16,8 @@ Meteor.methods({
 	  validationContext.validate(data)
 
 	  if (!validationContext.isValid()) {
-		logger('danger', 'Validation failed', validationContext.validationErrors())
-		handleMethodException(`Validation failed, ${validationContext.validationErrors()}`)
+		logger('danger', 'Validation failed', JSON.stringify(validationContext.validationErrors()))
+		handleMethodException(`Validation failed, ${JSON.stringify(validationContext.validationErrors())}`)
 		// throw new Meteor.Error('500', 'Invalid arguments passed')
 	  } else {
 		const response = Category.insert(data)
@@ -83,8 +83,8 @@ Meteor.methods({
 	  validationContext.validate(data)
 
 	  if (!validationContext.isValid()) {
-		logger('danger', 'Validation failed', validationContext.validationErrors())
-		handleMethodException(`Validation failed, ${validationContext.validationErrors()}`)
+		logger('danger', 'Validation failed', JSON.stringify(validationContext.validationErrors()))
+		handleMethodException(`Validation failed, ${JSON.stringify(validationContext.validationErrors())}`)
 		// throw new Meteor.Error('500')
 	  } else {
 		logger('success', 'passed', data)

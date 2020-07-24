@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import autobind from 'react-autobind';
 import Modal from 'react-bootstrap/Modal';
-// import './PlantAddEntryModal.scss';
+// import './ItemViewHistoryModal.scss';
 
-class PlantAddEntryModal extends Component {
+class ItemViewHistoryModal extends Component {
   constructor(props) {
 	super(props);
 
@@ -16,8 +16,6 @@ class PlantAddEntryModal extends Component {
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    // console.log("nextProps", nextProps)
-    // console.log("prevState", prevState)
 
 	if (nextProps.show === nextProps.type) {
 	  let newState = prevState;
@@ -30,13 +28,6 @@ class PlantAddEntryModal extends Component {
 	}
   }
 
-  saveData() {
-	this.setState({
-	  show: false
-	});
-
-	this.props.save(this.props.type)
-  }
 
   close() {
 	this.props.cancel(this.props.type);
@@ -49,7 +40,6 @@ class PlantAddEntryModal extends Component {
 			<Modal show={this.state.show}
 				   onHide={this.close}
 				   className="plant-view-data-modal">
-
 			  <Modal.Header closeButton>
 				{this.props.header}
 			  </Modal.Header>
@@ -58,42 +48,16 @@ class PlantAddEntryModal extends Component {
 				{this.props.children}
 			  </Modal.Body>
 
-			  {this.props.type === "delete" ?
-					  <Modal.Footer>
-						<button onClick={this.close}
-								className="flat">
-						  Cancel
-						</button>
-
-						<button onClick={this.saveData}
-								className="flat">
-						  Yes
-						</button>
-					  </Modal.Footer>
-					  :
-					  <Modal.Footer>
-						<button onClick={this.close}
-								className="flat">
-						  Cancel
-						</button>
-
-						<button onClick={this.saveData}
-								className="flat">
-						  Save
-						</button>
-					  </Modal.Footer>
-			  }
 			</Modal>
 	)
   }
 }
 
-PlantAddEntryModal.propTypes = {
-  save: PropTypes.func.isRequired,
+ItemViewHistoryModal.propTypes = {
   cancel: PropTypes.func.isRequired,
   type: PropTypes.string,
-  header: PropTypes.string,
+  header: PropTypes.string.isRequired,
   modalOpen: PropTypes.string
 }
 
-export default PlantAddEntryModal;
+export default ItemViewHistoryModal;

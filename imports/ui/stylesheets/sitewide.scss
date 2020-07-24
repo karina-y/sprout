@@ -75,6 +75,11 @@ body {
       //filter: drop-shadow(0px 0px .8px rgba(255,255,255,.9))
     }
 
+    .scroll-box {
+      border: solid 1px $powder-blue;
+      background: $dark-gray;
+      color: $off-white;
+    }
   }
 
   #root {
@@ -176,6 +181,10 @@ body {
   .flex-wrap {
     display: flex;
     flex-wrap: wrap;
+  }
+
+  .pad-width {
+    padding: 50px 75px;
   }
 
   //#region panels
@@ -611,7 +620,7 @@ body {
     &.naked {
       border: none;
       background: none;
-      padding: 0;
+      padding: 0 !important;
 
       &:hover,
       &:active,

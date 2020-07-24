@@ -16,7 +16,8 @@ const PruningDeadheadingPro = (props) => (
 						Prune every <input type="number"
 										   placeholder="30"
 										   className="small"
-										   onChange={(e) => props.updateData(e, 'pruningSchedule')}/> days
+										   onChange={(e) => props.updateData(e, 'pruningSchedule')}
+										   value={props.item.pruningSchedule || null}/> days
 					  </p>
 					</SwipePanelContent>
 
@@ -25,7 +26,8 @@ const PruningDeadheadingPro = (props) => (
 						Deadhead every <input type="number"
 											  placeholder="30"
 											  className="small"
-											  onChange={(e) => props.updateData(e, 'deadheadingSchedule')}/> days
+											  onChange={(e) => props.updateData(e, 'deadheadingSchedule')}
+											  value={props.item.deadheadingSchedule || null}/> days
 					  </p>
 					</SwipePanelContent>
 
@@ -52,7 +54,7 @@ const PruningDeadheadingPro = (props) => (
 
 
 		</div>
-  )
+)
 
 
 

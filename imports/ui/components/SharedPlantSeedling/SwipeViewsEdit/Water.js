@@ -13,10 +13,10 @@ const Water = (props) => (
 
 		  <p className="swipe-title title-ming">
 			Water - Light <FontAwesomeIcon
-				  icon={props.plant.waterCondition === 'needs-attn' ? faSadTear : props.plant.waterCondition === 'neutral' ? faMeh : props.plant.waterCondition === 'unsure' ? faQuestionCircle : faSmile}
+				  icon={props.item.waterCondition === 'needs-attn' ? faSadTear : props.item.waterCondition === 'neutral' ? faMeh : props.item.waterCondition === 'unsure' ? faQuestionCircle : faSmile}
 				  className="plant-condition-icon"
 				  title="water condition"
-				  alt={props.plant.waterCondition === 'needs-attn' ? 'sad face with tear' : props.plant.waterCondition === 'neutral' ? 'neutral face' : props.plant.waterCondition === 'unsure' ? 'question mark' : 'smiling face'}/>
+				  alt={props.item.waterCondition === 'needs-attn' ? 'sad face with tear' : props.item.waterCondition === 'neutral' ? 'neutral face' : props.item.waterCondition === 'unsure' ? 'question mark' : 'smiling face'}/>
 		  </p>
 
 		  {props.state.editing === 'waterTracker' ?
@@ -27,7 +27,7 @@ const Water = (props) => (
 																	 placeholder="4"
 																	 className="small"
 																	 onChange={(e) => props.updateData(e, 'waterSchedule')}
-																	 defaultValue={props.plant.waterSchedule || ''}/> days
+																	 defaultValue={props.item.waterSchedule || ''}/> days
 					  </p>
 					</SwipePanelContent>
 
@@ -36,31 +36,45 @@ const Water = (props) => (
 						<label>watering preferences</label>
 						<input type="text" placeholder="Watering Preferences"
 							   onChange={(e) => props.updateData(e, 'waterPreference')}
-							   defaultValue={props.plant.waterPreference || ''}/></p>
+							   defaultValue={props.item.waterPreference || ''}/></p>
 					</SwipePanelContent>
 
-					<SwipePanelContent icon="lightPreference">
-					  <p className="modern-input">
-						<label>light preferences</label>
-						<input type="text"
-							   onChange={(e) => props.updateData(e, 'lightPreference')}
-							   defaultValue={props.plant.lightPreference || ''}/></p>
-					</SwipePanelContent>
+					{props.type === "plant" ?
+							<SwipePanelContent icon="lightPreference">
+							  <p className="modern-input">
+								<label>light preferences *</label>
+								<input type="text"
+									   onChange={(e) => props.updateData(e, 'lightPreference')}
+									   defaultValue={props.item.lightPreference || ''}/></p>
+							</SwipePanelContent>
+							:
+							<SwipePanelContent icon="lightPreference">
+							  <p className="modern-input">
+								<label>sun light or grow light *</label>
+								<select onChange={(e) => props.updateData(e, 'lightPreference')}
+										defaultValue={props.item.lightPreference || ''}>
+								  <option value='' disabled={true}>- What lighting is being used? -</option>
+								  <option value="grow light">Grow Light</option>
+								  <option value="sun light">Sun Light</option>
+								</select>
+							  </p>
+							</SwipePanelContent>
+					}
 				  </React.Fragment>
 				  :
 				  <React.Fragment>
 					<SwipePanelContent icon="schedule"
 									   iconTitle="water schedule">
-					  <p>{props.plant.waterSchedule != null ? `Water every ${props.plant.waterSchedule} days` : 'No schedule set'}</p>
+					  <p>{props.item.waterSchedule != null ? `Water every ${props.item.waterSchedule} days` : 'No schedule set'}</p>
 					</SwipePanelContent>
 
 					<SwipePanelContent icon="water"
 									   iconTitle="water preference">
-					  <p>{props.plant.waterPreference}</p>
+					  <p>{props.item.waterPreference}</p>
 					</SwipePanelContent>
 
 					<SwipePanelContent icon="lightPreference">
-					  <p>{props.plant.lightPreference}</p>
+					  <p>{props.item.lightPreference}</p>
 					</SwipePanelContent>
 				  </React.Fragment>
 		  }
@@ -71,7 +85,7 @@ const Water = (props) => (
 
 
 Water.propTypes = {
-  plant: PropTypes.object.isRequired,
+  item: PropTypes.object.isRequired,
   updateData: PropTypes.func.isRequired,
 };
 

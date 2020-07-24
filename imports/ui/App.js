@@ -26,6 +26,7 @@ const AsyncAccount = asyncComponent(() => import("./pages/Account/Account"));
 const AsyncItemCatalogue = asyncComponent(() => import("./pages/ItemCatalogue/ItemCatalogue"));
 const AsyncLegalStuff = asyncComponent(() => import("./pages/LegalStuff/LegalStuff"));
 const AsyncPlantViewEdit = asyncComponent(() => import("./components/PlantViewEdit/PlantViewEdit"));
+const AsyncSeedlingViewEdit = asyncComponent(() => import("./components/SeedlingViewEdit/SeedlingViewEdit"));
 const AsyncPlantAdd = asyncComponent(() => import("./pages/PlantAdd/PlantAdd"));
 const AsyncSeedlingAdd = asyncComponent(() => import("./pages/SeedlingAdd/SeedlingAdd"));
 const AsyncNoMatch = asyncComponent(() => import("./pages/NoMatch"));
@@ -85,6 +86,10 @@ class App extends Component {
 
 						  <Authorized exact path="/seedling"
 									  component={AsyncSeedlingAdd}
+									  {...props} />
+
+						  <Authorized exact path="/seedling/:id"
+									  component={AsyncSeedlingViewEdit}
 									  {...props} />
 
 						  <Authenticated exact path="/plant"

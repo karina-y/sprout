@@ -48,7 +48,7 @@ class Navigation extends Component {
 	  },
 	  {
 		href: '/plant',
-		title: 'Add To Catalogue'
+		title: 'Add Plant'
 	  },
 	  {
 		href: '/catalogue/seedling',

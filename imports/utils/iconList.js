@@ -14,6 +14,8 @@ import { faFilter } from '@fortawesome/free-solid-svg-icons/faFilter'
 import { faMapMarker } from '@fortawesome/free-solid-svg-icons/faMapMarker'
 import { faHome } from '@fortawesome/free-solid-svg-icons/faHome'
 import { faHistory } from '@fortawesome/free-solid-svg-icons/faHistory'
+import { faPlay } from '@fortawesome/free-solid-svg-icons/faPlay'
+import { faStop } from '@fortawesome/free-solid-svg-icons/faStop'
 
 const IconList = {
   category: {icon: faFilter, alt: 'filter', title: 'category', isCustom: false},
@@ -40,10 +42,12 @@ const IconList = {
   tilling: {icon: '/icons/farm_01/017-farming tools.svg', alt: 'farming tools', title: 'tilling', isCustom: true},
   toxicity: {icon: faSkullCrossbones, alt: 'skull and crossbones', title: 'toxicity', isCustom: false},
   waterAuto: {icon: faHistory, alt: 'auto', title: 'automatic watering schedule', isCustom: false},
-  // waterAuto: {icon: '/icons/farm_02/013-hose.svg', alt: 'watering hose', title: 'automatic watering scheudle', isCustom: true},
   indoorOutdoor: {icon: '/icons/farm_01/039-sprout.svg', alt: 'plant growing', title: 'method to start seed', isCustom: true},
   methodSeedStart: {icon: '/icons/farm_02/019-hand-seed.svg', alt: 'planting seeds', title: 'started indoor or outdoor', isCustom: true},
   seedBrand: {icon: '/icons/farm_02/018-signal.svg', alt: 'sign', title: 'seed brand', isCustom: true},
+  trueLeavesDate: {icon: '/icons/farm_03/leaves.svg', alt: 'leaves', title: 'true leaves date', isCustom: true},
+  sowDate: {icon: faPlay, alt: 'play', title: 'start date', isCustom: false},
+  dateExpires: {icon: faStop, alt: 'stop', title: 'date expires', isCustom: false},
 }
 
 export default IconList
