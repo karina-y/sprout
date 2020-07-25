@@ -16,7 +16,7 @@ const Fertilizer = (props) => (
 																placeholder="30"
 																className="small"
 																onChange={(e) => props.updateData(e, 'fertilizerSchedule')}
-																value={props.item.fertilizerSchedule || null}/> days
+																value={props.item.fertilizerSchedule || ''}/> days
 			</p>
 		  </SwipePanelContent>
 

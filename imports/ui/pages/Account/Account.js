@@ -63,7 +63,7 @@ class Account extends Component {
   }
 
   saveProfile () {
-    console.log("sdf")
+
 	let newProfile = {};
 
 	if (this.state.name) {

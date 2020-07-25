@@ -37,7 +37,6 @@ class SeedlingAdd extends Component {
   }
 
   componentDidMount () {
-	toast.warning('This feature is not complete, use at your own risk.')
 	Session.set('pageTitle', "New Seedling")
 	const categories = Category.find().fetch()
 

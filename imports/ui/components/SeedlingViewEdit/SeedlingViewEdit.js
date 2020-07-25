@@ -55,7 +55,6 @@ class SeedlingViewEdit extends Component {
   }
 
   componentDidMount () {
-	toast.warning('This feature is not complete, use at your own risk.')
 	Session.set('pageTitle', this.props.seedling.latinName || this.props.seedling.commonName)
 
 	//this is to disable keyboard from popping up on android, sometimes you just need good ol vanilla js

@@ -16,8 +16,6 @@ class ItemAddEntryModal extends Component {
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    // console.log("nextProps", nextProps)
-    // console.log("prevState", prevState)
 
 	if (nextProps.show === nextProps.type) {
 	  let newState = prevState;

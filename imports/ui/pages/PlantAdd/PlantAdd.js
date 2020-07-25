@@ -231,7 +231,7 @@ class PlantAdd extends Component {
 																   className="small"
 																   placeholder="30"
 																   onChange={(e) => this.updateData(e, 'pruningSchedule')}
-																   value={props.item.pruningSchedule || null}/> days
+																   value={plant.pruningSchedule || ''}/> days
 					</p>
 				  </SwipePanelContent>
 
@@ -243,7 +243,7 @@ class PlantAdd extends Component {
 																	  className="small"
 																	  placeholder="30"
 																	  onChange={(e) => this.updateData(e, 'deadheadingSchedule')}
-																	  value={props.item.deadheadingSchedule || null}/> days
+																	  value={plant.deadheadingSchedule || ''}/> days
 					</p>
 				  </SwipePanelContent>
 

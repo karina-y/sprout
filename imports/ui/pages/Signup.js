@@ -53,15 +53,12 @@ class Signup extends Component {
 		  toast.success('Please check your email to verify your account.')
 
 		  Accounts.onEmailVerificationLink((token, done) => {
-			console.log("token: ", token);
 
 			Accounts.verifyEmail(token, (err) => {
 			  if (err) {
 				toast.error(err.message)
-				// console.log("Error: ", err);
 			  } else {
 				//TODO send welcome email
-				console.log("props", props)
 				// console.log("Calling Meteor.methods.emailSendWelcome", done);
 				/*Meteor.call("Meteor.methods.emailSendWelcome", null, (error, result) => {
 				  if (error) console.log("Error: ", error);
