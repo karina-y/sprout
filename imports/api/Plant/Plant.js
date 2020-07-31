@@ -121,6 +121,16 @@ Plant.schema = new SimpleSchema({
 			defaultValue: false,
 			label: 'waterScheduleAuto'
 		  },
+		  pruningPreference: {
+			type: String,
+			optional: true,
+			label: 'pruningPreference'
+		  },
+		  deadheadingPreference: {
+			type: String,
+			optional: true,
+			label: 'deadheadingPreference'
+		  },
 		  pruningSchedule: {
 			type: Number,
 			optional: true,

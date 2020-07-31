@@ -285,7 +285,7 @@ class SeedlingViewEdit extends Component {
 
   resetModal () {
 	this.setState({
-	  modalOpen: false,
+	  modalOpen: null,
 	  editing: null,
 	  pruneType: null,
 	  newData: {}
@@ -351,10 +351,10 @@ class SeedlingViewEdit extends Component {
 		toast.error(err.message)
 	  } else {
 		this.setState({
-		  modalOpen: false
+		  modalOpen: null
 		})
 
-		this.props.history.push('/catalogue')
+		this.props.history.push('/catalogue/seedling')
 	  }
 	})
 

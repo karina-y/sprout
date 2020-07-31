@@ -56,34 +56,44 @@ class PlantAdd extends Component {
 	  plant.fertilizerSchedule = parseInt(plant.fertilizerSchedule)
 	}
 
-	if (plant.pruningSchedule) {
+	/*if (plant.pruningSchedule) {
 	  plant.pruningSchedule = parseInt(plant.pruningSchedule)
 	}
 
 	if (plant.deadheadingSchedule) {
 	  plant.deadheadingSchedule = parseInt(plant.deadheadingSchedule)
-	}
+	}*/
 
 	if (plant.soilCompositionTracker && !Array.isArray(plant.soilCompositionTracker)) {
 	  plant.soilCompositionTracker = [plant.soilCompositionTracker]
 	}
 
-	let errMsg
+	let errMsg;
+	let swipeViewIndex = this.state.swipeViewIndex;
 
 	if (!plant.commonName && !plant.latinName) {
 	  errMsg = 'Please enter either a common or latin name (eg. Swiss Cheese Plant or Monstera adansonii).'
+	  swipeViewIndex = 0;
 	} else if (!plant.waterPreference) {
 	  errMsg = 'Please enter a watering preference (eg. Keep soil moist but not soggy, humidity tray helpful).'
+	  swipeViewIndex = 1;
 	} else if (!plant.lightPreference) {
 	  errMsg = 'Please enter a lighting preference (eg. Bright indirect light).'
+	  swipeViewIndex = 1;
 	} else if (!plant.location) {
 	  errMsg = 'Please enter where this plant lives in/around your home (eg. Living Room or Back Patio).'
+	  swipeViewIndex = 6;
 	} else if (Meteor.isPro && !plant.category) {
 	  errMsg = 'Please select a category.'
+	  swipeViewIndex = 0;
 	}
 
 	if (errMsg) {
 	  toast.error(errMsg)
+
+	  this.setState({
+		swipeViewIndex
+	  })
 	} else {
 	  Meteor.call('plant.insert', plant, (err, response) => {
 		if (err) {
@@ -223,13 +233,12 @@ class PlantAdd extends Component {
 					Pruning - Deadheading
 				  </p>
 
-				  <SwipePanelContent icon="schedule" iconTitle="pruning schedule">
+				  {/*<SwipePanelContent icon="schedule" iconTitle="pruning schedule">
 					<p className="modern-input">Prune every <input type="number"
 																   min="0"
 																   inputMode="numeric"
 																   pattern="[0-9]*"
 																   className="small"
-																   placeholder="30"
 																   onChange={(e) => this.updateData(e, 'pruningSchedule')}
 																   value={plant.pruningSchedule || ''}/> days
 					</p>
@@ -241,12 +250,26 @@ class PlantAdd extends Component {
 																	  inputMode="numeric"
 																	  pattern="[0-9]*"
 																	  className="small"
-																	  placeholder="30"
 																	  onChange={(e) => this.updateData(e, 'deadheadingSchedule')}
 																	  value={plant.deadheadingSchedule || ''}/> days
 					</p>
+				  </SwipePanelContent>*/}
+
+				  <SwipePanelContent icon="pruning" iconTitle="pruning preference">
+					<p className="modern-input">
+					  <input type="text"
+							 onChange={(e) => this.updateData(e, 'pruningPreference')}
+							 value={plant.pruningPreference || ''}/>
+					</p>
 				  </SwipePanelContent>
 
+				  <SwipePanelContent icon="deadheading" iconTitle="deadheading preference">
+					<p className="modern-input">
+					  <input type="text"
+							 onChange={(e) => this.updateData(e, 'deadheadingPreference')}
+							 value={plant.deadheadingPreference || ''}/>
+					</p>
+				  </SwipePanelContent>
 				</div>
 				}
 

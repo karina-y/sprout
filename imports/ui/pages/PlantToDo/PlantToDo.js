@@ -53,24 +53,16 @@ export default withTracker(() => {
 	let currPlant = catalogue[i]
 	let waterDue = currPlant.waterScheduleAuto ? 2 : currPlant.waterSchedule - getDaysSinceAction(currPlant.waterTracker) - 1
 	let fertilizerDue = currPlant.fertilizerSchedule - getDaysSinceAction(currPlant.fertilizerTracker) - 1
-	let pruningDue = currPlant.pruningSchedule - getDaysSinceAction(currPlant.pruningTracker) - 1
-	let deadheadingDue = currPlant.deadheadingSchedule - getDaysSinceAction(currPlant.deadheadingTracker) - 1
+	// let pruningDue = currPlant.pruningSchedule - getDaysSinceAction(currPlant.pruningTracker) - 1
+	// let deadheadingDue = currPlant.deadheadingSchedule - getDaysSinceAction(currPlant.deadheadingTracker) - 1
 
-	if (waterDue < 1 || fertilizerDue < 1 || pruningDue < 1 || deadheadingDue < 1) {
+	if (waterDue < 1 || fertilizerDue < 1/* || pruningDue < 1 || deadheadingDue < 1*/) {
 	  currPlant.attentionNeeded = {
 		water: waterDue < 1,
 		fertilizer: fertilizerDue < 1,
-		pruning: pruningDue < 1,
-		deadheading: deadheadingDue < 1
+		// pruning: pruningDue < 1,
+		// deadheading: deadheadingDue < 1
 	  }
-
-	  //for testing
-	  /*currPlant.attentionNeeded = {
-		water: true,
-		fertilizer: true,
-		pruning: true,
-		deadheading: true
-	  }*/
 
 	  needsAttention.push(currPlant)
 	}

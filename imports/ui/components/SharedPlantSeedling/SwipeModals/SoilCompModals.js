@@ -22,17 +22,27 @@ const SoilCompModals = (props) => (
 					onSelect={(e) => props.updateData(e, 'soilDate', 'soilCompositionTracker')}
 					highlightDates={props.highlightDates}/>
 
-			<p className="modern-input">
-			  {props.category === 'potted' ?
+			{props.category === 'potted' ?
+					<p className="modern-input for-modal">
+					  <label>Soil Moisture %</label>
 					  <input type="number"
-							 placeholder="Soil Moisture %"
+							 min="0"
+							 inputMode="numeric"
+							 pattern="[0-9]*"
 							 onChange={(e) => props.updateData(e, 'moisture')}/>
-					  :
+					</p>
+					:
+					<p className="modern-input for-modal">
+					  <label>pH Reading</label>
 					  <input type="number"
-							 placeholder="pH Reading"
+							 min="0"
+							 inputMode="numeric"
+							 pattern="[0-9]*"
 							 onChange={(e) => props.updateData(e, 'ph')}/>
-			  }
-			</p>
+					</p>
+			}
+
+
 
 		  </ItemAddEntryModal>
 
@@ -80,7 +90,7 @@ SoilCompModals.propTypes = {
   updateData: PropTypes.func.isRequired,
   save: PropTypes.func.isRequired,
   resetModal: PropTypes.func.isRequired,
-  modalOpen: PropTypes.bool,
+  modalOpen: PropTypes.string,
   tracker: PropTypes.array,
   newDataTracker: PropTypes.array,
   highlightDates: PropTypes.array,

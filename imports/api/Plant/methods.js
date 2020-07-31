@@ -70,9 +70,12 @@ Meteor.methods({
 		  }
 		  break
 		case 'pruningDeadheadingTracker-edit':
-		  validationSchema = Plant.schema.pick('pruningSchedule', 'deadheadingSchedule', 'updatedAt')
+		  // validationSchema = Plant.schema.pick('pruningSchedule', 'deadheadingSchedule', 'updatedAt')
+		  // query = {$set: {pruningSchedule: data.pruningSchedule, deadheadingSchedule: data.deadheadingSchedule, updatedAt: data.updatedAt}}
 
-		  query = {$set: {pruningSchedule: data.pruningSchedule, deadheadingSchedule: data.deadheadingSchedule, updatedAt: data.updatedAt}}
+		  validationSchema = Plant.schema.pick('pruningPreference', 'deadheadingPreference', 'updatedAt')
+
+		  query = {$set: {pruningPreference: data.pruningPreference, deadheadingPreference: data.deadheadingPreference, updatedAt: data.updatedAt}}
 		  break
 		case 'etc-edit':
 		  validationSchema = Plant.schema.pick('commonName', 'latinName', 'location', 'dateBought', 'datePlanted', 'locationBought', 'toxicity', 'category', 'companions', 'updatedAt')

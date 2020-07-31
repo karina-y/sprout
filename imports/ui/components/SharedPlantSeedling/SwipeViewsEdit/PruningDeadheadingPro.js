@@ -11,30 +11,50 @@ const PruningDeadheadingPro = (props) => (
 
 		  {props.editing === 'pruningDeadheadingTracker' ?
 				  <React.Fragment>
-					<SwipePanelContent icon="pruning" iconTitle="pruning schedule">
+					{/*<SwipePanelContent icon="pruning" iconTitle="pruning schedule">
 					  <p className="modern-input">
 						Prune every <input type="number"
-										   placeholder="30"
+										   min="0"
+										   inputMode="numeric"
+										   pattern="[0-9]*"
 										   className="small"
 										   onChange={(e) => props.updateData(e, 'pruningSchedule')}
-										   value={props.item.pruningSchedule || ''}/> days
+										   value={props.plant.pruningSchedule || ''}/> days
 					  </p>
 					</SwipePanelContent>
 
 					<SwipePanelContent icon="deadheading" iconTitle="deadheading schedule">
 					  <p className="modern-input">
 						Deadhead every <input type="number"
-											  placeholder="30"
+											  min="0"
+											  inputMode="numeric"
+											  pattern="[0-9]*"
 											  className="small"
 											  onChange={(e) => props.updateData(e, 'deadheadingSchedule')}
-											  value={props.item.deadheadingSchedule || ''}/> days
+											  value={props.plant.deadheadingSchedule || ''}/> days
+					  </p>
+					</SwipePanelContent>*/}
+
+					<SwipePanelContent icon="pruning" iconTitle="pruning preference">
+					  <p className="modern-input">
+						<input type="text"
+							   onChange={(e) => props.updateData(e, 'pruningPreference')}
+							   defaultValue={props.plant.pruningPreference || ''}/>
+					  </p>
+					</SwipePanelContent>
+
+					<SwipePanelContent icon="deadheading" iconTitle="deadheading preference">
+					  <p className="modern-input">
+						<input type="text"
+							   onChange={(e) => props.updateData(e, 'deadheadingPreference')}
+							   defaultValue={props.plant.deadheadingPreference || ''}/>
 					  </p>
 					</SwipePanelContent>
 
 				  </React.Fragment>
 				  :
 				  <React.Fragment>
-					<SwipePanelContent icon="pruning"
+					{/*<SwipePanelContent icon="pruning"
 									   iconTitle="pruning schedule"
 									   additionalOuterClasses="top-align">
 					  <p>{props.plant.pruningSchedule ? `Prune every ${props.plant.pruningSchedule} days` : 'No pruning schedule entered'}</p>
@@ -48,6 +68,16 @@ const PruningDeadheadingPro = (props) => (
 					  <p>{props.plant.deadheadingSchedule ? `Deadhead every ${props.plant.deadheadingSchedule} days` : 'No deadheading schedule entered'}</p>
 					  {props.plant.deadheadingSchedule &&
 					  <p>Due in {props.plant.deadheadingSchedule - props.plant.daysSinceDeadheaded - 1} days</p>}
+					</SwipePanelContent>*/}
+
+					<SwipePanelContent icon="pruning"
+									   iconTitle="pruning preference">
+					  <p>{props.plant.pruningPreference ? `${props.plant.pruningPreference}` : 'No pruning preference entered'}</p>
+					</SwipePanelContent>
+
+					<SwipePanelContent icon="deadheading"
+									   iconTitle="deadheading preference">
+					  <p>{props.plant.deadheadingPreference ? `${props.plant.deadheadingPreference}` : 'No deadheading preference entered'}</p>
 					</SwipePanelContent>
 				  </React.Fragment>
 		  }

@@ -53,13 +53,7 @@ body {
 
       &.for-modal {
         label {
-          background: $dark-gray;
-        }
-
-        input,
-        select,
-        textarea {
-          background-color: $dark-gray !important;
+          color: $ming;
         }
       }
     }
@@ -709,6 +703,7 @@ body {
       padding-bottom: 0;
       font-weight: bold;
       font-family: "Spartan ExtraBold", sans-serif;
+      color: $ming;
     }
 
     .modal-footer {

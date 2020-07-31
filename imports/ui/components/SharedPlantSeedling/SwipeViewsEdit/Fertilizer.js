@@ -15,7 +15,9 @@ const Fertilizer = (props) => (
 							 additionalOuterClasses={props.state.editing !== 'fertilizerTracker' ? 'top-align' : ''}>
 			{props.editing === 'fertilizerTracker' ?
 					<p className="modern-input">Fertilize every <input type="number"
-																	   placeholder="30"
+																	   min="0"
+																	   inputMode="numeric"
+																	   pattern="[0-9]*"
 																	   className="small"
 																	   onChange={(e) => props.updateData(e, 'fertilizerSchedule')}
 																	   defaultValue={props.item.fertilizerSchedule || ''}/> days

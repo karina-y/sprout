@@ -16,7 +16,6 @@ const WaterPro = (props) => (
 														   min="0"
 														   inputMode="numeric"
 														   pattern="[0-9]*"
-														   placeholder="4"
 														   className="small"
 														   onChange={(e) => props.updateData(e, 'waterSchedule')}
 														   value={props.item.waterSchedule || ''}/> days</p>

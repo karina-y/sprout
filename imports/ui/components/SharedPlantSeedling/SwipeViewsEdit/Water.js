@@ -24,7 +24,9 @@ const Water = (props) => (
 					<SwipePanelContent icon="schedule"
 									   iconTitle="water schedule">
 					  <p className="modern-input">Water every <input type="number"
-																	 placeholder="4"
+																	 min="0"
+																	 inputMode="numeric"
+																	 pattern="[0-9]*"
 																	 className="small"
 																	 onChange={(e) => props.updateData(e, 'waterSchedule')}
 																	 defaultValue={props.item.waterSchedule || ''}/> days

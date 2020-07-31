@@ -54,7 +54,7 @@ DiaryModals.propTypes = {
   updateData: PropTypes.func.isRequired,
   save: PropTypes.func.isRequired,
   resetModal: PropTypes.func.isRequired,
-  modalOpen: PropTypes.bool,
+  modalOpen: PropTypes.string,
   diary: PropTypes.array,
   highlightDates: PropTypes.array
 }

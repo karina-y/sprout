@@ -229,9 +229,14 @@ class PlantViewEdit extends Component {
 		  }
 		  break
 		case 'pruningDeadheadingTracker-edit':
-		  data = {
+		  /*data = {
 			pruningSchedule: parseInt(newPlantData.pruningSchedule || oldPlantData.pruningSchedule),
 			deadheadingSchedule: parseInt(newPlantData.deadheadingSchedule || oldPlantData.deadheadingSchedule),
+		  }*/
+
+		  data = {
+			pruningPreference: newPlantData.pruningPreference || oldPlantData.pruningPreference,
+			deadheadingPreference: newPlantData.deadheadingPreference || oldPlantData.deadheadingPreference
 		  }
 		  break
 		case 'etc-edit':
@@ -302,7 +307,7 @@ class PlantViewEdit extends Component {
 
   resetModal () {
 	this.setState({
-	  modalOpen: false,
+	  modalOpen: null,
 	  editing: null,
 	  pruneType: null,
 	  newData: {}
@@ -371,10 +376,10 @@ class PlantViewEdit extends Component {
 		toast.error(err.message)
 	  } else {
 		this.setState({
-		  modalOpen: false
+		  modalOpen: null
 		})
 
-		this.props.history.push('/catalogue')
+		this.props.history.push('/catalogue/plant')
 	  }
 	})
 

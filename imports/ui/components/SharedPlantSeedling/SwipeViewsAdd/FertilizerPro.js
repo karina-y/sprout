@@ -13,7 +13,6 @@ const FertilizerPro = (props) => (
 														  min="0"
 														  inputMode="numeric"
 														  pattern="[0-9]*"
-														  placeholder="30"
 														  className="small"
 														  onChange={(e) => props.updateData(e, 'fertilizerSchedule')}
 														  value={props.item.fertilizerSchedule || ''}/> days

@@ -15,7 +15,9 @@ const FertilizerPro = (props) => (
 									   iconTitle="fertilizer schedule">
 					  <p className="modern-input">
 						Feed every <input type="number"
-										  placeholder="30"
+										  min="0"
+										  inputMode="numeric"
+										  pattern="[0-9]*"
 										  className="small"
 										  onChange={(e) => props.updateData(e, 'fertilizerSchedule')}
 										  defaultValue={props.item.fertilizerSchedule || ''}/> days
@@ -53,7 +55,7 @@ const FertilizerPro = (props) => (
 									   iconTitle="fertilizer schedule"
 									   additionalOuterClasses="top-align">
 					  <p>{props.item.fertilizerSchedule != null ? `Feed every ${props.item.fertilizerSchedule} days` : 'No schedule set'}</p>
-					  {!props.item.waterScheduleAuto && props.item.fertilizerSchedule != null && props.item.daysSinceFertilized != null ?
+					  {props.item.fertilizerSchedule != null && props.item.daysSinceFertilized != null ?
 							  <p>Due in {props.item.fertilizerSchedule - props.item.daysSinceFertilized - 1} days</p>
 							  : ''
 					  }

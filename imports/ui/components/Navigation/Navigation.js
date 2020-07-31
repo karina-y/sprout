@@ -52,11 +52,11 @@ class Navigation extends Component {
 	  },
 	  {
 		href: '/catalogue/seedling',
-		title: 'Seedling Catalogue - UNDER DEVELOPMENT'
+		title: 'Seedling Catalogue'
 	  },
 	  {
 		href: '/seedling',
-		title: 'Add Seedling - UNDER DEVELOPMENT'
+		title: 'Add Seedling'
 	  },
 	  {
 		href: '/account',

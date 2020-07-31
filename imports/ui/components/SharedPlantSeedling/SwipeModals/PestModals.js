@@ -73,7 +73,7 @@ PestModals.propTypes = {
   updateData: PropTypes.func.isRequired,
   save: PropTypes.func.isRequired,
   resetModal: PropTypes.func.isRequired,
-  modalOpen: PropTypes.bool,
+  modalOpen: PropTypes.string,
   tracker: PropTypes.array,
   newDataTracker: PropTypes.array,
   highlightDates: PropTypes.array

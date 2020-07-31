@@ -9,11 +9,10 @@ const Fertilizer = (props) => (
 		  </p>
 
 		  <SwipePanelContent icon="schedule" iconTitle="fertilizer schedule">
-			<p className="modern-input">Fertilizer every <input type="number"
+			<p className="modern-input">Fertilize every <input type="number"
 																min="0"
 																inputMode="numeric"
 																pattern="[0-9]*"
-																placeholder="30"
 																className="small"
 																onChange={(e) => props.updateData(e, 'fertilizerSchedule')}
 																value={props.item.fertilizerSchedule || ''}/> days
