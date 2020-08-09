@@ -31,13 +31,19 @@ import Water from '../SharedPlantSeedling/SwipeViewsEdit/Water'
 import Fertilizer from '../SharedPlantSeedling/SwipeViewsEdit/Fertilizer'
 import SoilComp from '../SharedPlantSeedling/SwipeViewsEdit/SoilComp'
 import EtcSeedling from '../SharedPlantSeedling/SwipeViewsEdit/EtcSeedling'
-import NotableDates from '../SharedPlantSeedling/SwipeViewsEdit/NotableDates'
+// import NotableDates from '../SharedPlantSeedling/SwipeViewsEdit/NotableDates'
 import WaterModals from '../SharedPlantSeedling/SwipeModals/WaterModals'
 import FertilizerModals from '../SharedPlantSeedling/SwipeModals/FertilizerModals'
 import SoilCompModals from '../SharedPlantSeedling/SwipeModals/SoilCompModals'
 import PestModals from '../SharedPlantSeedling/SwipeModals/PestModals'
 import DiaryModals from '../SharedPlantSeedling/SwipeModals/DiaryModals'
 import SeedlingDates from '../SharedPlantSeedling/SwipeViewsEdit/SeedlingDates'
+
+/*
+TODO
+- make types a file of constants (dateBought, datePlanted, etc)
+- maybe just move all the view components into one file and import that alone
+*/
 
 class SeedlingViewEdit extends Component {
   constructor (props) {
@@ -65,7 +71,7 @@ class SeedlingViewEdit extends Component {
 	}
   }
 
-  //TODO turn into hook and memoize
+  //TODO turn into hook
   static getHighlightDates (items, type) {
 	let dates = []
 
@@ -80,16 +86,15 @@ class SeedlingViewEdit extends Component {
 	return dates
   }
 
+  //TODO
   updatePhoto (e) {
 	let files = e.target.files
+	let file = files[0]
+	let fileReader = new FileReader()
 
 	if (files.length === 0) {
 	  return
 	}
-
-	let file = files[0]
-
-	let fileReader = new FileReader()
 
 	fileReader.onload = function (event) {
 	  let dataUrl = event.target.result
@@ -99,7 +104,9 @@ class SeedlingViewEdit extends Component {
 	fileReader.readAsDataURL(file)
   }
 
-
+  //TODO this is heavy! simplify this and break it out into diff functions (one separate for tracker for sure)
+  //tracker should be able to be simplified
+  //this updates the plant's data in my state before it gets sent out to the backend
   updateData (e, type, tracker, addingEntry) {
 	const newSeedlingData = this.state.newData
 
@@ -194,6 +201,7 @@ class SeedlingViewEdit extends Component {
 	} else {
 
 	  switch (type) {
+		//TODO abstract each of these cases out
 		case 'dates-edit':
 		  data = {
 			sowDate: newSeedlingData.sowDate || oldSeedlingData.sowDate,
@@ -295,6 +303,7 @@ class SeedlingViewEdit extends Component {
   handleEdit () {
 	let editing
 
+	//selecting which swipe view to edit
 	switch (this.state.swipeViewIndex) {
 	  case 0:
 		editing = 'dates'
@@ -321,6 +330,7 @@ class SeedlingViewEdit extends Component {
   openModal (history) {
 	let modalOpen
 
+	//selecting which modal to open
 	switch (this.state.swipeViewIndex) {
 	  case 1:
 		modalOpen = history ? 'waterTracker-history' : 'waterTracker'
@@ -370,8 +380,6 @@ class SeedlingViewEdit extends Component {
 	let pestName = getLastPestName(seedling.pestTracker)
 	let pestTreatment = getLastPestTreatment(seedling.pestTracker)
 
-	//TODO add ability to add more plant photos and view calendar with details for each view (ie fertilizerTracker with date and fertilizer used)
-
 	return (
 			<div className="PlantSeedlingViewEdit">
 			  {this.state.editing === 'etc' ?
@@ -405,43 +413,41 @@ class SeedlingViewEdit extends Component {
 
 				{/* water */}
 				{Meteor.isPro ?
-						<WaterPro item={seedling} updateData={this.updateData} editing={this.state.editing}/>
-						:
-						<Water item={seedling} updateData={this.updateData} editing={this.state.editing}/>
-				}
+						<React.Fragment>
+						  <WaterPro item={seedling} updateData={this.updateData} editing={this.state.editing}/>
 
+						  <FertilizerPro item={seedling}
+										 updateData={this.updateData}
+										 fertilizerContent={fertilizerContent}
+										 editing={this.state.editing}/>
 
-				{/* fertilizer */}
-				{Meteor.isPro ?
-						<FertilizerPro item={seedling}
+						  <SoilCompPro item={seedling}
 									   updateData={this.updateData}
-									   fertilizerContent={fertilizerContent}
+									   soilCompLastChecked={soilCompLastChecked}
+									   soilMoisture={soilMoisture}
+									   soilPh={soilPh}
 									   editing={this.state.editing}/>
+						</React.Fragment>
 						:
-						<Fertilizer item={seedling}
+						<React.Fragment>
+						  <Water item={seedling} updateData={this.updateData} editing={this.state.editing}/>
+
+						  <Fertilizer item={seedling}
+									  updateData={this.updateData}
+									  fertilizerContent={fertilizerContent}
+									  editing={this.state.editing}/>
+
+						  <SoilComp item={seedling}
 									updateData={this.updateData}
-									fertilizerContent={fertilizerContent}
+									soilCompLastChecked={soilCompLastChecked}
+									soilMoisture={soilMoisture}
+									soilPh={soilPh}
 									editing={this.state.editing}/>
-				}
-
-				{/* soil comp */}
-				{Meteor.isPro ?
-						<SoilCompPro item={seedling}
-									 updateData={this.updateData}
-									 soilCompLastChecked={soilCompLastChecked}
-									 soilMoisture={soilMoisture}
-									 soilPh={soilPh}
-									 editing={this.state.editing}/>
-						:
-						<SoilComp item={seedling}
-								  updateData={this.updateData}
-								  soilCompLastChecked={soilCompLastChecked}
-								  soilMoisture={soilMoisture}
-								  soilPh={soilPh}
-								  editing={this.state.editing}/>
+						</React.Fragment>
 				}
 
 
+				{/*shared with both pro and regular accounts*/}
 				{/* pest */}
 				<Pest item={seedling}
 					  updateData={this.updateData}

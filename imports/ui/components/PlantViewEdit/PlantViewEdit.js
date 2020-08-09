@@ -39,6 +39,13 @@ import SoilCompModals from '../SharedPlantSeedling/SwipeModals/SoilCompModals'
 import PestModals from '../SharedPlantSeedling/SwipeModals/PestModals'
 import DiaryModals from '../SharedPlantSeedling/SwipeModals/DiaryModals'
 
+/*
+TODO
+- make types a file of constants (dateBought, datePlanted, etc)
+- maybe just move all the view components into one file and import that alone
+*/
+
+
 class PlantViewEdit extends Component {
   constructor (props) {
 	super(props)
@@ -65,7 +72,7 @@ class PlantViewEdit extends Component {
 	}
   }
 
-  //TODO turn into hook and memoize
+  //TODO turn into hook
   static getHighlightDates (items, type) {
 	let dates = []
 
@@ -80,16 +87,15 @@ class PlantViewEdit extends Component {
 	return dates
   }
 
+  //TODO
   updatePhoto (e) {
 	let files = e.target.files
+	let file = files[0]
+	let fileReader = new FileReader()
 
 	if (files.length === 0) {
 	  return
 	}
-
-	let file = files[0]
-
-	let fileReader = new FileReader()
 
 	fileReader.onload = function (event) {
 	  let dataUrl = event.target.result
@@ -99,12 +105,15 @@ class PlantViewEdit extends Component {
 	fileReader.readAsDataURL(file)
   }
 
-  updateData (e, type, tracker, addingEntry) {
-	console.log('update')
+  //TODO this is heavy! simplify this and break it out into diff functions (one separate for tracker for sure)
+  //tracker should be able to be simplified
+  //this updates the plant's data in my state before it gets sent out to the backend
+  updateData (e, type, tracker, isNewLogEntry) {
 
+	//this is any new data that's been entered, updating it as new inputs are entered
 	const newPlantData = this.state.newData
 
-	if (tracker && addingEntry) {
+	if (tracker && isNewLogEntry) {
 	  //this is a new entry with non-date data (ie fertilizer type used)
 	  if (newPlantData[tracker]) {
 		newPlantData[tracker][type] = e.target.value
@@ -210,6 +219,7 @@ class PlantViewEdit extends Component {
 	if (!type || !newPlantData || JSON.stringify(newPlantData) === '{}') {
 	  toast.error('No data entered.')
 	} else {
+	  //TODO abstract each of these cases out
 	  switch (type) {
 		case 'waterTracker-edit':
 		  //doing the waterscheduleauto checks because they're bools
@@ -317,6 +327,7 @@ class PlantViewEdit extends Component {
   handleEdit () {
 	let editing
 
+	//selecting which swipe view to edit
 	switch (this.state.swipeViewIndex) {
 	  case 0:
 		editing = 'waterTracker'
@@ -343,6 +354,7 @@ class PlantViewEdit extends Component {
   openModal (history) {
 	let modalOpen
 
+	//selecting which modal to open
 	switch (this.state.swipeViewIndex) {
 	  case 0:
 		modalOpen = history ? 'waterTracker-history' : 'waterTracker'
@@ -395,8 +407,6 @@ class PlantViewEdit extends Component {
 	let pestName = getLastPestName(plant.pestTracker)
 	let pestTreatment = getLastPestTreatment(plant.pestTracker)
 
-	//TODO add ability to add more plant photos and view calendar with details for each view (ie fertilizerTracker with date and fertilizer used)
-
 	return (
 			<div className="PlantSeedlingViewEdit">
 			  {this.state.editing === 'etc' ?
@@ -426,52 +436,47 @@ class PlantViewEdit extends Component {
 							  onChangeIndex={(e) => this.setState({swipeViewIndex: e, editing: null})}>
 
 
-				{/* water */}
+				{/* pro accounts get cooler stuff */}
 				{Meteor.isPro ?
-						<WaterPro item={plant} updateData={this.updateData} editing={this.state.editing}/>
-						:
-						<Water item={plant} updateData={this.updateData} editing={this.state.editing}/>
-				}
+						<React.Fragment>
+						  <WaterPro item={plant} updateData={this.updateData} editing={this.state.editing}/>
 
+						  <FertilizerPro item={plant}
+										 updateData={this.updateData}
+										 fertilizerContent={fertilizerContent}
+										 editing={this.state.editing}/>
 
-				{/* fertilizer */}
-				{Meteor.isPro ?
-						<FertilizerPro item={plant}
+						  <PruningDeadheadingPro plant={plant}
+												 updateData={this.updateData}
+												 editing={this.state.editing}/>
+
+						  <SoilCompPro item={plant}
 									   updateData={this.updateData}
-									   fertilizerContent={fertilizerContent}
+									   soilCompLastChecked={soilCompLastChecked}
+									   soilMoisture={soilMoisture}
+									   soilPh={soilPh}
 									   editing={this.state.editing}/>
+						</React.Fragment>
 						:
-						<Fertilizer item={plant}
+						<React.Fragment>
+						  <Water item={plant} updateData={this.updateData} editing={this.state.editing}/>
+
+						  <Fertilizer item={plant}
+									  updateData={this.updateData}
+									  fertilizerContent={fertilizerContent}
+									  editing={this.state.editing}/>
+
+						  <SoilComp item={plant}
 									updateData={this.updateData}
-									fertilizerContent={fertilizerContent}
+									soilCompLastChecked={soilCompLastChecked}
+									soilMoisture={soilMoisture}
+									soilPh={soilPh}
 									editing={this.state.editing}/>
-				}
-
-				{/* pruning/deadheading */}
-				{Meteor.isPro &&
-				<PruningDeadheadingPro plant={plant}
-									   updateData={this.updateData}
-									   editing={this.state.editing}/>
-				}
-
-				{/* soil comp */}
-				{Meteor.isPro ?
-						<SoilCompPro item={plant}
-									 updateData={this.updateData}
-									 soilCompLastChecked={soilCompLastChecked}
-									 soilMoisture={soilMoisture}
-									 soilPh={soilPh}
-									 editing={this.state.editing}/>
-						:
-						<SoilComp item={plant}
-								  updateData={this.updateData}
-								  soilCompLastChecked={soilCompLastChecked}
-								  soilMoisture={soilMoisture}
-								  soilPh={soilPh}
-								  editing={this.state.editing}/>
+						</React.Fragment>
 				}
 
 
+				{/* this is all shared by both pro and regular accounts */}
 				{/* pest */}
 				<Pest item={plant}
 					  updateData={this.updateData}
@@ -571,12 +576,14 @@ class PlantViewEdit extends Component {
 										 pruneType: null,
 										 newData: null
 									   })}/></label>
+
 				  <label>Deadheaded <input type="radio"
 										   checked={this.state.pruneType === 'deadheadingTracker'}
 										   onChange={() => this.state.pruneType !== 'deadheadingTracker' ? this.setState({pruneType: 'deadheadingTracker'}) : this.setState({
 											 pruneType: null,
 											 newData: null
 										   })}/></label>
+
 				  <label>Both <input type="radio"
 									 checked={this.state.pruneType === 'pruningDeadheadingTracker'}
 									 onChange={() => this.state.pruneType !== 'pruningDeadheadingTracker' ? this.setState({pruneType: 'pruningDeadheadingTracker'}) : this.setState({
@@ -654,10 +661,10 @@ class PlantViewEdit extends Component {
 
 			  {/* diary */}
 			  <DiaryModals updateData={this.updateData}
-						  save={this.updatePlant}
-						  resetModal={this.resetModal}
-						  modalOpen={this.state.modalOpen}
-						  diary={plant.diary}/>
+						   save={this.updatePlant}
+						   resetModal={this.resetModal}
+						   modalOpen={this.state.modalOpen}
+						   diary={plant.diary}/>
 
 
 
