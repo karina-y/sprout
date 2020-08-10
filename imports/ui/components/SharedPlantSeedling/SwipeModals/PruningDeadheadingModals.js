@@ -8,9 +8,9 @@ import { toast } from 'react-toastify'
 
 const PruningDeadheadingModals = (props) => (
 		<React.Fragment>
-		  <ItemAddEntryModal save={this.updatePlant}
-							 cancel={this.resetModal}
-							 show={this.state.modalOpen}
+		  <ItemAddEntryModal save={props.updatePlant}
+							 cancel={props.resetModal}
+							 show={props.modalOpen}
 							 type="pruningDeadheadingTracker"
 							 header="New pruning or deadheading entry">
 
@@ -39,24 +39,24 @@ const PruningDeadheadingModals = (props) => (
 
 			{this.state.pruneType &&
 			<DatePicker
-					selected={this.state.newData.pruningDeadheadingTracker ? this.state.newData.pruningDeadheadingTracker.date : Date.now()}
+					selected={props.newDataTracker ? props.newDataTracker.date : Date.now()}
 					className="react-datepicker-wrapper"
 					dateFormat="dd-MMMM-yyyy"
 					popperPlacement="bottom"
 					inline
-					onSelect={(e) => this.state.pruneType ? this.updateData(e, this.state.pruneType, this.state.pruneType) : toast.warning('Please select an action below first.')}
-					highlightDates={PlantViewEdit.getHighlightDates(props.plant.pruningDeadheadingTracker, 'pruning')}/>
+					onSelect={(e) => this.state.pruneType ? props.addTrackerDate(e, this.state.pruneType) : toast.warning('Please select an action below first.')}
+					highlightDates={props.highlightDates}/>
 			}
 
 		  </ItemAddEntryModal>
 
 
-		  <ItemViewHistoryModal cancel={this.resetModal}
+		  <ItemViewHistoryModal cancel={props.resetModal}
 								show={this.state.modalOpen}
 								type="pruningDeadheadingTracker-history"
 								header="Pruning - Deadheading History">
 
-			{props.plant.pruningDeadheadingTracker && props.plant.pruningDeadheadingTracker.length > 0 ?
+			{props.tracker && props.tracker.length > 0 ?
 					<table>
 					  <thead>
 					  <tr>
@@ -66,7 +66,7 @@ const PruningDeadheadingModals = (props) => (
 					  </thead>
 					  <tbody>
 
-					  {props.plant.pruningDeadheadingTracker.map((item, index) => {
+					  {props.tracker.map((item, index) => {
 						return <tr key={index}>
 						  <td>{parseDate(item.date)}</td>
 						  <td>{item.action}</td>
@@ -84,10 +84,12 @@ const PruningDeadheadingModals = (props) => (
 )
 
 PruningDeadheadingModals.propTypes = {
-  updateData: PropTypes.func.isRequired,
+  addTrackerDate: PropTypes.func.isRequired,
+  addTrackerDetails: PropTypes.func.isRequired,
   save: PropTypes.func.isRequired,
   resetModal: PropTypes.func.isRequired,
   modalOpen: PropTypes.string,
+  tracker: PropTypes.array,
   diary: PropTypes.array,
   highlightDates: PropTypes.array
 }

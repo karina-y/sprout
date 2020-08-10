@@ -413,41 +413,43 @@ class SeedlingViewEdit extends Component {
 
 				{/* water */}
 				{Meteor.isPro ?
-						<React.Fragment>
-						  <WaterPro item={seedling} updateData={this.updateData} editing={this.state.editing}/>
-
-						  <FertilizerPro item={seedling}
-										 updateData={this.updateData}
-										 fertilizerContent={fertilizerContent}
-										 editing={this.state.editing}/>
-
-						  <SoilCompPro item={seedling}
-									   updateData={this.updateData}
-									   soilCompLastChecked={soilCompLastChecked}
-									   soilMoisture={soilMoisture}
-									   soilPh={soilPh}
-									   editing={this.state.editing}/>
-						</React.Fragment>
+						<WaterPro item={seedling} updateData={this.updateData} editing={this.state.editing}/>
 						:
-						<React.Fragment>
-						  <Water item={seedling} updateData={this.updateData} editing={this.state.editing}/>
-
-						  <Fertilizer item={seedling}
-									  updateData={this.updateData}
-									  fertilizerContent={fertilizerContent}
-									  editing={this.state.editing}/>
-
-						  <SoilComp item={seedling}
-									updateData={this.updateData}
-									soilCompLastChecked={soilCompLastChecked}
-									soilMoisture={soilMoisture}
-									soilPh={soilPh}
-									editing={this.state.editing}/>
-						</React.Fragment>
+						<Water item={seedling} updateData={this.updateData} editing={this.state.editing}/>
 				}
 
 
-				{/*shared with both pro and regular accounts*/}
+				{/* fertilizer */}
+				{Meteor.isPro ?
+						<FertilizerPro item={seedling}
+									   updateData={this.updateData}
+									   fertilizerContent={fertilizerContent}
+									   editing={this.state.editing}/>
+						:
+						<Fertilizer item={seedling}
+									updateData={this.updateData}
+									fertilizerContent={fertilizerContent}
+									editing={this.state.editing}/>
+				}
+
+				{/* soil comp */}
+				{Meteor.isPro ?
+						<SoilCompPro item={seedling}
+									 updateData={this.updateData}
+									 soilCompLastChecked={soilCompLastChecked}
+									 soilMoisture={soilMoisture}
+									 soilPh={soilPh}
+									 editing={this.state.editing}/>
+						:
+						<SoilComp item={seedling}
+								  updateData={this.updateData}
+								  soilCompLastChecked={soilCompLastChecked}
+								  soilMoisture={soilMoisture}
+								  soilPh={soilPh}
+								  editing={this.state.editing}/>
+				}
+
+
 				{/* pest */}
 				<Pest item={seedling}
 					  updateData={this.updateData}
@@ -461,6 +463,7 @@ class SeedlingViewEdit extends Component {
 				<EtcSeedling seedling={seedling} updateData={this.updateData} editing={this.state.editing}/>
 
 			  </SwipeableViews>
+
 
 			  {/* buttons */}
 			  <div className="add-data flex-around bottom-nav">

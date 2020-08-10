@@ -19,7 +19,7 @@ const SoilCompModals = (props) => (
 					dateFormat="dd-MMMM-yyyy"
 					popperPlacement="bottom"
 					inline
-					onSelect={(e) => props.updateData(e, 'soilDate', 'soilCompositionTracker')}
+					onSelect={(e) => props.addTrackerDate(e, 'soilCompositionTracker')}
 					highlightDates={props.highlightDates}/>
 
 			{props.category === 'potted' ?
@@ -88,6 +88,7 @@ const SoilCompModals = (props) => (
 
 SoilCompModals.propTypes = {
   updateData: PropTypes.func.isRequired,
+  addTrackerDate: PropTypes.func.isRequired,
   save: PropTypes.func.isRequired,
   resetModal: PropTypes.func.isRequired,
   modalOpen: PropTypes.string,

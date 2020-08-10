@@ -72,7 +72,7 @@ class PlantViewEdit extends Component {
 	}
   }
 
-  //TODO turn into hook
+  //TODO turn into hook?
   static getHighlightDates (items, type) {
 	let dates = []
 
@@ -113,55 +113,10 @@ class PlantViewEdit extends Component {
 	//this is any new data that's been entered, updating it as new inputs are entered
 	const newPlantData = this.state.newData
 
-	if (tracker && isNewLogEntry) {
-	  //this is a new entry with non-date data (ie fertilizer type used)
-	  if (newPlantData[tracker]) {
-		newPlantData[tracker][type] = e.target.value
-	  } else {
-		newPlantData[tracker] = {
-		  [type]: e.target.value
-		}
-	  }
-
-	} else if (tracker) {
-	  //special case here where the client is pruning and deadheading in the same date entry
-	  if (type === 'pruningDeadheadingTracker') {
-		tracker = 'pruningTracker'
-
-		if (newPlantData[tracker]) {
-		  newPlantData[tracker].date = new Date(e)
-		} else {
-		  newPlantData[tracker] = {
-			date: new Date(e)
-		  }
-		}
-
-		tracker = 'deadheadingTracker'
-		//will add the next one below
-	  }
-
-	  //this is a new date entry only
-	  if (newPlantData[tracker]) {
-		newPlantData[tracker].date = new Date(e)
-	  } else {
-		newPlantData[tracker] = {
-		  date: new Date(e)
-		}
-	  }
-	} else if (type === 'companions') {
+	if (type === 'companions') {
 
 	  const stripped = e.target.value.replace(/\s*,\s*/g, ',')
 	  newPlantData[type] = stripped.split(',')
-
-	} else if (type === 'pruning') {
-
-	  if (newPlantData.pruningTracker) {
-		newPlantData.pruningTracker[type] = e.target.value
-	  } else {
-		newPlantData.pruningTracker = {
-		  [type]: e.target.value
-		}
-	  }
 
 	} else if (type === 'ph' || type === 'moisture') {
 	  let phVal = parseFloat(e.target.value)
@@ -176,7 +131,6 @@ class PlantViewEdit extends Component {
 	  }
 
 	} else if (type === 'dateBought' || type === 'datePlanted') {
-	  // newPlantData[type] = new Date(e)
 	  newPlantData[type] = new Date(e.target.value)
 	} else if (type === 'diary') {
 	  if (newPlantData[type]) {
@@ -204,8 +158,42 @@ class PlantViewEdit extends Component {
 	})
   }
 
+  //this only adds new dates to trackers, ie adding date fertilizer was used
+  addTrackerDate (e, trackerType) {
+	let newPlantData = this.state.newData;
+
+	if (newPlantData[trackerType]) {
+	  newPlantData[trackerType].date = new Date(e)
+	} else {
+	  newPlantData[trackerType] = {
+		date: new Date(e)
+	  }
+	}
+
+	this.setState({
+	  newData: newPlantData
+	})
+  }
+
+  //this adds additional details to trackers, ie fertilizer type used
+  addTrackerDetails (e, trackerType, detailType) {
+	let newPlantData = this.state.newData;
+
+	if (newPlantData[trackerType]) {
+	  newPlantData[trackerType][detailType] = e.target.value;
+	} else {
+	  newPlantData[trackerType] = {
+		[detailType]: e.target.value
+	  }
+	}
+
+	this.setState({
+	  newData: newPlantData
+	})
+  }
+
   updatePlant (type) {
-	console.log('profile')
+	console.log('profile', type)
 
 	if (type === 'pruningDeadheadingTracker') {
 	  type = this.state.pruneType
@@ -435,48 +423,52 @@ class PlantViewEdit extends Component {
 							  index={this.state.swipeViewIndex}
 							  onChangeIndex={(e) => this.setState({swipeViewIndex: e, editing: null})}>
 
-
-				{/* pro accounts get cooler stuff */}
+				{/* water */}
 				{Meteor.isPro ?
-						<React.Fragment>
-						  <WaterPro item={plant} updateData={this.updateData} editing={this.state.editing}/>
-
-						  <FertilizerPro item={plant}
-										 updateData={this.updateData}
-										 fertilizerContent={fertilizerContent}
-										 editing={this.state.editing}/>
-
-						  <PruningDeadheadingPro plant={plant}
-												 updateData={this.updateData}
-												 editing={this.state.editing}/>
-
-						  <SoilCompPro item={plant}
-									   updateData={this.updateData}
-									   soilCompLastChecked={soilCompLastChecked}
-									   soilMoisture={soilMoisture}
-									   soilPh={soilPh}
-									   editing={this.state.editing}/>
-						</React.Fragment>
+						<WaterPro item={plant} updateData={this.updateData} editing={this.state.editing}/>
 						:
-						<React.Fragment>
-						  <Water item={plant} updateData={this.updateData} editing={this.state.editing}/>
-
-						  <Fertilizer item={plant}
-									  updateData={this.updateData}
-									  fertilizerContent={fertilizerContent}
-									  editing={this.state.editing}/>
-
-						  <SoilComp item={plant}
-									updateData={this.updateData}
-									soilCompLastChecked={soilCompLastChecked}
-									soilMoisture={soilMoisture}
-									soilPh={soilPh}
-									editing={this.state.editing}/>
-						</React.Fragment>
+						<Water item={plant} updateData={this.updateData} editing={this.state.editing}/>
 				}
 
 
-				{/* this is all shared by both pro and regular accounts */}
+				{/* fertilizer */}
+				{Meteor.isPro ?
+						<FertilizerPro item={plant}
+									   updateData={this.updateData}
+									   fertilizerContent={fertilizerContent}
+									   editing={this.state.editing}/>
+						:
+						<Fertilizer item={plant}
+									updateData={this.updateData}
+									fertilizerContent={fertilizerContent}
+									editing={this.state.editing}/>
+				}
+
+				{/* pruning/deadheading */}
+				{Meteor.isPro &&
+				<PruningDeadheadingPro plant={plant}
+									   updateData={this.updateData}
+									   editing={this.state.editing}/>
+				}
+
+				{/* soil comp */}
+				{Meteor.isPro ?
+						<SoilCompPro item={plant}
+									 updateData={this.updateData}
+									 soilCompLastChecked={soilCompLastChecked}
+									 soilMoisture={soilMoisture}
+									 soilPh={soilPh}
+									 editing={this.state.editing}/>
+						:
+						<SoilComp item={plant}
+								  updateData={this.updateData}
+								  soilCompLastChecked={soilCompLastChecked}
+								  soilMoisture={soilMoisture}
+								  soilPh={soilPh}
+								  editing={this.state.editing}/>
+				}
+
+
 				{/* pest */}
 				<Pest item={plant}
 					  updateData={this.updateData}
@@ -542,7 +534,8 @@ class PlantViewEdit extends Component {
 
 			  {/* TODO - make modal situation more efficient, i should really be able to decrease this code, too much repetition */}
 			  {/* water */}
-			  <WaterModals updateData={this.updateData}
+			  <WaterModals addTrackerDate={this.addTrackerDate}
+						   addTrackerDetails={this.addTrackerDetails}
 						   save={this.updatePlant}
 						   resetModal={this.resetModal}
 						   modalOpen={this.state.modalOpen}
@@ -552,7 +545,8 @@ class PlantViewEdit extends Component {
 
 
 			  {/* fertilizer */}
-			  <FertilizerModals updateData={this.updateData}
+			  <FertilizerModals addTrackerDate={this.addTrackerDate}
+								addTrackerDetails={this.addTrackerDetails}
 								save={this.updatePlant}
 								resetModal={this.resetModal}
 								modalOpen={this.state.modalOpen}
@@ -640,6 +634,7 @@ class PlantViewEdit extends Component {
 
 			  {/* soil comp */}
 			  <SoilCompModals updateData={this.updateData}
+							  addTrackerDate={this.addTrackerDate}
 							  save={this.updatePlant}
 							  resetModal={this.resetModal}
 							  modalOpen={this.state.modalOpen}
@@ -650,7 +645,8 @@ class PlantViewEdit extends Component {
 
 
 			  {/* pests */}
-			  <PestModals updateData={this.updateData}
+			  <PestModals addTrackerDate={this.addTrackerDate}
+						  addTrackerDetails={this.addTrackerDetails}
 						  save={this.updatePlant}
 						  resetModal={this.resetModal}
 						  modalOpen={this.state.modalOpen}

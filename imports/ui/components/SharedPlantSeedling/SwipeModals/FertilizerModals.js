@@ -19,13 +19,13 @@ const FertilizerModals = (props) => (
 					dateFormat="dd-MMMM-yyyy"
 					popperPlacement="bottom"
 					inline
-					onSelect={(e) => props.updateData(e, 'fertilizerDate', 'fertilizerTracker')}
+					onSelect={(e) => props.addTrackerDate(e, 'fertilizerTracker')}
 					highlightDates={props.highlightDates}/>
 
 			<p className="modern-input for-modal">
 			  <label>fertilizer used</label>
 			  <input type="text"
-					 onChange={(e) => props.updateData(e, 'fertilizer', 'fertilizerTracker', true)}/>
+					 onChange={(e) => props.addTrackerDetails(e, 'fertilizerTracker', 'fertilizer')}/>
 			</p>
 		  </ItemAddEntryModal>
 
@@ -62,7 +62,8 @@ const FertilizerModals = (props) => (
 )
 
 FertilizerModals.propTypes = {
-  updateData: PropTypes.func.isRequired,
+  addTrackerDate: PropTypes.func.isRequired,
+  addTrackerDetails: PropTypes.func.isRequired,
   save: PropTypes.func.isRequired,
   resetModal: PropTypes.func.isRequired,
   modalOpen: PropTypes.string,

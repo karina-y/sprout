@@ -52,7 +52,10 @@ body {
       }
 
       &.for-modal {
-        label {
+        label,
+        input,
+        select,
+        textarea {
           color: $ming;
         }
       }

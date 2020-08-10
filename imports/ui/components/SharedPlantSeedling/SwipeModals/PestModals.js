@@ -18,19 +18,19 @@ const PestModals = (props) => (
 						dateFormat="dd-MMMM-yyyy"
 						popperPlacement="bottom"
 						inline
-						onSelect={(e) => props.updateData(e, 'pestDate', 'pestTracker')}
+						onSelect={(e) => props.addTrackerDate(e, 'pestTracker')}
 						highlightDates={props.highlightDates}/>
 
 			<p className="modern-input for-modal">
 			  <label>pest treated</label>
 			  <input type="text"
-					 onChange={(e) => props.updateData(e, 'pest', 'pestTracker', true)}/>
+					 onChange={(e) => props.addTrackerDetails(e, 'pestTracker', 'pest')}/>
 			</p>
 
 			<p className="modern-input for-modal">
 			  <label>treatment method</label>
 			  <input type="text"
-					 onChange={(e) => props.updateData(e, 'treatment', 'pestTracker', true)}/>
+					 onChange={(e) => props.addTrackerDetails(e, 'pestTracker', 'treatment')}/>
 			</p>
 		  </ItemAddEntryModal>
 
@@ -70,7 +70,8 @@ const PestModals = (props) => (
 )
 
 PestModals.propTypes = {
-  updateData: PropTypes.func.isRequired,
+  addTrackerDate: PropTypes.func.isRequired,
+  addTrackerDetails: PropTypes.func.isRequired,
   save: PropTypes.func.isRequired,
   resetModal: PropTypes.func.isRequired,
   modalOpen: PropTypes.string,

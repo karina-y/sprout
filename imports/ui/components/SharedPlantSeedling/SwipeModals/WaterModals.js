@@ -18,7 +18,7 @@ const WaterModals = (props) => (
 					dateFormat="dd-MMMM-yyyy"
 					popperPlacement="bottom"
 					inline
-					onSelect={(e) => props.updateData(e, 'waterDate', 'waterTracker')}
+					onSelect={(e) => props.addTrackerDate(e, 'waterTracker')}
 					highlightDates={props.highlightDates}/>
 		  </ItemAddEntryModal>
 
@@ -54,7 +54,7 @@ const WaterModals = (props) => (
 )
 
 WaterModals.propTypes = {
-  updateData: PropTypes.func.isRequired,
+  addTrackerDate: PropTypes.func.isRequired,
   save: PropTypes.func.isRequired,
   resetModal: PropTypes.func.isRequired,
   modalOpen: PropTypes.string,
