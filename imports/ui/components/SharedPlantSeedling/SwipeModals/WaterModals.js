@@ -59,7 +59,7 @@ WaterModals.propTypes = {
   resetModal: PropTypes.func.isRequired,
   modalOpen: PropTypes.string,
   tracker: PropTypes.array,
-  newDataTracker: PropTypes.array,
+  newDataTracker: PropTypes.object,
   highlightDates: PropTypes.array
 }
 

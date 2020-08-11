@@ -130,3 +130,17 @@ export function parseDate(date) {
 
   return parsedDate;
 }
+
+export function getHighlightDates(tracker, type) {
+  let dates = []
+
+  if ((type === 'dateBought' || type === 'datePlanted') && tracker) {
+	dates.push(new Date(tracker))
+  } else if (tracker && tracker.length > 0) {
+	for (let i = 0; i < tracker.length; i++) {
+	  dates.push(new Date(tracker[i].date))
+	}
+  }
+
+  return dates
+}

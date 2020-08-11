@@ -14,29 +14,13 @@ import { faTimes } from '@fortawesome/free-solid-svg-icons/faTimes'
 import { faPlus } from '@fortawesome/free-solid-svg-icons/faPlus'
 import { faCalendar } from '@fortawesome/free-solid-svg-icons/faCalendar'
 import {
-  getDaysSinceAction, getLastPestName, getLastPestTreatment, getLastSoilMoisture, getLastSoilPh,
-  getPlantCondition, lastChecked, lastFertilizerUsed, parseDate, sortByLastDate
+  getDaysSinceAction, getPlantCondition, sortByLastDate
 } from '../../../utils/plantData'
 import Plant from '/imports/api/Plant/Plant'
 import { toast } from 'react-toastify'
 import ItemAddEntryModal from '../Shared/ItemAddEntryModal'
 import Category from '/imports/api/Category/Category'
-import WaterPro from '../SharedPlantSeedling/SwipeViewsEdit/WaterPro'
-import FertilizerPro from '../SharedPlantSeedling/SwipeViewsEdit/FertilizerPro'
-import PruningDeadheadingPro from '../SharedPlantSeedling/SwipeViewsEdit/PruningDeadheadingPro'
-import SoilCompPro from '../SharedPlantSeedling/SwipeViewsEdit/SoilCompPro'
-import Pest from '../SharedPlantSeedling/SwipeViewsEdit/Pest'
-import Diary from '../SharedPlantSeedling/SwipeViewsEdit/Diary'
-import EtcPlant from '../SharedPlantSeedling/SwipeViewsEdit/EtcPlant'
-import Water from '../SharedPlantSeedling/SwipeViewsEdit/Water'
-import Fertilizer from '../SharedPlantSeedling/SwipeViewsEdit/Fertilizer'
-import SoilComp from '../SharedPlantSeedling/SwipeViewsEdit/SoilComp'
-import WaterModals from '../SharedPlantSeedling/SwipeModals/WaterModals'
-import FertilizerModals from '../SharedPlantSeedling/SwipeModals/FertilizerModals'
-import SoilCompModals from '../SharedPlantSeedling/SwipeModals/SoilCompModals'
-import PestModals from '../SharedPlantSeedling/SwipeModals/PestModals'
-import DiaryModals from '../SharedPlantSeedling/SwipeModals/DiaryModals'
-import PruningDeadheadingModals from '../SharedPlantSeedling/SwipeModals/PruningDeadheadingModals'
+import WaterViewEdit from '../PlantViewEditPanels/WaterViewEdit'
 
 /*
 TODO
@@ -72,21 +56,6 @@ class PlantViewEdit extends Component {
 	}
   }
 
-  //TODO turn into hook?
-  static getHighlightDates (items, type) {
-	let dates = []
-
-	if ((type === 'dateBought' || type === 'datePlanted') && items) {
-	  dates.push(new Date(items))
-	} else if (items && items.length > 0) {
-	  for (let i = 0; i < items.length; i++) {
-		dates.push(new Date(items[i].date))
-	  }
-	}
-
-	return dates
-  }
-
   //TODO
   updatePhoto (e) {
 	let files = e.target.files
@@ -105,209 +74,11 @@ class PlantViewEdit extends Component {
 	fileReader.readAsDataURL(file)
   }
 
-  //TODO this is heavy! simplify this and break it out into diff functions (one separate for tracker for sure)
-  //tracker should be able to be simplified
-  //this updates the plant's data in my state before it gets sent out to the backend
-  updateData (e, type) {
-	//this is any new data that's been entered, updating it as new inputs are entered
-	const newPlantData = this.state.newData
 
-	if (type === 'companions') {
-	  const stripped = e.target.value.replace(/\s*,\s*/g, ',')
-	  newPlantData[type] = stripped.split(',')
-
-	} else if (type === 'dateBought' || type === 'datePlanted') {
-	  newPlantData[type] = new Date(e.target.value)
-	} else if (type === 'diary') {
-	  if (newPlantData[type]) {
-		newPlantData[type].entry = e.target.value
-		newPlantData[type].date = new Date()
-	  } else {
-		newPlantData[type] = {
-		  entry: e.target.value,
-		  date: new Date()
-		}
-	  }
-	} else if (type === 'waterScheduleAuto') {
-	  if (newPlantData[type]) {
-		newPlantData[type] = !newPlantData[type]
-	  } else {
-		newPlantData[type] = !this.props.plant[type]
-	  }
-	} else {
-	  newPlantData[type] = e.target.value
-	}
-
-	this.setState({
-	  newData: newPlantData
-	})
-  }
-
-  //this only adds new dates to trackers, ie adding date fertilizer was used
-  addTrackerDate (e, trackerType) {
-	let newPlantData = this.state.newData;
-
-	if (newPlantData[trackerType]) {
-	  newPlantData[trackerType].date = new Date(e)
-	} else {
-	  newPlantData[trackerType] = {
-		date: new Date(e)
-	  }
-	}
-
-	this.setState({
-	  newData: newPlantData
-	})
-  }
-
-  //this adds additional details to trackers, ie fertilizer type used
-  addTrackerDetails (e, trackerType, detailType) {
-	let newPlantData = this.state.newData;
-
-	if (type === 'ph' || type === 'moisture') {
-	  let phVal = parseFloat(e.target.value)
-	  let moistureVal = parseFloat((parseInt(e.target.value) / 100).toFixed(2))
-
-	  if (newPlantData.soilCompositionTracker) {
-		newPlantData.soilCompositionTracker[type] = type === 'ph' ? phVal : moistureVal
-	  } else {
-		newPlantData.soilCompositionTracker = {
-		  [type]: type === 'ph' ? phVal : moistureVal
-		}
-	  }
-
-	} else if (newPlantData[trackerType]) {
-	  newPlantData[trackerType][detailType] = e.target.value;
-	} else {
-	  newPlantData[trackerType] = {
-		[detailType]: e.target.value
-	  }
-	}
-
-	this.setState({
-	  newData: newPlantData
-	})
-  }
-
-  //TODO clean this up next!
-  updatePlant (type) {
-	console.log('profile', type)
-
-	//these are actually stored separately in the db, but for ease for the user they're in one view
-	if (type === 'pruningDeadheadingTracker') {
-	  type = this.state.pruneType
-	}
-
-	const newPlantData = this.state.newData
-	const oldPlantData = this.props.plant
-	let data
-	let changeTitle = false
-
-	if (!type || !newPlantData || JSON.stringify(newPlantData) === '{}') {
-	  toast.error('No data entered.')
-	} else {
-	  //TODO abstract each of these cases out
-	  switch (type) {
-		case 'waterTracker-edit':
-		  //doing the waterscheduleauto checks because they're bools
-		  data = {
-			waterPreference: newPlantData.waterPreference || oldPlantData.waterPreference,
-			lightPreference: newPlantData.lightPreference || oldPlantData.lightPreference,
-			waterSchedule: (newPlantData.waterSchedule === '' && oldPlantData.waterSchedule > 0) ? null : (newPlantData.waterSchedule || oldPlantData.waterSchedule) ? parseInt(newPlantData.waterSchedule || oldPlantData.waterSchedule) : newPlantData.waterSchedule || oldPlantData.waterSchedule,
-			waterScheduleAuto: newPlantData.waterScheduleAuto != null ? newPlantData.waterScheduleAuto : oldPlantData.waterScheduleAuto != null ? oldPlantData.waterScheduleAuto : false
-		  }
-		  break
-		case 'fertilizerTracker-edit':
-		  data = {
-			fertilizerSchedule: (newPlantData.fertilizerSchedule === '' && oldPlantData.fertilizerSchedule > 0) ? null : (newPlantData.fertilizerSchedule || oldPlantData.fertilizerSchedule) ? parseInt(newPlantData.fertilizerSchedule || oldPlantData.fertilizerSchedule) : newPlantData.fertilizerSchedule || oldPlantData.fertilizerSchedule,
-			fertilizer: newPlantData.fertilizer,
-			compost: newPlantData.compost,
-			nutrient: newPlantData.nutrient,
-		  }
-		  break
-		case 'pruningDeadheadingTracker-edit':
-		  /*data = {
-			pruningSchedule: parseInt(newPlantData.pruningSchedule || oldPlantData.pruningSchedule),
-			deadheadingSchedule: parseInt(newPlantData.deadheadingSchedule || oldPlantData.deadheadingSchedule),
-		  }*/
-
-		  data = {
-			pruningPreference: newPlantData.pruningPreference || oldPlantData.pruningPreference,
-			deadheadingPreference: newPlantData.deadheadingPreference || oldPlantData.deadheadingPreference
-		  }
-		  break
-		case 'etc-edit':
-		  data = {
-			commonName: newPlantData.commonName || oldPlantData.commonName,
-			latinName: newPlantData.latinName || oldPlantData.latinName,
-			toxicity: newPlantData.toxicity || oldPlantData.toxicity,
-			category: newPlantData.category || oldPlantData.category,
-			location: newPlantData.location || oldPlantData.location,
-			locationBought: newPlantData.locationBought || oldPlantData.locationBought,
-			dateBought: new Date(newPlantData.dateBought || oldPlantData.dateBought),
-			datePlanted: new Date(newPlantData.datePlanted || oldPlantData.datePlanted),
-			companions: newPlantData.companions || oldPlantData.companions
-		  }
-
-		  if (newPlantData.latinName !== oldPlantData.latinName || newPlantData.commonName !== oldPlantData.commonName) {
-			changeTitle = true
-		  }
-		  break
-		case 'pruningDeadheadingTracker':
-		  data = {
-			pruningTracker: newPlantData.pruningTracker,
-			deadheadingTracker: newPlantData.deadheadingTracker,
-		  }
-		  break
-		case 'soilCompositionTracker-edit':
-		  if (newPlantData.category === 'in-ground' || (!newPlantData.category && oldPlantData.category === 'in-ground')) {
-			data = {
-			  soilAmendment: newPlantData.soilAmendment,
-			  soilType: newPlantData.soilType,
-			  tilled: newPlantData.tilled === 'true'
-			}
-		  } else {
-			data = {
-			  soilRecipe: newPlantData.soilRecipe
-			}
-		  }
-		  break
-		default:
-		  data = {
-			[type]: newPlantData[type]
-		  }
-	  }
-
-	  if (data) {
-		data._id = oldPlantData._id
-
-		Meteor.call('plant.update', type, data, (err, response) => {
-		  if (err) {
-			toast.error(err.message)
-		  } else {
-			toast.success('Successfully saved new entry.')
-
-			if (changeTitle) {
-			  Session.set('pageTitle', newPlantData.latinName || newPlantData.commonName)
-			}
-
-			//reset the data
-			this.resetModal()
-		  }
-		})
-	  } else {
-		toast.error('No data entered.')
-	  }
-	}
-
-  }
-
-  resetModal () {
+  exitEditMode () {
 	this.setState({
 	  modalOpen: null,
-	  editing: null,
-	  pruneType: null,
-	  newData: {}
+	  editing: null
 	})
   }
 
@@ -338,29 +109,33 @@ class PlantViewEdit extends Component {
 	})
   }
 
-  openModal (history) {
+  openModal (isHistoryModal) {
 	let modalOpen
 
 	//selecting which modal to open
 	switch (this.state.swipeViewIndex) {
 	  case 0:
-		modalOpen = history ? 'waterTracker-history' : 'waterTracker'
+		modalOpen = 'waterTracker'
 		break
 	  case 1:
-		modalOpen = history ? 'fertilizerTracker-history' : 'fertilizerTracker'
+		modalOpen = 'fertilizerTracker'
 		break
 	  case 2:
-		modalOpen = history ? 'pruningDeadheadingTracker-history' : 'pruningDeadheadingTracker'
+		modalOpen = 'pruningDeadheadingTracker'
 		break
 	  case 3:
-		modalOpen = history ? 'soilCompositionTracker-history' : 'soilCompositionTracker'
+		modalOpen = 'soilCompositionTracker'
 		break
 	  case 4:
-		modalOpen = history ? 'pestTracker-history' : 'pestTracker'
+		modalOpen = 'pestTracker'
 		break
 	  case 5:
-		modalOpen = history ? 'diary-history' : 'diary'
+		modalOpen = 'diary'
 		break
+	}
+
+	if (isHistoryModal) {
+	  modalOpen+= "-history"
 	}
 
 	this.setState({
@@ -386,13 +161,6 @@ class PlantViewEdit extends Component {
 
   render () {
 	const plant = this.props.plant
-	const fertilizerContent = lastFertilizerUsed(plant.fertilizerTracker)
-	let soilCompLastChecked = lastChecked(plant.soilCompositionTracker)
-	let soilPh = getLastSoilPh(plant.soilCompositionTracker)
-	let soilMoisture = getLastSoilMoisture(plant.soilCompositionTracker)
-	let pestLastChecked = lastChecked(plant.pestTracker)
-	let pestName = getLastPestName(plant.pestTracker)
-	let pestTreatment = getLastPestTreatment(plant.pestTracker)
 
 	return (
 			<div className="PlantSeedlingViewEdit">
@@ -422,64 +190,11 @@ class PlantViewEdit extends Component {
 							  index={this.state.swipeViewIndex}
 							  onChangeIndex={(e) => this.setState({swipeViewIndex: e, editing: null})}>
 
-				{/* water */}
-				{Meteor.isPro ?
-						<WaterPro item={plant} updateData={this.updateData} editing={this.state.editing}/>
-						:
-						<Water item={plant} updateData={this.updateData} editing={this.state.editing}/>
-				}
-
-
-				{/* fertilizer */}
-				{Meteor.isPro ?
-						<FertilizerPro item={plant}
-									   updateData={this.updateData}
-									   fertilizerContent={fertilizerContent}
-									   editing={this.state.editing}/>
-						:
-						<Fertilizer item={plant}
-									updateData={this.updateData}
-									fertilizerContent={fertilizerContent}
-									editing={this.state.editing}/>
-				}
-
-				{/* pruning/deadheading */}
-				{Meteor.isPro &&
-				<PruningDeadheadingPro plant={plant}
-									   updateData={this.updateData}
-									   editing={this.state.editing}/>
-				}
-
-				{/* soil comp */}
-				{Meteor.isPro ?
-						<SoilCompPro item={plant}
-									 updateData={this.updateData}
-									 soilCompLastChecked={soilCompLastChecked}
-									 soilMoisture={soilMoisture}
-									 soilPh={soilPh}
-									 editing={this.state.editing}/>
-						:
-						<SoilComp item={plant}
-								  updateData={this.updateData}
-								  soilCompLastChecked={soilCompLastChecked}
-								  soilMoisture={soilMoisture}
-								  soilPh={soilPh}
-								  editing={this.state.editing}/>
-				}
-
-
-				{/* pest */}
-				<Pest item={plant}
-					  updateData={this.updateData}
-					  pestLastChecked={pestLastChecked}
-					  pestName={pestName}
-					  pestTreatment={pestTreatment}/>
-
-				{/* diary */}
-				<Diary item={plant} updateData={this.updateData}/>
-
-				{/* etc */}
-				<EtcPlant plant={plant} updateData={this.updateData} editing={this.state.editing}/>
+				<WaterViewEdit swipeViewIndex={this.state.swipeViewIndex}
+							   modalOpen={this.state.modalOpen}
+							   editing={this.state.editing}
+							   exitEditMode={this.exitEditMode}
+							   plant={plant}/>
 
 			  </SwipeableViews>
 
@@ -515,7 +230,7 @@ class PlantViewEdit extends Component {
 										   className="plant-condition-icon"
 										   alt={this.state.editing ? 'times' : 'pencil'}
 										   title={this.state.editing ? 'cancel' : 'edit'}
-										   onClick={() => this.state.editing ? this.resetModal() : this.handleEdit()}/>
+										   onClick={() => this.state.editing ? this.exitEditMode() : this.handleEdit()}/>
 
 						  {this.state.editing &&
 						  <FontAwesomeIcon icon={faSave}
@@ -531,107 +246,8 @@ class PlantViewEdit extends Component {
 			  </div>
 
 
-			  {/* TODO - make modal situation more efficient, i should really be able to decrease this code, too much repetition */}
-			  {/* water */}
-			  <WaterModals addTrackerDate={this.addTrackerDate}
-						   addTrackerDetails={this.addTrackerDetails}
-						   save={this.updatePlant}
-						   resetModal={this.resetModal}
-						   modalOpen={this.state.modalOpen}
-						   newDataTracker={this.state.newData.waterTracker}
-						   tracker={plant.waterTracker}
-						   highlightDates={PlantViewEdit.getHighlightDates(plant.waterTracker)}/>
-
-
-			  {/* fertilizer */}
-			  <FertilizerModals addTrackerDate={this.addTrackerDate}
-								addTrackerDetails={this.addTrackerDetails}
-								save={this.updatePlant}
-								resetModal={this.resetModal}
-								modalOpen={this.state.modalOpen}
-								newDataTracker={this.state.newData.fertilizerTracker}
-								tracker={plant.fertilizerTracker}
-								highlightDates={PlantViewEdit.getHighlightDates(plant.fertilizerTracker)}/>
-
-
-			  {/* pruning */}
-			  <PruningDeadheadingModals addTrackerDate={this.addTrackerDate}
-										addTrackerDetails={this.addTrackerDetails}
-										save={this.updatePlant}
-										resetModal={this.resetModal}
-										modalOpen={this.state.modalOpen}
-										newDataTracker={this.state.newData.pruningDeadheadingTracker}
-										tracker={plant.pruningDeadheadingTracker}
-										highlightDates={PlantViewEdit.getHighlightDates(plant.pruningDeadheadingTracker)}
-										pruneType={this.state.pruneType}
-										setPruneType={(val) => this.setState(val)}/>
-
-
-			  {/* soil comp */}
-			  <SoilCompModals updateData={this.updateData}
-							  addTrackerDate={this.addTrackerDate}
-							  save={this.updatePlant}
-							  resetModal={this.resetModal}
-							  modalOpen={this.state.modalOpen}
-							  newDataTracker={this.state.newData.soilCompositionTracker}
-							  tracker={plant.soilCompositionTracker}
-							  category={plant.category}
-							  highlightDates={PlantViewEdit.getHighlightDates(plant.soilCompositionTracker)}/>
-
-
-			  {/* pests */}
-			  <PestModals addTrackerDate={this.addTrackerDate}
-						  addTrackerDetails={this.addTrackerDetails}
-						  save={this.updatePlant}
-						  resetModal={this.resetModal}
-						  modalOpen={this.state.modalOpen}
-						  newDataTracker={this.state.newData.pestTracker}
-						  tracker={plant.pestTracker}
-						  highlightDates={PlantViewEdit.getHighlightDates(plant.pestTracker)}/>
-
-
-			  {/* diary */}
-			  <DiaryModals updateData={this.updateData}
-						   save={this.updatePlant}
-						   resetModal={this.resetModal}
-						   modalOpen={this.state.modalOpen}
-						   diary={plant.diary}/>
-
-
-
-			  {/* the rest */}
-			  {/*<PlantAddEntryModal save={this.updatePlant}
-									cancel={this.resetModal}
-									show={this.state.modalOpen}
-									type="etc"
-									header="Edit other details">
-
-				<input type="text"
-					   placeholder="Location Bought"
-					   onChange={(e) => this.updateData(e, 'locationBought')}
-					   defaultValue={plant.locationBought}/>
-
-				<DatePicker selected={this.state.newData.dateBought || Date.now()}
-							className="react-datepicker-wrapper"
-							dateFormat="dd-MMMM-yyyy"
-							popperPlacement="bottom"
-							onSelect={(e) => this.updateData(e, 'dateBought')}
-							highlightDates={PlantViewEdit.getHighlightDates(plant.dateBought, 'dateBought')}/>
-
-				<input type="text"
-					   placeholder="Location In Home"
-					   onChange={(e) => this.updateData(e, 'location')}
-					   defaultValue={plant.location}/>
-
-				<input type="text"
-					   placeholder="Companions"
-					   onChange={(e) => this.updateData(e, 'companions')}
-					   defaultValue={plant.companions ? plant.companions.join(', ') : null}/>
-			  </PlantAddEntryModal>*/}
-
-
 			  <ItemAddEntryModal save={this.deletePlant}
-								 cancel={this.resetModal}
+								 cancel={this.exitEditMode}
 								 show={this.state.modalOpen}
 								 type="delete"
 								 header="Are you sure you want to delete this plant's entire profile?" />
