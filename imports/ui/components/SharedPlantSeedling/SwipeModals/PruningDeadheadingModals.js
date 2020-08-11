@@ -8,43 +8,46 @@ import { toast } from 'react-toastify'
 
 const PruningDeadheadingModals = (props) => (
 		<React.Fragment>
-		  <ItemAddEntryModal save={props.updatePlant}
+		  <ItemAddEntryModal save={props.save}
 							 cancel={props.resetModal}
 							 show={props.modalOpen}
 							 type="pruningDeadheadingTracker"
 							 header="New pruning or deadheading entry">
 
-			{!this.state.pruneType &&
+			{!props.pruneType &&
 			<div className="flex-between">
 			  <label>Pruned <input type="radio"
-								   checked={this.state.pruneType === 'pruningTracker'}
-								   onChange={() => this.state.pruneType !== 'pruningTracker' ? this.setState({pruneType: 'pruningTracker'}) : this.setState({
-									 pruneType: null,
-									 newData: null
-								   })}/></label>
+								   checked={props.pruneType === 'pruningTracker'}
+								   onChange={() => props.pruneType !== 'pruningTracker' ? props.setPruneType({pruneType: 'pruningTracker'}) :
+										   props.setPruneType({
+											 pruneType: null,
+											 newData: null
+										   })}/></label>
 			  <label>Deadheaded <input type="radio"
-									   checked={this.state.pruneType === 'deadheadingTracker'}
-									   onChange={() => this.state.pruneType !== 'deadheadingTracker' ? this.setState({pruneType: 'deadheadingTracker'}) : this.setState({
-										 pruneType: null,
-										 newData: null
-									   })}/></label>
+									   checked={props.pruneType === 'deadheadingTracker'}
+									   onChange={() => props.pruneType !== 'deadheadingTracker' ? props.setPruneType({pruneType: 'deadheadingTracker'}) :
+											   props.setPruneType({
+												 pruneType: null,
+												 newData: null
+											   })}/></label>
 			  <label>Both <input type="radio"
-								 checked={this.state.pruneType === 'pruningDeadheadingTracker'}
-								 onChange={() => this.state.pruneType !== 'pruningDeadheadingTracker' ? this.setState({pruneType: 'pruningDeadheadingTracker'}) : this.setState({
-								   pruneType: null,
-								   newData: null
-								 })}/></label>
+								 checked={props.pruneType === 'pruningDeadheadingTracker'}
+								 onChange={() => props.pruneType !== 'pruningDeadheadingTracker' ? props.setPruneType({pruneType: 'pruningDeadheadingTracker'}) :
+										 props.setPruneType({
+										   pruneType: null,
+										   newData: null
+										 })}/></label>
 			</div>
 			}
 
-			{this.state.pruneType &&
+			{props.pruneType &&
 			<DatePicker
 					selected={props.newDataTracker ? props.newDataTracker.date : Date.now()}
 					className="react-datepicker-wrapper"
 					dateFormat="dd-MMMM-yyyy"
 					popperPlacement="bottom"
 					inline
-					onSelect={(e) => this.state.pruneType ? props.addTrackerDate(e, this.state.pruneType) : toast.warning('Please select an action below first.')}
+					onSelect={(e) => props.pruneType ? props.addTrackerDate(e, props.pruneType) : toast.warning('Please select an action below first.')}
 					highlightDates={props.highlightDates}/>
 			}
 
@@ -52,7 +55,7 @@ const PruningDeadheadingModals = (props) => (
 
 
 		  <ItemViewHistoryModal cancel={props.resetModal}
-								show={this.state.modalOpen}
+								show={props.modalOpen}
 								type="pruningDeadheadingTracker-history"
 								header="Pruning - Deadheading History">
 

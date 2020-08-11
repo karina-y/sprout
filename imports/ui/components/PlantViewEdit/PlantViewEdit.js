@@ -4,7 +4,6 @@ import PropTypes from 'prop-types'
 import autobind from 'react-autobind'
 import './PlantSeedlingViewEdit.scss'
 import { Session } from 'meteor/session'
-import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import SwipeableViews from 'react-swipeable-views'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -21,7 +20,6 @@ import {
 import Plant from '/imports/api/Plant/Plant'
 import { toast } from 'react-toastify'
 import ItemAddEntryModal from '../Shared/ItemAddEntryModal'
-import ItemViewHistoryModal from '../Shared/ItemViewHistoryModal'
 import Category from '/imports/api/Category/Category'
 import WaterPro from '../SharedPlantSeedling/SwipeViewsEdit/WaterPro'
 import FertilizerPro from '../SharedPlantSeedling/SwipeViewsEdit/FertilizerPro'
@@ -38,6 +36,7 @@ import FertilizerModals from '../SharedPlantSeedling/SwipeModals/FertilizerModal
 import SoilCompModals from '../SharedPlantSeedling/SwipeModals/SoilCompModals'
 import PestModals from '../SharedPlantSeedling/SwipeModals/PestModals'
 import DiaryModals from '../SharedPlantSeedling/SwipeModals/DiaryModals'
+import PruningDeadheadingModals from '../SharedPlantSeedling/SwipeModals/PruningDeadheadingModals'
 
 /*
 TODO
@@ -55,7 +54,8 @@ class PlantViewEdit extends Component {
 	  swipeViewIndex: 0,
 	  currentDateSelection: null,
 	  modalOpen: null,
-	  editing: null
+	  editing: null,
+	  pruneType: null
 	}
 
 	autobind(this)
@@ -108,27 +108,13 @@ class PlantViewEdit extends Component {
   //TODO this is heavy! simplify this and break it out into diff functions (one separate for tracker for sure)
   //tracker should be able to be simplified
   //this updates the plant's data in my state before it gets sent out to the backend
-  updateData (e, type, tracker, isNewLogEntry) {
-
+  updateData (e, type) {
 	//this is any new data that's been entered, updating it as new inputs are entered
 	const newPlantData = this.state.newData
 
 	if (type === 'companions') {
-
 	  const stripped = e.target.value.replace(/\s*,\s*/g, ',')
 	  newPlantData[type] = stripped.split(',')
-
-	} else if (type === 'ph' || type === 'moisture') {
-	  let phVal = parseFloat(e.target.value)
-	  let moistureVal = parseFloat((parseInt(e.target.value) / 100).toFixed(2))
-
-	  if (newPlantData.soilCompositionTracker) {
-		newPlantData.soilCompositionTracker[type] = type === 'ph' ? phVal : moistureVal
-	  } else {
-		newPlantData.soilCompositionTracker = {
-		  [type]: type === 'ph' ? phVal : moistureVal
-		}
-	  }
 
 	} else if (type === 'dateBought' || type === 'datePlanted') {
 	  newPlantData[type] = new Date(e.target.value)
@@ -142,7 +128,6 @@ class PlantViewEdit extends Component {
 		  date: new Date()
 		}
 	  }
-
 	} else if (type === 'waterScheduleAuto') {
 	  if (newPlantData[type]) {
 		newPlantData[type] = !newPlantData[type]
@@ -179,7 +164,19 @@ class PlantViewEdit extends Component {
   addTrackerDetails (e, trackerType, detailType) {
 	let newPlantData = this.state.newData;
 
-	if (newPlantData[trackerType]) {
+	if (type === 'ph' || type === 'moisture') {
+	  let phVal = parseFloat(e.target.value)
+	  let moistureVal = parseFloat((parseInt(e.target.value) / 100).toFixed(2))
+
+	  if (newPlantData.soilCompositionTracker) {
+		newPlantData.soilCompositionTracker[type] = type === 'ph' ? phVal : moistureVal
+	  } else {
+		newPlantData.soilCompositionTracker = {
+		  [type]: type === 'ph' ? phVal : moistureVal
+		}
+	  }
+
+	} else if (newPlantData[trackerType]) {
 	  newPlantData[trackerType][detailType] = e.target.value;
 	} else {
 	  newPlantData[trackerType] = {
@@ -192,9 +189,11 @@ class PlantViewEdit extends Component {
 	})
   }
 
+  //TODO clean this up next!
   updatePlant (type) {
 	console.log('profile', type)
 
+	//these are actually stored separately in the db, but for ease for the user they're in one view
 	if (type === 'pruningDeadheadingTracker') {
 	  type = this.state.pruneType
 	}
@@ -556,80 +555,16 @@ class PlantViewEdit extends Component {
 
 
 			  {/* pruning */}
-			  <ItemAddEntryModal save={this.updatePlant}
-								 cancel={this.resetModal}
-								 show={this.state.modalOpen}
-								 type="pruningDeadheadingTracker"
-								 header="New pruning or deadheading entry">
-
-				{!this.state.pruneType &&
-				<div className="flex-between">
-				  <label>Pruned <input type="radio"
-									   checked={this.state.pruneType === 'pruningTracker'}
-									   onChange={() => this.state.pruneType !== 'pruningTracker' ? this.setState({pruneType: 'pruningTracker'}) : this.setState({
-										 pruneType: null,
-										 newData: null
-									   })}/></label>
-
-				  <label>Deadheaded <input type="radio"
-										   checked={this.state.pruneType === 'deadheadingTracker'}
-										   onChange={() => this.state.pruneType !== 'deadheadingTracker' ? this.setState({pruneType: 'deadheadingTracker'}) : this.setState({
-											 pruneType: null,
-											 newData: null
-										   })}/></label>
-
-				  <label>Both <input type="radio"
-									 checked={this.state.pruneType === 'pruningDeadheadingTracker'}
-									 onChange={() => this.state.pruneType !== 'pruningDeadheadingTracker' ? this.setState({pruneType: 'pruningDeadheadingTracker'}) : this.setState({
-									   pruneType: null,
-									   newData: null
-									 })}/></label>
-				</div>
-				}
-
-				{this.state.pruneType &&
-				<DatePicker
-						selected={this.state.newData.pruningDeadheadingTracker ? this.state.newData.pruningDeadheadingTracker.date : Date.now()}
-						className="react-datepicker-wrapper"
-						dateFormat="dd-MMMM-yyyy"
-						popperPlacement="bottom"
-						inline
-						onSelect={(e) => this.state.pruneType ? this.updateData(e, this.state.pruneType, this.state.pruneType) : toast.warning('Please select an action below first.')}
-						highlightDates={PlantViewEdit.getHighlightDates(plant.pruningDeadheadingTracker, 'pruning')}/>
-				}
-
-			  </ItemAddEntryModal>
-
-
-			  <ItemViewHistoryModal cancel={this.resetModal}
-									show={this.state.modalOpen}
-									type="pruningDeadheadingTracker-history"
-									header="Pruning - Deadheading History">
-
-				{plant.pruningDeadheadingTracker && plant.pruningDeadheadingTracker.length > 0 ?
-						<table>
-						  <thead>
-						  <tr>
-							<th>Date</th>
-							<th>Action</th>
-						  </tr>
-						  </thead>
-						  <tbody>
-
-						  {plant.pruningDeadheadingTracker.map((item, index) => {
-							return <tr key={index}>
-							  <td>{parseDate(item.date)}</td>
-							  <td>{item.action}</td>
-							</tr>
-						  })}
-
-						  </tbody>
-						</table>
-						:
-						<p>No entries recorded</p>
-				}
-
-			  </ItemViewHistoryModal>
+			  <PruningDeadheadingModals addTrackerDate={this.addTrackerDate}
+										addTrackerDetails={this.addTrackerDetails}
+										save={this.updatePlant}
+										resetModal={this.resetModal}
+										modalOpen={this.state.modalOpen}
+										newDataTracker={this.state.newData.pruningDeadheadingTracker}
+										tracker={plant.pruningDeadheadingTracker}
+										highlightDates={PlantViewEdit.getHighlightDates(plant.pruningDeadheadingTracker)}
+										pruneType={this.state.pruneType}
+										setPruneType={(val) => this.setState(val)}/>
 
 
 			  {/* soil comp */}
