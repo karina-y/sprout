@@ -11,12 +11,12 @@ import { faTimes } from '@fortawesome/free-solid-svg-icons/faTimes'
 import { faSave } from '@fortawesome/free-solid-svg-icons/faSave'
 import Category from '/imports/api/Category/Category'
 import SwipePanelContent from '../../components/Shared/SwipePanelContent/SwipePanelContent'
-import Water from '../../components/SharedPlantSeedling/SwipeViewsAdd/Water'
-import WaterPro from '../../components/SharedPlantSeedling/SwipeViewsAdd/WaterPro'
-import FertilizerPro from '../../components/SharedPlantSeedling/SwipeViewsAdd/FertilizerPro'
-import Fertilizer from '../../components/SharedPlantSeedling/SwipeViewsAdd/Fertilizer'
-import SoilCompPro from '../../components/SharedPlantSeedling/SwipeViewsAdd/SoilCompPro'
-import SoilComp from '../../components/SharedPlantSeedling/SwipeViewsAdd/SoilComp'
+import WaterAdd from '../../components/SharedPlantSeedling/SwipeViewsAdd/Water'
+import WaterAddPro from '../../components/SharedPlantSeedling/SwipeViewsAdd/WaterPro'
+import FertilizerAddPro from '../../components/SharedPlantSeedling/SwipeViewsAdd/FertilizerPro'
+import FertilizerAdd from '../../components/SharedPlantSeedling/SwipeViewsAdd/Fertilizer'
+import SoilCompAddPro from '../../components/SharedPlantSeedling/SwipeViewsAdd/SoilCompPro'
+import SoilCompAdd from '../../components/SharedPlantSeedling/SwipeViewsAdd/SoilComp'
 
 class SeedlingAdd extends Component {
   constructor (props) {
@@ -206,24 +206,24 @@ class SeedlingAdd extends Component {
 
 				{/* water */}
 				{Meteor.isPro ?
-						<WaterPro item={seedling} updateData={this.updateData} type={"seedling"} />
+						<WaterAddPro item={seedling} updateData={this.updateData} type={"seedling"} />
 						:
-						<Water item={seedling} updateData={this.updateData} />
+						<WaterAdd item={seedling} updateData={this.updateData} />
 				}
 
 
 				{/* fertilizer */}
 				{Meteor.isPro ?
-						<FertilizerPro item={seedling} updateData={this.updateData} />
+						<FertilizerAddPro item={seedling} updateData={this.updateData} />
 						:
-						<Fertilizer item={seedling} updateData={this.updateData} />
+						<FertilizerAdd item={seedling} updateData={this.updateData} />
 				}
 
 				{/* soil comp */}
 				{Meteor.isPro ?
-						<SoilCompPro item={seedling} updateData={this.updateData}/>
+						<SoilCompAddPro item={seedling} updateData={this.updateData}/>
 						:
-						<SoilComp item={seedling} updateData={this.updateData}/>
+						<SoilCompAdd item={seedling} updateData={this.updateData}/>
 				}
 
 				{/* notable dates */}

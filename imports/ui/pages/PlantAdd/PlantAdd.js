@@ -11,12 +11,12 @@ import { faTimes } from '@fortawesome/free-solid-svg-icons/faTimes'
 import { faSave } from '@fortawesome/free-solid-svg-icons/faSave'
 import Category from '/imports/api/Category/Category'
 import SwipePanelContent from '/imports/ui/components/Shared/SwipePanelContent/SwipePanelContent'
-import Water from '../../components/SharedPlantSeedling/SwipeViewsAdd/Water'
-import FertilizerPro from '../../components/SharedPlantSeedling/SwipeViewsAdd/FertilizerPro'
-import WaterPro from '../../components/SharedPlantSeedling/SwipeViewsAdd/WaterPro'
-import Fertilizer from '../../components/SharedPlantSeedling/SwipeViewsAdd/Fertilizer'
-import SoilCompPro from '../../components/SharedPlantSeedling/SwipeViewsAdd/SoilCompPro'
-import SoilComp from '../../components/SharedPlantSeedling/SwipeViewsAdd/SoilComp'
+import WaterAdd from '../../components/SharedPlantSeedling/SwipeViewsAdd/Water'
+import FertilizerAddPro from '../../components/SharedPlantSeedling/SwipeViewsAdd/FertilizerPro'
+import WaterAddPro from '../../components/SharedPlantSeedling/SwipeViewsAdd/WaterPro'
+import FertilizerAdd from '../../components/SharedPlantSeedling/SwipeViewsAdd/Fertilizer'
+import SoilCompAddPro from '../../components/SharedPlantSeedling/SwipeViewsAdd/SoilCompPro'
+import SoilCompAdd from '../../components/SharedPlantSeedling/SwipeViewsAdd/SoilComp'
 
 class PlantAdd extends Component {
   constructor (props) {
@@ -213,17 +213,17 @@ class PlantAdd extends Component {
 
 				{/* water */}
 				{Meteor.isPro ?
-						<WaterPro item={plant} updateData={this.updateData} type={'plant'}/>
+						<WaterAddPro item={plant} updateData={this.updateData} type={'plant'}/>
 						:
-						<Water item={plant} updateData={this.updateData}/>
+						<WaterAdd item={plant} updateData={this.updateData}/>
 				}
 
 
 				{/* fertilizer */}
 				{Meteor.isPro ?
-						<FertilizerPro item={plant} updateData={this.updateData}/>
+						<FertilizerAddPro item={plant} updateData={this.updateData}/>
 						:
-						<Fertilizer item={plant} updateData={this.updateData}/>
+						<FertilizerAdd item={plant} updateData={this.updateData}/>
 				}
 
 				{/* pruning/deadheading schedule */}
@@ -276,9 +276,9 @@ class PlantAdd extends Component {
 
 				{/* soil comp */}
 				{Meteor.isPro ?
-						<SoilCompPro item={plant} updateData={this.updateData}/>
+						<SoilCompAddPro item={plant} updateData={this.updateData}/>
 						:
-						<SoilComp item={plant} updateData={this.updateData}/>
+						<SoilCompAdd item={plant} updateData={this.updateData}/>
 				}
 
 

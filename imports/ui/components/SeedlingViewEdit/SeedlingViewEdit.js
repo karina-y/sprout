@@ -22,21 +22,21 @@ import Seedling from '/imports/api/Seedling/Seedling'
 import { toast } from 'react-toastify'
 import ItemAddEntryModal from '../Shared/ItemAddEntryModal'
 import Category from '/imports/api/Category/Category'
-import WaterPro from '../SharedPlantSeedling/SwipeViewsEdit/WaterPro'
-import FertilizerPro from '../SharedPlantSeedling/SwipeViewsEdit/FertilizerPro'
+import WaterReadEditPro from '../SharedPlantSeedling/SwipeViewsEdit/WaterPro'
+import FertilizerProReadEdit from '../SharedPlantSeedling/SwipeViewsEdit/FertilizerPro'
 import SoilCompPro from '../SharedPlantSeedling/SwipeViewsEdit/SoilCompPro'
-import Pest from '../SharedPlantSeedling/SwipeViewsEdit/Pest'
-import Diary from '../SharedPlantSeedling/SwipeViewsEdit/Diary'
-import Water from '../SharedPlantSeedling/SwipeViewsEdit/Water'
-import Fertilizer from '../SharedPlantSeedling/SwipeViewsEdit/Fertilizer'
-import SoilComp from '../SharedPlantSeedling/SwipeViewsEdit/SoilComp'
+import PestReadEdit from '../SharedPlantSeedling/SwipeViewsEdit/Pest'
+import DiaryReadEdit from '../SharedPlantSeedling/SwipeViewsEdit/Diary'
+import WaterReadEdit from '../SharedPlantSeedling/SwipeViewsEdit/Water'
+import FertilizerReadEdit from '../SharedPlantSeedling/SwipeViewsEdit/Fertilizer'
+import SoilCompReadEdit from '../SharedPlantSeedling/SwipeViewsEdit/SoilComp'
 import EtcSeedling from '../SharedPlantSeedling/SwipeViewsEdit/EtcSeedling'
 // import NotableDates from '../SharedPlantSeedling/SwipeViewsEdit/NotableDates'
-import WaterModals from '../SharedPlantSeedling/SwipeModals/WaterModals'
-import FertilizerModals from '../SharedPlantSeedling/SwipeModals/FertilizerModals'
-import SoilCompModals from '../SharedPlantSeedling/SwipeModals/SoilCompModals'
-import PestModals from '../SharedPlantSeedling/SwipeModals/PestModals'
-import DiaryModals from '../SharedPlantSeedling/SwipeModals/DiaryModals'
+import WaterModals from '../Water/WaterModals'
+import FertilizerModals from '../Fertilizer/FertilizerModals'
+import SoilCompModals from '../SoilComp/SoilCompModals'
+import PestModals from '../Pest/PestModals'
+import DiaryModals from '../Diary/DiaryModals'
 import SeedlingDates from '../SharedPlantSeedling/SwipeViewsEdit/SeedlingDates'
 
 /*
@@ -413,23 +413,23 @@ class SeedlingViewEdit extends Component {
 
 				{/* water */}
 				{Meteor.isPro ?
-						<WaterPro item={seedling} updateData={this.updateData} editing={this.state.editing}/>
+						<WaterReadEditPro item={seedling} updateData={this.updateData} editing={this.state.editing}/>
 						:
-						<Water item={seedling} updateData={this.updateData} editing={this.state.editing}/>
+						<WaterReadEdit item={seedling} updateData={this.updateData} editing={this.state.editing}/>
 				}
 
 
 				{/* fertilizer */}
 				{Meteor.isPro ?
-						<FertilizerPro item={seedling}
-									   updateData={this.updateData}
-									   fertilizerContent={fertilizerContent}
-									   editing={this.state.editing}/>
+						<FertilizerProReadEdit item={seedling}
+											   updateData={this.updateData}
+											   fertilizerContent={fertilizerContent}
+											   editing={this.state.editing}/>
 						:
-						<Fertilizer item={seedling}
-									updateData={this.updateData}
-									fertilizerContent={fertilizerContent}
-									editing={this.state.editing}/>
+						<FertilizerReadEdit item={seedling}
+											updateData={this.updateData}
+											fertilizerContent={fertilizerContent}
+											editing={this.state.editing}/>
 				}
 
 				{/* soil comp */}
@@ -441,24 +441,24 @@ class SeedlingViewEdit extends Component {
 									 soilPh={soilPh}
 									 editing={this.state.editing}/>
 						:
-						<SoilComp item={seedling}
-								  updateData={this.updateData}
-								  soilCompLastChecked={soilCompLastChecked}
-								  soilMoisture={soilMoisture}
-								  soilPh={soilPh}
-								  editing={this.state.editing}/>
+						<SoilCompReadEdit item={seedling}
+										  updateData={this.updateData}
+										  soilCompLastChecked={soilCompLastChecked}
+										  soilMoisture={soilMoisture}
+										  soilPh={soilPh}
+										  editing={this.state.editing}/>
 				}
 
 
 				{/* pest */}
-				<Pest item={seedling}
-					  updateData={this.updateData}
-					  pestLastChecked={pestLastChecked}
-					  pestName={pestName}
-					  pestTreatment={pestTreatment}/>
+				<PestReadEdit item={seedling}
+							  updateData={this.updateData}
+							  pestLastChecked={pestLastChecked}
+							  pestName={pestName}
+							  pestTreatment={pestTreatment}/>
 
 				{/* diary */}
-				<Diary item={seedling} updateData={this.updateData}/>
+				<DiaryReadEdit item={seedling} updateData={this.updateData}/>
 
 				<EtcSeedling seedling={seedling} updateData={this.updateData} editing={this.state.editing}/>
 

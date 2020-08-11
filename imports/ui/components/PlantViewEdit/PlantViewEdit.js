@@ -13,14 +13,16 @@ import { faSave } from '@fortawesome/free-solid-svg-icons/faSave'
 import { faTimes } from '@fortawesome/free-solid-svg-icons/faTimes'
 import { faPlus } from '@fortawesome/free-solid-svg-icons/faPlus'
 import { faCalendar } from '@fortawesome/free-solid-svg-icons/faCalendar'
-import {
-  getDaysSinceAction, getPlantCondition, sortByLastDate
-} from '../../../utils/plantData'
 import Plant from '/imports/api/Plant/Plant'
 import { toast } from 'react-toastify'
 import ItemAddEntryModal from '../Shared/ItemAddEntryModal'
-import Category from '/imports/api/Category/Category'
-import WaterViewEdit from '../PlantViewEditPanels/WaterViewEdit'
+import FertilizerSwipePanel from '../Fertilizer/FertilizerSwipePanel'
+import WaterSwipePanel from '../Water/WaterSwipePanel'
+import SoilCompSwipePanel from '../SoilComp/SoilCompSwipePanel'
+import PruningDeadheadingSwipePanel from '../PruningDeadheading/PruningDeadheadingSwipePanel'
+import PestSwipePanel from '../Pest/PestSwipePanel'
+import DiarySwipePanel from '../Diary/DiarySwipePanel'
+import EtcSwipePanel from '../Etc/EtcSwipePanel'
 
 /*
 TODO
@@ -190,8 +192,37 @@ class PlantViewEdit extends Component {
 							  index={this.state.swipeViewIndex}
 							  onChangeIndex={(e) => this.setState({swipeViewIndex: e, editing: null})}>
 
-				<WaterViewEdit swipeViewIndex={this.state.swipeViewIndex}
-							   modalOpen={this.state.modalOpen}
+				<WaterSwipePanel modalOpen={this.state.modalOpen}
+								 editing={this.state.editing}
+								 exitEditMode={this.exitEditMode}
+								 plant={plant}/>
+
+				<FertilizerSwipePanel modalOpen={this.state.modalOpen}
+									  editing={this.state.editing}
+									  exitEditMode={this.exitEditMode}
+									  plant={plant}/>
+
+				<PruningDeadheadingSwipePanel modalOpen={this.state.modalOpen}
+											  editing={this.state.editing}
+											  exitEditMode={this.exitEditMode}
+											  plant={plant}/>
+
+				<SoilCompSwipePanel modalOpen={this.state.modalOpen}
+									editing={this.state.editing}
+									exitEditMode={this.exitEditMode}
+									plant={plant}/>
+
+				<PestSwipePanel modalOpen={this.state.modalOpen}
+								editing={this.state.editing}
+								exitEditMode={this.exitEditMode}
+								plant={plant}/>
+
+				<DiarySwipePanel modalOpen={this.state.modalOpen}
+								 editing={this.state.editing}
+								 exitEditMode={this.exitEditMode}
+								 plant={plant}/>
+
+				<EtcSwipePanel modalOpen={this.state.modalOpen}
 							   editing={this.state.editing}
 							   exitEditMode={this.exitEditMode}
 							   plant={plant}/>
@@ -263,45 +294,8 @@ PlantViewEdit.propTypes = {
 export default withTracker((props) => {
   const id = props.match.params.id
   const plant = Plant.findOne({_id: id})
-  const categories = Category.find({}).fetch()
-
-  //sort the data
-  plant.waterTracker = sortByLastDate(plant.waterTracker)
-  plant.fertilizerTracker = sortByLastDate(plant.fertilizerTracker)
-  plant.soilCompositionTracker = sortByLastDate(plant.soilCompositionTracker)
-  plant.pestTracker = sortByLastDate(plant.pestTracker)
-  plant.diary = sortByLastDate(plant.diary)
-
-  plant.daysSinceWatered = getDaysSinceAction(plant.waterTracker)
-  plant.waterCondition = getPlantCondition(plant.waterTracker, plant.daysSinceWatered, plant.waterSchedule)
-
-  plant.daysSinceFertilized = getDaysSinceAction(plant.fertilizerTracker)
-  plant.fertilizerCondition = getPlantCondition(plant.fertilizerTracker, plant.daysSinceFertilized, plant.fertilizerSchedule)
-
-  plant.daysSincePruned = getDaysSinceAction(plant.pruningTracker)
-  plant.daysSinceDeadheaded = getDaysSinceAction(plant.deadheadingTracker)
-
-  if (plant.pruningTracker || plant.deadheadingTracker) {
-	const pruning = plant.pruningTracker || []
-	const deadheading = plant.deadheadingTracker || []
-
-	for (let i = 0; i < pruning.length; i++) {
-	  pruning[i].action = 'Pruned'
-	}
-
-	for (let i = 0; i < deadheading.length; i++) {
-	  deadheading[i].action = 'Deadheaded'
-	}
-
-	plant.pruningDeadheadingTracker = sortByLastDate(pruning.concat(deadheading))
-  } else {
-	plant.pruningDeadheadingTracker = null
-  }
-  // plant.soilCondition = getSoilCondition(plant.soilCompositionTracker)
 
   return {
-	plant,
-	categories
+	plant
   }
 })(PlantViewEdit)
-
