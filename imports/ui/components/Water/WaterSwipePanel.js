@@ -1,7 +1,6 @@
-import React, { Component } from "react";
+import React from "react";
 import PropTypes from "prop-types";
-import autobind from "react-autobind";
-import "../PlantViewEdit/PlantSeedlingViewEdit.scss";;
+import "../PlantViewEdit/PlantSeedlingViewEdit.scss";
 import "react-datepicker/dist/react-datepicker.css";
 import {
   getDaysSinceAction,
@@ -14,6 +13,7 @@ import { withTracker } from "meteor/react-meteor-data";
 import WaterModals from './WaterModals'
 import WaterReadEdit from './WaterReadEdit'
 import WaterReadEditPro from './WaterReadEditPro'
+import useNewData from '/imports/ui/hooks/useNewData'
 
 /*
 TODO
@@ -21,58 +21,15 @@ TODO
 - maybe just move all the view components into one file and import that alone
 */
 
-class WaterSwipePanel extends Component {
-  constructor(props) {
-    super(props);
+const WaterSwipePanel = (props) => {
+  const plant = props.plant;
+  const { newData, changeNewData, addTrackerDate } = useNewData({})
 
-    this.state = {
-      newData: {},
-    };
-
-    autobind(this);
-  }
-
-  updateData(e, type) {
-    //this is any new data that's been entered, updating it as new inputs are entered
-    const newPlantData = this.state.newData;
-
-    if (type === "waterScheduleAuto") {
-      if (newPlantData[type]) {
-        newPlantData[type] = !newPlantData[type];
-      } else {
-        newPlantData[type] = !this.props.plant[type];
-      }
-    } else {
-      newPlantData[type] = e.target.value;
-    }
-
-    this.setState({
-      newData: newPlantData,
-    });
-  }
-
-  //this only adds new dates to trackers, ie adding date fertilizer was used
-  addTrackerDate(e, trackerType) {
-    let newPlantData = this.state.newData;
-
-    if (newPlantData[trackerType]) {
-      newPlantData[trackerType].date = new Date(e);
-    } else {
-      newPlantData[trackerType] = {
-        date: new Date(e),
-      };
-    }
-
-    this.setState({
-      newData: newPlantData,
-    });
-  }
-
-  updatePlant(type) {
+  const updatePlant = (type) => {
     console.log("profile", type);
 
-    const newPlantData = this.state.newData;
-    const oldPlantData = this.props.plant;
+    const newPlantData = newData;
+    const oldPlantData = props.plant;
 
     if (!type || !newPlantData || JSON.stringify(newPlantData) === "{}") {
       toast.error("No data entered.");
@@ -108,7 +65,7 @@ class WaterSwipePanel extends Component {
             toast.success("Successfully saved new entry.");
 
             //reset the data
-            this.resetData();
+            resetData();
           }
         });
       } else {
@@ -117,47 +74,40 @@ class WaterSwipePanel extends Component {
     }
   }
 
-  resetData() {
-    this.setState({
-      newData: {},
-    });
+  const resetData = () => {
+    useNewData({})
 
-    this.props.exitEditMode();
+    props.exitEditMode();
   }
 
-  render() {
-    const plant = this.props.plant;
+  return (
+          <div className="PlantSeedlingViewEdit">
+            {/* water */}
+            {Meteor.isPro ? (
+                    <WaterReadEditPro
+                            item={plant}
+                            updateData={changeNewData}
+                            editing={props.editing}
+                    />
+            ) : (
+                    <WaterReadEdit
+                            item={plant}
+                            updateData={changeNewData}
+                            editing={props.editing}
+                    />
+            )}
 
-    return (
-            <div className="PlantSeedlingViewEdit">
-              {/* water */}
-              {Meteor.isPro ? (
-                      <WaterReadEditPro
-                              item={plant}
-                              updateData={this.updateData}
-                              editing={this.props.editing}
-                      />
-              ) : (
-                      <WaterReadEdit
-                              item={plant}
-                              updateData={this.updateData}
-                              editing={this.props.editing}
-                      />
-              )}
+            {/* modals */}
+            <WaterModals addTrackerDate={addTrackerDate}
+                         save={updatePlant}
+                         resetModal={resetData}
+                         modalOpen={props.modalOpen}
+                         newDataTracker={newData.waterTracker}
+                         tracker={plant.waterTracker}
+                         highlightDates={plant.highlightDates}/>
 
-              {/* modals */}
-              <WaterModals addTrackerDate={this.addTrackerDate}
-                           addTrackerDetails={this.addTrackerDetails}
-                           save={this.updatePlant}
-                           resetModal={this.resetData}
-                           modalOpen={this.props.modalOpen}
-                           newDataTracker={this.state.newData.waterTracker}
-                           tracker={plant.waterTracker}
-                           highlightDates={plant.highlightDates}/>
-
-            </div>
-    );
-  }
+          </div>
+  )
 }
 
 WaterSwipePanel.propTypes = {

@@ -5,11 +5,12 @@ import autobind from 'react-autobind'
 import '../PlantViewEdit/PlantSeedlingViewEdit.scss'
 import 'react-datepicker/dist/react-datepicker.css'
 import {
-  getHighlightDates, sortByLastDate
+  getHighlightDates, getLastSoilMoisture, getLastSoilPh, lastChecked, sortByLastDate
 } from '../../../utils/plantData'
 import { toast } from 'react-toastify'
 import PruningDeadheadingModals from './PruningDeadheadingModals'
 import PruningDeadheadingReadEditPro from './PruningDeadheadingReadEditPro'
+import useNewData from '../../hooks/useNewData'
 
 /*
 TODO
@@ -18,75 +19,20 @@ TODO
 */
 
 
-class PruningDeadheadingSwipePanel extends Component {
-  constructor (props) {
-	super(props)
+const PruningDeadheadingSwipePanel = (props) => {
+  const plant = props.plant;
+  const { newData, changeNewData, addTrackerDate, addTrackerDetails } = useNewData({})
+  //TODO state.pruneType: null
 
-	this.state = {
-	  newData: {},
-	  pruneType: null
-	}
-
-	autobind(this)
-  }
-
-  //TODO this is heavy! simplify this and break it out into diff functions (one separate for tracker for sure)
-  //tracker should be able to be simplified
-  //this updates the plant's data in my state before it gets sent out to the backend
-  updateData (e, type) {
-	//this is any new data that's been entered, updating it as new inputs are entered
-	let newPlantData = this.state.newData
-
-	newPlantData[type] = e.target.value
-
-	this.setState({
-	  newData: newPlantData
-	})
-  }
-
-  //this only adds new dates to trackers, ie adding date fertilizer was used
-  addTrackerDate (e, trackerType) {
-	let newPlantData = this.state.newData;
-
-	if (newPlantData[trackerType]) {
-	  newPlantData[trackerType].date = new Date(e)
-	} else {
-	  newPlantData[trackerType] = {
-		date: new Date(e)
-	  }
-	}
-
-	this.setState({
-	  newData: newPlantData
-	})
-  }
-
-  //this adds additional details to trackers, ie fertilizer type used
-  addTrackerDetails (e, trackerType, detailType) {
-	let newPlantData = this.state.newData;
-
-	if (newPlantData[trackerType]) {
-	  newPlantData[trackerType][detailType] = e.target.value;
-	} else {
-	  newPlantData[trackerType] = {
-		[detailType]: e.target.value
-	  }
-	}
-
-	this.setState({
-	  newData: newPlantData
-	})
-  }
-
-  updatePlant(type) {
+  const updatePlant = (type) => {
 	console.log("profile", type);
 
-	const newPlantData = this.state.newData;
-	const oldPlantData = this.props.plant;
+	const newPlantData = newData;
+	const oldPlantData = props.plant;
 
 	//these are actually stored separately in the db, but for ease for the user they're in one view
 	if (type === 'pruningDeadheadingTracker') {
-	  type = this.state.pruneType
+	  type = pruneType
 	}
 
 	if (!type || !newPlantData || JSON.stringify(newPlantData) === "{}") {
@@ -116,7 +62,7 @@ class PruningDeadheadingSwipePanel extends Component {
 			toast.success("Successfully saved new entry.");
 
 			//reset the data
-			this.resetData();
+			resetData();
 		  }
 		});
 	  } else {
@@ -125,39 +71,34 @@ class PruningDeadheadingSwipePanel extends Component {
 	}
   }
 
-  resetData() {
-	this.setState({
-	  newData: {},
-	});
+  const resetData = () => {
+	useNewData({})
 
-	this.props.exitEditMode();
+	props.exitEditMode();
   }
 
+  return (
+		  <div className="PlantSeedlingViewEdit">
+			<PruningDeadheadingReadEditPro plant={plant}
+										   updateData={changeNewData}
+										   editing={props.editing}/>
 
-  render () {
-	const plant = this.props.plant
+			{/* pruning */}
+			<PruningDeadheadingModals addTrackerDate={addTrackerDate}
+									  addTrackerDetails={addTrackerDetails}
+									  save={updatePlant}
+									  resetModal={resetData}
+									  modalOpen={props.modalOpen}
+									  newDataTracker={newData.pruningDeadheadingTracker}
+									  tracker={plant.pruningDeadheadingTracker}
+									  highlightDates={plant.highlightDates}
+									  pruneType={pruneType}
+									  setPruneType={(val) => this.setState(val)}/>
+			{/*						  TODO setPruneType above*/}
 
-	return (
-			<div className="PlantSeedlingViewEdit">
-			  <PruningDeadheadingReadEditPro plant={plant}
-											 updateData={this.updateData}
-											 editing={this.props.editing}/>
+		  </div>
+  )
 
-			  {/* pruning */}
-			  <PruningDeadheadingModals addTrackerDate={this.addTrackerDate}
-										addTrackerDetails={this.addTrackerDetails}
-										save={this.updatePlant}
-										resetModal={this.resetData}
-										modalOpen={this.props.modalOpen}
-										newDataTracker={this.state.newData.pruningDeadheadingTracker}
-										tracker={plant.pruningDeadheadingTracker}
-										highlightDates={plant.highlightDates}
-										pruneType={this.state.pruneType}
-										setPruneType={(val) => this.setState(val)}/>
-
-			</div>
-	)
-  }
 }
 
 PruningDeadheadingSwipePanel.propTypes = {

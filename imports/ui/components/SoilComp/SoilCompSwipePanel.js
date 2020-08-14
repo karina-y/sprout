@@ -12,6 +12,7 @@ import { toast } from 'react-toastify'
 import SoilCompModals from './SoilCompModals'
 import SoilCompReadEdit from './SoilCompReadEdit'
 import SoilCompReadEditPro from './SoilCompReadEditPro'
+import useNewData from '../../hooks/useNewData'
 
 /*
 TODO
@@ -20,81 +21,18 @@ TODO
 */
 
 
-class SoilCompSwipePanel extends Component {
-  constructor (props) {
-	super(props)
+const SoilCompSwipePanel = (props) => {
+  const plant = props.plant;
+  const soilCompLastChecked = lastChecked(plant.soilCompositionTracker)
+  const soilPh = getLastSoilPh(plant.soilCompositionTracker)
+  const soilMoisture = getLastSoilMoisture(plant.soilCompositionTracker)
+  const { newData, changeNewData, addTrackerDate } = useNewData({})
 
-	this.state = {
-	  newData: {}
-	}
-
-	autobind(this)
-  }
-
-  //TODO this is heavy! simplify this and break it out into diff functions (one separate for tracker for sure)
-  //tracker should be able to be simplified
-  //this updates the plant's data in my state before it gets sent out to the backend
-  updateData (e, type) {
-	//this is any new data that's been entered, updating it as new inputs are entered
-	let newPlantData = this.state.newData
-	newPlantData[type] = e.target.value
-
-	this.setState({
-	  newData: newPlantData
-	})
-  }
-
-  //this only adds new dates to trackers, ie adding date fertilizer was used
-  addTrackerDate (e, trackerType) {
-	let newPlantData = this.state.newData;
-
-	if (newPlantData[trackerType]) {
-	  newPlantData[trackerType].date = new Date(e)
-	} else {
-	  newPlantData[trackerType] = {
-		date: new Date(e)
-	  }
-	}
-
-	this.setState({
-	  newData: newPlantData
-	})
-  }
-
-  //this adds additional details to trackers, ie fertilizer type used
-  addTrackerDetails (e, trackerType, detailType) {
-	let newPlantData = this.state.newData;
-
-	if (type === 'ph' || type === 'moisture') {
-	  let phVal = parseFloat(e.target.value)
-	  let moistureVal = parseFloat((parseInt(e.target.value) / 100).toFixed(2))
-
-	  if (newPlantData.soilCompositionTracker) {
-		newPlantData.soilCompositionTracker[type] = type === 'ph' ? phVal : moistureVal
-	  } else {
-		newPlantData.soilCompositionTracker = {
-		  [type]: type === 'ph' ? phVal : moistureVal
-		}
-	  }
-
-	} else if (newPlantData[trackerType]) {
-	  newPlantData[trackerType][detailType] = e.target.value;
-	} else {
-	  newPlantData[trackerType] = {
-		[detailType]: e.target.value
-	  }
-	}
-
-	this.setState({
-	  newData: newPlantData
-	})
-  }
-
-  updatePlant(type) {
+  const updatePlant = (type) => {
 	console.log("profile", type);
 
-	const newPlantData = this.state.newData;
-	const oldPlantData = this.props.plant;
+	const newPlantData = newData;
+	const oldPlantData = props.plant;
 
 	if (!type || !newPlantData || JSON.stringify(newPlantData) === "{}") {
 	  toast.error("No data entered.");
@@ -124,7 +62,7 @@ class SoilCompSwipePanel extends Component {
 			toast.success("Successfully saved new entry.");
 
 			//reset the data
-			this.resetData();
+			resetData();
 		  }
 		});
 	  } else {
@@ -133,55 +71,47 @@ class SoilCompSwipePanel extends Component {
 	}
   }
 
-  resetData() {
-	this.setState({
-	  newData: {},
-	});
+  const resetData = () => {
+	useNewData({})
 
-	this.props.exitEditMode();
+	props.exitEditMode();
   }
 
-  render () {
-	const plant = this.props.plant
-	let soilCompLastChecked = lastChecked(plant.soilCompositionTracker)
-	let soilPh = getLastSoilPh(plant.soilCompositionTracker)
-	let soilMoisture = getLastSoilMoisture(plant.soilCompositionTracker)
+  return (
+		  <div className="PlantSeedlingViewEdit">
 
-	return (
-			<div className="PlantSeedlingViewEdit">
-
-			  {/* soil comp */}
-			  {Meteor.isPro ?
-					  <SoilCompReadEditPro item={plant}
-										   updateData={this.updateData}
-										   soilCompLastChecked={soilCompLastChecked}
-										   soilMoisture={soilMoisture}
-										   soilPh={soilPh}
-										   editing={this.props.editing}/>
-					  :
-					  <SoilCompReadEdit item={plant}
-										updateData={this.updateData}
-										soilCompLastChecked={soilCompLastChecked}
-										soilMoisture={soilMoisture}
-										soilPh={soilPh}
-										editing={this.props.editing}/>
-			  }
+			{/* soil comp */}
+			{Meteor.isPro ?
+					<SoilCompReadEditPro item={plant}
+										 updateData={changeNewData}
+										 soilCompLastChecked={soilCompLastChecked}
+										 soilMoisture={soilMoisture}
+										 soilPh={soilPh}
+										 editing={props.editing}/>
+					:
+					<SoilCompReadEdit item={plant}
+									  updateData={changeNewData}
+									  soilCompLastChecked={soilCompLastChecked}
+									  soilMoisture={soilMoisture}
+									  soilPh={soilPh}
+									  editing={props.editing}/>
+			}
 
 
-			  {/* soil comp */}
-			  <SoilCompModals updateData={this.updateData}
-							  addTrackerDate={this.addTrackerDate}
-							  save={this.updatePlant}
-							  resetModal={this.resetData}
-							  modalOpen={this.props.modalOpen}
-							  newDataTracker={this.state.newData.soilCompositionTracker}
-							  tracker={plant.soilCompositionTracker}
-							  category={plant.category}
-							  highlightDates={plant.highlightDates}/>
+			{/* soil comp */}
+			<SoilCompModals updateData={changeNewData}
+							addTrackerDate={addTrackerDate}
+							save={updatePlant}
+							resetModal={resetData}
+							modalOpen={props.modalOpen}
+							newDataTracker={newData.soilCompositionTracker}
+							tracker={plant.soilCompositionTracker}
+							category={plant.category}
+							highlightDates={plant.highlightDates}/>
 
-			</div>
-	)
-  }
+		  </div>
+  )
+
 }
 
 SoilCompSwipePanel.propTypes = {

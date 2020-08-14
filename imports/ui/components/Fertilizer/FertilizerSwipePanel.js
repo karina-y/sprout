@@ -14,6 +14,7 @@ import { toast } from "react-toastify";
 import FertilizerModals from "./FertilizerModals";
 import FertilizerReadEdit from './FertilizerReadEdit'
 import FertilizerReadEditPro from './FertilizerReadEditPro'
+import useNewData from '../../hooks/useNewData'
 
 /*
 TODO
@@ -21,68 +22,16 @@ TODO
 - maybe just move all the view components into one file and import that alone
 */
 
-class FertilizerSwipePanel extends Component {
-  constructor(props) {
-    super(props);
+const FertilizerSwipePanel = (props) => {
+  const plant = props.plant;
+  const fertilizerContent = lastFertilizerUsed(plant.fertilizerTracker)
+  const { newData, changeNewData, addTrackerDate, addTrackerDetails } = useNewData({})
 
-    this.state = {
-      newData: {},
-    };
-
-    autobind(this);
-  }
-
-  //this updates the plant's data in my state before it gets sent out to the backend
-  updateData(e, type) {
-    //this is any new data that's been entered, updating it as new inputs are entered
-    let newPlantData = this.state.newData;
-
-    newPlantData[type] = e.target.value;
-
-    this.setState({
-      newData: newPlantData,
-    });
-  }
-
-  //this only adds new dates to trackers, ie adding date fertilizer was used
-  addTrackerDate(e, trackerType) {
-    let newPlantData = this.state.newData;
-
-    if (newPlantData[trackerType]) {
-      newPlantData[trackerType].date = new Date(e);
-    } else {
-      newPlantData[trackerType] = {
-        date: new Date(e),
-      };
-    }
-
-    this.setState({
-      newData: newPlantData,
-    });
-  }
-
-  //this adds additional details to trackers, ie fertilizer type used
-  addTrackerDetails(e, trackerType, detailType) {
-    let newPlantData = this.state.newData;
-
-    if (newPlantData[trackerType]) {
-      newPlantData[trackerType][detailType] = e.target.value;
-    } else {
-      newPlantData[trackerType] = {
-        [detailType]: e.target.value,
-      };
-    }
-
-    this.setState({
-      newData: newPlantData,
-    });
-  }
-
-  updatePlant(type) {
+  const updatePlant = (type) => {
     console.log("profile", type);
 
-    const newPlantData = this.state.newData;
-    const oldPlantData = this.props.plant;
+    const newPlantData = newData;
+    const oldPlantData = props.plant;
 
     if (!type || !newPlantData || JSON.stringify(newPlantData) === "{}") {
       toast.error("No data entered.");
@@ -115,7 +64,7 @@ class FertilizerSwipePanel extends Component {
             toast.success("Successfully saved new entry.");
 
             //reset the data
-            this.resetData();
+            resetData();
           }
         });
       } else {
@@ -124,45 +73,39 @@ class FertilizerSwipePanel extends Component {
     }
   }
 
-  resetData() {
-    this.setState({
-      newData: {},
-    });
+  const resetData = () => {
+    useNewData({})
 
-    this.props.exitEditMode();
+    props.exitEditMode();
   }
 
-  render() {
-    const plant = this.props.plant;
-    const fertilizerContent = lastFertilizerUsed(plant.fertilizerTracker)
+  return (
+          <div className="PlantSeedlingViewEdit">
+            {Meteor.isPro ?
+                    <FertilizerReadEditPro item={plant}
+                                           updateData={changeNewData}
+                                           fertilizerContent={fertilizerContent}
+                                           editing={props.editing}/>
+                    :
+                    <FertilizerReadEdit item={plant}
+                                        updateData={changeNewData}
+                                        fertilizerContent={fertilizerContent}
+                                        editing={props.editing}/>
+            }
 
-    return (
-            <div className="PlantSeedlingViewEdit">
-              {Meteor.isPro ?
-                      <FertilizerReadEditPro item={plant}
-                                             updateData={this.updateData}
-                                             fertilizerContent={fertilizerContent}
-                                             editing={this.props.editing}/>
-                      :
-                      <FertilizerReadEdit item={plant}
-                                          updateData={this.updateData}
-                                          fertilizerContent={fertilizerContent}
-                                          editing={this.props.editing}/>
-              }
+            {/* modals */}
+            <FertilizerModals addTrackerDate={addTrackerDate}
+                              addTrackerDetails={addTrackerDetails}
+                              save={updatePlant}
+                              resetModal={resetData}
+                              modalOpen={props.modalOpen}
+                              newDataTracker={newData.fertilizerTracker}
+                              tracker={plant.fertilizerTracker}
+                              highlightDates={plant.highlightDates}/>
 
-              {/* modals */}
-              <FertilizerModals addTrackerDate={this.addTrackerDate}
-                                addTrackerDetails={this.addTrackerDetails}
-                                save={this.updatePlant}
-                                resetModal={this.resetData}
-                                modalOpen={this.props.modalOpen}
-                                newDataTracker={this.state.newData.fertilizerTracker}
-                                tracker={plant.fertilizerTracker}
-                                highlightDates={plant.highlightDates}/>
+          </div>
+  );
 
-            </div>
-    );
-  }
 }
 
 FertilizerSwipePanel.propTypes = {

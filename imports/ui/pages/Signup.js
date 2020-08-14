@@ -43,6 +43,7 @@ class Signup extends Component {
 
 	  Meteor.call('account.insert', data, (err, response) => {
 		if (err) {
+		  console.log("err")
 		  toast.error(err.message)
 		} else {
 		  //login user
