@@ -1,6 +1,6 @@
 //because i'm just THAT ocd
 
-const ColorEnums = {
+const Colors = {
   'successDark' : "#45c6a5",
   'successLight' : "#53fad6",
   'dangerDark' : "#FE608B",
@@ -11,4 +11,4 @@ const ColorEnums = {
   'infoLight' : "#7da2f3",
 };
 
-export default ColorEnums;
+export default Colors;

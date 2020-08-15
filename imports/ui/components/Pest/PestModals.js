@@ -3,14 +3,15 @@ import PropTypes from 'prop-types'
 import DatePicker from 'react-datepicker'
 import ItemAddEntryModal from '../Shared/ItemAddEntryModal'
 import ItemViewHistoryModal from '../Shared/ItemViewHistoryModal'
-import { parseDate } from '../../../utils/plantData'
+import { parseDate } from '../../../utils/helpers/plantData'
+import UpdateTypes from '../../../utils/constants/updateTypes'
 
 const PestModals = (props) => (
 		<React.Fragment>
 		  <ItemAddEntryModal save={props.save}
 							 cancel={props.resetModal}
 							 show={props.modalOpen}
-							 type="pestTracker"
+							 type={UpdateTypes.pest.pestEditModal}
 							 header="New pest entry">
 
 			<DatePicker selected={props.newDataTracker ? props.newDataTracker.date : Date.now()}
@@ -37,7 +38,7 @@ const PestModals = (props) => (
 
 		  <ItemViewHistoryModal cancel={props.resetModal}
 								show={props.modalOpen}
-								type="pestTracker-history"
+								type={UpdateTypes.pest.pestEditModal}
 								header="Pest History">
 
 			{props.tracker && props.tracker.length > 0 ?

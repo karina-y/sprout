@@ -23,6 +23,7 @@ import PruningDeadheadingSwipePanel from '../PruningDeadheading/PruningDeadheadi
 import PestSwipePanel from '../Pest/PestSwipePanel'
 import DiarySwipePanel from '../Diary/DiarySwipePanel'
 import EtcSwipePanel from '../Etc/EtcSwipePanel'
+import UpdateTypes from '../../../utils/constants/updateTypes'
 
 /*
 TODO
@@ -90,19 +91,19 @@ class PlantViewEdit extends Component {
 	//selecting which swipe view to edit
 	switch (this.state.swipeViewIndex) {
 	  case 0:
-		editing = 'waterTracker'
+		editing =  UpdateTypes.water.waterEditModal
 		break
 	  case 1:
-		editing = 'fertilizerTracker'
+		editing = UpdateTypes.fertilizer.fertilizerEditModal
 		break
 	  case 2:
-		editing = 'pruningDeadheadingTracker'
+		editing = UpdateTypes.pruningDeadheading.pruningDeadheadingEditModal
 		break
 	  case 3:
-		editing = 'soilCompositionTracker'
+		editing = UpdateTypes.soilComp.soilCompEditModal
 		break
 	  case 6:
-		editing = 'etc'
+		editing = UpdateTypes.etc.etcEditModal
 		break
 	}
 
@@ -117,22 +118,22 @@ class PlantViewEdit extends Component {
 	//selecting which modal to open
 	switch (this.state.swipeViewIndex) {
 	  case 0:
-		modalOpen = 'waterTracker'
+		modalOpen = UpdateTypes.water.waterEditModal
 		break
 	  case 1:
-		modalOpen = 'fertilizerTracker'
+		modalOpen = UpdateTypes.fertilizer.fertilizerEditModal
 		break
 	  case 2:
-		modalOpen = 'pruningDeadheadingTracker'
+		modalOpen = UpdateTypes.pruningDeadheading.pruningDeadheadingEditModal
 		break
 	  case 3:
-		modalOpen = 'soilCompositionTracker'
+		modalOpen = UpdateTypes.soilComp.soilCompEditModal
 		break
 	  case 4:
-		modalOpen = 'pestTracker'
+		modalOpen = UpdateTypes.pest.pestEditModal
 		break
 	  case 5:
-		modalOpen = 'diary'
+		modalOpen = UpdateTypes.diary.diaryEditModal
 		break
 	}
 
@@ -195,36 +196,43 @@ class PlantViewEdit extends Component {
 				<WaterSwipePanel modalOpen={this.state.modalOpen}
 								 editing={this.state.editing}
 								 exitEditMode={this.exitEditMode}
+								 saving={this.state.saving}
 								 plant={plant}/>
 
 				<FertilizerSwipePanel modalOpen={this.state.modalOpen}
 									  editing={this.state.editing}
 									  exitEditMode={this.exitEditMode}
+									  saving={this.state.saving}
 									  plant={plant}/>
 
 				<PruningDeadheadingSwipePanel modalOpen={this.state.modalOpen}
 											  editing={this.state.editing}
 											  exitEditMode={this.exitEditMode}
+											  saving={this.state.saving}
 											  plant={plant}/>
 
 				<SoilCompSwipePanel modalOpen={this.state.modalOpen}
 									editing={this.state.editing}
 									exitEditMode={this.exitEditMode}
+									saving={this.state.saving}
 									plant={plant}/>
 
 				<PestSwipePanel modalOpen={this.state.modalOpen}
 								editing={this.state.editing}
 								exitEditMode={this.exitEditMode}
+								saving={this.state.saving}
 								plant={plant}/>
 
 				<DiarySwipePanel modalOpen={this.state.modalOpen}
 								 editing={this.state.editing}
 								 exitEditMode={this.exitEditMode}
+								 saving={this.state.saving}
 								 plant={plant}/>
 
 				<EtcSwipePanel modalOpen={this.state.modalOpen}
 							   editing={this.state.editing}
 							   exitEditMode={this.exitEditMode}
+							   saving={this.state.saving}
 							   plant={plant}/>
 
 			  </SwipeableViews>
@@ -268,7 +276,7 @@ class PlantViewEdit extends Component {
 										   className="plant-condition-icon"
 										   alt="floppy disk"
 										   title="save"
-										   onClick={() => this.updatePlant(`${this.state.editing}-edit`)}/>
+										   onClick={() => this.setState({saving: `${this.state.editing}-edit`})}/>
 						  }
 						</React.Fragment>
 						: ''

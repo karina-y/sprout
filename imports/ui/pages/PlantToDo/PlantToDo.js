@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { withTracker } from 'meteor/react-meteor-data'
 import { Session } from 'meteor/session'
 import Plant from '/imports/api/Plant/Plant'
-import { getDaysSinceAction } from '../../../utils/plantData'
+import { getDaysSinceAction } from '../../../utils/helpers/plantData'
 import PlantTaskList from '../../components/PlantTaskList/PlantTaskList'
 
 class PlantToDo extends Component {

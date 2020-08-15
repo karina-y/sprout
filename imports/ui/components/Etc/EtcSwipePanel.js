@@ -5,6 +5,7 @@ import '../PlantViewEdit/PlantSeedlingViewEdit.scss'
 import 'react-datepicker/dist/react-datepicker.css'
 import { toast } from 'react-toastify'
 import EtcPlantReadEdit from './EtcPlantReadEdit'
+import useNewData from '../../hooks/useNewData'
 
 /*
 TODO
@@ -13,78 +14,15 @@ TODO
 */
 
 
-class EtcSwipePanel extends Component {
-  constructor (props) {
-	super(props)
+const EtcSwipePanel = (props) => {
+  const plant = props.plant;
+  const { newData, setNewData, changeNewData } = useNewData({})
 
-	this.state = {
-	  newData: {}
-	}
-
-	autobind(this)
-  }
-
-  //TODO this is heavy! simplify this and break it out into diff functions (one separate for tracker for sure)
-  //tracker should be able to be simplified
-  //this updates the plant's data in my state before it gets sent out to the backend
-  updateData (e, type) {
-	//this is any new data that's been entered, updating it as new inputs are entered
-	let newPlantData = this.state.newData
-
-	if (type === 'companions') {
-	  const stripped = e.target.value.replace(/\s*,\s*/g, ',')
-	  newPlantData[type] = stripped.split(',')
-
-	} else if (type === 'dateBought' || type === 'datePlanted') {
-	  newPlantData[type] = new Date(e.target.value)
-	} else {
-	  newPlantData[type] = e.target.value
-	}
-
-	this.setState({
-	  newData: newPlantData
-	})
-  }
-
-  //this only adds new dates to trackers, ie adding date fertilizer was used
-  addTrackerDate (e, trackerType) {
-	let newPlantData = this.state.newData;
-
-	if (newPlantData[trackerType]) {
-	  newPlantData[trackerType].date = new Date(e)
-	} else {
-	  newPlantData[trackerType] = {
-		date: new Date(e)
-	  }
-	}
-
-	this.setState({
-	  newData: newPlantData
-	})
-  }
-
-  //this adds additional details to trackers, ie fertilizer type used
-  addTrackerDetails (e, trackerType, detailType) {
-	let newPlantData = this.state.newData;
-
-	if (newPlantData[trackerType]) {
-	  newPlantData[trackerType][detailType] = e.target.value;
-	} else {
-	  newPlantData[trackerType] = {
-		[detailType]: e.target.value
-	  }
-	}
-
-	this.setState({
-	  newData: newPlantData
-	})
-  }
-
-  updatePlant(type) {
+  const updatePlant = (type) => {
 	console.log("profile", type);
 
-	const newPlantData = this.state.newData;
-	const oldPlantData = this.props.plant;
+	const newPlantData = newData;
+	const oldPlantData = plant;
 	let changeTitle = false;
 
 	if (!type || !newPlantData || JSON.stringify(newPlantData) === "{}") {
@@ -117,7 +55,7 @@ class EtcSwipePanel extends Component {
 			toast.success("Successfully saved new entry.");
 
 			//reset the data
-			this.resetData();
+			resetData();
 		  }
 		});
 	  } else {
@@ -126,25 +64,19 @@ class EtcSwipePanel extends Component {
 	}
   }
 
-  resetData() {
-	this.setState({
-	  newData: {},
-	});
-
-	this.props.exitEditMode();
+  const resetData = () => {
+	setNewData({})
+	props.exitEditMode();
   }
 
-  render () {
-	const plant = this.props.plant
+  return (
+		  <div className="PlantSeedlingViewEdit">
 
-	return (
-			<div className="PlantSeedlingViewEdit">
+			<EtcPlantReadEdit plant={plant} updateData={changeNewData} editing={props.editing}/>
 
-			  <EtcPlantReadEdit plant={plant} updateData={this.updateData} editing={this.props.editing}/>
+		  </div>
+  )
 
-			</div>
-	)
-  }
 }
 
 EtcSwipePanel.propTypes = {
@@ -157,7 +89,7 @@ export default EtcSwipePanel;
 
 /*export default withTracker((props) => {
   // const id = props.match.params.id
-  // const plant = Plant.findOne({_id: id})
+  // const plant = Plant.findOne({_id: id.})
   // const categories = Category.find({}).fetch()
   let plant = props.plant;
 

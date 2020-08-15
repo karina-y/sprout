@@ -1,8 +1,8 @@
 import { Accounts } from 'meteor/accounts-base'
 import rateLimit from '../../modules/rate-limit'
-import logger from '/imports/utils/logger'
+import logger from '/imports/utils/helpers/logger'
 import SimpleSchema from 'simpl-schema'
-import handleMethodException from '/imports/utils/handle-method-exception'
+import handleMethodException from '/imports/utils/helpers/handle-method-exception'
 import Preferences from '../Preferences/Preferences'
 import { Meteor } from 'meteor/meteor'
 

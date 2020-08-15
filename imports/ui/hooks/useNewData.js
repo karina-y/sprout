@@ -7,13 +7,30 @@ function useNewData(initial) {
 	//this is any new data that's been entered, updating it as new inputs are entered
 	let newPlantData = newData;
 
+	//TODO make these types constants as well
 	if (type === "waterScheduleAuto") {
 	  if (newPlantData[type]) {
 		newPlantData[type] = !newPlantData[type];
 	  } else {
 		newPlantData[type] = !this.props.plant[type];
 	  }
-	} else {
+	} else if (type === 'diary') {
+	  if (newPlantData[type]) {
+		newPlantData[type].entry = e.target.value
+		newPlantData[type].date = new Date()
+	  } else {
+		newPlantData[type] = {
+		  entry: e.target.value,
+		  date: new Date()
+		}
+	  }
+	} else if (type === 'companions') {
+	  const stripped = e.target.value.replace(/\s*,\s*/g, ',')
+	  newPlantData[type] = stripped.split(',')
+
+	} else if (type === 'dateBought' || type === 'datePlanted') {
+	  newPlantData[type] = new Date(e.target.value)
+	}  else {
 	  newPlantData[type] = e.target.value;
 	}
 
@@ -62,7 +79,7 @@ function useNewData(initial) {
 	setNewData({newData: newPlantData})
   }
 
-  return { newData, changeNewData, addTrackerDate, addTrackerDetails };
+  return { newData, setNewData, changeNewData, addTrackerDate, addTrackerDetails };
 }
 
 export default useNewData;

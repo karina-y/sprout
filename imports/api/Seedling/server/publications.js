@@ -1,5 +1,5 @@
 import Seedling from '../Seedling'
-import logger from '/imports/utils/logger'
+import logger from '/imports/utils/helpers/logger'
 
 Meteor.publish('seedling', function seedlings () {
   if (Meteor.userId()) {

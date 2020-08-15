@@ -7,7 +7,7 @@ import 'react-datepicker/dist/react-datepicker.css'
 import {
   getHighlightDates, getLastSoilMoisture, getLastSoilPh,
   lastChecked, sortByLastDate
-} from '../../../utils/plantData'
+} from '../../../utils/helpers/plantData'
 import { toast } from 'react-toastify'
 import SoilCompModals from './SoilCompModals'
 import SoilCompReadEdit from './SoilCompReadEdit'
@@ -26,7 +26,7 @@ const SoilCompSwipePanel = (props) => {
   const soilCompLastChecked = lastChecked(plant.soilCompositionTracker)
   const soilPh = getLastSoilPh(plant.soilCompositionTracker)
   const soilMoisture = getLastSoilMoisture(plant.soilCompositionTracker)
-  const { newData, changeNewData, addTrackerDate } = useNewData({})
+  const { newData, setNewData, changeNewData, addTrackerDate } = useNewData({})
 
   const updatePlant = (type) => {
 	console.log("profile", type);
@@ -72,8 +72,7 @@ const SoilCompSwipePanel = (props) => {
   }
 
   const resetData = () => {
-	useNewData({})
-
+	setNewData({})
 	props.exitEditMode();
   }
 

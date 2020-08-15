@@ -6,11 +6,12 @@ import '../PlantViewEdit/PlantSeedlingViewEdit.scss'
 import 'react-datepicker/dist/react-datepicker.css'
 import {
   getHighlightDates, getLastSoilMoisture, getLastSoilPh, lastChecked, sortByLastDate
-} from '../../../utils/plantData'
+} from '../../../utils/helpers/plantData'
 import { toast } from 'react-toastify'
 import PruningDeadheadingModals from './PruningDeadheadingModals'
 import PruningDeadheadingReadEditPro from './PruningDeadheadingReadEditPro'
 import useNewData from '../../hooks/useNewData'
+import usePruneType from '../../hooks/usePruneType'
 
 /*
 TODO
@@ -21,8 +22,8 @@ TODO
 
 const PruningDeadheadingSwipePanel = (props) => {
   const plant = props.plant;
-  const { newData, changeNewData, addTrackerDate, addTrackerDetails } = useNewData({})
-  //TODO state.pruneType: null
+  const { newData, setNewData, changeNewData, addTrackerDate, addTrackerDetails } = useNewData({})
+  const { pruneType, setPruneType } = usePruneType(null)
 
   const updatePlant = (type) => {
 	console.log("profile", type);
@@ -72,8 +73,8 @@ const PruningDeadheadingSwipePanel = (props) => {
   }
 
   const resetData = () => {
-	useNewData({})
-
+	setNewData({})
+	setPruneType(null)
 	props.exitEditMode();
   }
 
@@ -93,7 +94,7 @@ const PruningDeadheadingSwipePanel = (props) => {
 									  tracker={plant.pruningDeadheadingTracker}
 									  highlightDates={plant.highlightDates}
 									  pruneType={pruneType}
-									  setPruneType={(val) => this.setState(val)}/>
+									  setPruneType={(val) => setPruneType(val)}/>
 			{/*						  TODO setPruneType above*/}
 
 		  </div>

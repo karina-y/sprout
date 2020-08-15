@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import SwipePanelContent from '../Shared/SwipePanelContent/SwipePanelContent'
-import SoilTypes from '../../../utils/soilTypes'
+import SoilTypes from '/imports/utils/constants/soilTypes'
 
 const ReadEdit = (props) => (
 		<div className="swipe-slide">

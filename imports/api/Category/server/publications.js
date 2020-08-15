@@ -1,5 +1,5 @@
 import Category from '../Category';
-import logger from '/imports/utils/logger';
+import logger from '/imports/utils/helpers/logger';
 
 Meteor.publish('category', function categories() {
   if (Meteor.userId()) {

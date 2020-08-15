@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import SwipePanelContent from '../Shared/SwipePanelContent/SwipePanelContent'
-import { parseDate } from '../../../utils/plantData'
+import { parseDate } from '../../../utils/helpers/plantData'
 
 const DiaryReadEdit = (props) => (
 		<div className="swipe-slide">

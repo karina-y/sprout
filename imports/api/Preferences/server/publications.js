@@ -1,5 +1,5 @@
 import Preferences from '../Preferences';
-import logger from '/imports/utils/logger';
+import logger from '/imports/utils/helpers/logger';
 
 Meteor.publish('preferences', function preferences() {
   if (Meteor.userId()) {

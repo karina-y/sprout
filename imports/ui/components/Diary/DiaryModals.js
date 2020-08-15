@@ -2,14 +2,15 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import ItemAddEntryModal from '../Shared/ItemAddEntryModal'
 import ItemViewHistoryModal from '../Shared/ItemViewHistoryModal'
-import { parseDate } from '../../../utils/plantData'
+import { parseDate } from '../../../utils/helpers/plantData'
+import UpdateTypes from '../../../utils/constants/updateTypes'
 
 const DiaryModals = (props) => (
 		<React.Fragment>
 		  <ItemAddEntryModal save={props.save}
 							 cancel={props.resetModal}
 							 show={props.modalOpen}
-							 type="diary">
+							 type={UpdateTypes.diary.diaryEditModal}>
 
 			<p className="modern-input for-modal">
 			  <label>new diary entry</label>
@@ -20,7 +21,7 @@ const DiaryModals = (props) => (
 
 		  <ItemViewHistoryModal cancel={props.resetModal}
 								show={props.modalOpen}
-								type="diary-history"
+								type={UpdateTypes.diary.diaryEditModal}
 								header="Diary History">
 
 			{props.diary && props.diary.length > 0 ?

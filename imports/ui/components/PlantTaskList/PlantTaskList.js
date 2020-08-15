@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import './PlantTaskList.scss'
 import ShadowBox from '../ShadowBox/ShadowBox'
 import { ReactSVG } from 'react-svg'
-import IconList from '/imports/utils/iconList'
+import Icons from '/imports/utils/constants/icons'
 
 function PlantTaskList (props) {
   const plant = props.plant
@@ -25,30 +25,30 @@ function PlantTaskList (props) {
 				<div className="flex-evenly" style={{position: 'relative', padding: '10px 0'}}>
 
 				  {plant.attentionNeeded.water &&
-				  <ReactSVG src={IconList.water.icon}
+				  <ReactSVG src={Icons.water.icon}
 							className="plant-condition-icon info"
-							alt={IconList.water.alt}
+							alt={Icons.water.alt}
 							title="water needed"/>
 				  }
 
 				  {plant.attentionNeeded.fertilizer &&
-				  <ReactSVG src={IconList.fertilizer.icon}
+				  <ReactSVG src={Icons.fertilizer.icon}
 							className="plant-condition-icon warning"
-							alt={IconList.fertilizer.alt}
+							alt={Icons.fertilizer.alt}
 							title="fertilizer needed"/>
 				  }
 
 				  {plant.attentionNeeded.pruning &&
-				  <ReactSVG src={IconList.pruning.icon}
+				  <ReactSVG src={Icons.pruning.icon}
 							className="plant-condition-icon success"
-							alt={IconList.pruning.alt}
+							alt={Icons.pruning.alt}
 							title="pruning needed"/>
 				  }
 
 				  {plant.attentionNeeded.deadheading &&
-				  <ReactSVG src={IconList.deadheading.icon}
+				  <ReactSVG src={Icons.deadheading.icon}
 							className="plant-condition-icon danger"
-							alt={IconList.deadheading.alt}
+							alt={Icons.deadheading.alt}
 							title="deadheading needed"/>
 				  }
 				</div>

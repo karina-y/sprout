@@ -6,10 +6,11 @@ import '../PlantViewEdit/PlantSeedlingViewEdit.scss'
 import 'react-datepicker/dist/react-datepicker.css'
 import {
   sortByLastDate
-} from '../../../utils/plantData'
+} from '../../../utils/helpers/plantData'
 import { toast } from 'react-toastify'
 import DiaryModals from './DiaryModals'
 import DiaryReadEdit from './DiaryReadEdit'
+import useNewData from '../../hooks/useNewData'
 
 /*
 TODO
@@ -18,83 +19,15 @@ TODO
 */
 
 
-class DiarySwipePanel extends Component {
-  constructor (props) {
-	super(props)
+const DiarySwipePanel = (props) => {
+  const plant = props.plant;
+  const { newData, setNewData, changeNewData } = useNewData({})
 
-	this.state = {
-	  newData: {}
-	}
-
-	autobind(this)
-  }
-
-
-  //TODO this is heavy! simplify this and break it out into diff functions (one separate for tracker for sure)
-  //tracker should be able to be simplified
-  //this updates the plant's data in my state before it gets sent out to the backend
-  updateData (e, type) {
-	//this is any new data that's been entered, updating it as new inputs are entered
-	let newPlantData = this.state.newData
-
-	if (type === 'diary') {
-	  if (newPlantData[type]) {
-		newPlantData[type].entry = e.target.value
-		newPlantData[type].date = new Date()
-	  } else {
-		newPlantData[type] = {
-		  entry: e.target.value,
-		  date: new Date()
-		}
-	  }
-	} else {
-	  newPlantData[type] = e.target.value
-	}
-
-	this.setState({
-	  newData: newPlantData
-	})
-  }
-
-  //this only adds new dates to trackers, ie adding date fertilizer was used
-  addTrackerDate (e, trackerType) {
-	let newPlantData = this.state.newData;
-
-	if (newPlantData[trackerType]) {
-	  newPlantData[trackerType].date = new Date(e)
-	} else {
-	  newPlantData[trackerType] = {
-		date: new Date(e)
-	  }
-	}
-
-	this.setState({
-	  newData: newPlantData
-	})
-  }
-
-  //this adds additional details to trackers, ie fertilizer type used
-  addTrackerDetails (e, trackerType, detailType) {
-	let newPlantData = this.state.newData;
-
-	if (newPlantData[trackerType]) {
-	  newPlantData[trackerType][detailType] = e.target.value;
-	} else {
-	  newPlantData[trackerType] = {
-		[detailType]: e.target.value
-	  }
-	}
-
-	this.setState({
-	  newData: newPlantData
-	})
-  }
-
-  updatePlant(type) {
+  const updatePlant = (type) => {
 	console.log("profile", type);
 
-	const newPlantData = this.state.newData;
-	const oldPlantData = this.props.plant;
+	const newPlantData = newData;
+	const oldPlantData = plant;
 
 	if (!type || !newPlantData || JSON.stringify(newPlantData) === "{}") {
 	  toast.error("No data entered.");
@@ -114,7 +47,7 @@ class DiarySwipePanel extends Component {
 			toast.success("Successfully saved new entry.");
 
 			//reset the data
-			this.resetData();
+			resetData();
 		  }
 		});
 	  } else {
@@ -123,33 +56,27 @@ class DiarySwipePanel extends Component {
 	}
   }
 
-  resetData() {
-	this.setState({
-	  newData: {},
-	});
-
-	this.props.exitEditMode();
+  const resetData = () => {
+	setNewData({})
+	props.exitEditMode();
   }
 
-  render () {
-	const plant = this.props.plant
+  return (
+		  <div className="PlantSeedlingViewEdit">
 
-	return (
-			<div className="PlantSeedlingViewEdit">
+			{/* diary */}
+			<DiaryReadEdit item={plant} updateData={changeNewData}/>
 
-			  {/* diary */}
-			  <DiaryReadEdit item={plant} updateData={this.updateData}/>
+			{/* diary */}
+			<DiaryModals updateData={changeNewData}
+						 save={updatePlant}
+						 resetModal={resetData}
+						 modalOpen={props.modalOpen}
+						 diary={plant.diary}/>
 
-			  {/* diary */}
-			  <DiaryModals updateData={this.updateData}
-						   save={this.updatePlant}
-						   resetModal={this.resetData}
-						   modalOpen={this.props.modalOpen}
-						   diary={plant.diary}/>
+		  </div>
+  )
 
-			</div>
-	)
-  }
 }
 
 DiarySwipePanel.propTypes = {

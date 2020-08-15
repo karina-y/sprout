@@ -17,7 +17,7 @@ import { faHistory } from '@fortawesome/free-solid-svg-icons/faHistory'
 import { faPlay } from '@fortawesome/free-solid-svg-icons/faPlay'
 import { faStop } from '@fortawesome/free-solid-svg-icons/faStop'
 
-const IconList = {
+const Icons = {
   category: {icon: faFilter, alt: 'filter', title: 'category', isCustom: false},
   companions: {icon: faUserFriends, alt: 'people', title: 'companion plants', isCustom: false},
   compost: {icon: '/icons/farm_03/fertilizer.svg', alt: 'fertilizer bag', title: 'compost', isCustom: true},
@@ -50,4 +50,4 @@ const IconList = {
   dateExpires: {icon: faStop, alt: 'stop', title: 'date expires', isCustom: false},
 }
 
-export default IconList
+export default Icons

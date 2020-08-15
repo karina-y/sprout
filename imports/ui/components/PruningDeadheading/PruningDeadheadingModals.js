@@ -2,16 +2,17 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import ItemAddEntryModal from '../Shared/ItemAddEntryModal'
 import ItemViewHistoryModal from '../Shared/ItemViewHistoryModal'
-import { parseDate } from '../../../utils/plantData'
+import { parseDate } from '../../../utils/helpers/plantData'
 import DatePicker from 'react-datepicker'
 import { toast } from 'react-toastify'
+import UpdateTypes from '../../../utils/constants/updateTypes'
 
 const PruningDeadheadingModals = (props) => (
 		<React.Fragment>
 		  <ItemAddEntryModal save={props.save}
 							 cancel={props.resetModal}
 							 show={props.modalOpen}
-							 type="pruningDeadheadingTracker"
+							 type={UpdateTypes.pruningDeadheading.pruningDeadheadingEditModal}
 							 header="New pruning or deadheading entry">
 
 			{!props.pruneType &&
@@ -56,7 +57,7 @@ const PruningDeadheadingModals = (props) => (
 
 		  <ItemViewHistoryModal cancel={props.resetModal}
 								show={props.modalOpen}
-								type="pruningDeadheadingTracker-history"
+								type={UpdateTypes.pruningDeadheading.pruningDeadheadingHistoryModal}
 								header="Pruning - Deadheading History">
 
 			{props.tracker && props.tracker.length > 0 ?

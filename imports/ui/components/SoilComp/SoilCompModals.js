@@ -3,14 +3,15 @@ import PropTypes from 'prop-types'
 import DatePicker from 'react-datepicker'
 import ItemAddEntryModal from '../Shared/ItemAddEntryModal'
 import ItemViewHistoryModal from '../Shared/ItemViewHistoryModal'
-import { parseDate } from '/imports/utils/plantData'
+import { parseDate } from '/imports/utils/helpers/plantData'
+import UpdateTypes from '../../../utils/constants/updateTypes'
 
 const SoilCompModals = (props) => (
 		<React.Fragment>
 		  <ItemAddEntryModal save={props.save}
 							 cancel={props.resetModal}
 							 show={props.modalOpen}
-							 type="soilCompositionTracker"
+							 type={UpdateTypes.soilComp.soilCompEditModal}
 							 header="New soil composition entry">
 
 			<DatePicker
@@ -49,7 +50,7 @@ const SoilCompModals = (props) => (
 
 		  <ItemViewHistoryModal cancel={props.resetModal}
 								show={props.modalOpen}
-								type="soilCompositionTracker-history"
+								type={UpdateTypes.soilComp.soilCompHistoryModal}
 								header="Soil Composition History">
 
 			{props.tracker && props.tracker.length > 0 ?
@@ -95,7 +96,7 @@ SoilCompModals.propTypes = {
   tracker: PropTypes.array,
   newDataTracker: PropTypes.object,
   highlightDates: PropTypes.array,
-  category: PropTypes.string.isRequired
+  category: PropTypes.string	//TODO isRequired
 }
 
 export default SoilCompModals

@@ -3,14 +3,15 @@ import PropTypes from 'prop-types'
 import DatePicker from 'react-datepicker'
 import ItemAddEntryModal from '../Shared/ItemAddEntryModal'
 import ItemViewHistoryModal from '../Shared/ItemViewHistoryModal'
-import { parseDate } from '../../../utils/plantData'
+import { parseDate } from '../../../utils/helpers/plantData'
+import UpdateTypes from '../../../utils/constants/updateTypes'
 
 const FertilizerModals = (props) => (
 		<React.Fragment>
 		  <ItemAddEntryModal save={props.save}
 							 cancel={props.resetModal}
 							 show={props.modalOpen}
-							 type="fertilizerTracker"
+							 type={UpdateTypes.fertilizer.fertilizerEditModal}
 							 header="New fertilizer entry">
 
 			<DatePicker
@@ -31,7 +32,7 @@ const FertilizerModals = (props) => (
 
 		  <ItemViewHistoryModal cancel={props.resetModal}
 								show={props.modalOpen}
-								type="fertilizerTracker-history"
+								type={UpdateTypes.fertilizer.fertilizerHistoryModal}
 								header="Fertilizing History">
 
 			{props.tracker && props.tracker.length > 0 ?

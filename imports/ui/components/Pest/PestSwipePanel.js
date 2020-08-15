@@ -6,10 +6,11 @@ import '../PlantViewEdit/PlantSeedlingViewEdit.scss'
 import 'react-datepicker/dist/react-datepicker.css'
 import {
   getHighlightDates, getLastPestName, getLastPestTreatment, lastChecked, sortByLastDate
-} from '../../../utils/plantData'
+} from '../../../utils/helpers/plantData'
 import { toast } from 'react-toastify'
 import PestModals from './PestModals'
 import PestReadEdit from './PestReadEdit'
+import useNewData from '../../hooks/useNewData'
 
 /*
 TODO
@@ -18,70 +19,18 @@ TODO
 */
 
 
-class PestSwipePanel extends Component {
-  constructor (props) {
-	super(props)
+const PestSwipePanel = (props) => {
+  const plant = props.plant;
+  const { newData, setNewData, changeNewData, addTrackerDate, addTrackerDetails } = useNewData({})
+  let pestLastChecked = lastChecked(plant.pestTracker)
+  let pestName = getLastPestName(plant.pestTracker)
+  let pestTreatment = getLastPestTreatment(plant.pestTracker)
 
-	this.state = {
-	  newData: {}
-	}
-
-	autobind(this)
-  }
-
-  //TODO this is heavy! simplify this and break it out into diff functions (one separate for tracker for sure)
-  //tracker should be able to be simplified
-  //this updates the plant's data in my state before it gets sent out to the backend
-  updateData (e, type) {
-	//this is any new data that's been entered, updating it as new inputs are entered
-	let newPlantData = this.state.newData
-
-	newPlantData[type] = e.target.value
-
-	this.setState({
-	  newData: newPlantData
-	})
-  }
-
-  //this only adds new dates to trackers, ie adding date fertilizer was used
-  addTrackerDate (e, trackerType) {
-	let newPlantData = this.state.newData;
-
-	if (newPlantData[trackerType]) {
-	  newPlantData[trackerType].date = new Date(e)
-	} else {
-	  newPlantData[trackerType] = {
-		date: new Date(e)
-	  }
-	}
-
-	this.setState({
-	  newData: newPlantData
-	})
-  }
-
-  //this adds additional details to trackers, ie fertilizer type used
-  addTrackerDetails (e, trackerType, detailType) {
-	let newPlantData = this.state.newData;
-
-	if (newPlantData[trackerType]) {
-	  newPlantData[trackerType][detailType] = e.target.value;
-	} else {
-	  newPlantData[trackerType] = {
-		[detailType]: e.target.value
-	  }
-	}
-
-	this.setState({
-	  newData: newPlantData
-	})
-  }
-
-  updatePlant(type) {
+  const updatePlant = (type) => {
 	console.log("profile", type);
 
-	const newPlantData = this.state.newData;
-	const oldPlantData = this.props.plant;
+	const newPlantData = newData;
+	const oldPlantData = plant;
 
 	if (!type || !newPlantData || JSON.stringify(newPlantData) === "{}") {
 	  toast.error("No data entered.");
@@ -101,7 +50,7 @@ class PestSwipePanel extends Component {
 			toast.success("Successfully saved new entry.");
 
 			//reset the data
-			this.resetData();
+			resetData();
 		  }
 		});
 	  } else {
@@ -110,43 +59,33 @@ class PestSwipePanel extends Component {
 	}
   }
 
-  resetData() {
-	this.setState({
-	  newData: {},
-	});
-
-	this.props.exitEditMode();
+  const resetData = () => {
+	setNewData({})
+	props.exitEditMode();
   }
-
-  render () {
-	const plant = this.props.plant
-	let pestLastChecked = lastChecked(plant.pestTracker)
-	let pestName = getLastPestName(plant.pestTracker)
-	let pestTreatment = getLastPestTreatment(plant.pestTracker)
 
 	return (
 			<div className="PlantSeedlingViewEdit">
 
 			  <PestReadEdit item={plant}
-							updateData={this.updateData}
+							updateData={changeNewData}
 							pestLastChecked={pestLastChecked}
 							pestName={pestName}
 							pestTreatment={pestTreatment}/>
 
 
 			  {/* pests */}
-			  <PestModals addTrackerDate={this.addTrackerDate}
-						  addTrackerDetails={this.addTrackerDetails}
-						  save={this.updatePlant}
-						  resetModal={this.resetData}
-						  modalOpen={this.props.modalOpen}
-						  newDataTracker={this.state.newData.pestTracker}
+			  <PestModals addTrackerDate={addTrackerDate}
+						  addTrackerDetails={addTrackerDetails}
+						  save={updatePlant}
+						  resetModal={resetData}
+						  modalOpen={props.modalOpen}
+						  newDataTracker={newData.pestTracker}
 						  tracker={plant.pestTracker}
 						  highlightDates={plant.highlightDates}/>
 
 			</div>
 	)
-  }
 }
 
 PestSwipePanel.propTypes = {

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import SwipePanelContent from '../Shared/SwipePanelContent/SwipePanelContent'
-import SoilTypes from '../../../utils/soilTypes'
+import SoilTypes from '../../../utils/constants/soilTypes'
 
 
 const SoilCompAddPro = (props) => (

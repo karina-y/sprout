@@ -1,8 +1,8 @@
 import { Meteor } from 'meteor/meteor';
 import colors from 'colors';
 import './api';
-import logger from '../imports/utils/logger'
-import handleMethodException from '../imports/utils/handle-method-exception'
+import logger from '../imports/utils/helpers/logger'
+import handleMethodException from '../imports/utils/helpers/handle-method-exception'
 import './monti'
 
 Meteor.startup(() => {

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import SwipePanelContent from '../Shared/SwipePanelContent/SwipePanelContent'
 import { withTracker } from 'meteor/react-meteor-data'
 import Category from '../../../api/Category/Category'
-import { parseDate } from '../../../utils/plantData'
+import { parseDate } from '../../../utils/helpers/plantData'
 
 
 const SeedlingDatesReadEdit = (props) => (

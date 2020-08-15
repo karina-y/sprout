@@ -1,5 +1,5 @@
 import rateLimit from '../../modules/rate-limit';
-import logger from '/imports/utils/logger';
+import logger from '/imports/utils/helpers/logger';
 
 Meteor.methods({
   'trefle.get': function profileDelete(data) {

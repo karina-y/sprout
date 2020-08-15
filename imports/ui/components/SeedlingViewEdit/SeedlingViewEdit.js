@@ -17,7 +17,7 @@ import { faCalendar } from '@fortawesome/free-solid-svg-icons/faCalendar'
 import {
   getDaysSinceAction, getLastPestName, getLastPestTreatment, getLastSoilMoisture, getLastSoilPh,
   getPlantCondition, lastChecked, lastFertilizerUsed, sortByLastDate
-} from '../../../utils/plantData'
+} from '../../../utils/helpers/plantData'
 import Seedling from '/imports/api/Seedling/Seedling'
 import { toast } from 'react-toastify'
 import ItemAddEntryModal from '../Shared/ItemAddEntryModal'

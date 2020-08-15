@@ -4,8 +4,8 @@ import { withTracker } from 'meteor/react-meteor-data'
 import './SeedlingPreview.scss'
 import ShadowBox from '../ShadowBox/ShadowBox'
 import ProgressBar from 'react-bootstrap/ProgressBar'
-import { getDaysSinceAction, getPlantCondition } from '/imports/utils/plantData'
-import IconList from '/imports/utils/iconList'
+import { getDaysSinceAction, getPlantCondition } from '/imports/utils/helpers/plantData'
+import Icons from '/imports/utils/constants/icons'
 import { ReactSVG } from 'react-svg'
 
 const SeedlingPreview = (props) => (
@@ -22,20 +22,20 @@ const SeedlingPreview = (props) => (
 			  <p>{props.seedling.latinName || props.seedling.commonName}</p>
 
 			  <div>
-				<ReactSVG src={IconList.water.icon}
+				<ReactSVG src={Icons.water.icon}
 						  className="plant-condition-icon"
-						  alt={IconList.water.alt}
-						  title={IconList.water.title}/>
+						  alt={Icons.water.alt}
+						  title={Icons.water.title}/>
 
 				<ProgressBar now={props.seedling.waterProgress === 0 ? 5 : props.seedling.waterProgress}
 							 className={`water ${props.seedling.waterCondition}`}/>
 			  </div>
 
 			  <div>
-				<ReactSVG src={IconList.fertilizer.icon}
+				<ReactSVG src={Icons.fertilizer.icon}
 						  className="plant-condition-icon fertilizer"
-						  alt={IconList.fertilizer.alt}
-						  title={IconList.fertilizer.title}/>
+						  alt={Icons.fertilizer.alt}
+						  title={Icons.fertilizer.title}/>
 				<ProgressBar now={props.seedling.fertilizerProgress === 0 ? 5 : props.seedling.fertilizerProgress}
 							 className={`fertilizer ${props.seedling.fertilizerCondition}`}/>
 			  </div>

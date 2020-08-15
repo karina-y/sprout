@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from 'react'
 import PropTypes from "prop-types";
 import "../PlantViewEdit/PlantSeedlingViewEdit.scss";
 import "react-datepicker/dist/react-datepicker.css";
@@ -7,7 +7,7 @@ import {
   getHighlightDates,
   getPlantCondition,
   sortByLastDate,
-} from "../../../utils/plantData";
+} from "../../../utils/helpers/plantData";
 import { toast } from "react-toastify";
 import { withTracker } from "meteor/react-meteor-data";
 import WaterModals from './WaterModals'
@@ -23,15 +23,21 @@ TODO
 
 const WaterSwipePanel = (props) => {
   const plant = props.plant;
-  const { newData, changeNewData, addTrackerDate } = useNewData({})
+  const { newData, setNewData, changeNewData, addTrackerDate } = useNewData({})
 
-  const updatePlant = (type) => {
-    console.log("profile", type);
+  useEffect(() => {
+    if (props.saving === "waterTracker-edit") {
+      updatePlant("waterTracker-edit")
+    }
+  }, [props]);
+
+  const updatePlant = () => {
+    console.log("profile");
 
     const newPlantData = newData;
     const oldPlantData = props.plant;
 
-    if (!type || !newPlantData || JSON.stringify(newPlantData) === "{}") {
+    if (!newPlantData || JSON.stringify(newPlantData) === "{}") {
       toast.error("No data entered.");
     } else {
       //TODO abstract each of these cases out
@@ -75,7 +81,7 @@ const WaterSwipePanel = (props) => {
   }
 
   const resetData = () => {
-    useNewData({})
+    setNewData({})
 
     props.exitEditMode();
   }

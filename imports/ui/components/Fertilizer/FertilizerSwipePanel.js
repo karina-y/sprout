@@ -1,7 +1,6 @@
-import React, { Component } from "react";
+import React, { useEffect } from 'react'
 import { withTracker } from "meteor/react-meteor-data";
 import PropTypes from "prop-types";
-import autobind from "react-autobind";
 import "../PlantViewEdit/PlantSeedlingViewEdit.scss";;
 import "react-datepicker/dist/react-datepicker.css";
 import {
@@ -9,7 +8,7 @@ import {
   getPlantCondition,
   lastFertilizerUsed,
   sortByLastDate,
-} from '../../../utils/plantData'
+} from '../../../utils/helpers/plantData'
 import { toast } from "react-toastify";
 import FertilizerModals from "./FertilizerModals";
 import FertilizerReadEdit from './FertilizerReadEdit'
@@ -25,7 +24,13 @@ TODO
 const FertilizerSwipePanel = (props) => {
   const plant = props.plant;
   const fertilizerContent = lastFertilizerUsed(plant.fertilizerTracker)
-  const { newData, changeNewData, addTrackerDate, addTrackerDetails } = useNewData({})
+  const { newData, setNewData, changeNewData, addTrackerDate, addTrackerDetails } = useNewData({})
+
+  useEffect(() => {
+    if (props.saving === "fertilizerTracker-edit") {
+      updatePlant("fertilizerTracker-edit")
+    }
+  }, [props]);
 
   const updatePlant = (type) => {
     console.log("profile", type);
@@ -74,7 +79,7 @@ const FertilizerSwipePanel = (props) => {
   }
 
   const resetData = () => {
-    useNewData({})
+    setNewData({})
 
     props.exitEditMode();
   }
