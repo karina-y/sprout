@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import autobind from 'react-autobind'
 import './PlantAdd.scss'
-import Modal from 'react-bootstrap/Modal'
 import { Session } from 'meteor/session'
 import SwipeableViews from 'react-swipeable-views'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -11,12 +10,12 @@ import { faTimes } from '@fortawesome/free-solid-svg-icons/faTimes'
 import { faSave } from '@fortawesome/free-solid-svg-icons/faSave'
 import Category from '/imports/api/Category/Category'
 import SwipePanelContent from '/imports/ui/components/Shared/SwipePanelContent/SwipePanelContent'
-import WaterAdd from '../../components/SharedPlantSeedling/SwipeViewsAdd/Water'
-import FertilizerAddPro from '../../components/SharedPlantSeedling/SwipeViewsAdd/FertilizerPro'
-import WaterAddPro from '../../components/SharedPlantSeedling/SwipeViewsAdd/WaterPro'
-import FertilizerAdd from '../../components/SharedPlantSeedling/SwipeViewsAdd/Fertilizer'
-import SoilCompAddPro from '../../components/SharedPlantSeedling/SwipeViewsAdd/SoilCompPro'
-import SoilCompAdd from '../../components/SharedPlantSeedling/SwipeViewsAdd/SoilComp'
+import WaterAdd from '/imports/ui/components/Water/WaterAdd'
+import FertilizerAddPro from '/imports/ui/components/Fertilizer/FertilizerAddPro'
+import WaterAddPro from '/imports/ui/components/Water/WaterAddPro'
+import FertilizerAdd from '/imports/ui/components/Fertilizer/FertilizerAdd'
+import SoilCompAddPro from '/imports/ui/components/SoilComp/SoilCompAddPro'
+import SoilCompAdd from '/imports/ui/components/SoilComp/SoilCompAdd'
 
 class PlantAdd extends Component {
   constructor (props) {
@@ -24,11 +23,15 @@ class PlantAdd extends Component {
 
 	this.state = {
 	  plant: {
-		image: selectRandomPlantPicture(),
+		image: selectRandomPlantPicture()
+	  },
+	  water: {
 		waterScheduleAuto: false
 	  },
+	  fertilizer: {},
+	  pruningDeadheading: {},
+	  soilComposition: {},
 	  swipeViewIndex: 0,
-	  showDiaryModal: false,
 	  currentDateSelection: null,
 	  categories: null
 	}
@@ -45,15 +48,101 @@ class PlantAdd extends Component {
 	})
   }
 
-  addNewPlant () {
-	let plant = this.state.plant
+  updatePlant (e, type) {
+	const plant = this.state.plant
 
-	if (plant.waterSchedule) {
-	  plant.waterSchedule = parseInt(plant.waterSchedule)
+	if (type === 'companions') {
+	  if (e.target.value === '') {
+		delete plant[type]
+	  } else {
+		const stripped = e.target.value.replace(/\s*,\s*/g, ',')
+		plant[type] = stripped.split(',')
+	  }
+	} else if (type === 'dateBought' || type === 'datePlanted') {
+	  plant[type] = new Date(e)
+	} else {
+	  plant[type] = e.target.value
 	}
 
-	if (plant.fertilizerSchedule) {
-	  plant.fertilizerSchedule = parseInt(plant.fertilizerSchedule)
+	this.setState({
+	  plant: plant
+	})
+  }
+
+  updateWater (e, type) {
+	const water = this.state.water
+
+	if (type === 'waterScheduleAuto') {
+	  water[type] = !water[type]
+	} else {
+	  water[type] = e.target.value
+	}
+
+	this.setState({
+	  water: water
+	})
+  }
+
+  updateFertilizer (e, type) {
+	const fertilizer = this.state.fertilizer
+
+	fertilizer[type] = e.target.value
+
+	this.setState({
+	  fertilizer: fertilizer
+	})
+  }
+
+  updateSoilComposition (e, type) {
+	const soilComposition = this.state.soilComposition
+
+	if (type === 'ph' || type === 'moisture') {
+	  let phVal = parseFloat(e.target.value)
+	  let moistureVal = parseFloat((parseInt(e.target.value) / 100).toFixed(2))
+
+	  if (soilComposition.soilCompositionTracker) {
+		soilComposition.soilCompositionTracker[type] = (type === 'moisture' ? moistureVal : phVal)
+	  } else {
+		soilComposition.soilCompositionTracker = {
+		  date: new Date(),
+		  [type]: type === 'moisture' ? moistureVal : phVal
+		}
+	  }
+
+	} else if (type === 'tilled') {
+	  soilComposition[type] = e.target.value === 'true' ? true : false
+	} else {
+	  soilComposition[type] = e.target.value
+	}
+
+	this.setState({
+	  soilComposition: soilComposition
+	})
+  }
+
+  updatePruningDeadheading (e, type) {
+	const pruningDeadheading = this.state.pruningDeadheading
+
+	pruningDeadheading[type] = e.target.value
+
+	this.setState({
+	  pruningDeadheading: pruningDeadheading
+	})
+  }
+
+  addNewPlant () {
+	let plant = this.state.plant
+	let water = this.state.water
+	let fertilizer = this.state.fertilizer
+	let soilComposition = this.state.soilComposition
+	let pruningDeadheading = this.state.pruningDeadheading
+
+	if (water.waterSchedule) {
+	  water.waterSchedule = parseInt(water.waterSchedule)
+	}
+
+	if (fertilizer.fertilizerSchedule) {
+	  fertilizer.fertilizerSchedule = parseInt(fertilizer.fertilizerSchedule)
 	}
 
 	/*if (plant.pruningSchedule) {
@@ -64,8 +153,8 @@ class PlantAdd extends Component {
 	  plant.deadheadingSchedule = parseInt(plant.deadheadingSchedule)
 	}*/
 
-	if (plant.soilCompositionTracker && !Array.isArray(plant.soilCompositionTracker)) {
-	  plant.soilCompositionTracker = [plant.soilCompositionTracker]
+	if (soilComposition.soilCompositionTracker && !Array.isArray(soilComposition.soilCompositionTracker)) {
+	  soilComposition.soilCompositionTracker = [soilComposition.soilCompositionTracker]
 	}
 
 	let errMsg;
@@ -74,7 +163,7 @@ class PlantAdd extends Component {
 	if (!plant.commonName && !plant.latinName) {
 	  errMsg = 'Please enter either a common or latin name (eg. Swiss Cheese Plant or Monstera adansonii).'
 	  swipeViewIndex = 0;
-	} else if (!plant.waterPreference) {
+	} else if (!water.waterPreference) {
 	  errMsg = 'Please enter a watering preference (eg. Keep soil moist but not soggy, humidity tray helpful).'
 	  swipeViewIndex = 1;
 	} else if (!plant.lightPreference) {
@@ -95,57 +184,46 @@ class PlantAdd extends Component {
 		swipeViewIndex
 	  })
 	} else {
-	  Meteor.call('plant.insert', plant, (err, response) => {
-		if (err) {
-		  toast.error(err.message)
+	  toast.warning('Saving your new plant...')
+	  
+	  Meteor.call('plant.insert', plant, (plantErr, plantResponse) => {
+		if (plantErr) {
+		  toast.error(plantErr.message)
 		} else {
-		  toast.success('Plant added!')
-		  this.props.history.push('/catalogue/plant')
+
+		  Meteor.call('water.insert', plantResponse, water, (waterErr, waterResponse) => {
+			if (waterErr) {
+			  toast.error(waterErr.message)
+			} else {
+			  Meteor.call('fertilizer.insert', plantResponse, fertilizer, (fertilizerErr, fertilizerResponse) => {
+				if (fertilizerErr) {
+				  toast.error(fertilizerErr.message)
+				} else {
+
+				  Meteor.call('pruningDeadheading.insert', plantResponse, pruningDeadheading, (pruningDeadheadingErr, pruningDeadheadingResponse) => {
+					if (pruningDeadheadingErr) {
+					  toast.error(pruningDeadheadingErr.message)
+					} else {
+					  toast.success('Plant added!')
+					  this.props.history.push('/catalogue/plant')
+					}
+				  })
+				}
+			  })
+			}
+		  })
 		}
 	  })
+
 	}
-  }
-
-  updateData (e, type) {
-	const plant = this.state.plant
-
-	if (type === 'companions') {
-	  if (e.target.value === '') {
-		delete plant[type]
-	  } else {
-		const stripped = e.target.value.replace(/\s*,\s*/g, ',')
-		plant[type] = stripped.split(',')
-	  }
-	} else if (type === 'ph' || type === 'moisture') {
-	  let phVal = parseFloat(e.target.value)
-	  let moistureVal = parseFloat((parseInt(e.target.value) / 100).toFixed(2))
-
-	  if (plant.soilCompositionTracker) {
-		plant.soilCompositionTracker[type] = (type === 'moisture' ? moistureVal : phVal)
-	  } else {
-		plant.soilCompositionTracker = {
-		  date: new Date(),
-		  [type]: type === 'moisture' ? moistureVal : phVal
-		}
-	  }
-
-	} else if (type === 'dateBought' || type === 'datePlanted') {
-	  plant[type] = new Date(e)
-	} else if (type === 'tilled') {
-	  plant[type] = e.target.value === 'true' ? true : false
-	} else if (type === 'waterScheduleAuto') {
-	  plant[type] = !plant[type]
-	} else {
-	  plant[type] = e.target.value
-	}
-
-	this.setState({
-	  plant: plant
-	})
   }
 
   render () {
 	const plant = this.state.plant
+	const water = this.state.water
+	const fertilizer = this.state.fertilizer
+	const soilComposition = this.state.soilComposition
+	const pruningDeadheading = this.state.pruningDeadheading
 	//TODO add ability to set plant photo and photo history eventually
 
 	return (
@@ -171,7 +249,7 @@ class PlantAdd extends Component {
 					<p className="modern-input">
 					  <label>common name *</label>
 					  <input type="text"
-							 onChange={(e) => this.updateData(e, 'commonName')}
+							 onChange={(e) => this.updatePlant(e, 'commonName')}
 							 value={plant.commonName || ''}/></p>
 				  </SwipePanelContent>
 
@@ -179,7 +257,7 @@ class PlantAdd extends Component {
 					<p className="modern-input">
 					  <label>latin name *</label>
 					  <input type="text"
-							 onChange={(e) => this.updateData(e, 'latinName')}
+							 onChange={(e) => this.updatePlant(e, 'latinName')}
 							 value={plant.latinName || ''}/></p>
 				  </SwipePanelContent>
 
@@ -188,7 +266,7 @@ class PlantAdd extends Component {
 					<SwipePanelContent icon="category">
 					  <p className="modern-input">
 						<label>category *</label>
-						<select onChange={(e) => this.updateData(e, 'category')}
+						<select onChange={(e) => this.updatePlant(e, 'category')}
 								value={plant.category || ''}>
 						  <option value='' disabled={true}>- Select a category -</option>
 						  {this.state.categories && this.state.categories.map((item, index) => {
@@ -204,8 +282,16 @@ class PlantAdd extends Component {
 					<p className="modern-input">
 					  <label>toxicity</label>
 					  <input type="text"
-							 onChange={(e) => this.updateData(e, 'toxicity')}
+							 onChange={(e) => this.updatePlant(e, 'toxicity')}
 							 value={plant.toxicity || ''}/></p>
+				  </SwipePanelContent>
+
+				  <SwipePanelContent icon="lightPreference">
+					<p className="modern-input">
+					  <label>light preferences *</label>
+					  <input type="text"
+							 onChange={(e) => this.updatePlant(e, 'lightPreference')}
+							 value={plant.lightPreference || ''}/></p>
 				  </SwipePanelContent>
 
 				</div>
@@ -213,17 +299,17 @@ class PlantAdd extends Component {
 
 				{/* water */}
 				{Meteor.isPro ?
-						<WaterAddPro item={plant} updateData={this.updateData} type={'plant'}/>
+						<WaterAddPro item={water} updateData={this.updateWater} type={'water'}/>
 						:
-						<WaterAdd item={plant} updateData={this.updateData}/>
+						<WaterAdd item={water} updateData={this.updateWater}/>
 				}
 
 
 				{/* fertilizer */}
 				{Meteor.isPro ?
-						<FertilizerAddPro item={plant} updateData={this.updateData}/>
+						<FertilizerAddPro item={fertilizer} updateData={this.updateFertilizer}/>
 						:
-						<FertilizerAdd item={plant} updateData={this.updateData}/>
+						<FertilizerAdd item={fertilizer} updateData={this.updateFertilizer}/>
 				}
 
 				{/* pruning/deadheading schedule */}
@@ -258,16 +344,16 @@ class PlantAdd extends Component {
 				  <SwipePanelContent icon="pruning" iconTitle="pruning preference">
 					<p className="modern-input">
 					  <input type="text"
-							 onChange={(e) => this.updateData(e, 'pruningPreference')}
-							 value={plant.pruningPreference || ''}/>
+							 onChange={(e) => this.updatePruningDeadheading(e, 'pruningPreference')}
+							 value={pruningDeadheading.pruningPreference || ''}/>
 					</p>
 				  </SwipePanelContent>
 
 				  <SwipePanelContent icon="deadheading" iconTitle="deadheading preference">
 					<p className="modern-input">
 					  <input type="text"
-							 onChange={(e) => this.updateData(e, 'deadheadingPreference')}
-							 value={plant.deadheadingPreference || ''}/>
+							 onChange={(e) => this.updatePruningDeadheading(e, 'deadheadingPreference')}
+							 value={pruningDeadheading.deadheadingPreference || ''}/>
 					</p>
 				  </SwipePanelContent>
 				</div>
@@ -276,9 +362,9 @@ class PlantAdd extends Component {
 
 				{/* soil comp */}
 				{Meteor.isPro ?
-						<SoilCompAddPro item={plant} updateData={this.updateData}/>
+						<SoilCompAddPro item={soilComposition} updateData={this.updateSoilComposition} category={plant.category}/>
 						:
-						<SoilCompAdd item={plant} updateData={this.updateData}/>
+						<SoilCompAdd item={soilComposition} updateData={this.updateSoilComposition} category={plant.category}/>
 				}
 
 
@@ -290,7 +376,7 @@ class PlantAdd extends Component {
 					<p className="modern-input">
 					  <label>location bought</label>
 					  <input type="text"
-							 onChange={(e) => this.updateData(e, 'locationBought')}
+							 onChange={(e) => this.updatePlant(e, 'locationBought')}
 							 value={plant.locationBought || ''}/></p>
 				  </SwipePanelContent>
 
@@ -299,7 +385,7 @@ class PlantAdd extends Component {
 					<p className="modern-input">
 					  <label>date bought</label>
 					  <input type="date"
-							 onBlur={(e) => this.updateData(e, 'dateBought')}
+							 onBlur={(e) => this.updatePlant(e, 'dateBought')}
 							 defaultValue={plant.dateBought || ''}/></p>
 				  </SwipePanelContent>
 
@@ -316,7 +402,7 @@ class PlantAdd extends Component {
 
 					  <input type="date"
 							 placeholder={plant.category === 'potted' ? 'Date Potted' : 'Date Planted'}
-							 onBlur={(e) => this.updateData(e, 'datePlanted')}
+							 onBlur={(e) => this.updatePlant(e, 'datePlanted')}
 							 defaultValue={plant.datePlanted || ''}/>
 					</p>
 				  </SwipePanelContent>
@@ -325,7 +411,7 @@ class PlantAdd extends Component {
 					<p className="modern-input">
 					  <label>plant location *</label>
 					  <input type="text"
-							 onChange={(e) => this.updateData(e, 'location')}
+							 onChange={(e) => this.updatePlant(e, 'location')}
 							 value={plant.location || ''}/></p>
 				  </SwipePanelContent>
 
@@ -333,7 +419,7 @@ class PlantAdd extends Component {
 					<p className="modern-input">
 					  <label>companion plants</label>
 					  <input type="text"
-							 onChange={(e) => this.updateData(e, 'companions')}
+							 onChange={(e) => this.updatePlant(e, 'companions')}
 							 value={plant.companions || ''}/></p>
 				  </SwipePanelContent>
 				</div>
@@ -356,30 +442,6 @@ class PlantAdd extends Component {
 								 onClick={this.addNewPlant}/>
 			  </div>
 
-
-			  <Modal show={this.state.showDiaryModal}
-					 onHide={() => this.setState({showDiaryModal: false})}
-					 className="plant-view-data-modal">
-				<Modal.Header closeButton>
-
-				</Modal.Header>
-
-				<Modal.Body>
-				  Save new plant profile?
-				</Modal.Body>
-
-				<Modal.Footer>
-				  <button onClick={() => this.setState({showDiaryModal: false})}
-						  className="flat">
-					Cancel
-				  </button>
-
-				  <button onClick={() => this.setState({showDiaryModal: false})}
-						  className="flat">
-					Save
-				  </button>
-				</Modal.Footer>
-			  </Modal>
 			</div>
 	)
   }

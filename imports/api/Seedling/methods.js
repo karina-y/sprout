@@ -25,7 +25,6 @@ Meteor.methods({
 	} catch (e) {
 	  logger('danger', e.message)
 	  handleMethodException(e.message)
-	  // throw new Meteor.Error('500', 'Please check your inputs and try again.')
 
 	}
   },
@@ -129,7 +128,6 @@ Meteor.methods({
 	} catch (e) {
 	  logger('danger', e.message)
 	  handleMethodException(e.message)
-	  // throw new Meteor.Error('500', 'Please check your inputs and try again.')
 	}
   },
   'seedling.delete': function seedlingDelete (data) {
@@ -146,7 +144,6 @@ Meteor.methods({
 	} catch (e) {
 	  logger('danger', e.message)
 	  handleMethodException(e.message)
-	  // throw new Meteor.Error('500', 'Please check your inputs and try again.')
 
 	}
 

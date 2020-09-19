@@ -44,8 +44,6 @@ const WaterSwipePanel = (props) => {
       let data = {
         waterPreference:
                 newPlantData.waterPreference || oldPlantData.waterPreference,
-        lightPreference:
-                newPlantData.lightPreference || oldPlantData.lightPreference,
         waterSchedule:
                 newPlantData.waterSchedule === ""
                         ? null

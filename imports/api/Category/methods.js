@@ -26,7 +26,6 @@ Meteor.methods({
 	} catch (e) {
 	  logger('danger', e.message)
 	  handleMethodException(e.message)
-	  // throw new Meteor.Error('500', 'Please check your inputs and try again.')
 
 	}
   },
@@ -94,7 +93,6 @@ Meteor.methods({
 	} catch (e) {
 	  logger('danger', e.message)
 	  handleMethodException(e.message)
-	  // throw new Meteor.Error('500', 'Please check your inputs and try again.')
 	}
   },
   'category.delete': function categoryDelete (data) {
@@ -110,7 +108,6 @@ Meteor.methods({
 	} catch (e) {
 	  logger('danger', e.message)
 	  handleMethodException(e.message)
-	  // throw new Meteor.Error('500', 'Please check your inputs and try again.')
 
 	}
 

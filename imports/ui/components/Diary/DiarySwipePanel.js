@@ -93,7 +93,13 @@ export default withTracker((props) => {
   let plant = props.plant;
 
   //sort the data
-  plant.diary = sortByLastDate(plant.diary)
+  if (plant) {
+	plant.diary = sortByLastDate(plant.diary)
+  } else {
+    plant = {
+      diary: null
+	}
+  }
 
   return {
 	plant

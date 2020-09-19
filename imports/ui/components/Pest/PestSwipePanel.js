@@ -98,8 +98,15 @@ export default withTracker((props) => {
   let plant = props.plant;
 
   //sort the data
-  plant.pestTracker = sortByLastDate(plant.pestTracker)
-  plant.highlightDates = getHighlightDates(plant.pestTracker)
+  if (plant) {
+	plant.pestTracker = sortByLastDate(plant.pestTracker)
+	plant.highlightDates = getHighlightDates(plant.pestTracker)
+  } else {
+    plant = {
+      pestTracker: null,
+	  highlightDates: null
+	}
+  }
 
   return {
 	plant

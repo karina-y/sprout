@@ -126,9 +126,15 @@ export default withTracker((props) => {
   let plant = props.plant;
 
   //sort the data
-  plant.soilCompositionTracker = sortByLastDate(plant.soilCompositionTracker)
-
-  plant.highlightDates = getHighlightDates(plant.soilCompositionTracker);
+  if (plant) {
+	plant.soilCompositionTracker = sortByLastDate(plant.soilCompositionTracker)
+	plant.highlightDates = getHighlightDates(plant.soilCompositionTracker);
+  } else {
+    plant = {
+      soilCompositionTracker: null,
+	  highlightDates: null
+	}
+  }
 
   return {
 	plant

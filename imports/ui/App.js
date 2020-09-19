@@ -125,12 +125,28 @@ export default withTracker(() => {
 
   if (Meteor.userId()) {
 	const plantSub = Meteor.subscribe('plant');
+	const waterSub = Meteor.subscribe('water');
+	const fertilizerSub = Meteor.subscribe('fertilizer');
+	const diarySub = Meteor.subscribe('diary');
+	const pestSub = Meteor.subscribe('pest');
+	const pruningDeadheadingSub = Meteor.subscribe('pruningDeadheading');
+	const soilCompositionSub = Meteor.subscribe('soilComposition');
 	const roleSub = Meteor.subscribe('roles')
 	const categorySub = Meteor.subscribe('category')
 	const preferencesSub = Meteor.subscribe('preferences')
 	const seedlingsSub = Meteor.subscribe('seedling')
 
-	loading = !plantSub.ready() || !roleSub.ready() || !categorySub.ready() || !preferencesSub.ready() || !seedlingsSub.ready();
+	loading = !plantSub.ready() ||
+			!waterSub.ready() ||
+			!fertilizerSub.ready() ||
+			!diarySub.ready() ||
+			!pestSub.ready() ||
+			!pruningDeadheadingSub.ready() ||
+			!soilCompositionSub.ready() ||
+			!roleSub.ready() ||
+			!categorySub.ready() ||
+			!preferencesSub.ready() ||
+			!seedlingsSub.ready();
 
 	if (roleSub.ready()) {
 	  Meteor.isPro = Roles.userIsInRole(Meteor.userId(), 'pro');
@@ -141,7 +157,7 @@ export default withTracker(() => {
 	  const pref = Preferences.findOne({userId: Meteor.userId()});
 
 	  if (pref && pref.theme === "dark") {
-	    document.getElementsByTagName('body')[0].className = 'dark-theme';
+		document.getElementsByTagName('body')[0].className = 'dark-theme';
 	  } else {
 		document.getElementsByTagName('body')[0].className = 'light-theme'
 	  }

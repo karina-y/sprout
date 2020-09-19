@@ -91,6 +91,28 @@ const EtcPlantReadEdit = (props) => (
 							   onChange={(e) => props.updateData(e, 'companions')}
 							   defaultValue={props.plant.companions ? props.plant.companions.join(', ') : null}/></p>
 					</SwipePanelContent>
+
+					{/*{props.type === "plant" ?*/}
+					<SwipePanelContent icon="lightPreference">
+					  <p className="modern-input">
+						<label>light preferences *</label>
+						<input type="text"
+							   onChange={(e) => props.updateData(e, 'lightPreference')}
+							   defaultValue={props.plant.lightPreference || ''}/></p>
+					</SwipePanelContent>
+					{/*:
+							<SwipePanelContent icon="lightPreference">
+							  <p className="modern-input">
+								<label>sun light or grow light *</label>
+								<select onChange={(e) => props.updateData(e, 'lightPreference')}
+										defaultValue={props.plant.lightPreference || ''}>
+								  <option value='' disabled={true}>- What lighting is being used? -</option>
+								  <option value="grow light">Grow Light</option>
+								  <option value="sun light">Sun Light</option>
+								</select>
+							  </p>
+							</SwipePanelContent>
+					}*/}
 				  </React.Fragment>
 				  :
 				  <React.Fragment>
@@ -132,6 +154,10 @@ const EtcPlantReadEdit = (props) => (
 					  <p>{props.plant.companions.join(', ')}</p>
 					</SwipePanelContent>
 					}
+
+					<SwipePanelContent icon="lightPreference">
+					  <p>{props.plant.lightPreference}</p>
+					</SwipePanelContent>
 				  </React.Fragment>
 		  }
 

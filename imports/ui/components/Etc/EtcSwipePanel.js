@@ -38,7 +38,8 @@ const EtcSwipePanel = (props) => {
 		locationBought: newPlantData.locationBought || oldPlantData.locationBought,
 		dateBought: new Date(newPlantData.dateBought || oldPlantData.dateBought),
 		datePlanted: new Date(newPlantData.datePlanted || oldPlantData.datePlanted),
-		companions: newPlantData.companions || oldPlantData.companions
+		companions: newPlantData.companions || oldPlantData.companions,
+		lightPreference: newPlantData.lightPreference || oldPlantData.lightPreference
 	  }
 
 	  if (newPlantData.latinName !== oldPlantData.latinName || newPlantData.commonName !== oldPlantData.commonName) {

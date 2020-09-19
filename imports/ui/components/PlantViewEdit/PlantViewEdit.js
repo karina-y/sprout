@@ -24,6 +24,12 @@ import PestSwipePanel from '../Pest/PestSwipePanel'
 import DiarySwipePanel from '../Diary/DiarySwipePanel'
 import EtcSwipePanel from '../Etc/EtcSwipePanel'
 import UpdateTypes from '../../../utils/constants/updateTypes'
+import Water from '../../../api/Water/Water'
+import Fertilizer from '../../../api/Fertilizer/Fertilizer'
+import Diary from '../../../api/Diary/Diary'
+import Pest from '../../../api/Pest/Pest'
+import PruningDeadheading from '../../../api/PruningDeadheading/PruningDeadheading'
+import SoilComposition from '../../../api/SoilComposition/SoilComposition'
 
 /*
 TODO
@@ -164,6 +170,12 @@ class PlantViewEdit extends Component {
 
   render () {
 	const plant = this.props.plant
+	const water = this.props.water
+	const fertilizer = this.props.fertilizer
+	const diary = this.props.diary
+	const pest = this.props.pest
+	const pruningDeadheading = this.props.pruningDeadheading
+	const soilComposition = this.props.soilComposition
 
 	return (
 			<div className="PlantSeedlingViewEdit">
@@ -197,37 +209,37 @@ class PlantViewEdit extends Component {
 								 editing={this.state.editing}
 								 exitEditMode={this.exitEditMode}
 								 saving={this.state.saving}
-								 plant={plant}/>
+								 plant={water}/>
 
 				<FertilizerSwipePanel modalOpen={this.state.modalOpen}
 									  editing={this.state.editing}
 									  exitEditMode={this.exitEditMode}
 									  saving={this.state.saving}
-									  plant={plant}/>
+									  plant={fertilizer}/>
 
 				<PruningDeadheadingSwipePanel modalOpen={this.state.modalOpen}
 											  editing={this.state.editing}
 											  exitEditMode={this.exitEditMode}
 											  saving={this.state.saving}
-											  plant={plant}/>
+											  plant={pruningDeadheading}/>
 
 				<SoilCompSwipePanel modalOpen={this.state.modalOpen}
 									editing={this.state.editing}
 									exitEditMode={this.exitEditMode}
 									saving={this.state.saving}
-									plant={plant}/>
+									plant={soilComposition}/>
 
 				<PestSwipePanel modalOpen={this.state.modalOpen}
 								editing={this.state.editing}
 								exitEditMode={this.exitEditMode}
 								saving={this.state.saving}
-								plant={plant}/>
+								plant={pest}/>
 
 				<DiarySwipePanel modalOpen={this.state.modalOpen}
 								 editing={this.state.editing}
 								 exitEditMode={this.exitEditMode}
 								 saving={this.state.saving}
-								 plant={plant}/>
+								 plant={diary}/>
 
 				<EtcSwipePanel modalOpen={this.state.modalOpen}
 							   editing={this.state.editing}
@@ -302,9 +314,21 @@ PlantViewEdit.propTypes = {
 export default withTracker((props) => {
   const id = props.match.params.id
   const plant = Plant.findOne({_id: id})
+  const water = Water.findOne({plantId: id})
+  const fertilizer = Fertilizer.findOne({plantId: id})
+  const diary = Diary.findOne({plantId: id})
+  const pest = Pest.findOne({plantId: id})
+  const pruningDeadheading = PruningDeadheading.findOne({plantId: id})
+  const soilComposition = SoilComposition.findOne({plantId: id})
 
   return {
-	plant
+	plant,
+	water,
+	fertilizer,
+	diary,
+	pest,
+	pruningDeadheading,
+	soilComposition
   }
 })(PlantViewEdit)
 

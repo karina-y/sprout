@@ -12,7 +12,7 @@ const WaterReadEdit = (props) => (
 		<div className="swipe-slide">
 
 		  <p className="swipe-title title-ming">
-			Water - Light <FontAwesomeIcon
+			Water <FontAwesomeIcon
 				  icon={props.item.waterCondition === 'needs-attn' ? faSadTear : props.item.waterCondition === 'neutral' ? faMeh : props.item.waterCondition === 'unsure' ? faQuestionCircle : faSmile}
 				  className="plant-condition-icon"
 				  title="water condition"
@@ -41,27 +41,6 @@ const WaterReadEdit = (props) => (
 							   defaultValue={props.item.waterPreference || ''}/></p>
 					</SwipePanelContent>
 
-					{props.type === "plant" ?
-							<SwipePanelContent icon="lightPreference">
-							  <p className="modern-input">
-								<label>light preferences *</label>
-								<input type="text"
-									   onChange={(e) => props.updateData(e, 'lightPreference')}
-									   defaultValue={props.item.lightPreference || ''}/></p>
-							</SwipePanelContent>
-							:
-							<SwipePanelContent icon="lightPreference">
-							  <p className="modern-input">
-								<label>sun light or grow light *</label>
-								<select onChange={(e) => props.updateData(e, 'lightPreference')}
-										defaultValue={props.item.lightPreference || ''}>
-								  <option value='' disabled={true}>- What lighting is being used? -</option>
-								  <option value="grow light">Grow Light</option>
-								  <option value="sun light">Sun Light</option>
-								</select>
-							  </p>
-							</SwipePanelContent>
-					}
 				  </React.Fragment>
 				  :
 				  <React.Fragment>
@@ -73,10 +52,6 @@ const WaterReadEdit = (props) => (
 					<SwipePanelContent icon="water"
 									   iconTitle="water preference">
 					  <p>{props.item.waterPreference}</p>
-					</SwipePanelContent>
-
-					<SwipePanelContent icon="lightPreference">
-					  <p>{props.item.lightPreference}</p>
 					</SwipePanelContent>
 				  </React.Fragment>
 		  }

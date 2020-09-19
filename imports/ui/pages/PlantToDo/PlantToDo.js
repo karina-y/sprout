@@ -22,7 +22,7 @@ class PlantToDo extends Component {
 
 	return (
 			<div className="ToDo">
-			  {/* TODO add sorting and filtering */}
+			  {/* TODO add sorting and filtering, also why am i doing a function for mapping? */}
 
 				{this.props.catalogue && this.props.catalogue.length > 0 ?
 						this.props.catalogue.map(function (plant, index) {

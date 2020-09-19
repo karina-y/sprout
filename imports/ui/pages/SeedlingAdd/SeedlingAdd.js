@@ -201,6 +201,17 @@ class SeedlingAdd extends Component {
 							 value={seedling.seedBrand || ''}/></p>
 				  </SwipePanelContent>
 
+				  <SwipePanelContent icon="lightPreference">
+					<p className="modern-input">
+					  <label>sun light or grow light *</label>
+					  <select onChange={(e) => this.updateData(e, 'lightPreference')}
+							  value={seedling.lightPreference || ''}>
+						<option value='' disabled={true}>- What lighting is being used? -</option>
+						<option value="grow light">Grow Light</option>
+						<option value="sun light">Sun Light</option>
+					  </select>
+					</p>
+				  </SwipePanelContent>
 				</div>
 
 

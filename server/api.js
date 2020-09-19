@@ -1,5 +1,18 @@
 import '../imports/api/Plant/methods';
 import '../imports/api/Plant/server/publications';
+import '../imports/api/Water/methods';
+import '../imports/api/Water/server/publications';
+import '../imports/api/Fertilizer/methods';
+import '../imports/api/Fertilizer/server/publications';
+import '../imports/api/Diary/methods';
+import '../imports/api/Diary/server/publications';
+import '../imports/api/Pest/methods';
+import '../imports/api/Pest/server/publications';
+import '../imports/api/PruningDeadheading/methods';
+import '../imports/api/PruningDeadheading/server/publications';
+import '../imports/api/SoilComposition/methods';
+import '../imports/api/SoilComposition/server/publications';
+
 import '../imports/api/Account/methods';
 import '../imports/api/Roles/server/publications';
 import '../imports/api/Category/server/publications';

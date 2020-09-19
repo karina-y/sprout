@@ -10,7 +10,7 @@ const SoilCompAddPro = (props) => (
 			Soil Composition
 		  </p>
 
-		  {props.item.category === 'in-ground' ?
+		  {props.category === 'in-ground' ?
 				  <React.Fragment>
 
 					<SwipePanelContent icon="tilling">
@@ -58,7 +58,7 @@ const SoilCompAddPro = (props) => (
 
 				  </React.Fragment>
 				  :
-				  props.item.category === 'potted' ?
+				  props.category === 'potted' ?
 						  <React.Fragment>
 							<SwipePanelContent icon="soilRecipe">
 							  <p className="modern-input">
@@ -91,7 +91,8 @@ const SoilCompAddPro = (props) => (
 
 SoilCompAddPro.propTypes = {
   item: PropTypes.object.isRequired,
-  updateData: PropTypes.func.isRequired
+  updateData: PropTypes.func.isRequired,
+  category: PropTypes.string
 };
 
 export default SoilCompAddPro;
