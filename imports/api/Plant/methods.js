@@ -1,4 +1,12 @@
 import Plant from './Plant'
+
+import Fertilizer from '../Fertilizer/Fertilizer'
+import Pest from '../Pest/Pest'
+import Diary from '../Diary/Diary'
+import PruningDeadheading from '../PruningDeadheading/PruningDeadheading'
+import SoilComposition from '../SoilComposition/SoilComposition'
+import Water from '../Water/Water'
+
 import rateLimit from '../../modules/rate-limit'
 import logger from '/imports/utils/helpers/logger'
 import SimpleSchema from 'simpl-schema'
@@ -89,18 +97,163 @@ Meteor.methods({
 	  if (typeof data !== 'string' || !data) {
 		logger('danger', 'Invalid arguments passed')
 		handleMethodException('Invalid arguments passed')
-		// throw new Meteor.Error('500', 'Invalid arguments passed')
 	  } else {
-		const response = Plant.remove({_id: data})
+		let response = Plant.remove({_id: data})
+
+		//TODO this is horrible, do better
+		if (response) {
+		  response = Water.remove({plantId: data})
+
+		  if (response) {
+			response = Fertilizer.remove({plantId: data})
+
+			if (response) {
+			  response = Diary.remove({plantId: data})
+
+			  if (response) {
+				response = Pest.remove({plantId: data})
+
+				if (response) {
+				  response = PruningDeadheading.remove({plantId: data})
+
+				  if (response) {
+					response = SoilComposition.remove({plantId: data})
+				  }
+				}
+			  }
+			}
+		  }
+		}
+
+
 		return response
 	  }
 	} catch (e) {
 	  logger('danger', e.message)
 	  handleMethodException(e.message)
-
 	}
 
-  }
+  },
+
+  'plant.migrate': function plantInsert () {
+
+	return;
+
+	try {
+	  let data = {
+		createdAt: new Date(),
+		updatedAt: new Date(),
+	  }
+
+	  //get all plants
+	  const plants = Plant.find().fetch()
+
+	  for (let i = 0; i < plants.length; i++) {
+
+		let plant = plants[i]
+		if (plant._id !== "5ed45d96b2b02c4afdb8e27b") {
+		  data.plantId = plant._id
+
+		  //for each plant migrate each item
+		  const water = {
+			...data
+		  }
+
+		  if (plant.waterSchedule) water.waterSchedule = plant.waterSchedule
+		  if (plant.waterScheduleAuto) water.waterScheduleAuto = plant.waterScheduleAuto
+		  if (plant.waterPreference) water.waterPreference = plant.waterPreference
+		  if (plant.waterTracker) water.waterTracker = plant.waterTracker
+
+		  const fertilizer = {
+			...data
+		  }
+
+		  if (plant.compost) fertilizer.compost = plant.compost
+		  if (plant.nutrient) fertilizer.nutrient = plant.nutrient
+		  if (plant.fertilizer) fertilizer.fertilizer = plant.fertilizer
+		  if (plant.fertilizerSchedule) fertilizer.fertilizerSchedule = plant.fertilizerSchedule
+		  if (plant.fertilizerTracker) fertilizer.fertilizerTracker = plant.fertilizerTracker
+
+		  const diary = {
+			...data
+		  }
+
+		  if (plant.diary) diary.diary = plant.diary
+
+		  const pest = {
+			...data
+		  }
+
+		  if (plant.pestTracker) pest.pestTracker = plant.pestTracker
+
+		  const pruningDeadheading = {
+			...data
+		  }
+
+		  if (plant.pruningPreference) pruningDeadheading.pruningPreference = plant.pruningPreference
+		  if (plant.deadheadingPreference) pruningDeadheading.deadheadingPreference = plant.deadheadingPreference
+		  if (plant.pruningSchedule) pruningDeadheading.pruningSchedule = plant.pruningSchedule
+		  if (plant.deadheadingSchedule) pruningDeadheading.deadheadingSchedule = plant.deadheadingSchedule
+		  if (plant.pruningTracker) pruningDeadheading.pruningTracker = plant.pruningTracker
+		  if (plant.deadheadingTracker) pruningDeadheading.deadheadingTracker = plant.deadheadingTracker
+
+		  const soilComposition = {
+			...data
+		  }
+
+		  if (plant.tilled) soilComposition.tilled = plant.tilled
+		  if (plant.soilType) soilComposition.soilType = plant.soilType
+		  if (plant.soilAmendment) soilComposition.soilAmendment = plant.soilAmendment
+		  if (plant.soilRecipe) soilComposition.soilRecipe = plant.soilRecipe
+		  if (plant.soilCompositionTracker) soilComposition.soilCompositionTracker = plant.soilCompositionTracker
+
+
+// break;
+// 		return;
+		  let waterResponse = Water.insert(water)
+		  let fertilizerResponse = Fertilizer.insert(fertilizer)
+		  let diaryResponse = Diary.insert(diary)
+		  let pestResponse = Pest.insert(pest)
+		  let pruningDeadheadingResponse = PruningDeadheading.insert(pruningDeadheading)
+		  let soilCompositionResponse = SoilComposition.insert(soilComposition)
+
+		  let plantResponse = Plant.update({_id: plant._id}, {
+			$unset: {
+			  waterSchedule: 1,
+			  waterScheduleAuto: 1,
+			  waterPreference: 1,
+			  waterTracker: 1,
+			  compost: 1,
+			  nutrient: 1,
+			  fertilizer: 1,
+			  fertilizerSchedule: 1,
+			  fertilizerTracker: 1,
+			  diary: 1,
+			  pestTracker: 1,
+			  pruningPreference: 1,
+			  deadheadingPreference: 1,
+			  pruningSchedule: 1,
+			  deadheadingSchedule: 1,
+			  pruningTracker: 1,
+			  deadheadingTracker: 1,
+			  tilled: 1,
+			  soilType: 1,
+			  soilAmendment: 1,
+			  soilRecipe: 1,
+			  soilCompositionTracker: 1
+			}
+		  })
+		}
+	  }
+
+	  return;
+
+	} catch (e) {
+	  logger('danger', e.message)
+	  handleMethodException(e.message)
+
+	}
+  },
 })
 
 rateLimit({
@@ -108,6 +261,7 @@ rateLimit({
 	'plant.insert',
 	'plant.update',
 	'plant.delete',
+	'plant.migrate'
   ],
   limit: 5,
   timeRange: 1000,

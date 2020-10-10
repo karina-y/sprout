@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import SwipePanelContent from '../Shared/SwipePanelContent/SwipePanelContent'
+import UpdateTypes from '../../../utils/constants/updateTypes'
 
 
 const FertilizerReadEdit = (props) => (
@@ -13,7 +14,8 @@ const FertilizerReadEdit = (props) => (
 		  <SwipePanelContent icon="schedule"
 							 iconTitle="fertilizer schedule"
 							 additionalOuterClasses={props.state.editing !== 'fertilizerTracker' ? 'top-align' : ''}>
-			{props.editing === 'fertilizerTracker' ?
+
+			{props.editing === UpdateTypes.fertilizer.fertilizerEditModal ?
 					<p className="modern-input">Fertilize every <input type="number"
 																	   min="0"
 																	   inputMode="numeric"
@@ -32,7 +34,7 @@ const FertilizerReadEdit = (props) => (
 			}
 		  </SwipePanelContent>
 
-		  {props.editing === 'fertilizerTracker' ?
+		  {props.editing === UpdateTypes.fertilizer.fertilizerEditModal ?
 				  <SwipePanelContent icon="fertilizer">
 					<p className="modern-input">
 					  <label>preferred fertilizer</label>

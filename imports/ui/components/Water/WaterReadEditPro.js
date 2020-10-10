@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import SwipePanelContent from '../Shared/SwipePanelContent/SwipePanelContent'
+import UpdateTypes from '../../../utils/constants/updateTypes'
 
 
 const WaterReadEditPro = (props) => (
@@ -15,7 +16,7 @@ const WaterReadEditPro = (props) => (
 				  alt={props.item.waterCondition === 'needs-attn' ? 'sad face with tear' : props.item.waterCondition === 'neutral' ? 'neutral face' : props.item.waterCondition === 'unsure' ? 'question mark' : 'smiling face'}/>*/}
 		  </p>
 
-		  {props.editing === 'waterTracker' ?
+		  {props.editing === UpdateTypes.water.waterEditModal ?
 				  <React.Fragment>
 					<SwipePanelContent icon="schedule"
 									   iconTitle="water schedule">

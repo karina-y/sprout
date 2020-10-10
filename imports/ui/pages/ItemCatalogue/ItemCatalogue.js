@@ -26,6 +26,7 @@ class ItemCatalogue extends Component {
 	Session.set('pageTitle', 'Catalogue')
   }
 
+  //TODO
   sortCatalogue (property) {
 	//TODO sorting allowed by both common and latin name... do i want to display both? make this a user pref? i haven't decided yet....
 	//add more sorting options, last watered, last fertilized, etc

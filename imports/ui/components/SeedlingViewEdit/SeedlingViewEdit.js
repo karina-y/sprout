@@ -38,6 +38,7 @@ import SoilCompModals from '../SoilComp/SoilCompModals'
 import PestModals from '../Pest/PestModals'
 import DiaryModals from '../Diary/DiaryModals'
 import SeedlingDates from '../SharedPlantSeedling/SwipeViewsEdit/SeedlingDates'
+import UpdateTypes from '../../../utils/constants/updateTypes'
 
 /*
 TODO
@@ -333,19 +334,19 @@ class SeedlingViewEdit extends Component {
 	//selecting which modal to open
 	switch (this.state.swipeViewIndex) {
 	  case 1:
-		modalOpen = history ? 'waterTracker-history' : 'waterTracker'
+		modalOpen = history ?  UpdateTypes.water.waterHistoryModal :  UpdateTypes.water.waterEditModal
 		break
 	  case 2:
-		modalOpen = history ? 'fertilizerTracker-history' : 'fertilizerTracker'
+		modalOpen = history ? UpdateTypes.fertilizer.fertilizerHistoryModal :  UpdateTypes.fertilizer.fertilizerEditModal
 		break
 	  case 3:
-		modalOpen = history ? 'soilCompositionTracker-history' : 'soilCompositionTracker'
+		modalOpen = history ?  UpdateTypes.soilComp.soilCompHistoryModal :  UpdateTypes.soilComp.soilCompEditModal
 		break
 	  case 4:
-		modalOpen = history ? 'pestTracker-history' : 'pestTracker'
+		modalOpen = history ?  UpdateTypes.pest.pestHistoryModal :  UpdateTypes.pest.pestEditModal
 		break
 	  case 5:
-		modalOpen = history ? 'diary-history' : 'diary'
+		modalOpen = history ?  UpdateTypes.diary.diaryHistoryModal :  UpdateTypes.diary.diaryEditModal
 		break
 	}
 

@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import SwipePanelContent from '../Shared/SwipePanelContent/SwipePanelContent'
+import UpdateTypes from '../../../utils/constants/updateTypes'
 
 
 const FertilizerReadEditPro = (props) => (
@@ -9,7 +10,7 @@ const FertilizerReadEditPro = (props) => (
 			Fertilizer - Nutrients
 		  </p>
 
-		  {props.editing === 'fertilizerTracker' ?
+		  {props.editing === UpdateTypes.fertilizer.fertilizerEditModal ?
 				  <React.Fragment>
 					<SwipePanelContent icon="schedule"
 									   iconTitle="fertilizer schedule">

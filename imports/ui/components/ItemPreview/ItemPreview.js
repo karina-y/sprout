@@ -7,6 +7,8 @@ import ProgressBar from 'react-bootstrap/ProgressBar'
 import { getDaysSinceAction, getPlantCondition } from '/imports/utils/helpers/plantData'
 import Icons from '/imports/utils/constants/icons'
 import { ReactSVG } from 'react-svg'
+import Fertilizer from '/imports/api/Fertilizer/Fertilizer'
+import Water from '/imports/api/Water/Water'
 
 const ItemPreview = (props) => (
 		<button onClick={() => props.history.push(`/${props.type}/${props.item._id}`)} className="ItemPreview naked">
@@ -54,20 +56,23 @@ export default withTracker((props) => {
   const type = props.match.params.type;
   let item = props.item;
 
-  //TODO turn these into a hook
-  if (item.fertilizerTracker && item.fertilizerTracker.length > 0) {
-	item.daysSinceFertilized = getDaysSinceAction(item.fertilizerTracker)
-	item.fertilizerCondition = getPlantCondition(item.fertilizerTracker, item.daysSinceFertilized, item.fertilizerSchedule)
-	item.fertilizerProgress = (item.daysSinceFertilized / item.fertilizerSchedule) > 1 ? 5 : ((1 - (item.daysSinceFertilized / item.fertilizerSchedule)) * 100) || 5
+  const water = Water.findOne({plantId: item._id});
+  const fertilizer = Fertilizer.findOne({plantId: item._id});
+
+  //TODO turn these into a hook? is that right in tracker?
+  if (fertilizer.fertilizerTracker && fertilizer.fertilizerTracker.length > 0) {
+	item.daysSinceFertilized = getDaysSinceAction(fertilizer.fertilizerTracker)
+	item.fertilizerCondition = getPlantCondition(fertilizer.fertilizerTracker, item.daysSinceFertilized, fertilizer.fertilizerSchedule)
+	item.fertilizerProgress = (item.daysSinceFertilized / fertilizer.fertilizerSchedule) > 1 ? 5 : ((1 - (item.daysSinceFertilized / fertilizer.fertilizerSchedule)) * 100) || 5
   } else {
 	item.fertilizerCondition = 'happy'
 	item.fertilizerProgress = 100
   }
 
-	if (item.waterTracker && item.waterTracker.length > 0) {
-	  item.daysSinceWatered = getDaysSinceAction(item.waterTracker)
-	  item.waterCondition = item.waterScheduleAuto ? 'happy' : getPlantCondition(item.waterTracker, item.daysSinceWatered, item.waterSchedule)
-	  item.waterProgress = item.waterScheduleAuto ? 100 : (item.daysSinceWatered / item.waterSchedule) > 1 ? 5 : ((1 - (item.daysSinceWatered / item.waterSchedule)) * 100) || 5
+	if (water.waterTracker && water.waterTracker.length > 0) {
+	  item.daysSinceWatered = getDaysSinceAction(water.waterTracker)
+	  item.waterCondition = water.waterScheduleAuto ? 'happy' : getPlantCondition(water.waterTracker, item.daysSinceWatered, water.waterSchedule)
+	  item.waterProgress = water.waterScheduleAuto ? 100 : (item.daysSinceWatered / water.waterSchedule) > 1 ? 5 : ((1 - (item.daysSinceWatered / water.waterSchedule)) * 100) || 5
 	} else {
 	  item.waterCondition = 'happy'
 	  item.waterProgress = 100

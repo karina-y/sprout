@@ -13,6 +13,7 @@ const SeedlingDatesReadEdit = (props) => (
 			Dates
 		  </p>
 
+		  {/*TODO - this format: {props.editing === UpdateTypes.water.waterEditModal ?*/}
 		  {props.editing === 'dates' ?
 				  <React.Fragment>
 

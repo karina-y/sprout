@@ -4,13 +4,14 @@ import SwipePanelContent from '../Shared/SwipePanelContent/SwipePanelContent'
 import { withTracker } from 'meteor/react-meteor-data'
 import Category from '../../../api/Category/Category'
 import { parseDate } from '../../../utils/helpers/plantData'
+import UpdateTypes from '../../../utils/constants/updateTypes'
 
 
 const EtcPlantReadEdit = (props) => (
 		<div className="swipe-slide">
 		  <p className="swipe-title title-ming">Etc</p>
 
-		  {props.editing === 'etc' ?
+		  {props.editing === UpdateTypes.etc.etcEditModal ?
 				  <React.Fragment>
 					<SwipePanelContent icon="info" iconTitle="common name">
 					  <p className="modern-input">

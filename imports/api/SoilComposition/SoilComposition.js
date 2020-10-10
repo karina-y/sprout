@@ -36,7 +36,7 @@ SoilComposition.schema = new SimpleSchema({
 		  soilAmendment: {
 			type: String,
 			optional: true,
-			label: 'soilAmmendment'	//soil used in pots or in ground
+			label: 'soilAmendment'	//soil used in pots or in ground
 		  },
 		  soilRecipe: {
 			type: String,

@@ -144,7 +144,7 @@ class PlantViewEdit extends Component {
 	}
 
 	if (isHistoryModal) {
-	  modalOpen+= "-history"
+	  modalOpen += "-history"
 	}
 
 	this.setState({
@@ -156,13 +156,17 @@ class PlantViewEdit extends Component {
 
 	Meteor.call('plant.delete', this.props.plant._id, (err, response) => {
 	  if (err) {
+	    console.log("err", err)
 		toast.error(err.message)
 	  } else {
+	    console.log("success", response)
 		this.setState({
 		  modalOpen: null
 		})
 
-		this.props.history.push('/catalogue/plant')
+		//TODO this needs to be history.push but it results in an error when the page can't find the plant
+		// this.props.history.push('/catalogue/plant')
+		window.location.href = '/catalogue/plant'
 	  }
 	})
 

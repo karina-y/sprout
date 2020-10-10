@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import SwipePanelContent from '../Shared/SwipePanelContent/SwipePanelContent'
+import UpdateTypes from '../../../utils/constants/updateTypes'
 
 
 const PruningDeadheadingReadEditPro = (props) => (
@@ -9,7 +10,7 @@ const PruningDeadheadingReadEditPro = (props) => (
 			Pruning - Deadheading
 		  </p>
 
-		  {props.editing === 'pruningDeadheadingTracker' ?
+		  {props.editing === UpdateTypes.pruningDeadheading.pruningDeadheadingEditModal ?
 				  <React.Fragment>
 					{/*<SwipePanelContent icon="pruning" iconTitle="pruning schedule">
 					  <p className="modern-input">

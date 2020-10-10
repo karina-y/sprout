@@ -13,6 +13,7 @@ const WaterModals = (props) => (
 							 show={props.modalOpen}
 							 type={UpdateTypes.water.waterEditModal}
 							 header="New water entry">
+
 			<DatePicker
 					selected={props.newDataTracker ? props.newDataTracker.date : Date.now()}
 					className="react-datepicker-wrapper"

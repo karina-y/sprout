@@ -21,7 +21,7 @@ const DiaryModals = (props) => (
 
 		  <ItemViewHistoryModal cancel={props.resetModal}
 								show={props.modalOpen}
-								type={UpdateTypes.diary.diaryEditModal}
+								type={UpdateTypes.diary.diaryHistoryModal}
 								header="Diary History">
 
 			{props.diary && props.diary.length > 0 ?

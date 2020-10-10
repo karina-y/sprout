@@ -9,7 +9,7 @@ import {
   Route
 } from "react-router-dom";
 import 'react-toastify/dist/ReactToastify.css';
-import { ToastContainer } from 'react-toastify'
+import { toast, ToastContainer } from 'react-toastify'
 import Loading from './components/Shared/Loading/Loading';
 import { Meteor } from "meteor/meteor"
 import Preferences from '../api/Preferences/Preferences'

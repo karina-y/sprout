@@ -50,14 +50,14 @@ class Navigation extends Component {
 		href: '/plant',
 		title: 'Add Plant'
 	  },
-	  {
+	  /*{
 		href: '/catalogue/seedling',
 		title: 'Seedling Catalogue'
 	  },
 	  {
 		href: '/seedling',
 		title: 'Add Seedling'
-	  },
+	  },*/
 	  {
 		href: '/account',
 		title: 'Account'

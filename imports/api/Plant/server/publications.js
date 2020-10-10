@@ -1,5 +1,4 @@
 import Plant from '../Plant'
-import logger from '/imports/utils/helpers/logger'
 
 Meteor.publish('plant', function plants () {
   if (Meteor.userId()) {

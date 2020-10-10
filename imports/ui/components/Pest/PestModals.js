@@ -38,7 +38,7 @@ const PestModals = (props) => (
 
 		  <ItemViewHistoryModal cancel={props.resetModal}
 								show={props.modalOpen}
-								type={UpdateTypes.pest.pestEditModal}
+								type={UpdateTypes.pest.pestHistoryModal}
 								header="Pest History">
 
 			{props.tracker && props.tracker.length > 0 ?
@@ -67,6 +67,7 @@ const PestModals = (props) => (
 			}
 
 		  </ItemViewHistoryModal>
+
 		</React.Fragment>
 )
 

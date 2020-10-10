@@ -73,7 +73,9 @@ const EtcSwipePanel = (props) => {
   return (
 		  <div className="PlantSeedlingViewEdit">
 
-			<EtcPlantReadEdit plant={plant} updateData={changeNewData} editing={props.editing}/>
+			<EtcPlantReadEdit plant={plant}
+							  updateData={changeNewData}
+							  editing={props.editing}/>
 
 		  </div>
   )
@@ -87,16 +89,3 @@ EtcSwipePanel.propTypes = {
 }
 
 export default EtcSwipePanel;
-
-/*export default withTracker((props) => {
-  // const id = props.match.params.id
-  // const plant = Plant.findOne({_id: id.})
-  // const categories = Category.find({}).fetch()
-  let plant = props.plant;
-
-
-  return {
-	plant
-  }
-})(EtcSwipeView)*/
-

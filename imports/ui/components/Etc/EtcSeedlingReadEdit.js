@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import SwipePanelContent from '../Shared/SwipePanelContent/SwipePanelContent'
 import { withTracker } from 'meteor/react-meteor-data'
 import Category from '../../../api/Category/Category'
+import UpdateTypes from '../../../utils/constants/updateTypes'
 
 const EtcSeedlingReadEdit = (props) => (
 		<div className="swipe-slide adjust-icons">
@@ -11,7 +12,7 @@ const EtcSeedlingReadEdit = (props) => (
 			Etc
 		  </p>
 
-		  {props.editing === 'etc' ?
+		  {props.editing === UpdateTypes.etc.etcEditModal ?
 				  <React.Fragment>
 					<SwipePanelContent icon="info" iconTitle="common name">
 					  <p className="modern-input">
