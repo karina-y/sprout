@@ -1,91 +1,81 @@
-import Diary from './Diary'
-import rateLimit from '../../modules/rate-limit'
-import logger from '/imports/utils/helpers/logger'
-import SimpleSchema from 'simpl-schema'
-import handleMethodException from '/imports/utils/helpers/handle-method-exception'
+import Diary from "./Diary";
+import rateLimit from "../../modules/rate-limit";
+import logger from "/imports/utils/helpers/logger";
+import SimpleSchema from "simpl-schema";
+import handleMethodException from "/imports/utils/helpers/handle-method-exception";
 
 Meteor.methods({
-  'diary.insert': function diaryInsert (plantId, data) {
+  "diary.insert": function diaryInsert(plantId, data) {
+    try {
+      data.createdAt = new Date();
+      data.updatedAt = new Date();
+      data.plantId = plantId;
 
-	try {
-	  data.createdAt = new Date()
-	  data.updatedAt = new Date()
-	  data.plantId = plantId
+      const validationContext = new SimpleSchema(Diary.schema).newContext();
+      validationContext.validate(data);
 
-	  const validationContext = new SimpleSchema(Diary.schema).newContext()
-	  validationContext.validate(data)
-
-	  if (!validationContext.isValid()) {
-		logger('danger', 'Validation failed', JSON.stringify(validationContext.validationErrors()))
-		handleMethodException('Invalid arguments passed')
-	  } else {
-		const response = Diary.insert(data)
-		return response
-	  }
-	} catch (e) {
-	  logger('danger', e.message)
-	  handleMethodException(e.message)
-
-	}
+      if (!validationContext.isValid()) {
+        logger("danger", "Validation failed", JSON.stringify(validationContext.validationErrors()));
+        handleMethodException("Invalid arguments passed");
+      } else {
+        const response = Diary.insert(data);
+        return response;
+      }
+    } catch (e) {
+      logger("danger", e.message);
+      handleMethodException(e.message);
+    }
   },
-  'diary.update': function diaryUpdate (data) {
-	logger('info', 'type', type)
-	logger('info', 'data', data)
+  "diary.update": function diaryUpdate(data) {
+    logger("info", "data", data);
 
-	try {
-	  // data.updatedAt = new Date();
-	  const plant = Diary.findOne({_id: data._id})
-	  delete data._id
-	  data.updatedAt = new Date()
+    try {
+      const id = data._id;
+      delete data._id;
+      data.updatedAt = new Date();
 
-	  const validationSchema = Diary.schema;
-	  const query = {$set: {updatedAt: data.updatedAt}, $push: data}
-	  // data[type] = [data[type]]
+      const validationSchema = Diary.schema.pick(
+              "diary",
+              "updatedAt"
+      );
 
-	  const validationContext = new SimpleSchema(validationSchema).newContext()
-	  validationContext.validate(data)
+      const query = { $set: { updatedAt: data.updatedAt }, $push: { diary: data.diary } };
+      data.diary = [data.diary];
 
-	  if (!validationContext.isValid()) {
-		logger('danger', 'Validation failed', JSON.stringify(validationContext.validationErrors()))
-		handleMethodException(`'Validation failed', ${JSON.stringify(validationContext.validationErrors())}`)
-		// throw new Meteor.Error('500')
-	  } else {
-		logger('success', 'passed', data)
-		const response = Diary.update({_id: plant._id}, query)
-		return response
-	  }
-	} catch (e) {
-	  logger('danger', e.message)
-	  handleMethodException(e.message)
-	}
+      const validationContext = new SimpleSchema(validationSchema).newContext();
+      validationContext.validate(data);
+
+      if (!validationContext.isValid()) {
+        logger("danger", "Validation failed", JSON.stringify(validationContext.validationErrors()));
+        handleMethodException(`'Validation failed', ${JSON.stringify(validationContext.validationErrors())}`);
+      } else {
+        logger("success", "passed", data);
+        const response = Diary.update({ _id: id }, query);
+        return response;
+      }
+    } catch (e) {
+      logger("danger", e.message);
+      handleMethodException(e.message);
+    }
   },
-  'diary.delete': function diaryDelete (data) {
-	try {
-
-	  if (typeof data !== 'string' || !data) {
-		logger('danger', 'Invalid arguments passed')
-		handleMethodException('Invalid arguments passed')
-		// throw new Meteor.Error('500', 'Invalid arguments passed')
-	  } else {
-		const response = Diary.remove({_id: data})
-		return response
-	  }
-	} catch (e) {
-	  logger('danger', e.message)
-	  handleMethodException(e.message)
-
-	}
-
-  }
-})
+  "diary.delete": function diaryDelete(data) {
+    try {
+      if (typeof data !== "string" || !data) {
+        logger("danger", "Invalid arguments passed");
+        handleMethodException("Invalid arguments passed");
+      } else {
+        const response = Diary.remove({ _id: data });
+        return response;
+      }
+    } catch (e) {
+      logger("danger", e.message);
+      handleMethodException(e.message);
+    }
+  },
+});
 
 rateLimit({
-  methods: [
-	'diary.insert',
-	'diary.update',
-	'diary.delete',
-  ],
+  methods: ["diary.insert", "diary.update", "diary.delete"],
   limit: 5,
   timeRange: 1000,
-})
-
+});

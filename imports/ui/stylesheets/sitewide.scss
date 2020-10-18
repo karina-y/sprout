@@ -1,5 +1,5 @@
-@import 'variables';
-@import url('https://fonts.googleapis.com/css?family=Montserrat&display=swap');
+@import "variables";
+@import url("https://fonts.googleapis.com/css?family=Montserrat&display=swap");
 
 @font-face {
   font-family: Spartan Black;
@@ -10,7 +10,6 @@
   font-family: Spartan ExtraBold;
   src: url("/fonts/Spartan-ExtraBold.ttf") format("opentype");
 }
-
 
 html {
   height: 100%;
@@ -45,7 +44,6 @@ body {
     }
 
     p.modern-input {
-
       label {
         background: $dark-gray;
         color: $off-white;
@@ -95,7 +93,6 @@ body {
     .navbar.navbar-default {
       margin-bottom: 0;
     }
-
   }
 
   .groot {
@@ -299,7 +296,6 @@ body {
     font-size: $font-lg;
   }
 
-
   a {
     transition: color 0.2s ease-in, background 0.2s ease-in;
 
@@ -384,14 +380,14 @@ body {
     background: $ming;
     font-size: 12px;
     display: inline;
-    padding: .2em .6em .3em;
+    padding: 0.2em 0.6em 0.3em;
     font-weight: 700;
     line-height: 1;
     color: #fff;
     text-align: center;
     white-space: nowrap;
     vertical-align: baseline;
-    border-radius: .25em;
+    border-radius: 0.25em;
   }
 
   //#endregion
@@ -420,7 +416,6 @@ body {
   }
 
   //#endregion
-
 
   button {
     background: $white;
@@ -456,13 +451,11 @@ body {
         background: transparent !important;
       }
 
-
       &.active {
         background: transparent;
         border-color: $vivid-tangerine;
         color: $vivid-tangerine;
       }
-
 
       &:first-child {
         margin-left: 20px;
@@ -657,7 +650,6 @@ body {
       color: $ming;
       min-width: 75px;
     }
-
   }
 
   .progress-bar {
@@ -676,11 +668,21 @@ body {
       background-color: $alice-blue;
     }
 
-    .react-datepicker__day--highlighted, .react-datepicker__month-text--highlighted, .react-datepicker__quarter-text--highlighted {
+    .react-datepicker__day--highlighted,
+    .react-datepicker__month-text--highlighted,
+    .react-datepicker__quarter-text--highlighted {
       background-color: $success-light;
     }
 
-    .react-datepicker__day--selected, .react-datepicker__day--in-selecting-range, .react-datepicker__day--in-range, .react-datepicker__month-text--selected, .react-datepicker__month-text--in-selecting-range, .react-datepicker__month-text--in-range, .react-datepicker__quarter-text--selected, .react-datepicker__quarter-text--in-selecting-range, .react-datepicker__quarter-text--in-range {
+    .react-datepicker__day--selected,
+    .react-datepicker__day--in-selecting-range,
+    .react-datepicker__day--in-range,
+    .react-datepicker__month-text--selected,
+    .react-datepicker__month-text--in-selecting-range,
+    .react-datepicker__month-text--in-range,
+    .react-datepicker__quarter-text--selected,
+    .react-datepicker__quarter-text--in-selecting-range,
+    .react-datepicker__quarter-text--in-range {
       background-color: $info-light;
     }
 
@@ -731,7 +733,6 @@ body {
       }
     }
   }
-
 
   table {
     width: 100%;
@@ -806,7 +807,6 @@ body {
     }
 
     button {
-
       &.btn-lg {
         padding: 12px 18px;
         font-size: $font-xs;
@@ -828,7 +828,6 @@ body {
     .pad-section-lg {
       padding: 0 20px;
     }
-
 
     .left-panel,
     .right-panel {
@@ -876,13 +875,10 @@ body {
         }
       }
     }
-
   }
 
   @media only screen and ($breakpoint-sm) {
-
     button {
-
       &.btn-lg {
         padding: 12px 18px;
         font-size: $font-sm;
@@ -908,7 +904,6 @@ body {
     }
 
     .pad-section-lg {
-
     }
 
     .subtitle {
@@ -926,7 +921,6 @@ body {
     }
 
     .panel {
-
       .img-panel {
         height: 100%;
         background-position: center;
@@ -935,9 +929,7 @@ body {
   }
 
   @media only screen and ($breakpoint-md) {
-
     button {
-
       &.btn-lg {
         padding: 12px 18px;
         font-size: $font-md;
@@ -963,7 +955,6 @@ body {
     }
 
     .panel {
-
       .text-panel {
         .subtitle {
           font-size: 25px;
@@ -980,7 +971,6 @@ body {
     }
 
     .pad-section-lg {
-
     }
   }
 
@@ -998,7 +988,6 @@ body {
     }
 
     .panel {
-
       .text-panel {
         .subtitle {
           font-size: 30px;
@@ -1019,9 +1008,6 @@ body {
     .pad-section-lg {
       padding: 0 150px;
     }
-
-
   }
   //#endregion
-
 }

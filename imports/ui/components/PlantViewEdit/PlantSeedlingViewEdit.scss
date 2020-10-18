@@ -1,4 +1,4 @@
-@import '../../stylesheets/variables';
+@import "../../stylesheets/variables";
 
 .PlantSeedlingViewEdit {
   margin: 0;
@@ -15,27 +15,25 @@
   }
 
   .plant-photo {
-
     img {
-        width: 100%;
-        height: 250px;
-        object-fit: cover;
-        object-position: center;
-        margin-bottom: 10px;
-        border-bottom-right-radius: 50%;
-        border-bottom-left-radius: 50%;
+      width: 100%;
+      height: 250px;
+      object-fit: cover;
+      object-position: center;
+      margin-bottom: 10px;
+      border-bottom-right-radius: 50%;
+      border-bottom-left-radius: 50%;
     }
 
     &.editing {
-
       &::before {
         width: 100%;
         height: 250px;
         border-bottom-right-radius: 50%;
         border-bottom-left-radius: 50%;
         background-color: $ming;
-        opacity: .5;
-        content: '';
+        opacity: 0.5;
+        content: "";
         position: absolute;
       }
 
@@ -59,7 +57,6 @@
   }
 
   .swipe-view {
-
     &.editing {
       .icon-side {
         vertical-align: middle;
@@ -99,7 +96,6 @@
     }
 
     .svg-inline--fa {
-
       &.fa-sad-tear {
         color: $danger-dark;
       }
@@ -120,54 +116,51 @@
 }
 
 body.dark-theme .PlantSeedlingViewEdit {
+  .swipe-view {
+    p,
+    .swipe-title {
+      color: $white;
+    }
 
-    .swipe-view {
-
-      p,
-      .swipe-title {
-        color: $white;
-      }
-
-      /*.scroll-box,
+    /*.scroll-box,
       .scroll-box p {
         color: $med-gray;
       }*/
 
-      .swipe-title::before {
-        border-top: 7px solid $powder-blue;
+    .swipe-title::before {
+      border-top: 7px solid $powder-blue;
+    }
+
+    .svg-inline--fa {
+      color: $powder-blue;
+
+      &.fa-sad-tear {
+        color: $danger-dark;
       }
 
-      .svg-inline--fa {
-        color: $powder-blue;
-
-        &.fa-sad-tear {
-          color: $danger-dark;
-        }
-
-        &.fa-meh {
-          color: $warning-dark;
-        }
-
-        &.fa-smile {
-          color: $success-dark;
-        }
+      &.fa-meh {
+        color: $warning-dark;
       }
 
-      .injected-svg {
-        fill: $powder-blue;
+      &.fa-smile {
+        color: $success-dark;
+      }
+    }
 
-        &.fa-sad-tear {
-          fill: $danger-dark;
-        }
+    .injected-svg {
+      fill: $powder-blue;
 
-        &.fa-meh {
-          fill: $warning-dark;
-        }
+      &.fa-sad-tear {
+        fill: $danger-dark;
+      }
 
-        &.fa-smile {
-          fill: $success-dark;
-        }
+      &.fa-meh {
+        fill: $warning-dark;
+      }
+
+      &.fa-smile {
+        fill: $success-dark;
       }
     }
   }
-
+}

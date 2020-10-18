@@ -1,8 +1,8 @@
-Meteor.publish('roles', function () {
+Meteor.publish("roles", function () {
   if (this.userId) {
-	return Meteor.roleAssignment.find({ 'user._id': this.userId });
-	// return Meteor.roleAssignment.find({});
+    return Meteor.roleAssignment.find({ "user._id": this.userId });
+    // return Meteor.roleAssignment.find({});
   } else {
-	this.ready()
+    this.ready();
   }
-})
+});

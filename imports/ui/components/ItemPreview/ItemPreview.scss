@@ -1,4 +1,4 @@
-@import '../../stylesheets/variables';
+@import "../../stylesheets/variables";
 
 .ItemPreview {
   width: 40%;
@@ -58,7 +58,6 @@
       width: 78%;
       float: right;
 
-
       &.happy .progress-bar {
         background-color: $success-dark;
       }
@@ -72,5 +71,4 @@
       }
     }
   }
-
 }

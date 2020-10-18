@@ -1,4 +1,4 @@
-@import '../../../stylesheets/variables';
+@import "../../../stylesheets/variables";
 
 .SwipePanelContent {
   margin-bottom: 10px;
@@ -42,11 +42,9 @@
       vertical-align: top;
     }
   }
-
 }
 
 body.dark-theme .SwipePanelContent {
-
   p {
     color: $white;
   }
@@ -58,6 +56,4 @@ body.dark-theme .SwipePanelContent {
   .injected-svg {
     fill: $powder-blue;
   }
-
 }
-

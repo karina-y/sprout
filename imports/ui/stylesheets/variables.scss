@@ -1,35 +1,32 @@
-
 //#region breakpoints
 //taken from bootstrap
 $breakpoint-xxs: "max-width: 350px"; //img_350
 $breakpoint-xs: "max-width: 767px"; //img_768
 $breakpoint-sm: "min-width: 768px"; //img_992
 $breakpoint-md: "min-width: 992px"; //img_1280
-$breakpoint-lg: "min-width: 1280px";  //img_1440
-$breakpoint-xl: "min-width: 1440px";  //img_1920
+$breakpoint-lg: "min-width: 1280px"; //img_1440
+$breakpoint-xl: "min-width: 1440px"; //img_1920
 $breakpoint-mac-min: "min-width: 1500px";
 $breakpoint-mac-max: "max-width: 1810px";
-$breakpoint-xxl: "min-width: 1920px";  //img_3200
+$breakpoint-xxl: "min-width: 1920px"; //img_3200
 //#endregion
-
 
 //#region colors
 
-$white: #fff;         //rgba(255, 255, 255, 1)
+$white: #fff; //rgba(255, 255, 255, 1)
 $off-white: #f8fcff;
-$dark-white: #E8E8E8; //rgba(232, 232, 232. 1)
+$dark-white: #e8e8e8; //rgba(232, 232, 232. 1)
 $light-gray: #5f6799;
-$med-gray: #404E4D;
+$med-gray: #404e4d;
 $dark-gray: #1d1d1d;
-$black: #000;         //rgba(0, 0, 0, 1)
-
+$black: #000; //rgba(0, 0, 0, 1)
 
 $success-dark: #45c6a5;
-$success-light:  #53fad6;
-$danger-dark: #FE608B;
-$danger-light: #F699C6;
-$warning-dark: #FEC45F;
-$warning-light: #FDE3A9;
+$success-light: #53fad6;
+$danger-dark: #fe608b;
+$danger-light: #f699c6;
+$warning-dark: #fec45f;
+$warning-light: #fde3a9;
 $info-dark: #8184f9;
 $info-light: #7da2f3;
 
@@ -38,23 +35,19 @@ $warning-pastel: #f6f1cf;
 $success-pastel: #d9f6e3;
 $info-pastel: #d4e5f4;
 
-
 //theme colors
-$powder-blue: #C5E7E2;
-$powder-blue-light: #E1EFF2;
-$polished-pine: #69A297;
+$powder-blue: #c5e7e2;
+$powder-blue-light: #e1eff2;
+$polished-pine: #69a297;
 $ming: #006d77;
-$vivid-tangerine: #F49683;
-$groot: #B38567;
+$vivid-tangerine: #f49683;
+$groot: #b38567;
 
-
-$teal-blue: #50808E;
-$alice-blue: #EDF6F9;
-$alice-blue-light: #F3FCFF;
-$fire-opal: #ED6A5A;
+$teal-blue: #50808e;
+$alice-blue: #edf6f9;
+$alice-blue-light: #f3fcff;
+$fire-opal: #ed6a5a;
 //#endregion
-
-
 
 $mobile-pad: 0 20px;
 

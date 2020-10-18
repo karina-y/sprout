@@ -1,16 +1,16 @@
-import Category from '../Category';
-import logger from '/imports/utils/helpers/logger';
+import Category from "../Category";
+import logger from "/imports/utils/helpers/logger";
 
-Meteor.publish('category', function categories() {
+Meteor.publish("category", function categories() {
   if (Meteor.userId()) {
-	const categories = Category.find({});
+    const categories = Category.find({});
 
-	if (categories.fetch() && categories.fetch().length > 0) {
-	  return categories;
-	} else {
-	  return [];
-	}
+    if (categories.fetch() && categories.fetch().length > 0) {
+      return categories;
+    } else {
+      return [];
+    }
   } else {
-	return [];
+    return [];
   }
 });

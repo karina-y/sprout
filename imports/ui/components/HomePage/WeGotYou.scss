@@ -1,13 +1,12 @@
-@import '../../stylesheets/variables';
+@import "../../stylesheets/variables";
 
 .WeGotYou {
   background: $polished-pine;
   position: relative;
 
-
   .img-panel {
-    background-color: #F7D4D8;
-    background-image: url('/images/waterdrops-plant.gif');
+    background-color: #f7d4d8;
+    background-image: url("/images/waterdrops-plant.gif");
     background-repeat: no-repeat;
     background-position: center center;
     background-size: contain;
@@ -28,7 +27,7 @@
     text-align: right;
 
     .panel-title {
-      color: #F7D4D8;
+      color: #f7d4d8;
       padding-bottom: 20px;
       text-align: center;
     }
@@ -40,32 +39,23 @@
     }
   }
 
-
-
   //#region breakpoints
   @media only screen and ($breakpoint-xs) {
-
   }
 
   @media only screen and ($breakpoint-sm) {
-
   }
 
   @media only screen and ($breakpoint-md) {
-
-
   }
 
   @media only screen and ($breakpoint-lg) {
-
   }
 
   @media only screen and ($breakpoint-mac-min) and ($breakpoint-mac-max) {
-
   }
 
   @media only screen and ($breakpoint-xl) {
-
   }
   //#endregion
 }

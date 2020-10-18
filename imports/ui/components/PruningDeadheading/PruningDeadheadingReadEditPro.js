@@ -1,18 +1,15 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import SwipePanelContent from '../Shared/SwipePanelContent/SwipePanelContent'
-import UpdateTypes from '../../../utils/constants/updateTypes'
-
+import React from "react";
+import PropTypes from "prop-types";
+import SwipePanelContent from "../Shared/SwipePanelContent/SwipePanelContent";
+import UpdateTypes from "../../../utils/constants/updateTypes";
 
 const PruningDeadheadingReadEditPro = (props) => (
-		<div className="swipe-slide">
-		  <p className="swipe-title title-ming">
-			Pruning - Deadheading
-		  </p>
+  <div className="swipe-slide">
+    <p className="swipe-title title-ming">Pruning - Deadheading</p>
 
-		  {props.editing === UpdateTypes.pruningDeadheading.pruningDeadheadingEditModal ?
-				  <React.Fragment>
-					{/*<SwipePanelContent icon="pruning" iconTitle="pruning schedule">
+    {props.editing === UpdateTypes.pruningDeadheading.pruningDeadheadingEditModal ? (
+      <React.Fragment>
+        {/*<SwipePanelContent icon="pruning" iconTitle="pruning schedule">
 					  <p className="modern-input">
 						Prune every <input type="number"
 										   min="0"
@@ -36,26 +33,31 @@ const PruningDeadheadingReadEditPro = (props) => (
 					  </p>
 					</SwipePanelContent>*/}
 
-					<SwipePanelContent icon="pruning" iconTitle="pruning preference">
-					  <p className="modern-input">
-						<input type="text"
-							   onChange={(e) => props.updateData(e, 'pruningPreference')}
-							   defaultValue={props.plant.pruningPreference || ''}/>
-					  </p>
-					</SwipePanelContent>
+        <SwipePanelContent icon="pruning" iconTitle="pruning preference">
+          <p className="modern-input">
+            <label>pruning preference</label>
+            <input
+              type="text"
+              onChange={(e) => props.updateData(e, "pruningPreference")}
+              defaultValue={props.plant.pruningPreference || ""}
+            />
+          </p>
+        </SwipePanelContent>
 
-					<SwipePanelContent icon="deadheading" iconTitle="deadheading preference">
-					  <p className="modern-input">
-						<input type="text"
-							   onChange={(e) => props.updateData(e, 'deadheadingPreference')}
-							   defaultValue={props.plant.deadheadingPreference || ''}/>
-					  </p>
-					</SwipePanelContent>
-
-				  </React.Fragment>
-				  :
-				  <React.Fragment>
-					{/*<SwipePanelContent icon="pruning"
+        <SwipePanelContent icon="deadheading" iconTitle="deadheading preference">
+          <p className="modern-input">
+            <label>deadheading preference</label>
+            <input
+              type="text"
+              onChange={(e) => props.updateData(e, "deadheadingPreference")}
+              defaultValue={props.plant.deadheadingPreference || ""}
+            />
+          </p>
+        </SwipePanelContent>
+      </React.Fragment>
+    ) : (
+      <React.Fragment>
+        {/*<SwipePanelContent icon="pruning"
 									   iconTitle="pruning schedule"
 									   additionalOuterClasses="top-align">
 					  <p>{props.plant.pruningSchedule ? `Prune every ${props.plant.pruningSchedule} days` : 'No pruning schedule entered'}</p>
@@ -71,28 +73,30 @@ const PruningDeadheadingReadEditPro = (props) => (
 					  <p>Due in {props.plant.deadheadingSchedule - props.plant.daysSinceDeadheaded - 1} days</p>}
 					</SwipePanelContent>*/}
 
-					<SwipePanelContent icon="pruning"
-									   iconTitle="pruning preference">
-					  <p>{props.plant.pruningPreference ? `${props.plant.pruningPreference}` : 'No pruning preference entered'}</p>
-					</SwipePanelContent>
+        <SwipePanelContent icon="pruning" iconTitle="pruning preference">
+          <p>
+            {props.plant.pruningPreference
+              ? `${props.plant.pruningPreference}`
+              : "No pruning preference entered"}
+          </p>
+        </SwipePanelContent>
 
-					<SwipePanelContent icon="deadheading"
-									   iconTitle="deadheading preference">
-					  <p>{props.plant.deadheadingPreference ? `${props.plant.deadheadingPreference}` : 'No deadheading preference entered'}</p>
-					</SwipePanelContent>
-				  </React.Fragment>
-		  }
-
-
-		</div>
-)
-
-
+        <SwipePanelContent icon="deadheading" iconTitle="deadheading preference">
+          <p>
+            {props.plant.deadheadingPreference
+              ? `${props.plant.deadheadingPreference}`
+              : "No deadheading preference entered"}
+          </p>
+        </SwipePanelContent>
+      </React.Fragment>
+    )}
+  </div>
+);
 
 PruningDeadheadingReadEditPro.propTypes = {
   plant: PropTypes.object.isRequired,
   updateData: PropTypes.func.isRequired,
-  fertilizerContent: PropTypes.string
+  fertilizerContent: PropTypes.string,
 };
 
 export default PruningDeadheadingReadEditPro;

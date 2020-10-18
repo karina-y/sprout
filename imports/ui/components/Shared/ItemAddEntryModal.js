@@ -1,88 +1,74 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import autobind from 'react-autobind';
-import Modal from 'react-bootstrap/Modal';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import autobind from "react-autobind";
+import Modal from "react-bootstrap/Modal";
 // import './ItemAddEntryModal.scss';
 
 class ItemAddEntryModal extends Component {
   constructor(props) {
-	super(props);
+    super(props);
 
-	this.state = {
-	  show: false
-	};
+    this.state = {
+      show: false,
+    };
 
-	autobind(this);
+    autobind(this);
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-
-	if (nextProps.show === nextProps.type) {
-	  let newState = prevState;
-	  newState.show = true;
-	  return newState;
-	} else {
-	  let newState = prevState;
-	  newState.show = false;
-	  return newState;
-	}
+    if (nextProps.show === nextProps.type) {
+      let newState = prevState;
+      newState.show = true;
+      return newState;
+    } else {
+      let newState = prevState;
+      newState.show = false;
+      return newState;
+    }
   }
 
   saveData() {
-	this.setState({
-	  show: false
-	});
+    this.setState({
+      show: false,
+    });
 
-	this.props.save(this.props.type)
+    this.props.save(this.props.type);
   }
 
   close() {
-	this.props.cancel(this.props.type);
+    this.props.cancel(this.props.type);
   }
 
-
   render() {
+    return (
+      <Modal show={this.state.show} onHide={this.close} className="plant-view-data-modal">
+        <Modal.Header closeButton>{this.props.header}</Modal.Header>
 
-	return (
-			<Modal show={this.state.show}
-				   onHide={this.close}
-				   className="plant-view-data-modal">
+        <Modal.Body>{this.props.children}</Modal.Body>
 
-			  <Modal.Header closeButton>
-				{this.props.header}
-			  </Modal.Header>
+        {this.props.type === "delete" ? (
+          <Modal.Footer>
+            <button onClick={this.close} className="flat">
+              Cancel
+            </button>
 
-			  <Modal.Body>
-				{this.props.children}
-			  </Modal.Body>
+            <button onClick={this.saveData} className="flat">
+              Yes
+            </button>
+          </Modal.Footer>
+        ) : (
+          <Modal.Footer>
+            <button onClick={this.close} className="flat">
+              Cancel
+            </button>
 
-			  {this.props.type === "delete" ?
-					  <Modal.Footer>
-						<button onClick={this.close}
-								className="flat">
-						  Cancel
-						</button>
-
-						<button onClick={this.saveData}
-								className="flat">
-						  Yes
-						</button>
-					  </Modal.Footer>
-					  :
-					  <Modal.Footer>
-						<button onClick={this.close}
-								className="flat">
-						  Cancel
-						</button>
-
-						<button onClick={this.saveData}
-								className="flat">
-						  Save
-						</button>
-					  </Modal.Footer>
-			  }
-			</Modal>
-	)
+            <button onClick={this.saveData} className="flat">
+              Save
+            </button>
+          </Modal.Footer>
+        )}
+      </Modal>
+    );
   }
 }
 
@@ -91,7 +77,7 @@ ItemAddEntryModal.propTypes = {
   cancel: PropTypes.func.isRequired,
   type: PropTypes.string,
   header: PropTypes.string,
-  modalOpen: PropTypes.string
-}
+  modalOpen: PropTypes.string,
+};
 
 export default ItemAddEntryModal;

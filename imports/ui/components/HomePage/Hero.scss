@@ -1,5 +1,4 @@
-@import '../../stylesheets/variables';
-
+@import "../../stylesheets/variables";
 
 .HeroPanel {
   height: $vh-less-nav !important;
@@ -20,7 +19,6 @@
   .right-panel {
     color: $ming;
   }
-
 
   //#region breakpoints
   @media only screen and ($breakpoint-xs) {
@@ -90,8 +88,6 @@
   }
 
   @media only screen and ($breakpoint-lg) {
-
-
     .right {
       display: block;
     }
@@ -108,8 +104,6 @@
   }
 
   @media only screen and ($breakpoint-xl) {
-
-
   }
   //#endregion
 }

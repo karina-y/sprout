@@ -1,4 +1,4 @@
-@import '../../stylesheets/variables';
+@import "../../stylesheets/variables";
 
 .PlantAdd {
   margin: 0;
@@ -24,7 +24,6 @@
   }
 
   .swipe-view {
-
     .swipe-slide {
       padding: 15px 20px;
     }
@@ -54,7 +53,6 @@
     }
 
     .svg-inline--fa {
-
       &.fa-sad-tear {
         color: $danger-dark;
       }
@@ -70,9 +68,7 @@
   }
 
   .bottom-nav {
-
     .svg-inline--fa {
-
       &.fa-chevron-right,
       &.fa-check {
         float: right;
@@ -84,7 +80,6 @@
     }
   }
 
-
   input,
   textarea,
   select {
@@ -94,7 +89,6 @@
 
 body.dark-theme .PlantAdd {
   .swipe-view {
-
     p,
     .swipe-title {
       color: $white;

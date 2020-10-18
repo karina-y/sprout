@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState } from "react";
 
 function usePruneType(initial) {
   const [pruneType, setPruneType] = useState(initial);

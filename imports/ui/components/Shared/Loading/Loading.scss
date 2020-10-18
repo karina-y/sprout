@@ -1,4 +1,4 @@
-@import '../../../stylesheets/variables';
+@import "../../../stylesheets/variables";
 
 .Loading {
   display: flex;
@@ -28,7 +28,6 @@
     border-radius: 50%;
     animation: load8 1.1s infinite linear;
 
-
     @keyframes load8 {
       0% {
         transform: rotate(0deg);
@@ -39,5 +38,4 @@
       }
     }
   }
-
 }

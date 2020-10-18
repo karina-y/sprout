@@ -1,5 +1,4 @@
-@import '../../stylesheets/variables';
-
+@import "../../stylesheets/variables";
 
 .SignMeUpPanel {
   height: 700px;
@@ -18,10 +17,9 @@
     z-index: -2;
   }
 
-
   &::after {
     content: "";
-    background: url('/images/growing-still.gif');
+    background: url("/images/growing-still.gif");
     background-size: contain;
     background-position: center center;
     opacity: 0.4;
@@ -39,8 +37,6 @@
     width: 100%;
   }
 
-
-
   //#region breakpoints
   @media only screen and ($breakpoint-xs) {
     &.panel {
@@ -54,7 +50,6 @@
 
   @media only screen and ($breakpoint-sm) {
     &.panel {
-
       button.pop {
         font-size: $font-lg;
       }
@@ -62,20 +57,15 @@
   }
 
   @media only screen and ($breakpoint-md) {
-
   }
 
   @media only screen and ($breakpoint-lg) {
-
   }
 
   @media only screen and ($breakpoint-mac-min) and ($breakpoint-mac-max) {
-
   }
 
   @media only screen and ($breakpoint-xl) {
-
-
   }
   //#endregion
 }

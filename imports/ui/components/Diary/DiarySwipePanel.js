@@ -1,16 +1,14 @@
-import React, { Component } from 'react'
-import { withTracker } from 'meteor/react-meteor-data'
-import PropTypes from 'prop-types'
-import autobind from 'react-autobind'
-import '../PlantViewEdit/PlantSeedlingViewEdit.scss'
-import 'react-datepicker/dist/react-datepicker.css'
-import {
-  sortByLastDate
-} from '../../../utils/helpers/plantData'
-import { toast } from 'react-toastify'
-import DiaryModals from './DiaryModals'
-import DiaryReadEdit from './DiaryReadEdit'
-import useNewData from '../../hooks/useNewData'
+import React, { Component } from "react";
+import { withTracker } from "meteor/react-meteor-data";
+import PropTypes from "prop-types";
+import autobind from "react-autobind";
+import "../PlantViewEdit/PlantSeedlingViewEdit.scss";
+import "react-datepicker/dist/react-datepicker.css";
+import { sortByLastDate } from "../../../utils/helpers/plantData";
+import { toast } from "react-toastify";
+import DiaryModals from "./DiaryModals";
+import DiaryReadEdit from "./DiaryReadEdit";
+import useNewData from "../../hooks/useNewData";
 
 /*
 TODO
@@ -18,73 +16,70 @@ TODO
 - maybe just move all the view components into one file and import that alone
 */
 
-
 const DiarySwipePanel = (props) => {
   const plant = props.plant;
-  const { newData, setNewData, changeNewData } = useNewData({})
+  const { newData, setNewData, changeNewData } = useNewData({});
 
   const updatePlant = (type) => {
-	console.log("profile", type);
+    console.log("diary update")
+    const newPlantData = newData;
+    const oldPlantData = plant;
 
-	const newPlantData = newData;
-	const oldPlantData = plant;
+    if (!type || !newPlantData || JSON.stringify(newPlantData) === "{}") {
+      toast.error("No data entered.");
+    } else {
+      //TODO abstract each of these cases out
+      let data = {
+        diary: newPlantData.diary,
+      };
 
-	if (!type || !newPlantData || JSON.stringify(newPlantData) === "{}") {
-	  toast.error("No data entered.");
-	} else {
-	  //TODO abstract each of these cases out
-	  let data = {
-		[type]: newPlantData[type]
-	  };
+      if (data) {
+        data._id = oldPlantData._id;
 
-	  if (data) {
-		data._id = oldPlantData._id;
+        Meteor.call("diary.update", data, (err, response) => {
+          if (err) {
+            toast.error(err.message);
+          } else {
+            toast.success("Successfully saved new entry.");
 
-		Meteor.call("diary.update", type, data, (err, response) => {
-		  if (err) {
-			toast.error(err.message);
-		  } else {
-			toast.success("Successfully saved new entry.");
-
-			//reset the data
-			resetData();
-		  }
-		});
-	  } else {
-		toast.error("No data entered.");
-	  }
-	}
-  }
+            //reset the data
+            resetData();
+          }
+        });
+      } else {
+        toast.error("No data entered.");
+      }
+    }
+  };
 
   const resetData = () => {
-	setNewData({})
-	props.exitEditMode();
-  }
+    setNewData({});
+    props.exitEditMode();
+  };
 
   return (
-		  <div className="PlantSeedlingViewEdit">
+    <div className="PlantSeedlingViewEdit">
+      {/* diary */}
+      <DiaryReadEdit item={plant} updateData={changeNewData} />
 
-			{/* diary */}
-			<DiaryReadEdit item={plant} updateData={changeNewData}/>
-
-			{/* diary */}
-			<DiaryModals updateData={changeNewData}
-						 save={updatePlant}
-						 resetModal={resetData}
-						 modalOpen={props.modalOpen}
-						 diary={plant.diary}/>
-
-		  </div>
-  )
-
-}
+      {/* diary */}
+      <DiaryModals
+        updateData={changeNewData}
+        save={updatePlant}
+        resetModal={resetData}
+        modalOpen={props.modalOpen}
+        diary={plant.diary}
+      />
+    </div>
+  );
+};
 
 DiarySwipePanel.propTypes = {
   plant: PropTypes.object.isRequired,
   editing: PropTypes.string,
   modalOpen: PropTypes.string,
   exitEditMode: PropTypes.func.isRequired,
-}
+};
 
 export default withTracker((props) => {
   // const id = props.match.params.id
@@ -94,15 +89,14 @@ export default withTracker((props) => {
 
   //sort the data
   if (plant) {
-	plant.diary = sortByLastDate(plant.diary)
+    plant.diary = sortByLastDate(plant.diary);
   } else {
     plant = {
-      diary: null
-	}
+      diary: null,
+    };
   }
 
   return {
-	plant
-  }
-})(DiarySwipePanel)
-
+    plant,
+  };
+})(DiarySwipePanel);
