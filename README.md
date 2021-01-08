@@ -16,4 +16,4 @@ _this is just a personal project i'm working on because i'm having trouble keepi
 <br /><br />
 
 ### Add a new plant to your catalogue
-![image](http://sprout.karinacodes.com/images/readme-screenshots/screenshot_04.jpg)
+![Webp net-resizeimage](https://user-images.githubusercontent.com/19538307/96923257-df90e700-1465-11eb-99a4-11256e9480da.jpg)
