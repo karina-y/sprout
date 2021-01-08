@@ -4,11 +4,8 @@ import "./SeedlingAdd.scss";
 import Modal from "react-bootstrap/Modal";
 import { Session } from "meteor/session";
 import SwipeableViews from "react-swipeable-views";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { selectRandomPlantPicture } from "/imports/utils/helpers/selectRandomPlantPicture";
 import { toast } from "react-toastify";
-import { faTimes } from "@fortawesome/free-solid-svg-icons/faTimes";
-import { faSave } from "@fortawesome/free-solid-svg-icons/faSave";
 import Category from "/imports/api/Category/Category";
 import SwipePanelContent from "../../components/Shared/SwipePanelContent/SwipePanelContent";
 import WaterAdd from "../../components/SharedPlantSeedling/SwipeViewsAdd/Water";
@@ -17,6 +14,7 @@ import FertilizerAddPro from "../../components/SharedPlantSeedling/SwipeViewsAdd
 import FertilizerAdd from "../../components/SharedPlantSeedling/SwipeViewsAdd/Fertilizer";
 import SoilCompAddPro from "../../components/SharedPlantSeedling/SwipeViewsAdd/SoilCompPro";
 import SoilCompAdd from "../../components/SharedPlantSeedling/SwipeViewsAdd/SoilComp";
+import BottomNavAdd from "../../components/BottomNav/BottomNavAdd";
 
 class SeedlingAdd extends Component {
   constructor(props) {
@@ -56,7 +54,10 @@ class SeedlingAdd extends Component {
       seedling.fertilizerSchedule = parseInt(seedling.fertilizerSchedule);
     }
 
-    if (seedling.soilCompositionTracker && !Array.isArray(seedling.soilCompositionTracker)) {
+    if (
+      seedling.soilCompositionTracker &&
+      !Array.isArray(seedling.soilCompositionTracker)
+    ) {
       seedling.soilCompositionTracker = [seedling.soilCompositionTracker];
     }
 
@@ -68,12 +69,14 @@ class SeedlingAdd extends Component {
     } else if (!seedling.category) {
       errMsg = "Please select a category.";
     } else if (!seedling.method) {
-      errMsg = "Please enter a seed starting method (eg. used jiffy pot and greenhouse method)";
+      errMsg =
+        "Please enter a seed starting method (eg. used jiffy pot and greenhouse method)";
     } else if (!seedling.waterPreference) {
       errMsg =
         "Please enter a watering preference (eg. Keep soil moist but not soggy, humidity tray helpful).";
     } else if (!seedling.lightPreference) {
-      errMsg = "Please enter a lighting preference (eg. sun light or grow light).";
+      errMsg =
+        "Please enter a lighting preference (eg. sun light or grow light).";
     }
 
     if (errMsg) {
@@ -98,7 +101,8 @@ class SeedlingAdd extends Component {
       let moistureVal = parseFloat((parseInt(e.target.value) / 100).toFixed(2));
 
       if (seedling.soilCompositionTracker) {
-        seedling.soilCompositionTracker[type] = type === "moisture" ? moistureVal : phVal;
+        seedling.soilCompositionTracker[type] =
+          type === "moisture" ? moistureVal : phVal;
       } else {
         seedling.soilCompositionTracker = {
           date: new Date(),
@@ -130,7 +134,7 @@ class SeedlingAdd extends Component {
   }
 
   render() {
-    const seedling = this.state.seedling;
+    const { seedling, swipeViewIndex, categories, showDiaryModal } = this.state;
     //TODO add ability to set plant photo and photo history eventually
 
     return (
@@ -144,7 +148,7 @@ class SeedlingAdd extends Component {
 
         <SwipeableViews
           className="swipe-view"
-          index={this.state.swipeViewIndex}
+          index={swipeViewIndex}
           onChangeIndex={(e) => this.setState({ swipeViewIndex: e })}
         >
           {/* plant info */}
@@ -183,8 +187,8 @@ class SeedlingAdd extends Component {
                   <option value="" disabled={true}>
                     - Select a category -
                   </option>
-                  {this.state.categories &&
-                    this.state.categories.map((item, index) => {
+                  {categories &&
+                    categories.map((item, index) => {
                       return (
                         <option value={item.category} key={index}>
                           {item.displayName}
@@ -252,7 +256,11 @@ class SeedlingAdd extends Component {
 
           {/* water */}
           {Meteor.isPro ? (
-            <WaterAddPro item={seedling} updateData={this.updateData} type={"seedling"} />
+            <WaterAddPro
+              item={seedling}
+              updateData={this.updateData}
+              type={"seedling"}
+            />
           ) : (
             <WaterAdd item={seedling} updateData={this.updateData} />
           )}
@@ -361,26 +369,13 @@ class SeedlingAdd extends Component {
           </div>
         </SwipeableViews>
 
-        <div className="add-data flex-around bottom-nav">
-          <FontAwesomeIcon
-            icon={faTimes}
-            className="plant-condition-icon"
-            alt="times"
-            title="cancel"
-            onClick={() => this.setState({ swipeViewIndex: this.state.swipeViewIndex - 1 })}
-          />
-
-          <FontAwesomeIcon
-            icon={faSave}
-            className="plant-condition-icon"
-            alt="floppy disk"
-            title="save"
-            onClick={this.addNewProfile}
-          />
-        </div>
+        <BottomNavAdd
+          cancel={() => this.setState({ swipeViewIndex: swipeViewIndex - 1 })}
+          add={this.addNewProfile}
+        />
 
         <Modal
-          show={this.state.showDiaryModal}
+          show={showDiaryModal}
           onHide={() => this.setState({ showDiaryModal: false })}
           className="seedling-view-data-modal"
         >
@@ -389,11 +384,17 @@ class SeedlingAdd extends Component {
           <Modal.Body>Save new plant seedling?</Modal.Body>
 
           <Modal.Footer>
-            <button onClick={() => this.setState({ showDiaryModal: false })} className="flat">
+            <button
+              onClick={() => this.setState({ showDiaryModal: false })}
+              className="flat"
+            >
               Cancel
             </button>
 
-            <button onClick={() => this.setState({ showDiaryModal: false })} className="flat">
+            <button
+              onClick={() => this.setState({ showDiaryModal: false })}
+              className="flat"
+            >
               Save
             </button>
           </Modal.Footer>

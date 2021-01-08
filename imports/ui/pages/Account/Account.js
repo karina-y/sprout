@@ -18,7 +18,6 @@ class Account extends Component {
       currentPassword: null,
       editing: false,
       changingPassword: false,
-      pro: false,
       newPassword: null,
       confirmNewPassword: null,
       currentTheme: null,
@@ -38,25 +37,34 @@ class Account extends Component {
     }
 
     this.setState({
-      pro: Meteor.isPro,
       currentTheme: preferences ? preferences.theme || "light" : "light",
     });
   }
 
   changePassword() {
-    if (!this.state.newPassword || !this.state.confirmNewPassword || !this.state.currentPassword) {
+    if (
+      !this.state.newPassword ||
+      !this.state.confirmNewPassword ||
+      !this.state.currentPassword
+    ) {
       toast.error("Please fill out all fields.");
     } else if (this.state.newPassword !== this.state.confirmNewPassword) {
-      toast.error("New passwords do not match, please re-enter your new password.");
+      toast.error(
+        "New passwords do not match, please re-enter your new password."
+      );
     } else {
-      Accounts.changePassword(this.state.currentPassword, this.state.newPassword, (err) => {
-        if (err) {
-          toast.error(err.message);
-        } else {
-          toast.success("Password successfully changed.");
-          this.resetProfile();
+      Accounts.changePassword(
+        this.state.currentPassword,
+        this.state.newPassword,
+        (err) => {
+          if (err) {
+            toast.error(err.message);
+          } else {
+            toast.success("Password successfully changed.");
+            this.resetProfile();
+          }
         }
-      });
+      );
     }
   }
 
@@ -75,7 +83,7 @@ class Account extends Component {
       newProfile.zip = this.state.zip;
     }
 
-    const isPro = this.state.pro;
+    const isPro = Meteor.isPro;
 
     if (
       JSON.stringify(newProfile) === "{}" &&
@@ -107,7 +115,6 @@ class Account extends Component {
       newPassword: null,
       editing: false,
       changingPassword: false,
-      pro: Meteor.isPro,
     });
   }
 
@@ -115,16 +122,18 @@ class Account extends Component {
     const name = Meteor.user().profile.name;
     const zip = Meteor.user().profile.zip || "N/A";
     const email = Meteor.user().emails[0].address;
+    const pro = Meteor.isPro;
+    const { changingPassword, editing, currentTheme, verified } = this.state;
 
     return (
       <div className="Account">
         <h4 className="acct-title page-title-ming">Account</h4>
 
-        {!this.state.changingPassword && (
+        {!changingPassword && (
           <React.Fragment>
-            <p className={this.state.editing ? "modern-input" : ""}>
+            <p className={editing ? "modern-input" : ""}>
               <label>e-mail</label>
-              {this.state.editing ? (
+              {editing ? (
                 <input
                   type="email"
                   placeholder="E-mail"
@@ -136,9 +145,9 @@ class Account extends Component {
               )}
             </p>
 
-            <p className={this.state.editing ? "modern-input" : ""}>
+            <p className={editing ? "modern-input" : ""}>
               <label>name</label>
-              {this.state.editing ? (
+              {editing ? (
                 <input
                   type="text"
                   placeholder="Name"
@@ -150,9 +159,9 @@ class Account extends Component {
               )}
             </p>
 
-            <p className={this.state.editing ? "modern-input" : ""}>
+            <p className={editing ? "modern-input" : ""}>
               <label>zip / postal code</label>
-              {this.state.editing ? (
+              {editing ? (
                 <input
                   type="text"
                   placeholder="Zip / Postal Code"
@@ -164,42 +173,42 @@ class Account extends Component {
               )}
             </p>
 
-            <p className={this.state.editing ? "modern-input" : ""}>
+            <p className={editing ? "modern-input" : ""}>
               <label>theme</label>
-              {this.state.editing ? (
+              {editing ? (
                 <select
                   placeholder="Category"
                   onChange={(e) => this.setState({ newTheme: e.target.value })}
-                  defaultValue={this.state.currentTheme}
+                  defaultValue={currentTheme}
                 >
                   <option value="light">Light Theme</option>
                   <option value="dark">Dark Theme</option>
                 </select>
               ) : (
-                this.state.currentTheme
+                currentTheme
               )}
             </p>
 
             {/*TODO remove for prod, just for testing*/}
-            {!this.state.editing && (
+            {!editing && (
               <p>
                 <label>Verified?</label>
-                {this.state.verified ? "Yes" : "No"}
+                {verified ? "Yes" : "No"}
               </p>
             )}
 
             {/*TODO remove for prod, just for testing*/}
             <p className="pro-checkbox">
               <label>pro?</label>
-              {this.state.editing ? (
+              {editing ? (
                 <input
                   type="checkbox"
                   placeholder="pro"
                   className="small-checkbox"
-                  checked={this.state.pro}
-                  onChange={(e) => this.setState({ pro: !this.state.pro })}
+                  checked={pro}
+                  onChange={(e) => this.setState({ pro: !pro })}
                 />
-              ) : this.state.pro ? (
+              ) : pro ? (
                 "Yes"
               ) : (
                 "No"
@@ -208,18 +217,20 @@ class Account extends Component {
           </React.Fragment>
         )}
 
-        {this.state.changingPassword && (
+        {changingPassword && (
           <form>
-            <p className={this.state.changingPassword ? "modern-input" : ""}>
+            <p className={changingPassword ? "modern-input" : ""}>
               <label>current password</label>
               <input
                 type="password"
                 placeholder="Password"
-                onChange={(e) => this.setState({ currentPassword: e.target.value })}
+                onChange={(e) =>
+                  this.setState({ currentPassword: e.target.value })
+                }
               />
             </p>
 
-            <p className={this.state.changingPassword ? "modern-input" : ""}>
+            <p className={changingPassword ? "modern-input" : ""}>
               <label>new password</label>
               <input
                 type="password"
@@ -228,45 +239,47 @@ class Account extends Component {
               />
             </p>
 
-            <p className={this.state.changingPassword ? "modern-input" : ""}>
+            <p className={changingPassword ? "modern-input" : ""}>
               <label>confirm new password</label>
               <input
                 type="password"
                 placeholder="Password"
-                onChange={(e) => this.setState({ confirmNewPassword: e.target.value })}
+                onChange={(e) =>
+                  this.setState({ confirmNewPassword: e.target.value })
+                }
               />
             </p>
           </form>
         )}
 
         <div className="buttons-footer">
-          {!this.state.changingPassword && (
+          {!changingPassword && (
             <button
               onClick={() =>
-                this.state.editing
+                editing
                   ? this.saveProfile()
                   : this.setState({ editing: true, changingPassword: false })
               }
               className="flat"
             >
-              {this.state.editing ? "Save Profile" : "Edit Profile"}
+              {editing ? "Save Profile" : "Edit Profile"}
             </button>
           )}
 
-          {!this.state.editing && (
+          {!editing && (
             <button
               onClick={() =>
-                this.state.changingPassword
+                changingPassword
                   ? this.changePassword()
                   : this.setState({ editing: false, changingPassword: true })
               }
               className="flat"
             >
-              {this.state.changingPassword ? "Save Password" : "New Password"}
+              {changingPassword ? "Save Password" : "New Password"}
             </button>
           )}
 
-          {(this.state.editing || this.state.changingPassword) && (
+          {(editing || changingPassword) && (
             <button onClick={this.resetProfile} className="btn-danger">
               Cancel
             </button>

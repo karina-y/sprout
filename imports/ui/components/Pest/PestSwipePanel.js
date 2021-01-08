@@ -1,7 +1,6 @@
-import React, { Component } from "react";
+import React from "react";
 import { withTracker } from "meteor/react-meteor-data";
 import PropTypes from "prop-types";
-import autobind from "react-autobind";
 import "../PlantViewEdit/PlantSeedlingViewEdit.scss";
 import "react-datepicker/dist/react-datepicker.css";
 import {
@@ -10,7 +9,7 @@ import {
   getLastPestTreatment,
   lastChecked,
   sortByLastDate,
-} from "../../../utils/helpers/plantData";
+} from "/imports/utils/helpers/plantData";
 import { toast } from "react-toastify";
 import PestModals from "./PestModals";
 import PestReadEdit from "./PestReadEdit";
@@ -24,7 +23,13 @@ TODO
 
 const PestSwipePanel = (props) => {
   const plant = props.plant;
-  const { newData, setNewData, changeNewData, addTrackerDate, addTrackerDetails } = useNewData({});
+  const {
+    newData,
+    setNewData,
+    changeNewData,
+    addTrackerDate,
+    addTrackerDetails,
+  } = useNewData({});
   let pestLastChecked = lastChecked(plant.pestTracker);
   let pestName = getLastPestName(plant.pestTracker);
   let pestTreatment = getLastPestTreatment(plant.pestTracker);
@@ -83,7 +88,6 @@ const PestSwipePanel = (props) => {
         addTrackerDetails={addTrackerDetails}
         save={updatePlant}
         resetModal={resetData}
-        modalOpen={props.modalOpen}
         newDataTracker={newData.pestTracker}
         tracker={plant.pestTracker}
         highlightDates={plant.highlightDates}

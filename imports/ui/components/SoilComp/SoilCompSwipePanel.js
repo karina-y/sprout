@@ -1,4 +1,4 @@
-import React, { Component, useEffect } from 'react'
+import React, { Component, useEffect } from "react";
 import { withTracker } from "meteor/react-meteor-data";
 import PropTypes from "prop-types";
 import autobind from "react-autobind";
@@ -10,13 +10,13 @@ import {
   getLastSoilPh,
   lastChecked,
   sortByLastDate,
-} from "../../../utils/helpers/plantData";
+} from "/imports/utils/helpers/plantData";
 import { toast } from "react-toastify";
 import SoilCompModals from "./SoilCompModals";
 import SoilCompReadEdit from "./SoilCompReadEdit";
 import SoilCompReadEditPro from "./SoilCompReadEditPro";
 import useNewData from "../../hooks/useNewData";
-import UpdateTypes from '../../../utils/constants/updateTypes'
+import UpdateTypes from "/imports/utils/constants/updateTypes";
 
 /*
 TODO
@@ -29,10 +29,16 @@ const SoilCompSwipePanel = (props) => {
   const soilCompLastChecked = lastChecked(plant.soilCompositionTracker);
   const soilPh = getLastSoilPh(plant.soilCompositionTracker);
   const soilMoisture = getLastSoilMoisture(plant.soilCompositionTracker);
-  const { newData, setNewData, changeNewData, addTrackerDate, addTrackerDetails } = useNewData({});
+  const {
+    newData,
+    setNewData,
+    changeNewData,
+    addTrackerDate,
+    addTrackerDetails,
+  } = useNewData({});
 
   useEffect(() => {
-    if (props.saving === `${UpdateTypes.soilComp.soilCompEditModal}-edit`) {
+    if (props.savingType === `${UpdateTypes.soilComp.soilCompEditModal}-edit`) {
       updatePlant(`${UpdateTypes.soilComp.soilCompEditModal}-edit`);
     }
   }, [props]);
@@ -41,8 +47,8 @@ const SoilCompSwipePanel = (props) => {
     const newPlantData = newData;
     const oldPlantData = props.plant;
 
-    console.log("type", type)
-    console.log("newPlantData", newPlantData)
+    console.log("type", type);
+    console.log("newPlantData", newPlantData);
 
     if (!type || !newPlantData || JSON.stringify(newPlantData) === "{}") {
       toast.error("No data entered.");
@@ -68,16 +74,22 @@ const SoilCompSwipePanel = (props) => {
       if (data) {
         data._id = oldPlantData._id;
 
-        Meteor.call("soilComposition.update", type, data, props.category, (err, response) => {
-          if (err) {
-            toast.error(err.message);
-          } else {
-            toast.success("Successfully saved new entry.");
+        Meteor.call(
+          "soilComposition.update",
+          type,
+          data,
+          props.category,
+          (err, response) => {
+            if (err) {
+              toast.error(err.message);
+            } else {
+              toast.success("Successfully saved new entry.");
 
-            //reset the data
-            resetData();
+              //reset the data
+              resetData();
+            }
           }
-        });
+        );
       } else {
         toast.error("No data entered.");
       }
@@ -90,54 +102,51 @@ const SoilCompSwipePanel = (props) => {
   };
 
   return (
-          <div className="PlantSeedlingViewEdit">
-            {/* soil comp */}
-            {Meteor.isPro ? (
-                    <SoilCompReadEditPro
-                            item={plant}
-                            updateData={changeNewData}
-                            soilCompLastChecked={soilCompLastChecked}
-                            soilMoisture={soilMoisture}
-                            soilPh={soilPh}
-                            editing={props.editing}
-                            category={props.category}
-                    />
-            ) : (
-                    <SoilCompReadEdit
-                            item={plant}
-                            updateData={changeNewData}
-                            soilCompLastChecked={soilCompLastChecked}
-                            soilMoisture={soilMoisture}
-                            soilPh={soilPh}
-                            editing={props.editing}
-                            category={props.category}
-                    />
-            )}
+    <div className="PlantSeedlingViewEdit">
+      {/* soil comp */}
+      {Meteor.isPro ? (
+        <SoilCompReadEditPro
+          item={plant}
+          updateData={changeNewData}
+          soilCompLastChecked={soilCompLastChecked}
+          soilMoisture={soilMoisture}
+          soilPh={soilPh}
+          category={props.category}
+        />
+      ) : (
+        <SoilCompReadEdit
+          item={plant}
+          updateData={changeNewData}
+          soilCompLastChecked={soilCompLastChecked}
+          soilMoisture={soilMoisture}
+          soilPh={soilPh}
+          category={props.category}
+        />
+      )}
 
-            {/* soil comp */}
-            <SoilCompModals
-                    addTrackerDetails={addTrackerDetails}
-                    addTrackerDate={addTrackerDate}
-                    save={updatePlant}
-                    resetModal={resetData}
-                    modalOpen={props.modalOpen}
-                    newDataTracker={newData.soilCompositionTracker}
-                    tracker={plant.soilCompositionTracker}
-                    category={props.category}
-                    highlightDates={plant.highlightDates}
-            />
-          </div>
+      {/* soil comp */}
+      <SoilCompModals
+        addTrackerDetails={addTrackerDetails}
+        addTrackerDate={addTrackerDate}
+        save={updatePlant}
+        resetModal={resetData}
+        newDataTracker={newData.soilCompositionTracker}
+        tracker={plant.soilCompositionTracker}
+        category={props.category}
+        highlightDates={plant.highlightDates}
+      />
+    </div>
   );
 };
 
 SoilCompSwipePanel.propTypes = {
   plant: PropTypes.object.isRequired,
-  editing: PropTypes.string,
-  modalOpen: PropTypes.string,
   exitEditMode: PropTypes.func.isRequired,
+  savingType: PropTypes.string
 };
 
 export default withTracker((props) => {
+  const savingType = Session.get("savingType");
   let plant = props.plant;
 
   //sort the data
@@ -145,14 +154,19 @@ export default withTracker((props) => {
     plant.soilCompositionTracker = sortByLastDate(plant.soilCompositionTracker);
     plant.highlightDates = getHighlightDates(plant.soilCompositionTracker);
 
-    if (props.category === 'potted') {
-      plant.soilCompositionTracker = plant.soilCompositionTracker.filter(function( obj ) {
-        return obj.moisture;
-      });
+    //filtering so we only show the values necessary on the calendar (just in case the user changes the category)
+    if (props.category === "potted") {
+      plant.soilCompositionTracker = plant.soilCompositionTracker.filter(
+        function (obj) {
+          return obj.moisture;
+        }
+      );
     } else {
-      plant.soilCompositionTracker = plant.soilCompositionTracker.filter(function( obj ) {
-        return obj.ph;
-      });
+      plant.soilCompositionTracker = plant.soilCompositionTracker.filter(
+        function (obj) {
+          return obj.ph;
+        }
+      );
     }
   } else {
     plant = {
@@ -162,6 +176,7 @@ export default withTracker((props) => {
   }
 
   return {
-    plant
+    plant,
+    savingType,
   };
 })(SoilCompSwipePanel);

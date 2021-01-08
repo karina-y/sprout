@@ -4,62 +4,69 @@ import { withTracker } from "meteor/react-meteor-data";
 import "./ItemPreview.scss";
 import ShadowBox from "../ShadowBox/ShadowBox";
 import ProgressBar from "react-bootstrap/ProgressBar";
-import { getDaysSinceAction, getPlantCondition } from "/imports/utils/helpers/plantData";
+import {
+  getDaysSinceAction,
+  getPlantCondition,
+} from "/imports/utils/helpers/plantData";
 import Icons from "/imports/utils/constants/icons";
 import { ReactSVG } from "react-svg";
 import Fertilizer from "/imports/api/Fertilizer/Fertilizer";
 import Water from "/imports/api/Water/Water";
 
-const ItemPreview = (props) => (
-  <button
-    onClick={() => props.history.push(`/${props.type}/${props.item._id}`)}
-    className="ItemPreview naked"
-  >
-    <ShadowBox
-      additionalOuterClasses={props.item.condition}
-      hoverAction={false}
-      popoutHover={false}
-      shadowLevel={2}
+const ItemPreview = (props) => {
+  const { item, type, history } = props;
+
+  return (
+    <button
+      onClick={() => history.push(`/${type}/${item._id}`)}
+      className="ItemPreview naked"
     >
-      <img
-        src={props.item.image}
-        alt={props.item.latinName || props.item.commonName}
-        title={props.item.latinName || props.item.commonName}
-      />
+      <ShadowBox
+        additionalOuterClasses={item.condition}
+        hoverAction={false}
+        popoutHover={false}
+        shadowLevel={2}
+      >
+        <img
+          src={item.image}
+          alt={item.latinName || item.commonName}
+          title={item.latinName || item.commonName}
+        />
 
-      <div className="quick-details">
-        <p>{props.item.latinName || props.item.commonName}</p>
+        <div className="quick-details">
+          <p>{item.latinName || item.commonName}</p>
 
-        <div>
-          <ReactSVG
-            src={Icons.water.icon}
-            className="plant-condition-icon"
-            alt={Icons.water.alt}
-            title={Icons.water.title}
-          />
+          <div>
+            <ReactSVG
+              src={Icons.water.icon}
+              className="plant-condition-icon"
+              alt={Icons.water.alt}
+              title={Icons.water.title}
+            />
 
-          <ProgressBar
-            now={props.item.waterProgress === 0 ? 5 : props.item.waterProgress}
-            className={`water ${props.item.waterCondition}`}
-          />
+            <ProgressBar
+              now={item.waterProgress === 0 ? 5 : item.waterProgress}
+              className={`water ${item.waterCondition}`}
+            />
+          </div>
+
+          <div>
+            <ReactSVG
+              src={Icons.fertilizer.icon}
+              className="plant-condition-icon fertilizer"
+              alt={Icons.fertilizer.alt}
+              title={Icons.fertilizer.title}
+            />
+            <ProgressBar
+              now={item.fertilizerProgress === 0 ? 5 : item.fertilizerProgress}
+              className={`fertilizer ${item.fertilizerCondition}`}
+            />
+          </div>
         </div>
-
-        <div>
-          <ReactSVG
-            src={Icons.fertilizer.icon}
-            className="plant-condition-icon fertilizer"
-            alt={Icons.fertilizer.alt}
-            title={Icons.fertilizer.title}
-          />
-          <ProgressBar
-            now={props.item.fertilizerProgress === 0 ? 5 : props.item.fertilizerProgress}
-            className={`fertilizer ${props.item.fertilizerCondition}`}
-          />
-        </div>
-      </div>
-    </ShadowBox>
-  </button>
-);
+      </ShadowBox>
+    </button>
+  );
+};
 
 ItemPreview.propTypes = {
   item: PropTypes.object.isRequired,
@@ -84,7 +91,8 @@ export default withTracker((props) => {
     item.fertilizerProgress =
       item.daysSinceFertilized / fertilizer.fertilizerSchedule > 1
         ? 5
-        : (1 - item.daysSinceFertilized / fertilizer.fertilizerSchedule) * 100 || 5;
+        : (1 - item.daysSinceFertilized / fertilizer.fertilizerSchedule) *
+            100 || 5;
   } else {
     item.fertilizerCondition = "happy";
     item.fertilizerProgress = 100;
@@ -94,7 +102,11 @@ export default withTracker((props) => {
     item.daysSinceWatered = getDaysSinceAction(water.waterTracker);
     item.waterCondition = water.waterScheduleAuto
       ? "happy"
-      : getPlantCondition(water.waterTracker, item.daysSinceWatered, water.waterSchedule);
+      : getPlantCondition(
+          water.waterTracker,
+          item.daysSinceWatered,
+          water.waterSchedule
+        );
     item.waterProgress = water.waterScheduleAuto
       ? 100
       : item.daysSinceWatered / water.waterSchedule > 1

@@ -2,33 +2,42 @@ import React from "react";
 import PropTypes from "prop-types";
 import SwipePanelContent from "../Shared/SwipePanelContent/SwipePanelContent";
 
-const SoilCompReadEdit = (props) => (
-  <div className="swipe-slide">
-    <p className="swipe-title title-ming">Soil Composition</p>
+const SoilCompReadEdit = (props) => {
+  const { soilCompLastChecked, soilMoisture, soilPh, category } = props;
 
-    <SwipePanelContent icon="schedule" iconTitle="last checked soil composition">
-      <p>{props.soilCompLastChecked}</p>
-    </SwipePanelContent>
+  return (
+    <div className="swipe-slide">
+      <p className="swipe-title title-ming">Soil Composition</p>
 
-    {props.category === "in-ground" ? (
-      <SwipePanelContent icon="soilMoisture">
-        {props.soilMoisture ? (
-          <p>Moisture Level {props.soilMoisture}</p>
-        ) : (
-          <p>No records available.</p>
-        )}
+      <SwipePanelContent
+        icon="schedule"
+        iconTitle="last checked soil composition"
+      >
+        <p>{soilCompLastChecked}</p>
       </SwipePanelContent>
-    ) : (
-      <SwipePanelContent icon="soilMoisture">
-        {props.soilPh ? <p>Soil pH {props.soilPh}</p> : <p>No records available.</p>}
-      </SwipePanelContent>
-    )}
-  </div>
-);
+
+      {category === "in-ground" ? (
+        <SwipePanelContent icon="soilMoisture">
+          {soilMoisture ? (
+            <p>Moisture Level {soilMoisture}</p>
+          ) : (
+            <p>No records available.</p>
+          )}
+        </SwipePanelContent>
+      ) : (
+        <SwipePanelContent icon="soilMoisture">
+          {soilPh ? (
+            <p>Soil pH {soilPh}</p>
+          ) : (
+            <p>No records available.</p>
+          )}
+        </SwipePanelContent>
+      )}
+    </div>
+  );
+};
 
 SoilCompReadEdit.propTypes = {
-  item: PropTypes.object.isRequired,
-  updateData: PropTypes.func.isRequired,
   soilCompLastChecked: PropTypes.string.isRequired,
   soilMoisture: PropTypes.string.isRequired,
   soilPh: PropTypes.number.isRequired,

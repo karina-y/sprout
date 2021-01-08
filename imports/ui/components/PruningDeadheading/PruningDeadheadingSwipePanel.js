@@ -1,4 +1,4 @@
-import React, { Component, useEffect } from 'react'
+import React, { Component, useEffect } from "react";
 import { withTracker } from "meteor/react-meteor-data";
 import PropTypes from "prop-types";
 import autobind from "react-autobind";
@@ -10,13 +10,13 @@ import {
   getLastSoilPh,
   lastChecked,
   sortByLastDate,
-} from "../../../utils/helpers/plantData";
+} from "/imports/utils/helpers/plantData";
 import { toast } from "react-toastify";
 import PruningDeadheadingModals from "./PruningDeadheadingModals";
 import PruningDeadheadingReadEditPro from "./PruningDeadheadingReadEditPro";
 import useNewData from "../../hooks/useNewData";
 import usePruneType from "../../hooks/usePruneType";
-import UpdateTypes from '../../../utils/constants/updateTypes'
+import UpdateTypes from "/imports/utils/constants/updateTypes";
 
 /*
 TODO
@@ -26,15 +26,25 @@ TODO
 
 const PruningDeadheadingSwipePanel = (props) => {
   const plant = props.plant;
-  const { newData, setNewData, changeNewData, addTrackerDate, addTrackerDetails } = useNewData({});
+  const {
+    newData,
+    setNewData,
+    changeNewData,
+    addTrackerDate,
+    addTrackerDetails,
+  } = useNewData({});
   const { pruneType, setPruneType } = usePruneType(null);
 
   useEffect(() => {
-    if (props.saving === `${UpdateTypes.pruningDeadheading.pruningDeadheadingEditModal}-edit`) {
-      updatePlant(`${UpdateTypes.pruningDeadheading.pruningDeadheadingEditModal}-edit`);
+    if (
+      props.savingType ===
+      `${UpdateTypes.pruningDeadheading.pruningDeadheadingEditModal}-edit`
+    ) {
+      updatePlant(
+        `${UpdateTypes.pruningDeadheading.pruningDeadheadingEditModal}-edit`
+      );
     }
   }, [props]);
-
 
   const updatePlant = (type) => {
     const newPlantData = newData;
@@ -57,24 +67,32 @@ const PruningDeadheadingSwipePanel = (props) => {
         };
       } else {
         data = {
-          pruningPreference: newPlantData.pruningPreference || oldPlantData.pruningPreference,
-          deadheadingPreference: newPlantData.deadheadingPreference || oldPlantData.deadheadingPreference,
+          pruningPreference:
+            newPlantData.pruningPreference || oldPlantData.pruningPreference,
+          deadheadingPreference:
+            newPlantData.deadheadingPreference ||
+            oldPlantData.deadheadingPreference,
         };
       }
 
       if (data) {
         data._id = oldPlantData._id;
 
-        Meteor.call("pruningDeadheading.update", type, data, (err, response) => {
-          if (err) {
-            toast.error(err.message);
-          } else {
-            toast.success("Successfully saved new entry.");
+        Meteor.call(
+          "pruningDeadheading.update",
+          type,
+          data,
+          (err, response) => {
+            if (err) {
+              toast.error(err.message);
+            } else {
+              toast.success("Successfully saved new entry.");
 
-            //reset the data
-            resetData();
+              //reset the data
+              resetData();
+            }
           }
-        });
+        );
       } else {
         toast.error("No data entered.");
       }
@@ -89,11 +107,7 @@ const PruningDeadheadingSwipePanel = (props) => {
 
   return (
     <div className="PlantSeedlingViewEdit">
-      <PruningDeadheadingReadEditPro
-        plant={plant}
-        updateData={changeNewData}
-        editing={props.editing}
-      />
+      <PruningDeadheadingReadEditPro plant={plant} updateData={changeNewData} />
 
       {/* pruning */}
       <PruningDeadheadingModals
@@ -101,7 +115,6 @@ const PruningDeadheadingSwipePanel = (props) => {
         addTrackerDetails={addTrackerDetails}
         save={updatePlant}
         resetModal={resetData}
-        modalOpen={props.modalOpen}
         newDataTracker={newData.pruningDeadheadingTracker}
         tracker={plant.pruningDeadheadingTracker}
         highlightDates={plant.highlightDates}
@@ -115,12 +128,13 @@ const PruningDeadheadingSwipePanel = (props) => {
 
 PruningDeadheadingSwipePanel.propTypes = {
   plant: PropTypes.object.isRequired,
-  editing: PropTypes.string,
-  modalOpen: PropTypes.string,
   exitEditMode: PropTypes.func.isRequired,
+  savingType: PropTypes.string
 };
 
 export default withTracker((props) => {
+  const savingType = Session.get("savingType");
+
   // const id = props.match.params.id
   // const plant = Plant.findOne({_id: id})
   let plant = props.plant;
@@ -137,7 +151,9 @@ export default withTracker((props) => {
       deadheading[i].action = "Deadheaded";
     }
 
-    plant.pruningDeadheadingTracker = sortByLastDate(pruning.concat(deadheading));
+    plant.pruningDeadheadingTracker = sortByLastDate(
+      pruning.concat(deadheading)
+    );
     plant.highlightDates = getHighlightDates(plant.pruningDeadheadingTracker);
   } else {
     plant.pruningDeadheadingTracker = null;
@@ -145,5 +161,6 @@ export default withTracker((props) => {
 
   return {
     plant,
+    savingType,
   };
 })(PruningDeadheadingSwipePanel);

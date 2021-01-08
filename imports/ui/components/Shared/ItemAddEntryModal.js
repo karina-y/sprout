@@ -2,21 +2,21 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import autobind from "react-autobind";
 import Modal from "react-bootstrap/Modal";
-// import './ItemAddEntryModal.scss';
+import { withTracker } from 'meteor/react-meteor-data'
 
 class ItemAddEntryModal extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      show: false,
+      show: props.modalOpen,
     };
 
     autobind(this);
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    if (nextProps.show === nextProps.type) {
+    if (nextProps.modalOpen === nextProps.type) {
       let newState = prevState;
       newState.show = true;
       return newState;
@@ -80,4 +80,9 @@ ItemAddEntryModal.propTypes = {
   modalOpen: PropTypes.string,
 };
 
-export default ItemAddEntryModal;
+export default withTracker(() => {
+  const modalOpen = Session.get("modalOpen");
+  return {
+    modalOpen
+  };
+})(ItemAddEntryModal);

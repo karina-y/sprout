@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import autobind from "react-autobind";
 import "../PlantViewEdit/PlantSeedlingViewEdit.scss";
 import "react-datepicker/dist/react-datepicker.css";
-import { sortByLastDate } from "../../../utils/helpers/plantData";
+import { sortByLastDate } from "/imports/utils/helpers/plantData";
 import { toast } from "react-toastify";
 import DiaryModals from "./DiaryModals";
 import DiaryReadEdit from "./DiaryReadEdit";
@@ -21,7 +21,7 @@ const DiarySwipePanel = (props) => {
   const { newData, setNewData, changeNewData } = useNewData({});
 
   const updatePlant = (type) => {
-    console.log("diary update")
+    console.log("diary update");
     const newPlantData = newData;
     const oldPlantData = plant;
 
@@ -67,7 +67,6 @@ const DiarySwipePanel = (props) => {
         updateData={changeNewData}
         save={updatePlant}
         resetModal={resetData}
-        modalOpen={props.modalOpen}
         diary={plant.diary}
       />
     </div>
@@ -76,8 +75,6 @@ const DiarySwipePanel = (props) => {
 
 DiarySwipePanel.propTypes = {
   plant: PropTypes.object.isRequired,
-  editing: PropTypes.string,
-  modalOpen: PropTypes.string,
   exitEditMode: PropTypes.func.isRequired,
 };
 

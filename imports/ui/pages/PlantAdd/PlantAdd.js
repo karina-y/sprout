@@ -3,11 +3,8 @@ import autobind from "react-autobind";
 import "./PlantAdd.scss";
 import { Session } from "meteor/session";
 import SwipeableViews from "react-swipeable-views";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { selectRandomPlantPicture } from "/imports/utils/helpers/selectRandomPlantPicture";
 import { toast } from "react-toastify";
-import { faTimes } from "@fortawesome/free-solid-svg-icons/faTimes";
-import { faSave } from "@fortawesome/free-solid-svg-icons/faSave";
 import Category from "/imports/api/Category/Category";
 import SwipePanelContent from "/imports/ui/components/Shared/SwipePanelContent/SwipePanelContent";
 import WaterAdd from "/imports/ui/components/Water/WaterAdd";
@@ -16,6 +13,7 @@ import WaterAddPro from "/imports/ui/components/Water/WaterAddPro";
 import FertilizerAdd from "/imports/ui/components/Fertilizer/FertilizerAdd";
 import SoilCompAddPro from "/imports/ui/components/SoilComp/SoilCompAddPro";
 import SoilCompAdd from "/imports/ui/components/SoilComp/SoilCompAdd";
+import BottomNavAdd from "../../components/BottomNav/BottomNavAdd";
 
 class PlantAdd extends Component {
   constructor(props) {
@@ -101,7 +99,8 @@ class PlantAdd extends Component {
       let moistureVal = parseFloat((parseInt(e.target.value) / 100).toFixed(2));
 
       if (soilComposition.soilCompositionTracker) {
-        soilComposition.soilCompositionTracker[type] = type === "moisture" ? moistureVal : phVal;
+        soilComposition.soilCompositionTracker[type] =
+          type === "moisture" ? moistureVal : phVal;
       } else {
         soilComposition.soilCompositionTracker = {
           date: new Date(),
@@ -156,7 +155,9 @@ class PlantAdd extends Component {
       soilComposition.soilCompositionTracker &&
       !Array.isArray(soilComposition.soilCompositionTracker)
     ) {
-      soilComposition.soilCompositionTracker = [soilComposition.soilCompositionTracker];
+      soilComposition.soilCompositionTracker = [
+        soilComposition.soilCompositionTracker,
+      ];
     }
 
     let errMsg;
@@ -171,7 +172,8 @@ class PlantAdd extends Component {
         "Please enter a watering preference (eg. Keep soil moist but not soggy, humidity tray helpful).";
       swipeViewIndex = 1;
     } else if (!plant.lightPreference) {
-      errMsg = "Please enter a lighting preference (eg. Bright indirect light).";
+      errMsg =
+        "Please enter a lighting preference (eg. Bright indirect light).";
       swipeViewIndex = 1;
     } else if (!plant.location) {
       errMsg =
@@ -191,51 +193,60 @@ class PlantAdd extends Component {
     } else {
       toast.warning("Saving your new plant...");
 
+      //todo clean this up.. i don't want to run further deletes if one is erroring but i don't want to keep nesting
       Meteor.call("plant.insert", plant, (plantErr, plantResponse) => {
         if (plantErr) {
           toast.error(plantErr.message);
         } else {
-          Meteor.call("water.insert", plantResponse, water, (waterErr, waterResponse) => {
-            if (waterErr) {
-              toast.error(waterErr.message);
-            } else {
-              Meteor.call(
-                "fertilizer.insert",
-                plantResponse,
-                fertilizer,
-                (fertilizerErr, fertilizerResponse) => {
-                  if (fertilizerErr) {
-                    toast.error(fertilizerErr.message);
-                  } else {
-                    Meteor.call(
-                      "pruningDeadheading.insert",
-                      plantResponse,
-                      pruningDeadheading,
-                      (pruningDeadheadingErr, pruningDeadheadingResponse) => {
-                        if (pruningDeadheadingErr) {
-                          toast.error(pruningDeadheadingErr.message);
-                        } else {
-                          toast.success("Plant added!");
-                          this.props.history.push("/catalogue/plant");
+          Meteor.call(
+            "water.insert",
+            plantResponse,
+            water,
+            (waterErr, waterResponse) => {
+              if (waterErr) {
+                toast.error(waterErr.message);
+              } else {
+                Meteor.call(
+                  "fertilizer.insert",
+                  plantResponse,
+                  fertilizer,
+                  (fertilizerErr, fertilizerResponse) => {
+                    if (fertilizerErr) {
+                      toast.error(fertilizerErr.message);
+                    } else {
+                      Meteor.call(
+                        "pruningDeadheading.insert",
+                        plantResponse,
+                        pruningDeadheading,
+                        (pruningDeadheadingErr, pruningDeadheadingResponse) => {
+                          if (pruningDeadheadingErr) {
+                            toast.error(pruningDeadheadingErr.message);
+                          } else {
+                            toast.success("Plant added!");
+                            this.props.history.push("/catalogue/plant");
+                          }
                         }
-                      }
-                    );
+                      );
+                    }
                   }
-                }
-              );
+                );
+              }
             }
-          });
+          );
         }
       });
     }
   }
 
   render() {
-    const plant = this.state.plant;
-    const water = this.state.water;
-    const fertilizer = this.state.fertilizer;
-    const soilComposition = this.state.soilComposition;
-    const pruningDeadheading = this.state.pruningDeadheading;
+    const {
+      plant,
+      water,
+      fertilizer,
+      soilComposition,
+      pruningDeadheading,
+    } = this.state;
+
     //TODO add ability to set plant photo and photo history eventually
 
     return (
@@ -254,7 +265,9 @@ class PlantAdd extends Component {
         >
           {/* plant info */}
           <div className="swipe-slide">
-            <p className="swipe-title title-ming">Plant {Meteor.isPro ? "Details" : "Name"}</p>
+            <p className="swipe-title title-ming">
+              Plant {Meteor.isPro ? "Details" : "Name"}
+            </p>
 
             <SwipePanelContent icon="info" iconTitle="common name">
               <p className="modern-input">
@@ -329,16 +342,26 @@ class PlantAdd extends Component {
 
           {/* water */}
           {Meteor.isPro ? (
-            <WaterAddPro item={water} updateData={this.updateWater} type={"water"} />
+            <WaterAddPro
+              item={water}
+              updateData={this.updateWater}
+              type={"water"}
+            />
           ) : (
             <WaterAdd item={water} updateData={this.updateWater} />
           )}
 
           {/* fertilizer */}
           {Meteor.isPro ? (
-            <FertilizerAddPro item={fertilizer} updateData={this.updateFertilizer} />
+            <FertilizerAddPro
+              item={fertilizer}
+              updateData={this.updateFertilizer}
+            />
           ) : (
-            <FertilizerAdd item={fertilizer} updateData={this.updateFertilizer} />
+            <FertilizerAdd
+              item={fertilizer}
+              updateData={this.updateFertilizer}
+            />
           )}
 
           {/* pruning/deadheading schedule */}
@@ -372,17 +395,24 @@ class PlantAdd extends Component {
                 <p className="modern-input">
                   <input
                     type="text"
-                    onChange={(e) => this.updatePruningDeadheading(e, "pruningPreference")}
+                    onChange={(e) =>
+                      this.updatePruningDeadheading(e, "pruningPreference")
+                    }
                     value={pruningDeadheading.pruningPreference || ""}
                   />
                 </p>
               </SwipePanelContent>
 
-              <SwipePanelContent icon="deadheading" iconTitle="deadheading preference">
+              <SwipePanelContent
+                icon="deadheading"
+                iconTitle="deadheading preference"
+              >
                 <p className="modern-input">
                   <input
                     type="text"
-                    onChange={(e) => this.updatePruningDeadheading(e, "deadheadingPreference")}
+                    onChange={(e) =>
+                      this.updatePruningDeadheading(e, "deadheadingPreference")
+                    }
                     value={pruningDeadheading.deadheadingPreference || ""}
                   />
                 </p>
@@ -438,14 +468,20 @@ class PlantAdd extends Component {
             <p className="swipe-title title-ming">Etc</p>
             <SwipePanelContent
               icon="category"
-              iconTitle={plant.category === "potted" ? "Date Potted" : "Date Planted"}
+              iconTitle={
+                plant.category === "potted" ? "Date Potted" : "Date Planted"
+              }
             >
               <p className="modern-input">
-                <label>{plant.category === "potted" ? "date potted" : "date planted"}</label>
+                <label>
+                  {plant.category === "potted" ? "date potted" : "date planted"}
+                </label>
 
                 <input
                   type="date"
-                  placeholder={plant.category === "potted" ? "Date Potted" : "Date Planted"}
+                  placeholder={
+                    plant.category === "potted" ? "Date Potted" : "Date Planted"
+                  }
                   onBlur={(e) => this.updatePlant(e, "datePlanted")}
                   defaultValue={plant.datePlanted || ""}
                 />
@@ -476,23 +512,12 @@ class PlantAdd extends Component {
           </div>
         </SwipeableViews>
 
-        <div className="add-data flex-around bottom-nav">
-          <FontAwesomeIcon
-            icon={faTimes}
-            className="plant-condition-icon"
-            alt="times"
-            title="cancel"
-            onClick={() => this.setState({ swipeViewIndex: this.state.swipeViewIndex - 1 })}
-          />
-
-          <FontAwesomeIcon
-            icon={faSave}
-            className="plant-condition-icon"
-            alt="floppy disk"
-            title="save"
-            onClick={this.addNewPlant}
-          />
-        </div>
+        <BottomNavAdd
+          cancel={() =>
+            this.setState({ swipeViewIndex: this.state.swipeViewIndex - 1 })
+          }
+          add={this.addNewPlant}
+        />
       </div>
     );
   }

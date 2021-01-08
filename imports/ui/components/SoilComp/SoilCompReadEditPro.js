@@ -2,134 +2,151 @@ import React from "react";
 import PropTypes from "prop-types";
 import SwipePanelContent from "../Shared/SwipePanelContent/SwipePanelContent";
 import SoilTypes from "/imports/utils/constants/soilTypes";
-import UpdateTypes from '../../../utils/constants/updateTypes'
+import UpdateTypes from "/imports/utils/constants/updateTypes";
+import { withTracker } from "meteor/react-meteor-data";
+import PruningDeadheadingReadEditPro from "../PruningDeadheading/PruningDeadheadingReadEditPro";
 
-const SoilCompReadEditPro = (props) => (
-  <div className="swipe-slide">
-    <p className="swipe-title title-ming">Soil Composition</p>
+const SoilCompReadEditPro = (props) => {
+  const {
+    item,
+    updateData,
+    soilCompLastChecked,
+    soilMoisture,
+    soilPh,
+    category,
+    editingType,
+  } = props;
 
-    <SwipePanelContent icon="schedule" iconTitle="last checked soil composition">
-      <p>{props.soilCompLastChecked}</p>
-    </SwipePanelContent>
+  return (
+    <div className="swipe-slide">
+      <p className="swipe-title title-ming">Soil Composition</p>
 
-    {props.category === "in-ground" ? (
-      props.editing === UpdateTypes.soilComp.soilCompEditModal ? (
-        <React.Fragment>
-          <SwipePanelContent icon="tilling">
+      <SwipePanelContent
+        icon="schedule"
+        iconTitle="last checked soil composition"
+      >
+        <p>{soilCompLastChecked}</p>
+      </SwipePanelContent>
+
+      {category === "in-ground" ? (
+        editingType === UpdateTypes.soilComp.soilCompEditModal ? (
+          <React.Fragment>
+            <SwipePanelContent icon="tilling">
+              <p className="modern-input">
+                <label>tilled</label>
+                <select
+                  onChange={(e) => updateData(e, "tilled")}
+                  defaultValue={item.tilled || ""}
+                >
+                  <option value="" disabled={true}>
+                    - Is the soil tilled? -
+                  </option>
+                  <option value={false}>No</option>
+                  <option value={true}>Yes</option>
+                </select>
+              </p>
+            </SwipePanelContent>
+
+            <SwipePanelContent icon="soilType">
+              <p className="modern-input">
+                <label>soil type</label>
+                <select
+                  onChange={(e) => updateData(e, "soilType")}
+                  defaultValue={item.soilType || ""}
+                >
+                  <option value="" disabled={true}>
+                    - Select a ground soil type -
+                  </option>
+                  {SoilTypes.map((item, index) => {
+                    return (
+                      <option value={item.type} key={index}>
+                        {item.displayName}
+                      </option>
+                    );
+                  })}
+                </select>
+              </p>
+            </SwipePanelContent>
+
+            <SwipePanelContent icon="soilAmendment">
+              <p className="modern-input">
+                <label>soil amendment</label>
+                <input
+                  type="text"
+                  onChange={(e) => updateData(e, "soilAmendment")}
+                  defaultValue={item.soilAmendment || ""}
+                />
+              </p>
+            </SwipePanelContent>
+          </React.Fragment>
+        ) : (
+          <React.Fragment>
+            <SwipePanelContent icon="tilling">
+              <p>Tilled: {item.tilled ? "Yes" : "No"}</p>
+            </SwipePanelContent>
+
+            {item.soilType && (
+              <SwipePanelContent icon="soilType">
+                <p>Soil Type: {item.soilType}</p>
+              </SwipePanelContent>
+            )}
+
+            {item.soilAmendment && (
+              <SwipePanelContent icon="soilAmendment">
+                <p>Soil Amendment: {item.soilAmendment}</p>
+              </SwipePanelContent>
+            )}
+
+            {soilPh && (
+              <SwipePanelContent icon="ph">
+                <p>pH {soilPh}</p>
+              </SwipePanelContent>
+            )}
+          </React.Fragment>
+        )
+      ) : (
+        ""
+      )}
+
+      {category === "potted" ? (
+        editingType === UpdateTypes.soilComp.soilCompEditModal ? (
+          <SwipePanelContent icon="soilRecipe">
             <p className="modern-input">
-              <label>tilled</label>
-              <select
-                onChange={(e) => props.updateData(e, "tilled")}
-                defaultValue={props.item.tilled || ""}
-              >
-                <option value="" disabled={true}>
-                  - Is the soil tilled? -
-                </option>
-                <option value={false}>No</option>
-                <option value={true}>Yes</option>
-              </select>
-            </p>
-          </SwipePanelContent>
-
-          <SwipePanelContent icon="soilType">
-            <p className="modern-input">
-              <label>soil type</label>
-              <select
-                onChange={(e) => props.updateData(e, "soilType")}
-                defaultValue={props.item.soilType || ""}
-              >
-                <option value="" disabled={true}>
-                  - Select a ground soil type -
-                </option>
-                {SoilTypes.map((item, index) => {
-                  return (
-                    <option value={item.type} key={index}>
-                      {item.displayName}
-                    </option>
-                  );
-                })}
-              </select>
-            </p>
-          </SwipePanelContent>
-
-          <SwipePanelContent icon="soilAmendment">
-            <p className="modern-input">
-              <label>soil amendment</label>
+              <label>soil recipe</label>
               <input
                 type="text"
-                onChange={(e) => props.updateData(e, "soilAmendment")}
-                defaultValue={props.item.soilAmendment || ""}
+                onChange={(e) => updateData(e, "soilRecipe")}
+                defaultValue={item.soilRecipe || ""}
               />
             </p>
           </SwipePanelContent>
-        </React.Fragment>
+        ) : (
+          <React.Fragment>
+            {item.soilRecipe && (
+              <SwipePanelContent icon="soilRecipe">
+                <p>{item.soilRecipe}</p>
+              </SwipePanelContent>
+            )}
+
+            {soilMoisture && (
+              <SwipePanelContent icon="soilMoisture">
+                <p>Moisture Level {soilMoisture}</p>
+              </SwipePanelContent>
+            )}
+
+            {!item.soilRecipe && !soilMoisture && (
+              <SwipePanelContent icon="info">
+                <p>No records available</p>
+              </SwipePanelContent>
+            )}
+          </React.Fragment>
+        )
       ) : (
-        <React.Fragment>
-          <SwipePanelContent icon="tilling">
-            <p>Tilled: {props.item.tilled ? "Yes" : "No"}</p>
-          </SwipePanelContent>
-
-          {props.item.soilType && (
-            <SwipePanelContent icon="soilType">
-              <p>Soil Type: {props.item.soilType}</p>
-            </SwipePanelContent>
-          )}
-
-          {props.item.soilAmendment && (
-            <SwipePanelContent icon="soilAmendment">
-              <p>Soil Amendment: {props.item.soilAmendment}</p>
-            </SwipePanelContent>
-          )}
-
-          {props.soilPh && (
-            <SwipePanelContent icon="ph">
-              <p>pH {props.soilPh}</p>
-            </SwipePanelContent>
-          )}
-        </React.Fragment>
-      )
-    ) : (
-      ""
-    )}
-
-    {props.category === "potted" ? (
-      props.editing === UpdateTypes.soilComp.soilCompEditModal ? (
-        <SwipePanelContent icon="soilRecipe">
-          <p className="modern-input">
-            <label>soil recipe</label>
-            <input
-              type="text"
-              onChange={(e) => props.updateData(e, "soilRecipe")}
-              defaultValue={props.item.soilRecipe || ""}
-            />
-          </p>
-        </SwipePanelContent>
-      ) : (
-        <React.Fragment>
-          {props.item.soilRecipe && (
-            <SwipePanelContent icon="soilRecipe">
-              <p>{props.item.soilRecipe}</p>
-            </SwipePanelContent>
-          )}
-
-          {props.soilMoisture && (
-            <SwipePanelContent icon="soilMoisture">
-              <p>Moisture Level {props.soilMoisture}</p>
-            </SwipePanelContent>
-          )}
-
-          {!props.item.soilRecipe && !props.soilMoisture && (
-            <SwipePanelContent icon="info">
-              <p>No records available</p>
-            </SwipePanelContent>
-          )}
-        </React.Fragment>
-      )
-    ) : (
-      ""
-    )}
-  </div>
-);
+        ""
+      )}
+    </div>
+  );
+};
 
 SoilCompReadEditPro.propTypes = {
   item: PropTypes.object.isRequired,
@@ -137,6 +154,13 @@ SoilCompReadEditPro.propTypes = {
   soilCompLastChecked: PropTypes.string.isRequired,
   soilMoisture: PropTypes.string,
   soilPh: PropTypes.number,
+  editingType: PropTypes.string,
 };
 
-export default SoilCompReadEditPro;
+export default withTracker(() => {
+  const editingType = Session.get("editingType");
+
+  return {
+    editingType,
+  };
+})(SoilCompReadEditPro);

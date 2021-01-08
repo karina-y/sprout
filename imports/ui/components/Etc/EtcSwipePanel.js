@@ -1,4 +1,4 @@
-import React, { Component, useEffect } from 'react'
+import React, { Component, useEffect } from "react";
 import PropTypes from "prop-types";
 import autobind from "react-autobind";
 import "../PlantViewEdit/PlantSeedlingViewEdit.scss";
@@ -6,7 +6,9 @@ import "react-datepicker/dist/react-datepicker.css";
 import { toast } from "react-toastify";
 import EtcPlantReadEdit from "./EtcPlantReadEdit";
 import useNewData from "../../hooks/useNewData";
-import UpdateTypes from '../../../utils/constants/updateTypes'
+import UpdateTypes from "/imports/utils/constants/updateTypes";
+import { withTracker } from 'meteor/react-meteor-data'
+import { getHighlightDates, sortByLastDate } from '../../../utils/helpers/plantData'
 
 /*
 TODO
@@ -19,7 +21,7 @@ const EtcSwipePanel = (props) => {
   const { newData, setNewData, changeNewData } = useNewData({});
 
   useEffect(() => {
-    if (props.saving === `${UpdateTypes.etc.etcEditModal}-edit`) {
+    if (props.savingType === `${UpdateTypes.etc.etcEditModal}-edit`) {
       updatePlant(`${UpdateTypes.etc.etcEditModal}-edit`);
     }
   }, [props]);
@@ -41,14 +43,23 @@ const EtcSwipePanel = (props) => {
         toxicity: newPlantData.toxicity || oldPlantData.toxicity,
         category: newPlantData.category || oldPlantData.category,
         location: newPlantData.location || oldPlantData.location,
-        locationBought: newPlantData.locationBought || oldPlantData.locationBought,
-        dateBought: new Date(newPlantData.dateBought || oldPlantData.dateBought),
-        datePlanted: new Date(newPlantData.datePlanted || oldPlantData.datePlanted),
+        locationBought:
+          newPlantData.locationBought || oldPlantData.locationBought,
+        dateBought: new Date(
+          newPlantData.dateBought || oldPlantData.dateBought
+        ),
+        datePlanted: new Date(
+          newPlantData.datePlanted || oldPlantData.datePlanted
+        ),
         companions: newPlantData.companions || oldPlantData.companions,
-        lightPreference: newPlantData.lightPreference || oldPlantData.lightPreference,
+        lightPreference:
+          newPlantData.lightPreference || oldPlantData.lightPreference,
       };
 
-      if (newPlantData.latinName !== oldPlantData.latinName || newPlantData.commonName !== oldPlantData.commonName) {
+      if (
+        newPlantData.latinName !== oldPlantData.latinName ||
+        newPlantData.commonName !== oldPlantData.commonName
+      ) {
         changeTitle = true;
       }
 
@@ -78,15 +89,22 @@ const EtcSwipePanel = (props) => {
 
   return (
     <div className="PlantSeedlingViewEdit">
-      <EtcPlantReadEdit plant={plant} updateData={changeNewData} editing={props.editing} />
+      <EtcPlantReadEdit plant={plant} updateData={changeNewData} />
     </div>
   );
 };
 
 EtcSwipePanel.propTypes = {
   plant: PropTypes.object.isRequired,
-  editing: PropTypes.string,
   exitEditMode: PropTypes.func.isRequired,
+  savingType: PropTypes.string
 };
 
-export default EtcSwipePanel;
+
+export default withTracker((props) => {
+  const savingType = Session.get("savingType");
+
+  return {
+    savingType,
+  };
+})(EtcSwipePanel);

@@ -4,71 +4,84 @@ import { withTracker } from "meteor/react-meteor-data";
 import "./SeedlingPreview.scss";
 import ShadowBox from "../ShadowBox/ShadowBox";
 import ProgressBar from "react-bootstrap/ProgressBar";
-import { getDaysSinceAction, getPlantCondition } from "/imports/utils/helpers/plantData";
+import {
+  getDaysSinceAction,
+  getPlantCondition,
+} from "/imports/utils/helpers/plantData";
 import Icons from "/imports/utils/constants/icons";
 import { ReactSVG } from "react-svg";
 
-const SeedlingPreview = (props) => (
-  <button
-    onClick={() => props.history.push(`/seedling/${props.seedling._id}`)}
-    className="SeedlingPreview naked"
-  >
-    <ShadowBox
-      additionalOuterClasses={props.seedling.condition}
-      hoverAction={false}
-      popoutHover={false}
-      shadowLevel={2}
+const SeedlingPreview = (props) => {
+  const { seedling, history } = props;
+
+  return (
+    <button
+      onClick={() => history.push(`/seedling/${seedling._id}`)}
+      className="SeedlingPreview naked"
     >
-      <img
-        src={props.seedling.image}
-        alt={props.seedling.latinName || props.seedling.commonName}
-        title={props.seedling.latinName || props.seedling.commonName}
-      />
+      <ShadowBox
+        additionalOuterClasses={seedling.condition}
+        hoverAction={false}
+        popoutHover={false}
+        shadowLevel={2}
+      >
+        <img
+          src={seedling.image}
+          alt={seedling.latinName || seedling.commonName}
+          title={seedling.latinName || seedling.commonName}
+        />
 
-      <div className="quick-details">
-        <p>{props.seedling.latinName || props.seedling.commonName}</p>
+        <div className="quick-details">
+          <p>{seedling.latinName || seedling.commonName}</p>
 
-        <div>
-          <ReactSVG
-            src={Icons.water.icon}
-            className="plant-condition-icon"
-            alt={Icons.water.alt}
-            title={Icons.water.title}
-          />
+          <div>
+            <ReactSVG
+              src={Icons.water.icon}
+              className="plant-condition-icon"
+              alt={Icons.water.alt}
+              title={Icons.water.title}
+            />
 
-          <ProgressBar
-            now={props.seedling.waterProgress === 0 ? 5 : props.seedling.waterProgress}
-            className={`water ${props.seedling.waterCondition}`}
-          />
+            <ProgressBar
+              now={seedling.waterProgress === 0 ? 5 : seedling.waterProgress}
+              className={`water ${seedling.waterCondition}`}
+            />
+          </div>
+
+          <div>
+            <ReactSVG
+              src={Icons.fertilizer.icon}
+              className="plant-condition-icon fertilizer"
+              alt={Icons.fertilizer.alt}
+              title={Icons.fertilizer.title}
+            />
+            <ProgressBar
+              now={
+                seedling.fertilizerProgress === 0
+                  ? 5
+                  : seedling.fertilizerProgress
+              }
+              className={`fertilizer ${seedling.fertilizerCondition}`}
+            />
+          </div>
         </div>
-
-        <div>
-          <ReactSVG
-            src={Icons.fertilizer.icon}
-            className="plant-condition-icon fertilizer"
-            alt={Icons.fertilizer.alt}
-            title={Icons.fertilizer.title}
-          />
-          <ProgressBar
-            now={props.seedling.fertilizerProgress === 0 ? 5 : props.seedling.fertilizerProgress}
-            className={`fertilizer ${props.seedling.fertilizerCondition}`}
-          />
-        </div>
-      </div>
-    </ShadowBox>
-  </button>
-);
+      </ShadowBox>
+    </button>
+  );
+};
 
 SeedlingPreview.propTypes = {
   seedling: PropTypes.object.isRequired,
 };
 
 export default withTracker((props) => {
-  let seedling = props.seedling;
+  let seedling = seedling;
 
   //TODO turn these into a hook
   if (seedling.fertilizerTracker && seedling.fertilizerTracker.length > 0) {
-    seedling.daysSinceFertilized = getDaysSinceAction(seedling.fertilizerTracker);
+    seedling.daysSinceFertilized = getDaysSinceAction(
+      seedling.fertilizerTracker
+    );
     seedling.fertilizerCondition = getPlantCondition(
       seedling.fertilizerTracker,
       seedling.daysSinceFertilized,
@@ -77,7 +90,8 @@ export default withTracker((props) => {
     seedling.fertilizerProgress =
       seedling.daysSinceFertilized / seedling.fertilizerSchedule > 1
         ? 5
-        : (1 - seedling.daysSinceFertilized / seedling.fertilizerSchedule) * 100 || 5;
+        : (1 - seedling.daysSinceFertilized / seedling.fertilizerSchedule) *
+            100 || 5;
   } else {
     seedling.fertilizerCondition = "happy";
     seedling.fertilizerProgress = 100;
@@ -100,6 +114,6 @@ export default withTracker((props) => {
   }
 
   return {
-    plant: seedling,
+    seedling,
   };
 })(SeedlingPreview);

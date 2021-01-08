@@ -1,61 +1,71 @@
 import React from "react";
 import PropTypes from "prop-types";
 import SwipePanelContent from "../Shared/SwipePanelContent/SwipePanelContent";
-import UpdateTypes from "../../../utils/constants/updateTypes";
+import UpdateTypes from "/imports/utils/constants/updateTypes";
+import { withTracker } from "meteor/react-meteor-data";
 
-const FertilizerReadEdit = (props) => (
-  <div className="swipe-slide">
-    <p className="swipe-title title-ming">Fertilizer</p>
+const FertilizerReadEdit = (props) => {
+  const { editingType, item, updateData, fertilizerContent } = props;
 
-    <SwipePanelContent
-      icon="schedule"
-      iconTitle="fertilizer schedule"
-      additionalOuterClasses={props.state.editing !== "fertilizerTracker" ? "top-align" : ""}
-    >
-      {props.editing === UpdateTypes.fertilizer.fertilizerEditModal ? (
-        <p className="modern-input">
-          Fertilize every{" "}
-          <input
-            type="number"
-            min="0"
-            inputMode="numeric"
-            pattern="[0-9]*"
-            className="small"
-            onChange={(e) => props.updateData(e, "fertilizerSchedule")}
-            defaultValue={props.item.fertilizerSchedule || ""}
-          />{" "}
-          days
-        </p>
-      ) : props.item.fertilizerSchedule && props.item.daysSinceFertilized ? (
-        <React.Fragment>
-          <p>Fertilize every {props.item.fertilizerSchedule} days</p>
-          <p>Due in {props.item.fertilizerSchedule - props.item.daysSinceFertilized - 1} days</p>
-        </React.Fragment>
-      ) : (
-        <p>No schedule set</p>
-      )}
-    </SwipePanelContent>
+  return (
+    <div className="swipe-slide">
+      <p className="swipe-title title-ming">Fertilizer</p>
 
-    {props.editing === UpdateTypes.fertilizer.fertilizerEditModal ? (
-      <SwipePanelContent icon="fertilizer">
-        <p className="modern-input">
-          <label>preferred fertilizer</label>
-          <input
-            type="text"
-            onChange={(e) => props.updateData(e, "fertilizer")}
-            defaultValue={props.item.fertilizer || ""}
-          />
-        </p>
+      <SwipePanelContent
+        icon="schedule"
+        iconTitle="fertilizer schedule"
+        additionalOuterClasses={
+          editingType !== "fertilizerTracker" ? "top-align" : ""
+        }
+      >
+        {editingType === UpdateTypes.fertilizer.fertilizerEditModal ? (
+          <p className="modern-input">
+            Fertilize every{" "}
+            <input
+              type="number"
+              min="0"
+              inputMode="numeric"
+              pattern="[0-9]*"
+              className="small"
+              onChange={(e) => updateData(e, "fertilizerSchedule")}
+              defaultValue={item.fertilizerSchedule || ""}
+            />{" "}
+            days
+          </p>
+        ) : item.fertilizerSchedule && item.daysSinceFertilized ? (
+          <React.Fragment>
+            <p>Fertilize every {item.fertilizerSchedule} days</p>
+            <p>
+              Due in {item.fertilizerSchedule - item.daysSinceFertilized - 1}{" "}
+              days
+            </p>
+          </React.Fragment>
+        ) : (
+          <p>No schedule set</p>
+        )}
       </SwipePanelContent>
-    ) : (
-      (props.item.fertilizer || props.fertilizerContent) && (
+
+      {editingType === UpdateTypes.fertilizer.fertilizerEditModal ? (
         <SwipePanelContent icon="fertilizer">
-          <p>{props.item.fertilizer || props.fertilizerContent}</p>
+          <p className="modern-input">
+            <label>preferred fertilizer</label>
+            <input
+              type="text"
+              onChange={(e) => updateData(e, "fertilizer")}
+              defaultValue={item.fertilizer || ""}
+            />
+          </p>
         </SwipePanelContent>
-      )
-    )}
-  </div>
-);
+      ) : (
+        (item.fertilizer || fertilizerContent) && (
+          <SwipePanelContent icon="fertilizer">
+            <p>{item.fertilizer || fertilizerContent}</p>
+          </SwipePanelContent>
+        )
+      )}
+    </div>
+  );
+};
 
 FertilizerReadEdit.propTypes = {
   item: PropTypes.object.isRequired,
@@ -63,4 +73,10 @@ FertilizerReadEdit.propTypes = {
   fertilizerContent: PropTypes.string.isRequired,
 };
 
-export default FertilizerReadEdit;
+export default withTracker(() => {
+  const editingType = Session.get("editingType");
+
+  return {
+    editingType,
+  };
+})(FertilizerReadEdit);

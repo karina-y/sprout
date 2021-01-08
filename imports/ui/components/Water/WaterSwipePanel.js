@@ -7,14 +7,14 @@ import {
   getHighlightDates,
   getPlantCondition,
   sortByLastDate,
-} from "../../../utils/helpers/plantData";
+} from "/imports/utils/helpers/plantData";
 import { toast } from "react-toastify";
 import { withTracker } from "meteor/react-meteor-data";
 import WaterModals from "./WaterModals";
 import WaterReadEdit from "./WaterReadEdit";
 import WaterReadEditPro from "./WaterReadEditPro";
 import useNewData from "/imports/ui/hooks/useNewData";
-import UpdateTypes from "../../../utils/constants/updateTypes";
+import UpdateTypes from "/imports/utils/constants/updateTypes";
 
 /*
 TODO
@@ -27,7 +27,7 @@ const WaterSwipePanel = (props) => {
   const { newData, setNewData, changeNewData, addTrackerDate } = useNewData({});
 
   useEffect(() => {
-    if (props.saving === `${UpdateTypes.water.waterEditModal}-edit`) {
+    if (props.savingType === `${UpdateTypes.water.waterEditModal}-edit`) {
       updatePlant(`${UpdateTypes.water.waterEditModal}-edit`);
     }
   }, [props]);
@@ -46,7 +46,8 @@ const WaterSwipePanel = (props) => {
     } else {
       //TODO abstract each of these cases out
       data = {
-        waterPreference: newPlantData.waterPreference || oldPlantData.waterPreference,
+        waterPreference:
+          newPlantData.waterPreference || oldPlantData.waterPreference,
         waterSchedule:
           newPlantData.waterSchedule === ""
             ? null
@@ -91,9 +92,9 @@ const WaterSwipePanel = (props) => {
     <div className="PlantSeedlingViewEdit">
       {/* water */}
       {Meteor.isPro ? (
-        <WaterReadEditPro item={plant} updateData={changeNewData} editing={props.editing} />
+        <WaterReadEditPro item={plant} updateData={changeNewData} />
       ) : (
-        <WaterReadEdit item={plant} updateData={changeNewData} editing={props.editing} />
+        <WaterReadEdit item={plant} updateData={changeNewData} />
       )}
 
       {/* modals */}
@@ -101,7 +102,6 @@ const WaterSwipePanel = (props) => {
         addTrackerDate={addTrackerDate}
         save={updatePlant}
         resetModal={resetData}
-        modalOpen={props.modalOpen}
         newDataTracker={newData.waterTracker}
         tracker={plant.waterTracker}
         highlightDates={plant.highlightDates}
@@ -112,12 +112,13 @@ const WaterSwipePanel = (props) => {
 
 WaterSwipePanel.propTypes = {
   plant: PropTypes.object.isRequired,
-  editing: PropTypes.string,
-  modalOpen: PropTypes.string,
   exitEditMode: PropTypes.func.isRequired,
+  savingType: PropTypes.string,
 };
 
 export default withTracker((props) => {
+  const savingType = Session.get("savingType");
+
   //TODO each category (ie water, fertilizer, etc) needs to have their own collections
   //TODO plant will be sent from props but water will be pulled here
 
@@ -138,5 +139,6 @@ export default withTracker((props) => {
 
   return {
     plant,
+    savingType,
   };
 })(WaterSwipePanel);

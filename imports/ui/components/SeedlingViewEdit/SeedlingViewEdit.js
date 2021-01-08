@@ -6,14 +6,7 @@ import { Session } from "meteor/session";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import SwipeableViews from "react-swipeable-views";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "../PlantViewEdit/PlantSeedlingViewEdit.scss";
-import { faTrash } from "@fortawesome/free-solid-svg-icons/faTrash";
-import { faPencilAlt } from "@fortawesome/free-solid-svg-icons/faPencilAlt";
-import { faSave } from "@fortawesome/free-solid-svg-icons/faSave";
-import { faTimes } from "@fortawesome/free-solid-svg-icons/faTimes";
-import { faPlus } from "@fortawesome/free-solid-svg-icons/faPlus";
-import { faCalendar } from "@fortawesome/free-solid-svg-icons/faCalendar";
 import {
   getDaysSinceAction,
   getLastPestName,
@@ -24,28 +17,29 @@ import {
   lastChecked,
   lastFertilizerUsed,
   sortByLastDate,
-} from "../../../utils/helpers/plantData";
+} from "/imports/utils/helpers/plantData";
 import Seedling from "/imports/api/Seedling/Seedling";
 import { toast } from "react-toastify";
 import ItemAddEntryModal from "../Shared/ItemAddEntryModal";
 import Category from "/imports/api/Category/Category";
-import WaterReadEditPro from "../SharedPlantSeedling/SwipeViewsEdit/WaterPro";
-import FertilizerProReadEdit from "../SharedPlantSeedling/SwipeViewsEdit/FertilizerPro";
-import SoilCompPro from "../SharedPlantSeedling/SwipeViewsEdit/SoilCompPro";
-import PestReadEdit from "../SharedPlantSeedling/SwipeViewsEdit/Pest";
-import DiaryReadEdit from "../SharedPlantSeedling/SwipeViewsEdit/Diary";
-import WaterReadEdit from "../SharedPlantSeedling/SwipeViewsEdit/Water";
-import FertilizerReadEdit from "../SharedPlantSeedling/SwipeViewsEdit/Fertilizer";
-import SoilCompReadEdit from "../SharedPlantSeedling/SwipeViewsEdit/SoilComp";
-import EtcSeedling from "../SharedPlantSeedling/SwipeViewsEdit/EtcSeedling";
+import WaterReadEditPro from "/imports/ui/components/Water/WaterReadEditPro";
 // import NotableDates from '../SharedPlantSeedling/SwipeViewsEdit/NotableDates'
 import WaterModals from "../Water/WaterModals";
 import FertilizerModals from "../Fertilizer/FertilizerModals";
 import SoilCompModals from "../SoilComp/SoilCompModals";
 import PestModals from "../Pest/PestModals";
 import DiaryModals from "../Diary/DiaryModals";
-import SeedlingDates from "../SharedPlantSeedling/SwipeViewsEdit/SeedlingDates";
-import UpdateTypes from "../../../utils/constants/updateTypes";
+import SeedlingDates from "../SharedPlantSeedling/SeedlingDatesReadEdit";
+import UpdateTypes from "/imports/utils/constants/updateTypes";
+import BottomNavManage from "../BottomNav/BottomNavManage";
+import WaterReadEdit from "../Water/WaterReadEdit";
+import FertilizerReadEditPro from "../Fertilizer/FertilizerReadEditPro";
+import FertilizerReadEdit from "../Fertilizer/FertilizerReadEdit";
+import SoilCompReadEditPro from "../SoilComp/SoilCompReadEditPro";
+import SoilCompReadEdit from "../SoilComp/SoilCompReadEdit";
+import PestReadEdit from "../Pest/PestReadEdit";
+import DiaryReadEdit from "../Diary/DiaryReadEdit";
+import EtcSeedlingReadEdit from "../Etc/EtcSeedlingReadEdit";
 
 /*
 TODO
@@ -61,15 +55,16 @@ class SeedlingViewEdit extends Component {
       newData: {},
       swipeViewIndex: 0,
       currentDateSelection: null,
-      modalOpen: null,
-      editing: null,
     };
 
     autobind(this);
   }
 
   componentDidMount() {
-    Session.set("pageTitle", this.props.seedling.latinName || this.props.seedling.commonName);
+    Session.set(
+      "pageTitle",
+      this.props.seedling.latinName || this.props.seedling.commonName
+    );
 
     //this is to disable keyboard from popping up on android, sometimes you just need good ol vanilla js
     const inputs = document.getElementsByTagName("input");
@@ -77,6 +72,16 @@ class SeedlingViewEdit extends Component {
     for (let i = 0; i < inputs.length; i++) {
       inputs[i].disabled = true;
     }
+  }
+
+  componentWillUnmount () {
+    this.exitEditMode();
+  }
+
+  exitEditMode() {
+    Session.set("modalOpen", null);
+    Session.set("editingType", null);
+    Session.set("savingType", null);
   }
 
   //TODO turn into hook
@@ -152,7 +157,8 @@ class SeedlingViewEdit extends Component {
       let moistureVal = parseFloat((parseInt(e.target.value) / 100).toFixed(2));
 
       if (newSeedlingData.soilCompositionTracker) {
-        newSeedlingData.soilCompositionTracker[type] = type === "ph" ? phVal : moistureVal;
+        newSeedlingData.soilCompositionTracker[type] =
+          type === "ph" ? phVal : moistureVal;
       } else {
         newSeedlingData.soilCompositionTracker = {
           [type]: type === "ph" ? phVal : moistureVal,
@@ -207,31 +213,48 @@ class SeedlingViewEdit extends Component {
       toast.error("No data entered.");
     } else {
       switch (type) {
-        //TODO abstract each of these cases out
+        //TODO abstract each of these cases out just like in plantviewedit
         case "dates-edit":
           data = {
             sowDate: newSeedlingData.sowDate || oldSeedlingData.sowDate,
-            sproutDate: newSeedlingData.sproutDate || oldSeedlingData.sproutDate,
-            trueLeavesDate: newSeedlingData.trueLeavesDate || oldSeedlingData.trueLeavesDate,
-            daysToGerminate: newSeedlingData.daysToGerminate || oldSeedlingData.daysToGerminate,
-            transplantDate: newSeedlingData.transplantDate || oldSeedlingData.transplantDate,
-            daysToHarvest: newSeedlingData.daysToHarvest || oldSeedlingData.daysToHarvest,
-            estHarvestDate: newSeedlingData.estHarvestDate || oldSeedlingData.estHarvestDate,
+            sproutDate:
+              newSeedlingData.sproutDate || oldSeedlingData.sproutDate,
+            trueLeavesDate:
+              newSeedlingData.trueLeavesDate || oldSeedlingData.trueLeavesDate,
+            daysToGerminate:
+              newSeedlingData.daysToGerminate ||
+              oldSeedlingData.daysToGerminate,
+            transplantDate:
+              newSeedlingData.transplantDate || oldSeedlingData.transplantDate,
+            daysToHarvest:
+              newSeedlingData.daysToHarvest || oldSeedlingData.daysToHarvest,
+            estHarvestDate:
+              newSeedlingData.estHarvestDate || oldSeedlingData.estHarvestDate,
             actualHarvestDate:
-              newSeedlingData.actualHarvestDate || oldSeedlingData.actualHarvestDate,
+              newSeedlingData.actualHarvestDate ||
+              oldSeedlingData.actualHarvestDate,
           };
           break;
         case "waterTracker-edit":
           //doing the waterscheduleauto checks because they're bools
           data = {
-            waterPreference: newSeedlingData.waterPreference || oldSeedlingData.waterPreference,
-            lightPreference: newSeedlingData.lightPreference || oldSeedlingData.lightPreference,
+            waterPreference:
+              newSeedlingData.waterPreference ||
+              oldSeedlingData.waterPreference,
+            lightPreference:
+              newSeedlingData.lightPreference ||
+              oldSeedlingData.lightPreference,
             waterSchedule:
-              newSeedlingData.waterSchedule === "" && oldSeedlingData.waterSchedule > 0
+              newSeedlingData.waterSchedule === "" &&
+              oldSeedlingData.waterSchedule > 0
                 ? null
                 : newSeedlingData.waterSchedule || oldSeedlingData.waterSchedule
-                ? parseInt(newSeedlingData.waterSchedule || oldSeedlingData.waterSchedule)
-                : newSeedlingData.waterSchedule || oldSeedlingData.waterSchedule,
+                ? parseInt(
+                    newSeedlingData.waterSchedule ||
+                      oldSeedlingData.waterSchedule
+                  )
+                : newSeedlingData.waterSchedule ||
+                  oldSeedlingData.waterSchedule,
             waterScheduleAuto:
               newSeedlingData.waterScheduleAuto != null
                 ? newSeedlingData.waterScheduleAuto
@@ -243,11 +266,17 @@ class SeedlingViewEdit extends Component {
         case "fertilizerTracker-edit":
           data = {
             fertilizerSchedule:
-              newSeedlingData.fertilizerSchedule === "" && oldSeedlingData.fertilizerSchedule > 0
+              newSeedlingData.fertilizerSchedule === "" &&
+              oldSeedlingData.fertilizerSchedule > 0
                 ? null
-                : newSeedlingData.fertilizerSchedule || oldSeedlingData.fertilizerSchedule
-                ? parseInt(newSeedlingData.fertilizerSchedule || oldSeedlingData.fertilizerSchedule)
-                : newSeedlingData.fertilizerSchedule || oldSeedlingData.fertilizerSchedule,
+                : newSeedlingData.fertilizerSchedule ||
+                  oldSeedlingData.fertilizerSchedule
+                ? parseInt(
+                    newSeedlingData.fertilizerSchedule ||
+                      oldSeedlingData.fertilizerSchedule
+                  )
+                : newSeedlingData.fertilizerSchedule ||
+                  oldSeedlingData.fertilizerSchedule,
             fertilizer: newSeedlingData.fertilizer,
             compost: newSeedlingData.compost,
             nutrient: newSeedlingData.nutrient,
@@ -255,14 +284,18 @@ class SeedlingViewEdit extends Component {
           break;
         case "etc-edit":
           data = {
-            commonName: newSeedlingData.commonName || oldSeedlingData.commonName,
+            commonName:
+              newSeedlingData.commonName || oldSeedlingData.commonName,
             latinName: newSeedlingData.latinName || oldSeedlingData.latinName,
             toxicity: newSeedlingData.toxicity || oldSeedlingData.toxicity,
             category: newSeedlingData.category || oldSeedlingData.category,
             method: newSeedlingData.method || oldSeedlingData.method,
             startedIndoorOutdoor:
-              newSeedlingData.startedIndoorOutdoor || oldSeedlingData.startedIndoorOutdoor,
-            seedBrand: new Date(newSeedlingData.seedBrand || oldSeedlingData.seedBrand),
+              newSeedlingData.startedIndoorOutdoor ||
+              oldSeedlingData.startedIndoorOutdoor,
+            seedBrand: new Date(
+              newSeedlingData.seedBrand || oldSeedlingData.seedBrand
+            ),
             // datePlanted: new Date(newSeedlingData.datePlanted || oldSeedlingData.datePlanted),
             // companions: newSeedlingData.companions || oldSeedlingData.companions
           };
@@ -277,7 +310,8 @@ class SeedlingViewEdit extends Component {
         case "soilCompositionTracker-edit":
           if (
             newSeedlingData.category === "in-ground" ||
-            (!newSeedlingData.category && oldSeedlingData.category === "in-ground")
+            (!newSeedlingData.category &&
+              oldSeedlingData.category === "in-ground")
           ) {
             data = {
               soilAmendment: newSeedlingData.soilAmendment,
@@ -306,7 +340,10 @@ class SeedlingViewEdit extends Component {
             toast.success("Successfully saved new entry.");
 
             if (changeTitle) {
-              Session.set("pageTitle", newSeedlingData.latinName || newSeedlingData.commonName);
+              Session.set(
+                "pageTitle",
+                newSeedlingData.latinName || newSeedlingData.commonName
+              );
             }
 
             //reset the data
@@ -321,73 +358,12 @@ class SeedlingViewEdit extends Component {
 
   resetModal() {
     this.setState({
-      modalOpen: null,
-      editing: null,
       pruneType: null,
       newData: {},
     });
-  }
 
-  handleEdit() {
-    let editing;
-
-    //selecting which swipe view to edit
-    switch (this.state.swipeViewIndex) {
-      case 0:
-        editing = "dates";
-        break;
-      case 1:
-        editing = "waterTracker";
-        break;
-      case 2:
-        editing = "fertilizerTracker";
-        break;
-      case 3:
-        editing = "soilCompositionTracker";
-        break;
-      case 6:
-        editing = "etc";
-        break;
-    }
-
-    this.setState({
-      editing,
-    });
-  }
-
-  openModal(history) {
-    let modalOpen;
-
-    //selecting which modal to open
-    switch (this.state.swipeViewIndex) {
-      case 1:
-        modalOpen = history
-          ? UpdateTypes.water.waterHistoryModal
-          : UpdateTypes.water.waterEditModal;
-        break;
-      case 2:
-        modalOpen = history
-          ? UpdateTypes.fertilizer.fertilizerHistoryModal
-          : UpdateTypes.fertilizer.fertilizerEditModal;
-        break;
-      case 3:
-        modalOpen = history
-          ? UpdateTypes.soilComp.soilCompHistoryModal
-          : UpdateTypes.soilComp.soilCompEditModal;
-        break;
-      case 4:
-        modalOpen = history ? UpdateTypes.pest.pestHistoryModal : UpdateTypes.pest.pestEditModal;
-        break;
-      case 5:
-        modalOpen = history
-          ? UpdateTypes.diary.diaryHistoryModal
-          : UpdateTypes.diary.diaryEditModal;
-        break;
-    }
-
-    this.setState({
-      modalOpen,
-    });
+    Session.set("modalOpen", null);
+    Session.set("editingType", null);
   }
 
   deleteSeedling() {
@@ -395,17 +371,25 @@ class SeedlingViewEdit extends Component {
       if (err) {
         toast.error(err.message);
       } else {
-        this.setState({
-          modalOpen: null,
-        });
+        Session.set("modalOpen", null);
 
         this.props.history.push("/catalogue/seedling");
       }
     });
   }
 
+  handleChangeIndex(e) {
+    this.setState({
+      swipeViewIndex: e,
+    });
+
+    Session.set("editingType", null);
+  }
+
   render() {
-    const seedling = this.props.seedling;
+    const { seedling, editingType } = this.props;
+    const { swipeViewIndex, modalOpen, newData } = this.state;
+
     const fertilizerContent = lastFertilizerUsed(seedling.fertilizerTracker);
     let soilCompLastChecked = lastChecked(seedling.soilCompositionTracker);
     let soilPh = getLastSoilPh(seedling.soilCompositionTracker);
@@ -416,9 +400,13 @@ class SeedlingViewEdit extends Component {
 
     return (
       <div className="PlantSeedlingViewEdit">
-        {this.state.editing === "etc" ? (
+        {editingType === "etc" ? (
           <div className="plant-photo editing">
-            <img src={seedling.image} alt={seedling.commonName} title={seedling.commonName} />
+            <img
+              src={seedling.image}
+              alt={seedling.commonName}
+              title={seedling.commonName}
+            />
 
             {/*<FontAwesomeIcon icon={faCamera}
 										 size="3x"
@@ -430,63 +418,52 @@ class SeedlingViewEdit extends Component {
           </div>
         ) : (
           <div className="plant-photo">
-            <img src={seedling.image} alt={seedling.commonName} title={seedling.commonName} />
+            <img
+              src={seedling.image}
+              alt={seedling.commonName}
+              title={seedling.commonName}
+            />
           </div>
         )}
 
         <SwipeableViews
-          className={`swipe-view ${this.state.editing && "editing"}`}
-          index={this.state.swipeViewIndex}
-          onChangeIndex={(e) => this.setState({ swipeViewIndex: e, editing: null })}
+          className={`swipe-view ${editingType && "editing"}`}
+          index={swipeViewIndex}
+          onChangeIndex={this.handleChangeIndex}
         >
           {/* dates */}
-          <SeedlingDates
-            seedling={seedling}
-            updateData={this.updateData}
-            editing={this.state.editing}
-          />
+          <SeedlingDates seedling={seedling} updateData={this.updateData} />
 
           {/* water */}
           {Meteor.isPro ? (
-            <WaterReadEditPro
-              item={seedling}
-              updateData={this.updateData}
-              editing={this.state.editing}
-            />
+            <WaterReadEditPro item={seedling} updateData={this.updateData} />
           ) : (
-            <WaterReadEdit
-              item={seedling}
-              updateData={this.updateData}
-              editing={this.state.editing}
-            />
+            <WaterReadEdit item={seedling} updateData={this.updateData} />
           )}
 
           {/* fertilizer */}
           {Meteor.isPro ? (
-            <FertilizerProReadEdit
+            <FertilizerReadEditPro
               item={seedling}
               updateData={this.updateData}
               fertilizerContent={fertilizerContent}
-              editing={this.state.editing}
             />
           ) : (
             <FertilizerReadEdit
               item={seedling}
               updateData={this.updateData}
               fertilizerContent={fertilizerContent}
-              editing={this.state.editing}
             />
           )}
 
           {/* soil comp */}
           {Meteor.isPro ? (
-            <SoilCompPro
+            <SoilCompReadEditPro
               item={seedling}
               updateData={this.updateData}
               soilCompLastChecked={soilCompLastChecked}
               soilMoisture={soilMoisture}
               soilPh={soilPh}
-              editing={this.state.editing}
             />
           ) : (
             <SoilCompReadEdit
@@ -495,7 +472,6 @@ class SeedlingViewEdit extends Component {
               soilCompLastChecked={soilCompLastChecked}
               soilMoisture={soilMoisture}
               soilPh={soilPh}
-              editing={this.state.editing}
             />
           )}
 
@@ -511,89 +487,40 @@ class SeedlingViewEdit extends Component {
           {/* diary */}
           <DiaryReadEdit item={seedling} updateData={this.updateData} />
 
-          <EtcSeedling
+          <EtcSeedlingReadEdit
             seedling={seedling}
             updateData={this.updateData}
-            editing={this.state.editing}
           />
         </SwipeableViews>
 
         {/* buttons */}
-        <div className="add-data flex-around bottom-nav">
-          <FontAwesomeIcon
-            icon={faTrash}
-            className="plant-condition-icon"
-            alt="trash"
-            title="delete"
-            onClick={() => this.setState({ modalOpen: "delete" })}
-          />
-
-          {this.state.swipeViewIndex < 5 && (
-            <React.Fragment>
-              <FontAwesomeIcon
-                icon={faPlus}
-                className="plant-condition-icon"
-                alt="plus"
-                title="add"
-                onClick={() => this.openModal(false)}
-              />
-
-              {!this.state.editing && (
-                <FontAwesomeIcon
-                  icon={faCalendar}
-                  className="plant-condition-icon"
-                  alt={"calendar"}
-                  title="view history"
-                  onClick={() => this.openModal(true)}
-                />
-              )}
-            </React.Fragment>
-          )}
-
-          {this.state.swipeViewIndex < 3 || this.state.swipeViewIndex > 4 ? (
-            <React.Fragment>
-              <FontAwesomeIcon
-                icon={this.state.editing ? faTimes : faPencilAlt}
-                className="plant-condition-icon"
-                alt={this.state.editing ? "times" : "pencil"}
-                title={this.state.editing ? "cancel" : "edit"}
-                onClick={() => (this.state.editing ? this.resetModal() : this.handleEdit())}
-              />
-
-              {this.state.editing && (
-                <FontAwesomeIcon
-                  icon={faSave}
-                  className="plant-condition-icon"
-                  alt="floppy disk"
-                  title="save"
-                  onClick={() => this.updateSeedling(`${this.state.editing}-edit`)}
-                />
-              )}
-            </React.Fragment>
-          ) : (
-            ""
-          )}
-        </div>
+        <BottomNavManage
+          exitEditMode={this.exitEditMode}
+          type="seedling"
+          swipeViewIndex={swipeViewIndex}
+        />
 
         {/* TODO - make modal situation more efficient, i should really be able to decrease this code, too much repetition */}
         {/* water */}
         <ItemAddEntryModal
           save={this.updateSeedling}
           cancel={this.resetModal}
-          show={this.state.modalOpen}
+          show={modalOpen}
           type="waterTracker"
           header="New water entry"
         >
           <DatePicker
             selected={
-              this.state.newData.waterTracker ? this.state.newData.waterTracker.date : Date.now()
+              newData.waterTracker ? newData.waterTracker.date : Date.now()
             }
             className="react-datepicker-wrapper"
             dateFormat="dd-MMMM-yyyy"
             popperPlacement="bottom"
             inline
             onSelect={(e) => this.updateData(e, "waterDate", "waterTracker")}
-            highlightDates={SeedlingViewEdit.getHighlightDates(seedling.waterTracker)}
+            highlightDates={SeedlingViewEdit.getHighlightDates(
+              seedling.waterTracker
+            )}
           />
         </ItemAddEntryModal>
 
@@ -602,10 +529,12 @@ class SeedlingViewEdit extends Component {
           updateData={this.updateData}
           save={this.updateSeedling}
           resetModal={this.resetModal}
-          modalOpen={this.state.modalOpen}
-          newDataTracker={this.state.newData.waterTracker}
+          modalOpen={modalOpen}
+          newDataTracker={newData.waterTracker}
           tracker={seedling.waterTracker}
-          highlightDates={SeedlingViewEdit.getHighlightDates(seedling.waterTracker)}
+          highlightDates={SeedlingViewEdit.getHighlightDates(
+            seedling.waterTracker
+          )}
         />
 
         {/* fertilizer */}
@@ -613,10 +542,12 @@ class SeedlingViewEdit extends Component {
           updateData={this.updateData}
           save={this.updateSeedling}
           resetModal={this.resetModal}
-          modalOpen={this.state.modalOpen}
-          newDataTracker={this.state.newData.fertilizerTracker}
+          modalOpen={modalOpen}
+          newDataTracker={newData.fertilizerTracker}
           tracker={seedling.fertilizerTracker}
-          highlightDates={SeedlingViewEdit.getHighlightDates(seedling.fertilizerTracker)}
+          highlightDates={SeedlingViewEdit.getHighlightDates(
+            seedling.fertilizerTracker
+          )}
         />
 
         {/* soil comp */}
@@ -624,11 +555,13 @@ class SeedlingViewEdit extends Component {
           updateData={this.updateData}
           save={this.updateSeedling}
           resetModal={this.resetModal}
-          modalOpen={this.state.modalOpen}
-          newDataTracker={this.state.newData.soilCompositionTracker}
+          modalOpen={modalOpen}
+          newDataTracker={newData.soilCompositionTracker}
           tracker={seedling.soilCompositionTracker}
           category={seedling.category}
-          highlightDates={SeedlingViewEdit.getHighlightDates(seedling.soilCompositionTracker)}
+          highlightDates={SeedlingViewEdit.getHighlightDates(
+            seedling.soilCompositionTracker
+          )}
         />
 
         {/* pests */}
@@ -636,10 +569,12 @@ class SeedlingViewEdit extends Component {
           updateData={this.updateData}
           save={this.updateSeedling}
           resetModal={this.resetModal}
-          modalOpen={this.state.modalOpen}
-          newDataTracker={this.state.newData.pestTracker}
+          modalOpen={modalOpen}
+          newDataTracker={newData.pestTracker}
           tracker={seedling.pestTracker}
-          highlightDates={SeedlingViewEdit.getHighlightDates(seedling.pestTracker)}
+          highlightDates={SeedlingViewEdit.getHighlightDates(
+            seedling.pestTracker
+          )}
         />
 
         {/* diary */}
@@ -647,14 +582,14 @@ class SeedlingViewEdit extends Component {
           updateData={this.updateData}
           save={this.updateSeedling}
           resetModal={this.resetModal}
-          modalOpen={this.state.modalOpen}
+          modalOpen={modalOpen}
           diary={seedling.diary}
         />
 
         <ItemAddEntryModal
           save={this.deleteSeedling}
           cancel={this.resetModal}
-          show={this.state.modalOpen}
+          show={modalOpen}
           type="delete"
           header="Are you sure you want to delete this seedling's entire profile?"
         />
@@ -665,17 +600,21 @@ class SeedlingViewEdit extends Component {
 
 SeedlingViewEdit.propTypes = {
   seedling: PropTypes.object.isRequired,
+  editingType: PropTypes.string,
 };
 
 export default withTracker((props) => {
   const id = props.match.params.id;
+  const editingType = Session.get("editingType");
   const seedling = Seedling.findOne({ _id: id });
   const categories = Category.find({}).fetch();
 
   //sort the data
   seedling.waterTracker = sortByLastDate(seedling.waterTracker);
   seedling.fertilizerTracker = sortByLastDate(seedling.fertilizerTracker);
-  seedling.soilCompositionTracker = sortByLastDate(seedling.soilCompositionTracker);
+  seedling.soilCompositionTracker = sortByLastDate(
+    seedling.soilCompositionTracker
+  );
   seedling.pestTracker = sortByLastDate(seedling.pestTracker);
   seedling.diary = sortByLastDate(seedling.diary);
 
@@ -694,7 +633,9 @@ export default withTracker((props) => {
   );
 
   seedling.daysSincePruned = getDaysSinceAction(seedling.pruningTracker);
-  seedling.daysSinceDeadheaded = getDaysSinceAction(seedling.deadheadingTracker);
+  seedling.daysSinceDeadheaded = getDaysSinceAction(
+    seedling.deadheadingTracker
+  );
 
   if (seedling.pruningTracker || seedling.deadheadingTracker) {
     const pruning = seedling.pruningTracker || [];
@@ -708,7 +649,9 @@ export default withTracker((props) => {
       deadheading[i].action = "Deadheaded";
     }
 
-    seedling.pruningDeadheadingTracker = sortByLastDate(pruning.concat(deadheading));
+    seedling.pruningDeadheadingTracker = sortByLastDate(
+      pruning.concat(deadheading)
+    );
   } else {
     seedling.pruningDeadheadingTracker = null;
   }
@@ -717,5 +660,6 @@ export default withTracker((props) => {
   return {
     seedling,
     categories,
+    editingType,
   };
 })(SeedlingViewEdit);

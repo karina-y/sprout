@@ -1,0 +1,45 @@
+@import "../../stylesheets/variables.scss";
+
+div.BottomNav {
+  border-top: solid 1px $powder-blue;
+  background: $alice-blue-light;
+  padding: 15px 0;
+  text-align: center;
+  //position: relative;
+  bottom: 0;
+  left: 0;
+  position: fixed;
+  width: 100%;
+  margin: 0 auto;
+
+  .svg-inline--fa {
+    color: $success-dark;
+    width: 20px;
+    height: 20px;
+  }
+
+  .fa-trash,
+  .fa-times {
+    color: $danger-dark;
+  }
+
+
+  //#region breakpoints
+  @media only screen and ($breakpoint-xs) {
+  }
+
+  @media only screen and ($breakpoint-sm) {
+  }
+
+  @media only screen and ($breakpoint-md) {
+  }
+
+  @media only screen and ($breakpoint-lg) {
+  }
+  //#endregion
+}
+
+body.dark-theme .BottomNav {
+  background: $med-gray;
+}
+

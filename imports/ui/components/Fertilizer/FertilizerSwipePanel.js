@@ -9,13 +9,13 @@ import {
   getPlantCondition,
   lastFertilizerUsed,
   sortByLastDate,
-} from "../../../utils/helpers/plantData";
+} from "/imports/utils/helpers/plantData";
 import { toast } from "react-toastify";
 import FertilizerModals from "./FertilizerModals";
 import FertilizerReadEdit from "./FertilizerReadEdit";
 import FertilizerReadEditPro from "./FertilizerReadEditPro";
 import useNewData from "../../hooks/useNewData";
-import UpdateTypes from "../../../utils/constants/updateTypes";
+import UpdateTypes from "/imports/utils/constants/updateTypes";
 
 /*
 TODO
@@ -26,10 +26,16 @@ TODO
 const FertilizerSwipePanel = (props) => {
   const plant = props.plant;
   const fertilizerContent = lastFertilizerUsed(plant.fertilizerTracker);
-  const { newData, setNewData, changeNewData, addTrackerDate, addTrackerDetails } = useNewData({});
+  const {
+    newData,
+    setNewData,
+    changeNewData,
+    addTrackerDate,
+    addTrackerDetails,
+  } = useNewData({});
 
   useEffect(() => {
-    if (props.saving === `${UpdateTypes.fertilizer.fertilizerEditModal}-edit`) {
+    if (props.savingType === `${UpdateTypes.fertilizer.fertilizerEditModal}-edit`) {
       updatePlant(`${UpdateTypes.fertilizer.fertilizerEditModal}-edit`);
     }
   }, [props]);
@@ -51,11 +57,16 @@ const FertilizerSwipePanel = (props) => {
       //TODO abstract each of these cases out
       data = {
         fertilizerSchedule:
-          newPlantData.fertilizerSchedule === "" && oldPlantData.fertilizerSchedule > 0
+          newPlantData.fertilizerSchedule === "" &&
+          oldPlantData.fertilizerSchedule > 0
             ? null
             : newPlantData.fertilizerSchedule || oldPlantData.fertilizerSchedule
-            ? parseInt(newPlantData.fertilizerSchedule || oldPlantData.fertilizerSchedule)
-            : newPlantData.fertilizerSchedule || oldPlantData.fertilizerSchedule,
+            ? parseInt(
+                newPlantData.fertilizerSchedule ||
+                  oldPlantData.fertilizerSchedule
+              )
+            : newPlantData.fertilizerSchedule ||
+              oldPlantData.fertilizerSchedule,
         preferredFertilizer: newPlantData.preferredFertilizer,
         compost: newPlantData.compost,
         nutrient: newPlantData.nutrient,
@@ -93,14 +104,12 @@ const FertilizerSwipePanel = (props) => {
           item={plant}
           updateData={changeNewData}
           fertilizerContent={fertilizerContent}
-          editing={props.editing}
         />
       ) : (
         <FertilizerReadEdit
           item={plant}
           updateData={changeNewData}
           fertilizerContent={fertilizerContent}
-          editing={props.editing}
         />
       )}
 
@@ -110,7 +119,6 @@ const FertilizerSwipePanel = (props) => {
         addTrackerDetails={addTrackerDetails}
         save={updatePlant}
         resetModal={resetData}
-        modalOpen={props.modalOpen}
         newDataTracker={newData.fertilizerTracker}
         tracker={plant.fertilizerTracker}
         highlightDates={plant.highlightDates}
@@ -121,12 +129,13 @@ const FertilizerSwipePanel = (props) => {
 
 FertilizerSwipePanel.propTypes = {
   plant: PropTypes.object.isRequired,
-  editing: PropTypes.string,
-  modalOpen: PropTypes.string,
   exitEditMode: PropTypes.func.isRequired,
+  savingType: PropTypes.string
 };
 
 export default withTracker((props) => {
+  const savingType = Session.get("savingType");
+
   // const id = props.match.params.id;
   // let plant = Plant.findOne({ _id: id });
   let plant = props.plant;
@@ -144,5 +153,6 @@ export default withTracker((props) => {
 
   return {
     plant,
+    savingType
   };
 })(FertilizerSwipePanel);

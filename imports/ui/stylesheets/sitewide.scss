@@ -31,10 +31,6 @@ body {
     background-color: $dark-gray;
     color: $off-white;
 
-    .bottom-nav {
-      background: $med-gray;
-    }
-
     .title-ming {
       color: $powder-blue !important;
     }
@@ -98,30 +94,6 @@ body {
   .groot {
     width: 121px;
     height: 146px;
-  }
-
-  .bottom-nav {
-    border-top: solid 1px $powder-blue;
-    background: $alice-blue-light;
-    padding: 15px 0;
-    text-align: center;
-    //position: relative;
-    bottom: 0;
-    left: 0;
-    position: fixed;
-    width: 100%;
-    margin: 0 auto;
-
-    .svg-inline--fa {
-      color: $success-dark;
-      width: 20px;
-      height: 20px;
-    }
-
-    .fa-trash,
-    .fa-times {
-      color: $danger-dark;
-    }
   }
 
   .scroll-box {

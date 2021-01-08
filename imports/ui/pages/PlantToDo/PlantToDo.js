@@ -3,7 +3,10 @@ import PropTypes from "prop-types";
 import { withTracker } from "meteor/react-meteor-data";
 import { Session } from "meteor/session";
 import Plant from "/imports/api/Plant/Plant";
-import { getDaysSinceAction, getPlantCondition } from "../../../utils/helpers/plantData";
+import {
+  getDaysSinceAction,
+  getPlantCondition,
+} from "/imports/utils/helpers/plantData";
 import PlantTaskList from "../../components/PlantTaskList/PlantTaskList";
 import Water from "/imports/api/Water/Water";
 import Fertilizer from "/imports/api/Fertilizer/Fertilizer";
@@ -62,7 +65,9 @@ export default withTracker(() => {
       ? 2
       : water.waterSchedule - getDaysSinceAction(water.waterTracker) - 1;
     let fertilizerDue =
-      fertilizer.fertilizerSchedule - getDaysSinceAction(fertilizer.fertilizerTracker) - 1;
+      fertilizer.fertilizerSchedule -
+      getDaysSinceAction(fertilizer.fertilizerTracker) -
+      1;
 
     if (waterDue < 1 || fertilizerDue < 1) {
       currPlant.attentionNeeded = {

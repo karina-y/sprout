@@ -2,27 +2,31 @@ import React from "react";
 import PropTypes from "prop-types";
 import SwipePanelContent from "../Shared/SwipePanelContent/SwipePanelContent";
 
-const PestReadEdit = (props) => (
-  <div className="swipe-slide">
-    <p className="swipe-title title-ming">Pests</p>
+const PestReadEdit = (props) => {
+  const { item, updateData, pestLastChecked, pestName, pestTreatment } = props;
 
-    <SwipePanelContent icon="schedule" iconTitle="last checked for pests">
-      <p>{props.pestLastChecked}</p>
-    </SwipePanelContent>
+  return (
+    <div className="swipe-slide">
+      <p className="swipe-title title-ming">Pests</p>
 
-    {props.pestName && (
-      <SwipePanelContent icon="pest">
-        <p>{props.pestName}</p>
+      <SwipePanelContent icon="schedule" iconTitle="last checked for pests">
+        <p>{pestLastChecked}</p>
       </SwipePanelContent>
-    )}
 
-    {props.pestTreatment && (
-      <SwipePanelContent icon="pestTreatment">
-        <p>{props.pestTreatment}</p>
-      </SwipePanelContent>
-    )}
-  </div>
-);
+      {pestName && (
+        <SwipePanelContent icon="pest">
+          <p>{pestName}</p>
+        </SwipePanelContent>
+      )}
+
+      {pestTreatment && (
+        <SwipePanelContent icon="pestTreatment">
+          <p>{pestTreatment}</p>
+        </SwipePanelContent>
+      )}
+    </div>
+  );
+};
 
 PestReadEdit.propTypes = {
   item: PropTypes.object.isRequired,

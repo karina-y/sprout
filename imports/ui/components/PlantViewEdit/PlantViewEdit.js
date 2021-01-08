@@ -6,13 +6,6 @@ import "./PlantSeedlingViewEdit.scss";
 import { Session } from "meteor/session";
 import "react-datepicker/dist/react-datepicker.css";
 import SwipeableViews from "react-swipeable-views";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash } from "@fortawesome/free-solid-svg-icons/faTrash";
-import { faPencilAlt } from "@fortawesome/free-solid-svg-icons/faPencilAlt";
-import { faSave } from "@fortawesome/free-solid-svg-icons/faSave";
-import { faTimes } from "@fortawesome/free-solid-svg-icons/faTimes";
-import { faPlus } from "@fortawesome/free-solid-svg-icons/faPlus";
-import { faCalendar } from "@fortawesome/free-solid-svg-icons/faCalendar";
 import Plant from "/imports/api/Plant/Plant";
 import { toast } from "react-toastify";
 import ItemAddEntryModal from "../Shared/ItemAddEntryModal";
@@ -23,13 +16,13 @@ import PruningDeadheadingSwipePanel from "../PruningDeadheading/PruningDeadheadi
 import PestSwipePanel from "../Pest/PestSwipePanel";
 import DiarySwipePanel from "../Diary/DiarySwipePanel";
 import EtcSwipePanel from "../Etc/EtcSwipePanel";
-import UpdateTypes from "../../../utils/constants/updateTypes";
-import Water from "../../../api/Water/Water";
-import Fertilizer from "../../../api/Fertilizer/Fertilizer";
-import Diary from "../../../api/Diary/Diary";
-import Pest from "../../../api/Pest/Pest";
-import PruningDeadheading from "../../../api/PruningDeadheading/PruningDeadheading";
-import SoilComposition from "../../../api/SoilComposition/SoilComposition";
+import Water from "/imports/api/Water/Water";
+import Fertilizer from "/imports/api/Fertilizer/Fertilizer";
+import Diary from "/imports/api/Diary/Diary";
+import Pest from "/imports/api/Pest/Pest";
+import PruningDeadheading from "/imports/api/PruningDeadheading/PruningDeadheading";
+import SoilComposition from "/imports/api/SoilComposition/SoilComposition";
+import BottomNavManage from "../BottomNav/BottomNavManage";
 
 /*
 TODO
@@ -45,8 +38,6 @@ class PlantViewEdit extends Component {
       newData: {},
       swipeViewIndex: 0,
       currentDateSelection: null,
-      modalOpen: null,
-      editing: null,
       pruneType: null,
     };
 
@@ -54,7 +45,10 @@ class PlantViewEdit extends Component {
   }
 
   componentDidMount() {
-    Session.set("pageTitle", this.props.plant.latinName || this.props.plant.commonName);
+    Session.set(
+      "pageTitle",
+      this.props.plant.latinName || this.props.plant.commonName
+    );
 
     //this is to disable keyboard from popping up on android, sometimes you just need good ol vanilla js
     const inputs = document.getElementsByTagName("input");
@@ -62,6 +56,10 @@ class PlantViewEdit extends Component {
     for (let i = 0; i < inputs.length; i++) {
       inputs[i].disabled = true;
     }
+  }
+
+  componentWillUnmount() {
+    this.exitEditMode();
   }
 
   //TODO
@@ -83,72 +81,9 @@ class PlantViewEdit extends Component {
   }
 
   exitEditMode() {
-    this.setState({
-      modalOpen: null,
-      editing: null,
-      saving: null,
-    });
-  }
-
-  handleEdit() {
-    let editing;
-
-    //selecting which swipe view to edit
-    switch (this.state.swipeViewIndex) {
-      case 0:
-        editing = UpdateTypes.water.waterEditModal;
-        break;
-      case 1:
-        editing = UpdateTypes.fertilizer.fertilizerEditModal;
-        break;
-      case 2:
-        editing = UpdateTypes.pruningDeadheading.pruningDeadheadingEditModal;
-        break;
-      case 3:
-        editing = UpdateTypes.soilComp.soilCompEditModal;
-        break;
-      case 6:
-        editing = UpdateTypes.etc.etcEditModal;
-        break;
-    }
-
-    this.setState({
-      editing,
-    });
-  }
-
-  openModal(isHistoryModal) {
-    let modalOpen;
-
-    //selecting which modal to open
-    switch (this.state.swipeViewIndex) {
-      case 0:
-        modalOpen = UpdateTypes.water.waterEditModal;
-        break;
-      case 1:
-        modalOpen = UpdateTypes.fertilizer.fertilizerEditModal;
-        break;
-      case 2:
-        modalOpen = UpdateTypes.pruningDeadheading.pruningDeadheadingEditModal;
-        break;
-      case 3:
-        modalOpen = UpdateTypes.soilComp.soilCompEditModal;
-        break;
-      case 4:
-        modalOpen = UpdateTypes.pest.pestEditModal;
-        break;
-      case 5:
-        modalOpen = UpdateTypes.diary.diaryEditModal;
-        break;
-    }
-
-    if (isHistoryModal) {
-      modalOpen += "-history";
-    }
-
-    this.setState({
-      modalOpen,
-    });
+    Session.set("modalOpen", null);
+    Session.set("editingType", null);
+    Session.set("savingType", null);
   }
 
   deletePlant() {
@@ -158,9 +93,7 @@ class PlantViewEdit extends Component {
         toast.error(err.message);
       } else {
         console.log("success", response);
-        this.setState({
-          modalOpen: null,
-        });
+        Session.set("modalOpen", null);
 
         //TODO this needs to be history.push but it results in an error when the page can't find the plant
         // this.props.history.push('/catalogue/plant')
@@ -169,20 +102,37 @@ class PlantViewEdit extends Component {
     });
   }
 
+  handleChangeIndex(e) {
+    this.setState({
+      swipeViewIndex: e,
+    });
+
+    Session.set("editingType", null);
+  }
+
   render() {
-    const plant = this.props.plant;
-    const water = this.props.water;
-    const fertilizer = this.props.fertilizer;
-    const diary = this.props.diary;
-    const pest = this.props.pest;
-    const pruningDeadheading = this.props.pruningDeadheading;
-    const soilComposition = this.props.soilComposition;
+    const {
+      plant,
+      water,
+      fertilizer,
+      diary,
+      pest,
+      pruningDeadheading,
+      soilComposition,
+      editingType,
+    } = this.props;
+
+    const { swipeViewIndex } = this.state;
 
     return (
       <div className="PlantSeedlingViewEdit">
-        {this.state.editing === "etc" ? (
+        {editingType === "etc" ? (
           <div className="plant-photo editing">
-            <img src={plant.image} alt={plant.commonName} title={plant.commonName} />
+            <img
+              src={plant.image}
+              alt={plant.commonName}
+              title={plant.commonName}
+            />
 
             {/*<FontAwesomeIcon icon={faCamera}
 										 size="3x"
@@ -194,134 +144,54 @@ class PlantViewEdit extends Component {
           </div>
         ) : (
           <div className="plant-photo">
-            <img src={plant.image} alt={plant.commonName} title={plant.commonName} />
+            <img
+              src={plant.image}
+              alt={plant.commonName}
+              title={plant.commonName}
+            />
           </div>
         )}
 
         <SwipeableViews
-          className={`swipe-view ${this.state.editing && "editing"}`}
-          index={this.state.swipeViewIndex}
-          onChangeIndex={(e) => this.setState({ swipeViewIndex: e, editing: null })}
+          className={`swipe-view ${editingType && "editing"}`}
+          index={swipeViewIndex}
+          onChangeIndex={this.handleChangeIndex}
         >
-          <WaterSwipePanel
-            modalOpen={this.state.modalOpen}
-            editing={this.state.editing}
-            exitEditMode={this.exitEditMode}
-            saving={this.state.saving}
-            plant={water}
-          />
+          <WaterSwipePanel exitEditMode={this.exitEditMode} plant={water} />
 
           <FertilizerSwipePanel
-            modalOpen={this.state.modalOpen}
-            editing={this.state.editing}
             exitEditMode={this.exitEditMode}
-            saving={this.state.saving}
             plant={fertilizer}
           />
 
           <PruningDeadheadingSwipePanel
-            modalOpen={this.state.modalOpen}
-            editing={this.state.editing}
             exitEditMode={this.exitEditMode}
-            saving={this.state.saving}
             plant={pruningDeadheading}
           />
 
           <SoilCompSwipePanel
-            modalOpen={this.state.modalOpen}
-            editing={this.state.editing}
             exitEditMode={this.exitEditMode}
-            saving={this.state.saving}
             plant={soilComposition}
             category={plant.category}
           />
 
-          <PestSwipePanel
-            modalOpen={this.state.modalOpen}
-            editing={this.state.editing}
-            exitEditMode={this.exitEditMode}
-            saving={this.state.saving}
-            plant={pest}
-          />
+          <PestSwipePanel exitEditMode={this.exitEditMode} plant={pest} />
 
-          <DiarySwipePanel
-            modalOpen={this.state.modalOpen}
-            editing={this.state.editing}
-            exitEditMode={this.exitEditMode}
-            saving={this.state.saving}
-            plant={diary}
-          />
+          <DiarySwipePanel exitEditMode={this.exitEditMode} plant={diary} />
 
-          <EtcSwipePanel
-            modalOpen={this.state.modalOpen}
-            editing={this.state.editing}
-            exitEditMode={this.exitEditMode}
-            saving={this.state.saving}
-            plant={plant}
-          />
+          <EtcSwipePanel exitEditMode={this.exitEditMode} plant={plant} />
         </SwipeableViews>
 
         {/* buttons */}
-        <div className="add-data flex-around bottom-nav">
-          <FontAwesomeIcon
-            icon={faTrash}
-            className="plant-condition-icon"
-            alt="trash"
-            title="delete"
-            onClick={() => this.setState({ modalOpen: "delete" })}
-          />
-
-          {this.state.swipeViewIndex < 6 && (
-            <React.Fragment>
-              <FontAwesomeIcon
-                icon={faPlus}
-                className="plant-condition-icon"
-                alt="plus"
-                title="add"
-                onClick={() => this.openModal(false)}
-              />
-
-              {!this.state.editing && (
-                <FontAwesomeIcon
-                  icon={faCalendar}
-                  className="plant-condition-icon"
-                  alt={"calendar"}
-                  title="view history"
-                  onClick={() => this.openModal(true)}
-                />
-              )}
-            </React.Fragment>
-          )}
-
-          {this.state.swipeViewIndex < 4 || this.state.swipeViewIndex > 5 ? (
-            <React.Fragment>
-              <FontAwesomeIcon
-                icon={this.state.editing ? faTimes : faPencilAlt}
-                className="plant-condition-icon"
-                alt={this.state.editing ? "times" : "pencil"}
-                title={this.state.editing ? "cancel" : "edit"}
-                onClick={() => (this.state.editing ? this.exitEditMode() : this.handleEdit())}
-              />
-
-              {this.state.editing && (
-                <FontAwesomeIcon
-                  icon={faSave}
-                  className="plant-condition-icon"
-                  alt="floppy disk"
-                  title="save"
-                  onClick={() => this.setState({ saving: `${this.state.editing}-edit` })}
-                />
-              )}
-            </React.Fragment>
-          ) : (
-            ""
-          )}
-        </div>
+        <BottomNavManage
+          exitEditMode={this.exitEditMode}
+          swipeViewIndex={swipeViewIndex}
+          type="plant"
+        />
 
         <ItemAddEntryModal
           save={this.deletePlant}
           cancel={this.exitEditMode}
-          show={this.state.modalOpen}
           type="delete"
           header="Are you sure you want to delete this plant's entire profile?"
         />
@@ -332,6 +202,7 @@ class PlantViewEdit extends Component {
 
 PlantViewEdit.propTypes = {
   plant: PropTypes.object.isRequired,
+  editingType: PropTypes.string,
 };
 
 export default withTracker((props) => {
@@ -343,6 +214,7 @@ export default withTracker((props) => {
   const pest = Pest.findOne({ plantId: id });
   const pruningDeadheading = PruningDeadheading.findOne({ plantId: id });
   const soilComposition = SoilComposition.findOne({ plantId: id });
+  const editingType = Session.get("editingType");
 
   return {
     plant,
@@ -352,5 +224,6 @@ export default withTracker((props) => {
     pest,
     pruningDeadheading,
     soilComposition,
+    editingType,
   };
 })(PlantViewEdit);
