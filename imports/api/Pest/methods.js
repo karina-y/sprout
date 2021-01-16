@@ -19,6 +19,7 @@ Meteor.methods({
         handleMethodException("Invalid arguments passed");
       } else {
         const response = Pest.insert(data);
+        logger("success", "passed", data);
         return response;
       }
     } catch (e) {

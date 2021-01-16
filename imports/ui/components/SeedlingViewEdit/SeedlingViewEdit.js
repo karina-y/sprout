@@ -74,7 +74,7 @@ class SeedlingViewEdit extends Component {
     }
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     this.exitEditMode();
   }
 
@@ -607,6 +607,12 @@ export default withTracker((props) => {
   const id = props.match.params.id;
   const editingType = Session.get("editingType");
   const seedling = Seedling.findOne({ _id: id });
+
+  //in case the user is looking at a deleted seedling
+  if (!seedling) {
+    props.history.push("/catalogue/seedling");
+  }
+
   const categories = Category.find({}).fetch();
 
   //sort the data

@@ -7,8 +7,11 @@ import { toast } from "react-toastify";
 import EtcPlantReadEdit from "./EtcPlantReadEdit";
 import useNewData from "../../hooks/useNewData";
 import UpdateTypes from "/imports/utils/constants/updateTypes";
-import { withTracker } from 'meteor/react-meteor-data'
-import { getHighlightDates, sortByLastDate } from '../../../utils/helpers/plantData'
+import { withTracker } from "meteor/react-meteor-data";
+import {
+  getHighlightDates,
+  sortByLastDate,
+} from "../../../utils/helpers/plantData";
 
 /*
 TODO
@@ -27,8 +30,6 @@ const EtcSwipePanel = (props) => {
   }, [props]);
 
   const updatePlant = (type) => {
-    console.log("profile", type);
-
     const newPlantData = newData;
     const oldPlantData = plant;
     let changeTitle = false;
@@ -97,9 +98,8 @@ const EtcSwipePanel = (props) => {
 EtcSwipePanel.propTypes = {
   plant: PropTypes.object.isRequired,
   exitEditMode: PropTypes.func.isRequired,
-  savingType: PropTypes.string
+  savingType: PropTypes.string,
 };
-
 
 export default withTracker((props) => {
   const savingType = Session.get("savingType");

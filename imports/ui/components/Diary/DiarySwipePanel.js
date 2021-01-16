@@ -21,7 +21,6 @@ const DiarySwipePanel = (props) => {
   const { newData, setNewData, changeNewData } = useNewData({});
 
   const updatePlant = (type) => {
-    console.log("diary update");
     const newPlantData = newData;
     const oldPlantData = plant;
 

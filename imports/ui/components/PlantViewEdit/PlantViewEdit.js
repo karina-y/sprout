@@ -92,7 +92,6 @@ class PlantViewEdit extends Component {
         console.log("err", err);
         toast.error(err.message);
       } else {
-        console.log("success", response);
         Session.set("modalOpen", null);
 
         //TODO this needs to be history.push but it results in an error when the page can't find the plant
@@ -208,12 +207,18 @@ PlantViewEdit.propTypes = {
 export default withTracker((props) => {
   const id = props.match.params.id;
   const plant = Plant.findOne({ _id: id });
-  const water = Water.findOne({ plantId: id });
-  const fertilizer = Fertilizer.findOne({ plantId: id });
-  const diary = Diary.findOne({ plantId: id });
-  const pest = Pest.findOne({ plantId: id });
-  const pruningDeadheading = PruningDeadheading.findOne({ plantId: id });
-  const soilComposition = SoilComposition.findOne({ plantId: id });
+
+  //in case the user is looking at a deleted plant
+  if (!plant) {
+    props.history.push("/catalogue/plant");
+  }
+
+  const water = Water.findOne({ plantId: id }) || {};
+  const fertilizer = Fertilizer.findOne({ plantId: id }) || {};
+  const diary = Diary.findOne({ plantId: id }) || {};
+  const pest = Pest.findOne({ plantId: id }) || {};
+  const pruningDeadheading = PruningDeadheading.findOne({ plantId: id }) || {};
+  const soilComposition = SoilComposition.findOne({ plantId: id }) || {};
   const editingType = Session.get("editingType");
 
   return {

@@ -81,7 +81,7 @@ export default withTracker((props) => {
   const fertilizer = Fertilizer.findOne({ plantId: item._id });
 
   //TODO turn these into a hook? is that right in tracker?
-  if (fertilizer.fertilizerTracker && fertilizer.fertilizerTracker.length > 0) {
+  if (fertilizer && fertilizer.fertilizerTracker && fertilizer.fertilizerTracker.length > 0) {
     item.daysSinceFertilized = getDaysSinceAction(fertilizer.fertilizerTracker);
     item.fertilizerCondition = getPlantCondition(
       fertilizer.fertilizerTracker,
@@ -98,7 +98,7 @@ export default withTracker((props) => {
     item.fertilizerProgress = 100;
   }
 
-  if (water.waterTracker && water.waterTracker.length > 0) {
+  if (water && water.waterTracker && water.waterTracker.length > 0) {
     item.daysSinceWatered = getDaysSinceAction(water.waterTracker);
     item.waterCondition = water.waterScheduleAuto
       ? "happy"

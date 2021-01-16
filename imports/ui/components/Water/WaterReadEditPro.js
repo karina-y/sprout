@@ -102,7 +102,7 @@ const WaterReadEditPro = (props) => {
             </SwipePanelContent>
           )}
 
-          <SwipePanelContent icon="water" iconTitle="water preference">
+          <SwipePanelContent icon="water" iconTitle="watering preference">
             <p>{item.waterPreference}</p>
           </SwipePanelContent>
         </React.Fragment>

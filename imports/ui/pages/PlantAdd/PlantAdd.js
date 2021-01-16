@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import autobind from "react-autobind";
 import "./PlantAdd.scss";
 import { Session } from "meteor/session";
+import { Promise } from "bluebird";
 import SwipeableViews from "react-swipeable-views";
 import { selectRandomPlantPicture } from "/imports/utils/helpers/selectRandomPlantPicture";
 import { toast } from "react-toastify";
@@ -128,38 +129,7 @@ class PlantAdd extends Component {
     });
   }
 
-  addNewPlant() {
-    let plant = this.state.plant;
-    let water = this.state.water;
-    let fertilizer = this.state.fertilizer;
-    let soilComposition = this.state.soilComposition;
-    let pruningDeadheading = this.state.pruningDeadheading;
-
-    if (water.waterSchedule) {
-      water.waterSchedule = parseInt(water.waterSchedule);
-    }
-
-    if (fertilizer.fertilizerSchedule) {
-      fertilizer.fertilizerSchedule = parseInt(fertilizer.fertilizerSchedule);
-    }
-
-    /*if (plant.pruningSchedule) {
-	  plant.pruningSchedule = parseInt(plant.pruningSchedule)
-	}
-
-	if (plant.deadheadingSchedule) {
-	  plant.deadheadingSchedule = parseInt(plant.deadheadingSchedule)
-	}*/
-
-    if (
-      soilComposition.soilCompositionTracker &&
-      !Array.isArray(soilComposition.soilCompositionTracker)
-    ) {
-      soilComposition.soilCompositionTracker = [
-        soilComposition.soilCompositionTracker,
-      ];
-    }
-
+  validateData(plant, water) {
     let errMsg;
     let swipeViewIndex = this.state.swipeViewIndex;
 
@@ -190,49 +160,86 @@ class PlantAdd extends Component {
       this.setState({
         swipeViewIndex,
       });
-    } else {
+    }
+
+    return errMsg;
+  }
+
+  addNewPlant() {
+    let plant = this.state.plant;
+    let water = this.state.water;
+    let fertilizer = this.state.fertilizer;
+    let soilComposition = this.state.soilComposition;
+    let pruningDeadheading = this.state.pruningDeadheading;
+
+    if (water.waterSchedule) {
+      water.waterSchedule = parseInt(water.waterSchedule);
+    }
+
+    if (fertilizer.fertilizerSchedule) {
+      fertilizer.fertilizerSchedule = parseInt(fertilizer.fertilizerSchedule);
+    }
+
+    if (
+      soilComposition.soilCompositionTracker &&
+      !Array.isArray(soilComposition.soilCompositionTracker)
+    ) {
+      soilComposition.soilCompositionTracker = [
+        soilComposition.soilCompositionTracker,
+      ];
+    }
+
+    const err = this.validateData(plant, water);
+
+    if (!err) {
       toast.warning("Saving your new plant...");
 
-      //todo clean this up.. i don't want to run further deletes if one is erroring but i don't want to keep nesting
+      //todo clean this up.. i don't want to run further inserts if one is erroring but i don't want to keep nesting
       Meteor.call("plant.insert", plant, (plantErr, plantResponse) => {
         if (plantErr) {
           toast.error(plantErr.message);
         } else {
-          Meteor.call(
-            "water.insert",
-            plantResponse,
-            water,
-            (waterErr, waterResponse) => {
-              if (waterErr) {
-                toast.error(waterErr.message);
-              } else {
-                Meteor.call(
-                  "fertilizer.insert",
-                  plantResponse,
-                  fertilizer,
-                  (fertilizerErr, fertilizerResponse) => {
-                    if (fertilizerErr) {
-                      toast.error(fertilizerErr.message);
-                    } else {
-                      Meteor.call(
-                        "pruningDeadheading.insert",
-                        plantResponse,
-                        pruningDeadheading,
-                        (pruningDeadheadingErr, pruningDeadheadingResponse) => {
-                          if (pruningDeadheadingErr) {
-                            toast.error(pruningDeadheadingErr.message);
-                          } else {
-                            toast.success("Plant added!");
-                            this.props.history.push("/catalogue/plant");
-                          }
-                        }
-                      );
-                    }
-                  }
-                );
-              }
-            }
-          );
+          const meteorCall = Promise.promisify(Meteor.call, Meteor);
+
+          const calls = meteorCall("water.insert", plantResponse, water)
+            .then(
+              meteorCall.bind(
+                Meteor,
+                "fertilizer.insert",
+                plantResponse,
+                fertilizer
+              )
+            )
+            .then(
+              meteorCall.bind(
+                Meteor,
+                "pruningDeadheading.insert",
+                plantResponse,
+                pruningDeadheading
+              )
+            )
+            .then(meteorCall.bind(Meteor, "pest.insert", plantResponse, {}))
+            .then(meteorCall.bind(Meteor, "diary.insert", plantResponse, {}))
+            .then(
+              meteorCall.bind(
+                Meteor,
+                "soilComposition.insert",
+                plantResponse,
+                {}
+              )
+            );
+
+          calls
+            .then(function (res) {
+              console.log("Got Response!", res);
+              toast.success("Plant added!");
+              //props.history.push doesn't work properly here, all the data doesn't come through on the insert
+              window.location.href = `/plant/${plantResponse}`;
+            })
+            .catch(function (err) {
+              console.log("Got Error", err);
+              toast.error(err.message);
+            });
         }
       });
     }

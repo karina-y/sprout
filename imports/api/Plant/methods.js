@@ -23,7 +23,11 @@ Meteor.methods({
       validationContext.validate(data);
 
       if (!validationContext.isValid()) {
-        logger("danger", "Validation failed", JSON.stringify(validationContext.validationErrors()));
+        logger(
+          "danger",
+          "Validation failed",
+          JSON.stringify(validationContext.validationErrors())
+        );
         handleMethodException("Invalid arguments passed");
       } else {
         const response = Plant.insert(data);
@@ -43,17 +47,17 @@ Meteor.methods({
       data.updatedAt = new Date();
 
       const validationSchema = Plant.schema.pick(
-              "commonName",
-              "latinName",
-              "lightPreference",
-              "location",
-              "dateBought",
-              "datePlanted",
-              "locationBought",
-              "toxicity",
-              "category",
-              "companions",
-              "updatedAt"
+        "commonName",
+        "latinName",
+        "lightPreference",
+        "location",
+        "dateBought",
+        "datePlanted",
+        "locationBought",
+        "toxicity",
+        "category",
+        "companions",
+        "updatedAt"
       );
 
       const query = {
@@ -68,7 +72,7 @@ Meteor.methods({
           dateBought: data.dateBought,
           datePlanted: data.datePlanted,
           companions: data.companions,
-          updatedAt: data.updatedAt
+          updatedAt: data.updatedAt,
         },
       };
 
@@ -76,8 +80,16 @@ Meteor.methods({
       validationContext.validate(data);
 
       if (!validationContext.isValid()) {
-        logger("danger", "Validation failed", JSON.stringify(validationContext.validationErrors()));
-        handleMethodException(`'Validation failed', ${JSON.stringify(validationContext.validationErrors())}`);
+        logger(
+          "danger",
+          "Validation failed",
+          JSON.stringify(validationContext.validationErrors())
+        );
+        handleMethodException(
+          `'Validation failed', ${JSON.stringify(
+            validationContext.validationErrors()
+          )}`
+        );
       } else {
         logger("success", "passed", data);
         const response = Plant.update({ _id: id }, query);
@@ -88,40 +100,58 @@ Meteor.methods({
       handleMethodException(e.message);
     }
   },
-  "plant.delete": function plantDelete(data) {
+  "plant.delete": async function plantDelete(data) {
     try {
       if (typeof data !== "string" || !data) {
         logger("danger", "Invalid arguments passed");
         handleMethodException("Invalid arguments passed");
       } else {
-        let response = Plant.remove({ _id: data });
+        const promises = [
+          new Promise(function (resolve, reject) {
 
-        //TODO this is horrible, do better
-        if (response) {
-          response = Water.remove({ plantId: data });
+            Plant.remove({ _id: data }, (err, done) => {
+              err ? reject(err) : resolve(done);
+            });
+          }),
 
-          if (response) {
-            response = Fertilizer.remove({ plantId: data });
+          new Promise(function (resolve, reject) {
+            Water.remove({ plantId: data }, (err, done) => {
+              err ? reject(err) : resolve(done);
+            });
+          }),
 
-            if (response) {
-              response = Diary.remove({ plantId: data });
+          new Promise(function (resolve, reject) {
+            Fertilizer.remove({ plantId: data }, (err, done) => {
+              err ? reject(err) : resolve(done);
+            });
+          }),
 
-              if (response) {
-                response = Pest.remove({ plantId: data });
+          new Promise(function (resolve, reject) {
+            Diary.remove({ plantId: data }, (err, done) => {
+              err ? reject(err) : resolve(done);
+            });
+          }),
 
-                if (response) {
-                  response = PruningDeadheading.remove({ plantId: data });
+          new Promise(function (resolve, reject) {
+            Pest.remove({ plantId: data }, (err, done) => {
+              err ? reject(err) : resolve(done);
+            });
+          }),
 
-                  if (response) {
-                    response = SoilComposition.remove({ plantId: data });
-                  }
-                }
-              }
-            }
-          }
-        }
+          new Promise(function (resolve, reject) {
+            PruningDeadheading.remove({ plantId: data }, (err, done) => {
+              err ? reject(err) : resolve(done);
+            });
+          }),
 
-        return response;
+          new Promise(function (resolve, reject) {
+            SoilComposition.remove({ plantId: data }, (err, done) => {
+              err ? reject(err) : resolve(done);
+            });
+          }),
+        ];
+
+        return Promise.all(promises);
       }
     } catch (e) {
       logger("danger", e.message);
@@ -152,8 +182,10 @@ Meteor.methods({
           };
 
           if (plant.waterSchedule) water.waterSchedule = plant.waterSchedule;
-          if (plant.waterScheduleAuto) water.waterScheduleAuto = plant.waterScheduleAuto;
-          if (plant.waterPreference) water.waterPreference = plant.waterPreference;
+          if (plant.waterScheduleAuto)
+            water.waterScheduleAuto = plant.waterScheduleAuto;
+          if (plant.waterPreference)
+            water.waterPreference = plant.waterPreference;
           if (plant.waterTracker) water.waterTracker = plant.waterTracker;
 
           const fertilizer = {
@@ -163,8 +195,10 @@ Meteor.methods({
           if (plant.compost) fertilizer.compost = plant.compost;
           if (plant.nutrient) fertilizer.nutrient = plant.nutrient;
           if (plant.fertilizer) fertilizer.fertilizer = plant.fertilizer;
-          if (plant.fertilizerSchedule) fertilizer.fertilizerSchedule = plant.fertilizerSchedule;
-          if (plant.fertilizerTracker) fertilizer.fertilizerTracker = plant.fertilizerTracker;
+          if (plant.fertilizerSchedule)
+            fertilizer.fertilizerSchedule = plant.fertilizerSchedule;
+          if (plant.fertilizerTracker)
+            fertilizer.fertilizerTracker = plant.fertilizerTracker;
 
           const diary = {
             ...data,
@@ -185,11 +219,14 @@ Meteor.methods({
           if (plant.pruningPreference)
             pruningDeadheading.pruningPreference = plant.pruningPreference;
           if (plant.deadheadingPreference)
-            pruningDeadheading.deadheadingPreference = plant.deadheadingPreference;
-          if (plant.pruningSchedule) pruningDeadheading.pruningSchedule = plant.pruningSchedule;
+            pruningDeadheading.deadheadingPreference =
+              plant.deadheadingPreference;
+          if (plant.pruningSchedule)
+            pruningDeadheading.pruningSchedule = plant.pruningSchedule;
           if (plant.deadheadingSchedule)
             pruningDeadheading.deadheadingSchedule = plant.deadheadingSchedule;
-          if (plant.pruningTracker) pruningDeadheading.pruningTracker = plant.pruningTracker;
+          if (plant.pruningTracker)
+            pruningDeadheading.pruningTracker = plant.pruningTracker;
           if (plant.deadheadingTracker)
             pruningDeadheading.deadheadingTracker = plant.deadheadingTracker;
 
@@ -199,10 +236,12 @@ Meteor.methods({
 
           if (plant.tilled) soilComposition.tilled = plant.tilled;
           if (plant.soilType) soilComposition.soilType = plant.soilType;
-          if (plant.soilAmendment) soilComposition.soilAmendment = plant.soilAmendment;
+          if (plant.soilAmendment)
+            soilComposition.soilAmendment = plant.soilAmendment;
           if (plant.soilRecipe) soilComposition.soilRecipe = plant.soilRecipe;
           if (plant.soilCompositionTracker)
-            soilComposition.soilCompositionTracker = plant.soilCompositionTracker;
+            soilComposition.soilCompositionTracker =
+              plant.soilCompositionTracker;
 
           // break;
           // 		return;
@@ -210,7 +249,9 @@ Meteor.methods({
           let fertilizerResponse = Fertilizer.insert(fertilizer);
           let diaryResponse = Diary.insert(diary);
           let pestResponse = Pest.insert(pest);
-          let pruningDeadheadingResponse = PruningDeadheading.insert(pruningDeadheading);
+          let pruningDeadheadingResponse = PruningDeadheading.insert(
+            pruningDeadheading
+          );
           let soilCompositionResponse = SoilComposition.insert(soilComposition);
 
           let plantResponse = Plant.update(

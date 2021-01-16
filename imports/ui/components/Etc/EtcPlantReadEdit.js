@@ -172,6 +172,10 @@ const EtcPlantReadEdit = (props) => {
         </React.Fragment>
       ) : (
         <React.Fragment>
+          <SwipePanelContent icon="info" iconTitle="common name">
+            <p>{plant.commonName}</p>
+          </SwipePanelContent>
+
           <SwipePanelContent icon="category">
             <p>{plant.category}</p>
           </SwipePanelContent>
@@ -232,5 +236,6 @@ export default withTracker((props) => {
 
   return {
     categories,
+    editingType,
   };
 })(EtcPlantReadEdit);

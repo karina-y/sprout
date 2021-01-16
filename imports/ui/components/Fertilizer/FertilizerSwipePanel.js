@@ -35,7 +35,9 @@ const FertilizerSwipePanel = (props) => {
   } = useNewData({});
 
   useEffect(() => {
-    if (props.savingType === `${UpdateTypes.fertilizer.fertilizerEditModal}-edit`) {
+    if (
+      props.savingType === `${UpdateTypes.fertilizer.fertilizerEditModal}-edit`
+    ) {
       updatePlant(`${UpdateTypes.fertilizer.fertilizerEditModal}-edit`);
     }
   }, [props]);
@@ -44,8 +46,6 @@ const FertilizerSwipePanel = (props) => {
     const newPlantData = newData;
     const oldPlantData = props.plant;
     let data;
-
-    console.log("newPlantData", newPlantData);
 
     if (!type || !newPlantData || JSON.stringify(newPlantData) === "{}") {
       toast.error("No data entered.");
@@ -130,7 +130,7 @@ const FertilizerSwipePanel = (props) => {
 FertilizerSwipePanel.propTypes = {
   plant: PropTypes.object.isRequired,
   exitEditMode: PropTypes.func.isRequired,
-  savingType: PropTypes.string
+  savingType: PropTypes.string,
 };
 
 export default withTracker((props) => {
@@ -153,6 +153,6 @@ export default withTracker((props) => {
 
   return {
     plant,
-    savingType
+    savingType,
   };
 })(FertilizerSwipePanel);

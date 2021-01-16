@@ -35,8 +35,6 @@ const PestSwipePanel = (props) => {
   let pestTreatment = getLastPestTreatment(plant.pestTracker);
 
   const updatePlant = (type) => {
-    console.log("profile", type);
-
     const newPlantData = newData;
     const oldPlantData = plant;
 

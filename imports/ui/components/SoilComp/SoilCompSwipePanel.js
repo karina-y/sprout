@@ -47,9 +47,6 @@ const SoilCompSwipePanel = (props) => {
     const newPlantData = newData;
     const oldPlantData = props.plant;
 
-    console.log("type", type);
-    console.log("newPlantData", newPlantData);
-
     if (!type || !newPlantData || JSON.stringify(newPlantData) === "{}") {
       toast.error("No data entered.");
     } else {

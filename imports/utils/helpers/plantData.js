@@ -111,7 +111,7 @@ export function getLastPestTreatment(tracker) {
 }
 
 export function sortByLastDate(data) {
-  let sortedData;
+  let sortedData = [];
 
   if (data && Array.isArray(data) && data.length > 0) {
     sortedData = data.sort(function (a, b) {
