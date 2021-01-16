@@ -1,31 +1,22 @@
-import React, { Component, useEffect } from "react";
+import React, { useEffect } from "react";
 import { withTracker } from "meteor/react-meteor-data";
 import PropTypes from "prop-types";
-import autobind from "react-autobind";
 import "../PlantViewEdit/PlantSeedlingViewEdit.scss";
 import "react-datepicker/dist/react-datepicker.css";
 import {
   getHighlightDates,
-  getLastSoilMoisture,
-  getLastSoilPh,
-  lastChecked,
   sortByLastDate,
 } from "/imports/utils/helpers/plantData";
 import { toast } from "react-toastify";
 import PruningDeadheadingModals from "./PruningDeadheadingModals";
 import PruningDeadheadingReadEditPro from "./PruningDeadheadingReadEditPro";
-import useNewData from "../../hooks/useNewData";
-import usePruneType from "../../hooks/usePruneType";
+import useNewData from "/imports/ui/hooks/useNewData";
+import usePruneType from "/imports/ui/hooks/usePruneType";
 import UpdateTypes from "/imports/utils/constants/updateTypes";
-
-/*
-TODO
-- make types a file of constants (dateBought, datePlanted, etc)
-- maybe just move all the view components into one file and import that alone
-*/
+import PruningDeadheading from "/imports/api/PruningDeadheading/PruningDeadheading";
 
 const PruningDeadheadingSwipePanel = (props) => {
-  const plant = props.plant;
+  const pruningDeadheading = props.pruningDeadheading;
   const {
     newData,
     setNewData,
@@ -48,9 +39,9 @@ const PruningDeadheadingSwipePanel = (props) => {
 
   const updatePlant = (type) => {
     const newPlantData = newData;
-    const oldPlantData = props.plant;
+    const oldPlantData = pruningDeadheading;
 
-    //these are actually stored separately in the db, but for ease for the user they're in one view
+    //todo these are actually stored separately in the db, but for ease for the user they're in one view
     /*if (type === "pruningDeadheadingTracker") {
       type = pruneType;
     }*/
@@ -107,7 +98,10 @@ const PruningDeadheadingSwipePanel = (props) => {
 
   return (
     <div className="PlantSeedlingViewEdit">
-      <PruningDeadheadingReadEditPro plant={plant} updateData={changeNewData} />
+      <PruningDeadheadingReadEditPro
+        plant={pruningDeadheading}
+        updateData={changeNewData}
+      />
 
       {/* pruning */}
       <PruningDeadheadingModals
@@ -116,8 +110,8 @@ const PruningDeadheadingSwipePanel = (props) => {
         save={updatePlant}
         resetModal={resetData}
         newDataTracker={newData.pruningDeadheadingTracker}
-        tracker={plant.pruningDeadheadingTracker}
-        highlightDates={plant.highlightDates}
+        tracker={pruningDeadheading.pruningDeadheadingTracker}
+        highlightDates={pruningDeadheading.highlightDates}
         pruneType={pruneType}
         setPruneType={(val) => setPruneType(val)}
       />
@@ -127,21 +121,23 @@ const PruningDeadheadingSwipePanel = (props) => {
 };
 
 PruningDeadheadingSwipePanel.propTypes = {
-  plant: PropTypes.object.isRequired,
+  pruningDeadheading: PropTypes.object.isRequired,
   exitEditMode: PropTypes.func.isRequired,
-  savingType: PropTypes.string
+  id: PropTypes.string.isRequired,
+  savingType: PropTypes.string,
 };
 
 export default withTracker((props) => {
   const savingType = Session.get("savingType");
+  let pruningDeadheading =
+    PruningDeadheading.findOne({ plantId: props.id }) || {};
 
-  // const id = props.match.params.id
-  // const plant = Plant.findOne({_id: id})
-  let plant = props.plant;
-
-  if (plant.pruningTracker || plant.deadheadingTracker) {
-    const pruning = plant.pruningTracker || [];
-    const deadheading = plant.deadheadingTracker || [];
+  if (
+    pruningDeadheading.pruningTracker ||
+    pruningDeadheading.deadheadingTracker
+  ) {
+    const pruning = pruningDeadheading.pruningTracker || [];
+    const deadheading = pruningDeadheading.deadheadingTracker || [];
 
     for (let i = 0; i < pruning.length; i++) {
       pruning[i].action = "Pruned";
@@ -151,16 +147,18 @@ export default withTracker((props) => {
       deadheading[i].action = "Deadheaded";
     }
 
-    plant.pruningDeadheadingTracker = sortByLastDate(
+    pruningDeadheading.pruningDeadheadingTracker = sortByLastDate(
       pruning.concat(deadheading)
     );
-    plant.highlightDates = getHighlightDates(plant.pruningDeadheadingTracker);
+    pruningDeadheading.highlightDates = getHighlightDates(
+      pruningDeadheading.pruningDeadheadingTracker
+    );
   } else {
-    plant.pruningDeadheadingTracker = null;
+    pruningDeadheading.pruningDeadheadingTracker = null;
   }
 
   return {
-    plant,
+    pruningDeadheading,
     savingType,
   };
 })(PruningDeadheadingSwipePanel);

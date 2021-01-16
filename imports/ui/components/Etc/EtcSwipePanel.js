@@ -1,23 +1,12 @@
-import React, { Component, useEffect } from "react";
+import React, { useEffect } from "react";
 import PropTypes from "prop-types";
-import autobind from "react-autobind";
 import "../PlantViewEdit/PlantSeedlingViewEdit.scss";
 import "react-datepicker/dist/react-datepicker.css";
 import { toast } from "react-toastify";
 import EtcPlantReadEdit from "./EtcPlantReadEdit";
-import useNewData from "../../hooks/useNewData";
+import useNewData from "/imports/ui/hooks/useNewData";
 import UpdateTypes from "/imports/utils/constants/updateTypes";
 import { withTracker } from "meteor/react-meteor-data";
-import {
-  getHighlightDates,
-  sortByLastDate,
-} from "../../../utils/helpers/plantData";
-
-/*
-TODO
-- make types a file of constants (dateBought, datePlanted, etc)
-- maybe just move all the view components into one file and import that alone
-*/
 
 const EtcSwipePanel = (props) => {
   const plant = props.plant;
@@ -37,7 +26,7 @@ const EtcSwipePanel = (props) => {
     if (!type || !newPlantData || JSON.stringify(newPlantData) === "{}") {
       toast.error("No data entered.");
     } else {
-      //TODO abstract each of these cases out
+      //TODO how can i update only the data that needs updating, instead of doing all this
       let data = {
         commonName: newPlantData.commonName || oldPlantData.commonName,
         latinName: newPlantData.latinName || oldPlantData.latinName,
@@ -72,9 +61,11 @@ const EtcSwipePanel = (props) => {
             toast.error(err.message);
           } else {
             toast.success("Successfully saved new entry.");
-
-            //reset the data
             resetData();
+
+            if (newPlantData.latinName !== oldPlantData.latinName) {
+              Session.set("pageTitle", newPlantData.latinName);
+            }
           }
         });
       } else {
@@ -101,7 +92,7 @@ EtcSwipePanel.propTypes = {
   savingType: PropTypes.string,
 };
 
-export default withTracker((props) => {
+export default withTracker(() => {
   const savingType = Session.get("savingType");
 
   return {

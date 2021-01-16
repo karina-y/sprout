@@ -34,6 +34,9 @@ const UpdateTypes = {
     etcEditModal: "etcTracker",
     etcHistoryModal: "etcTracker-history",
   },
+  general: {
+    dates: "dates",
+  },
 };
 
 export default UpdateTypes;

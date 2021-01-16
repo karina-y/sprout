@@ -15,15 +15,10 @@ import WaterReadEdit from "./WaterReadEdit";
 import WaterReadEditPro from "./WaterReadEditPro";
 import useNewData from "/imports/ui/hooks/useNewData";
 import UpdateTypes from "/imports/utils/constants/updateTypes";
-
-/*
-TODO
-- make types a file of constants (dateBought, datePlanted, etc)
-- maybe just move all the view components into one file and import that alone
-*/
+import Water from "../../../api/Water/Water";
 
 const WaterSwipePanel = (props) => {
-  const plant = props.plant;
+  const water = props.water;
   const { newData, setNewData, changeNewData, addTrackerDate } = useNewData({});
 
   useEffect(() => {
@@ -34,7 +29,7 @@ const WaterSwipePanel = (props) => {
 
   const updatePlant = (type) => {
     const newPlantData = newData;
-    const oldPlantData = props.plant;
+    const oldPlantData = water;
     let data;
 
     if (!newPlantData || JSON.stringify(newPlantData) === "{}") {
@@ -92,9 +87,9 @@ const WaterSwipePanel = (props) => {
     <div className="PlantSeedlingViewEdit">
       {/* water */}
       {Meteor.isPro ? (
-        <WaterReadEditPro item={plant} updateData={changeNewData} />
+        <WaterReadEditPro item={water} updateData={changeNewData} />
       ) : (
-        <WaterReadEdit item={plant} updateData={changeNewData} />
+        <WaterReadEdit item={water} updateData={changeNewData} />
       )}
 
       {/* modals */}
@@ -103,42 +98,37 @@ const WaterSwipePanel = (props) => {
         save={updatePlant}
         resetModal={resetData}
         newDataTracker={newData.waterTracker}
-        tracker={plant.waterTracker}
-        highlightDates={plant.highlightDates}
+        tracker={water.waterTracker}
+        highlightDates={water.highlightDates}
       />
     </div>
   );
 };
 
 WaterSwipePanel.propTypes = {
-  plant: PropTypes.object.isRequired,
+  water: PropTypes.object.isRequired,
   exitEditMode: PropTypes.func.isRequired,
+  id: PropTypes.string.isRequired,
   savingType: PropTypes.string,
 };
 
 export default withTracker((props) => {
   const savingType = Session.get("savingType");
-
-  //TODO each category (ie water, fertilizer, etc) needs to have their own collections
-  //TODO plant will be sent from props but water will be pulled here
-
-  // const id = props.match.params.id
-  // let plant = Plant.findOne({_id: id})
-  let plant = props.plant;
+  let water = Water.findOne({ plantId: props.id }) || {};
 
   //sort the data
-  plant.waterTracker = sortByLastDate(plant.waterTracker);
+  water.waterTracker = sortByLastDate(water.waterTracker);
 
-  plant.daysSinceWatered = getDaysSinceAction(plant.waterTracker);
-  plant.waterCondition = getPlantCondition(
-    plant.waterTracker,
-    plant.daysSinceWatered,
-    plant.waterSchedule
+  water.daysSinceWatered = getDaysSinceAction(water.waterTracker);
+  water.waterCondition = getPlantCondition(
+    water.waterTracker,
+    water.daysSinceWatered,
+    water.waterSchedule
   );
-  plant.highlightDates = getHighlightDates(plant.waterTracker);
+  water.highlightDates = getHighlightDates(water.waterTracker);
 
   return {
-    plant,
+    water,
     savingType,
   };
 })(WaterSwipePanel);

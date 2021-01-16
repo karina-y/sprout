@@ -54,9 +54,15 @@ Meteor.methods({
       validationContext.validate(data);
 
       if (!validationContext.isValid()) {
-        logger("danger", "Validation failed", JSON.stringify(validationContext.validationErrors()));
+        logger(
+          "danger",
+          "Validation failed",
+          JSON.stringify(validationContext.validationErrors())
+        );
         handleMethodException(
-          `Validation failed, ${JSON.stringify(validationContext.validationErrors())}`
+          `Validation failed, ${JSON.stringify(
+            validationContext.validationErrors()
+          )}`
         );
         // throw new Meteor.Error('500', 'Invalid arguments passed')
       } else {
@@ -85,7 +91,10 @@ Meteor.methods({
       // handleMethodException('Please check your inputs and try again.')
     }
   },
-  "account.updatePassword": function accountUpdatePassword(password, newPassword) {
+  "account.updatePassword": function accountUpdatePassword(
+    password,
+    newPassword
+  ) {
     try {
       const data = {
         password: password,
@@ -107,9 +116,15 @@ Meteor.methods({
       validationContext.validate(data);
 
       if (!validationContext.isValid()) {
-        logger("danger", "Validation failed", JSON.stringify(validationContext.validationErrors()));
+        logger(
+          "danger",
+          "Validation failed",
+          JSON.stringify(validationContext.validationErrors())
+        );
         handleMethodException(
-          `Validation failed, ${JSON.stringify(validationContext.validationErrors())}`
+          `Validation failed, ${JSON.stringify(
+            validationContext.validationErrors()
+          )}`
         );
         // throw new Meteor.Error('500', 'Invalid arguments passed')
       } else {
@@ -126,14 +141,23 @@ Meteor.methods({
       // handleMethodException('Please check your inputs and try again.')
     }
   },
-  "account.updateProfile": function accountUpdateProfile(newProfile, theme, isPro) {
-    if (!newProfile && JSON.stringify(newProfile) === "{}" && theme == null && isPro == null) {
+  "account.updateProfile": function accountUpdateProfile(
+    newProfile,
+    theme,
+    isPro
+  ) {
+    if (
+      !newProfile &&
+      JSON.stringify(newProfile) === "{}" &&
+      theme == null &&
+      isPro == null
+    ) {
       logger("danger", "No Data entered.");
       handleMethodException("Please check your inputs and try again.");
     } else {
       if (!newProfile && JSON.stringify(newProfile) === "{}") {
         //just theme and/or pro change
-        //TODO clean this up
+        //TODO remove for prod
         if (Meteor.isPro !== isPro) {
           if (isPro) {
             Roles.addUsersToRoles(userId, "pro");
@@ -172,7 +196,9 @@ Meteor.methods({
             },
           });
 
-          const validationContext = new SimpleSchema(validationSchema).newContext();
+          const validationContext = new SimpleSchema(
+            validationSchema
+          ).newContext();
           validationContext.validate(newProfile);
 
           if (!validationContext.isValid()) {

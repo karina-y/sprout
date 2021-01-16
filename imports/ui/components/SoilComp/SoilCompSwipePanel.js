@@ -1,7 +1,6 @@
-import React, { Component, useEffect } from "react";
+import React, { useEffect } from "react";
 import { withTracker } from "meteor/react-meteor-data";
 import PropTypes from "prop-types";
-import autobind from "react-autobind";
 import "../PlantViewEdit/PlantSeedlingViewEdit.scss";
 import "react-datepicker/dist/react-datepicker.css";
 import {
@@ -15,20 +14,15 @@ import { toast } from "react-toastify";
 import SoilCompModals from "./SoilCompModals";
 import SoilCompReadEdit from "./SoilCompReadEdit";
 import SoilCompReadEditPro from "./SoilCompReadEditPro";
-import useNewData from "../../hooks/useNewData";
+import useNewData from "/imports/ui/hooks/useNewData";
 import UpdateTypes from "/imports/utils/constants/updateTypes";
-
-/*
-TODO
-- make types a file of constants (dateBought, datePlanted, etc)
-- maybe just move all the view components into one file and import that alone
-*/
+import SoilComposition from "/imports/api/SoilComposition/SoilComposition";
 
 const SoilCompSwipePanel = (props) => {
-  const plant = props.plant;
-  const soilCompLastChecked = lastChecked(plant.soilCompositionTracker);
-  const soilPh = getLastSoilPh(plant.soilCompositionTracker);
-  const soilMoisture = getLastSoilMoisture(plant.soilCompositionTracker);
+  const soilComp = props.soilComp;
+  const soilCompLastChecked = lastChecked(soilComp.soilCompositionTracker);
+  const soilPh = getLastSoilPh(soilComp.soilCompositionTracker);
+  const soilMoisture = getLastSoilMoisture(soilComp.soilCompositionTracker);
   const {
     newData,
     setNewData,
@@ -45,7 +39,7 @@ const SoilCompSwipePanel = (props) => {
 
   const updatePlant = (type) => {
     const newPlantData = newData;
-    const oldPlantData = props.plant;
+    const oldPlantData = soilComp;
 
     if (!type || !newPlantData || JSON.stringify(newPlantData) === "{}") {
       toast.error("No data entered.");
@@ -103,7 +97,7 @@ const SoilCompSwipePanel = (props) => {
       {/* soil comp */}
       {Meteor.isPro ? (
         <SoilCompReadEditPro
-          item={plant}
+          item={soilComp}
           updateData={changeNewData}
           soilCompLastChecked={soilCompLastChecked}
           soilMoisture={soilMoisture}
@@ -112,7 +106,7 @@ const SoilCompSwipePanel = (props) => {
         />
       ) : (
         <SoilCompReadEdit
-          item={plant}
+          item={soilComp}
           updateData={changeNewData}
           soilCompLastChecked={soilCompLastChecked}
           soilMoisture={soilMoisture}
@@ -128,52 +122,57 @@ const SoilCompSwipePanel = (props) => {
         save={updatePlant}
         resetModal={resetData}
         newDataTracker={newData.soilCompositionTracker}
-        tracker={plant.soilCompositionTracker}
+        tracker={soilComp.soilCompositionTracker}
         category={props.category}
-        highlightDates={plant.highlightDates}
+        highlightDates={soilComp.highlightDates}
       />
     </div>
   );
 };
 
 SoilCompSwipePanel.propTypes = {
-  plant: PropTypes.object.isRequired,
+  soilComp: PropTypes.object.isRequired,
   exitEditMode: PropTypes.func.isRequired,
-  savingType: PropTypes.string
+  id: PropTypes.string.isRequired,
+  savingType: PropTypes.string,
 };
 
 export default withTracker((props) => {
   const savingType = Session.get("savingType");
-  let plant = props.plant;
+  let soilComp = SoilComposition.findOne({ plantId: props.id }) || {};
 
   //sort the data
-  if (plant) {
-    plant.soilCompositionTracker = sortByLastDate(plant.soilCompositionTracker);
-    plant.highlightDates = getHighlightDates(plant.soilCompositionTracker);
+  if (soilComp) {
+    soilComp.soilCompositionTracker = sortByLastDate(
+      soilComp.soilCompositionTracker
+    );
+    soilComp.highlightDates = getHighlightDates(
+      soilComp.soilCompositionTracker
+    );
 
     //filtering so we only show the values necessary on the calendar (just in case the user changes the category)
     if (props.category === "potted") {
-      plant.soilCompositionTracker = plant.soilCompositionTracker.filter(
+      soilComp.soilCompositionTracker = soilComp.soilCompositionTracker.filter(
         function (obj) {
           return obj.moisture;
         }
       );
     } else {
-      plant.soilCompositionTracker = plant.soilCompositionTracker.filter(
+      soilComp.soilCompositionTracker = soilComp.soilCompositionTracker.filter(
         function (obj) {
           return obj.ph;
         }
       );
     }
   } else {
-    plant = {
+    soilComp = {
       soilCompositionTracker: null,
       highlightDates: null,
     };
   }
 
   return {
-    plant,
+    soilComp,
     savingType,
   };
 })(SoilCompSwipePanel);

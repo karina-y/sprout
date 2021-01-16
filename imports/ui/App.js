@@ -5,7 +5,7 @@ import "./stylesheets/sitewide.scss";
 // import HomePage from './pages/HomePage';
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
-import { toast, ToastContainer } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import Loading from "./components/Shared/Loading/Loading";
 import { Meteor } from "meteor/meteor";
 import Preferences from "../api/Preferences/Preferences";
@@ -19,14 +19,22 @@ import Authorized from "./pages/Authorized";
 const AsyncLogin = asyncComponent(() => import("./pages/Login"));
 const AsyncSignup = asyncComponent(() => import("./pages/Signup"));
 const AsyncAccount = asyncComponent(() => import("./pages/Account/Account"));
-const AsyncItemCatalogue = asyncComponent(() => import("./pages/ItemCatalogue/ItemCatalogue"));
-const AsyncLegalStuff = asyncComponent(() => import("./pages/LegalStuff/LegalStuff"));
-const AsyncPlantViewEdit = asyncComponent(() => import("./components/PlantViewEdit/PlantViewEdit"));
+const AsyncItemCatalogue = asyncComponent(() =>
+  import("./pages/ItemCatalogue/ItemCatalogue")
+);
+const AsyncLegalStuff = asyncComponent(() =>
+  import("./pages/LegalStuff/LegalStuff")
+);
+const AsyncPlantViewEdit = asyncComponent(() =>
+  import("./components/PlantViewEdit/PlantViewEdit")
+);
 const AsyncSeedlingViewEdit = asyncComponent(() =>
   import("./components/SeedlingViewEdit/SeedlingViewEdit")
 );
 const AsyncPlantAdd = asyncComponent(() => import("./pages/PlantAdd/PlantAdd"));
-const AsyncSeedlingAdd = asyncComponent(() => import("./pages/SeedlingAdd/SeedlingAdd"));
+const AsyncSeedlingAdd = asyncComponent(() =>
+  import("./pages/SeedlingAdd/SeedlingAdd")
+);
 const AsyncNoMatch = asyncComponent(() => import("./pages/NoMatch"));
 
 /*
@@ -63,13 +71,21 @@ class App extends Component {
 
         <ScrollToTop />
 
-        <div className={`App ${this.state.accessible ? "accessible" : ""}`} id="pageWrap">
+        <div
+          className={`App ${this.state.accessible ? "accessible" : ""}`}
+          id="pageWrap"
+        >
           <Switch>
             {/*<Route exact path="/" render={props => <HomePage {...props} />} />*/}
 
             <Authenticated exact path="/" component={ToDo} {...props} />
 
-            <Authenticated exact path="/account" component={AsyncAccount} {...props} />
+            <Authenticated
+              exact
+              path="/account"
+              component={AsyncAccount}
+              {...props}
+            />
 
             <Authenticated
               exact
@@ -78,19 +94,51 @@ class App extends Component {
               {...props}
             />
 
-            <Authorized exact path="/seedling" component={AsyncSeedlingAdd} {...props} />
+            <Authorized
+              exact
+              path="/seedling"
+              component={AsyncSeedlingAdd}
+              {...props}
+            />
 
-            <Authorized exact path="/seedling/:id" component={AsyncSeedlingViewEdit} {...props} />
+            <Authorized
+              exact
+              path="/seedling/:id"
+              component={AsyncSeedlingViewEdit}
+              {...props}
+            />
 
-            <Authenticated exact path="/plant" component={AsyncPlantAdd} {...props} />
+            <Authenticated
+              exact
+              path="/plant"
+              component={AsyncPlantAdd}
+              {...props}
+            />
 
-            <Authenticated exact path="/plant/:id" component={AsyncPlantViewEdit} {...props} />
+            <Authenticated
+              exact
+              path="/plant/:id"
+              component={AsyncPlantViewEdit}
+              {...props}
+            />
 
-            <Route exact path="/login" render={(props) => <AsyncLogin {...props} />} />
+            <Route
+              exact
+              path="/login"
+              render={(props) => <AsyncLogin {...props} />}
+            />
 
-            <Route exact path="/sign-up" render={(props) => <AsyncSignup {...props} />} />
+            <Route
+              exact
+              path="/sign-up"
+              render={(props) => <AsyncSignup {...props} />}
+            />
 
-            <Route exact path="/legal-stuff" render={(props) => <AsyncLegalStuff {...props} />} />
+            <Route
+              exact
+              path="/legal-stuff"
+              render={(props) => <AsyncLegalStuff {...props} />}
+            />
 
             {/*TODO 404*/}
             <Route component={AsyncNoMatch} />

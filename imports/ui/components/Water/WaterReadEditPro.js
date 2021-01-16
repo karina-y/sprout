@@ -3,12 +3,6 @@ import PropTypes from "prop-types";
 import SwipePanelContent from "../Shared/SwipePanelContent/SwipePanelContent";
 import UpdateTypes from "/imports/utils/constants/updateTypes";
 import { withTracker } from "meteor/react-meteor-data";
-import {
-  getDaysSinceAction,
-  getHighlightDates,
-  getPlantCondition,
-  sortByLastDate,
-} from "../../../utils/helpers/plantData";
 
 const WaterReadEditPro = (props) => {
   const { item, updateData, editingType } = props;

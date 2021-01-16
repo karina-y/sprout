@@ -46,8 +46,7 @@ const BottomNavManage = (props) => {
     //selecting which swipe view to edit
     switch (swipeViewIndex) {
       case 0:
-        //todo add dates to updatetypes
-        editing = "dates";
+        editing = UpdateTypes.general.dates;
         break;
       case 1:
         editing = UpdateTypes.water.waterEditModal;

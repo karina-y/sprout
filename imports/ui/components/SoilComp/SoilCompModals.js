@@ -3,13 +3,7 @@ import PropTypes from "prop-types";
 import DatePicker from "react-datepicker";
 import ItemAddEntryModal from "../Shared/ItemAddEntryModal";
 import ItemViewHistoryModal from "../Shared/ItemViewHistoryModal";
-import {
-  getDaysSinceAction,
-  getHighlightDates,
-  getPlantCondition,
-  parseDate,
-  sortByLastDate,
-} from "/imports/utils/helpers/plantData";
+import { parseDate } from "/imports/utils/helpers/plantData";
 import UpdateTypes from "/imports/utils/constants/updateTypes";
 import { withTracker } from "meteor/react-meteor-data";
 

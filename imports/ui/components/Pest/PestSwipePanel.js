@@ -13,16 +13,11 @@ import {
 import { toast } from "react-toastify";
 import PestModals from "./PestModals";
 import PestReadEdit from "./PestReadEdit";
-import useNewData from "../../hooks/useNewData";
-
-/*
-TODO
-- make types a file of constants (dateBought, datePlanted, etc)
-- maybe just move all the view components into one file and import that alone
-*/
+import useNewData from "/imports/ui/hooks/useNewData";
+import Pest from "../../../api/Pest/Pest";
 
 const PestSwipePanel = (props) => {
-  const plant = props.plant;
+  const pest = props.pest;
   const {
     newData,
     setNewData,
@@ -30,13 +25,13 @@ const PestSwipePanel = (props) => {
     addTrackerDate,
     addTrackerDetails,
   } = useNewData({});
-  let pestLastChecked = lastChecked(plant.pestTracker);
-  let pestName = getLastPestName(plant.pestTracker);
-  let pestTreatment = getLastPestTreatment(plant.pestTracker);
+  let pestLastChecked = lastChecked(pest.pestTracker);
+  let pestName = getLastPestName(pest.pestTracker);
+  let pestTreatment = getLastPestTreatment(pest.pestTracker);
 
   const updatePlant = (type) => {
     const newPlantData = newData;
-    const oldPlantData = plant;
+    const oldPlantData = pest;
 
     if (!type || !newPlantData || JSON.stringify(newPlantData) === "{}") {
       toast.error("No data entered.");
@@ -73,7 +68,7 @@ const PestSwipePanel = (props) => {
   return (
     <div className="PlantSeedlingViewEdit">
       <PestReadEdit
-        item={plant}
+        item={pest}
         updateData={changeNewData}
         pestLastChecked={pestLastChecked}
         pestName={pestName}
@@ -87,34 +82,32 @@ const PestSwipePanel = (props) => {
         save={updatePlant}
         resetModal={resetData}
         newDataTracker={newData.pestTracker}
-        tracker={plant.pestTracker}
-        highlightDates={plant.highlightDates}
+        tracker={pest.pestTracker}
+        highlightDates={pest.highlightDates}
       />
     </div>
   );
 };
 
 PestSwipePanel.propTypes = {
-  plant: PropTypes.object.isRequired,
+  pest: PropTypes.object.isRequired,
 };
 
 export default withTracker((props) => {
-  // const id = props.match.params.id
-  // const plant = Plant.findOne({_id: id})
-  let plant = props.plant;
+  let pest = Pest.findOne({ plantId: props.id }) || {};
 
   //sort the data
-  if (plant) {
-    plant.pestTracker = sortByLastDate(plant.pestTracker);
-    plant.highlightDates = getHighlightDates(plant.pestTracker);
+  if (pest) {
+    pest.pestTracker = sortByLastDate(pest.pestTracker);
+    pest.highlightDates = getHighlightDates(pest.pestTracker);
   } else {
-    plant = {
+    pest = {
       pestTracker: null,
       highlightDates: null,
     };
   }
 
   return {
-    plant,
+    pest,
   };
 })(PestSwipePanel);

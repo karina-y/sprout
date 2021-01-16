@@ -84,38 +84,23 @@ class SeedlingViewEdit extends Component {
     Session.set("savingType", null);
   }
 
-  //TODO turn into hook
-  static getHighlightDates(items, type) {
-    let dates = [];
-
-    if ((type === "dateBought" || type === "datePlanted") && items) {
-      dates.push(new Date(items));
-    } else if (items && items.length > 0) {
-      for (let i = 0; i < items.length; i++) {
-        dates.push(new Date(items[i].date));
-      }
-    }
-
-    return dates;
-  }
-
   //TODO
-  updatePhoto(e) {
-    let files = e.target.files;
-    let file = files[0];
-    let fileReader = new FileReader();
-
-    if (files.length === 0) {
-      return;
-    }
-
-    fileReader.onload = function (event) {
-      let dataUrl = event.target.result;
-      template.dataUrl.set(dataUrl);
-    };
-
-    fileReader.readAsDataURL(file);
-  }
+  // updatePhoto(e) {
+  //   let files = e.target.files;
+  //   let file = files[0];
+  //   let fileReader = new FileReader();
+  //
+  //   if (files.length === 0) {
+  //     return;
+  //   }
+  //
+  //   fileReader.onload = function (event) {
+  //     let dataUrl = event.target.result;
+  //     template.dataUrl.set(dataUrl);
+  //   };
+  //
+  //   fileReader.readAsDataURL(file);
+  // }
 
   //TODO this is heavy! simplify this and break it out into diff functions (one separate for tracker for sure)
   //tracker should be able to be simplified

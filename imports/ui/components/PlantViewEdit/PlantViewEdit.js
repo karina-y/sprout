@@ -16,19 +16,7 @@ import PruningDeadheadingSwipePanel from "../PruningDeadheading/PruningDeadheadi
 import PestSwipePanel from "../Pest/PestSwipePanel";
 import DiarySwipePanel from "../Diary/DiarySwipePanel";
 import EtcSwipePanel from "../Etc/EtcSwipePanel";
-import Water from "/imports/api/Water/Water";
-import Fertilizer from "/imports/api/Fertilizer/Fertilizer";
-import Diary from "/imports/api/Diary/Diary";
-import Pest from "/imports/api/Pest/Pest";
-import PruningDeadheading from "/imports/api/PruningDeadheading/PruningDeadheading";
-import SoilComposition from "/imports/api/SoilComposition/SoilComposition";
 import BottomNavManage from "../BottomNav/BottomNavManage";
-
-/*
-TODO
-- make types a file of constants (dateBought, datePlanted, etc)
-- maybe just move all the view components into one file and import that alone
-*/
 
 class PlantViewEdit extends Component {
   constructor(props) {
@@ -63,22 +51,22 @@ class PlantViewEdit extends Component {
   }
 
   //TODO
-  updatePhoto(e) {
-    let files = e.target.files;
-    let file = files[0];
-    let fileReader = new FileReader();
-
-    if (files.length === 0) {
-      return;
-    }
-
-    fileReader.onload = function (event) {
-      let dataUrl = event.target.result;
-      template.dataUrl.set(dataUrl);
-    };
-
-    fileReader.readAsDataURL(file);
-  }
+  // updatePhoto(e) {
+  //   let files = e.target.files;
+  //   let file = files[0];
+  //   let fileReader = new FileReader();
+  //
+  //   if (files.length === 0) {
+  //     return;
+  //   }
+  //
+  //   fileReader.onload = function (event) {
+  //     let dataUrl = event.target.result;
+  //     template.dataUrl.set(dataUrl);
+  //   };
+  //
+  //   fileReader.readAsDataURL(file);
+  // }
 
   exitEditMode() {
     Session.set("modalOpen", null);
@@ -110,16 +98,7 @@ class PlantViewEdit extends Component {
   }
 
   render() {
-    const {
-      plant,
-      water,
-      fertilizer,
-      diary,
-      pest,
-      pruningDeadheading,
-      soilComposition,
-      editingType,
-    } = this.props;
+    const { plant, editingType } = this.props;
 
     const { swipeViewIndex } = this.state;
 
@@ -156,27 +135,27 @@ class PlantViewEdit extends Component {
           index={swipeViewIndex}
           onChangeIndex={this.handleChangeIndex}
         >
-          <WaterSwipePanel exitEditMode={this.exitEditMode} plant={water} />
+          <WaterSwipePanel exitEditMode={this.exitEditMode} id={plant._id} />
 
           <FertilizerSwipePanel
             exitEditMode={this.exitEditMode}
-            plant={fertilizer}
+            id={plant._id}
           />
 
           <PruningDeadheadingSwipePanel
             exitEditMode={this.exitEditMode}
-            plant={pruningDeadheading}
+            id={plant._id}
           />
 
           <SoilCompSwipePanel
             exitEditMode={this.exitEditMode}
-            plant={soilComposition}
+            id={plant._id}
             category={plant.category}
           />
 
-          <PestSwipePanel exitEditMode={this.exitEditMode} plant={pest} />
+          <PestSwipePanel exitEditMode={this.exitEditMode} id={plant._id} />
 
-          <DiarySwipePanel exitEditMode={this.exitEditMode} plant={diary} />
+          <DiarySwipePanel exitEditMode={this.exitEditMode} id={plant._id} />
 
           <EtcSwipePanel exitEditMode={this.exitEditMode} plant={plant} />
         </SwipeableViews>
@@ -213,22 +192,10 @@ export default withTracker((props) => {
     props.history.push("/catalogue/plant");
   }
 
-  const water = Water.findOne({ plantId: id }) || {};
-  const fertilizer = Fertilizer.findOne({ plantId: id }) || {};
-  const diary = Diary.findOne({ plantId: id }) || {};
-  const pest = Pest.findOne({ plantId: id }) || {};
-  const pruningDeadheading = PruningDeadheading.findOne({ plantId: id }) || {};
-  const soilComposition = SoilComposition.findOne({ plantId: id }) || {};
   const editingType = Session.get("editingType");
 
   return {
     plant,
-    water,
-    fertilizer,
-    diary,
-    pest,
-    pruningDeadheading,
-    soilComposition,
     editingType,
   };
 })(PlantViewEdit);

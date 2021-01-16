@@ -1,28 +1,22 @@
-import React, { Component } from "react";
+import React from "react";
 import { withTracker } from "meteor/react-meteor-data";
 import PropTypes from "prop-types";
-import autobind from "react-autobind";
 import "../PlantViewEdit/PlantSeedlingViewEdit.scss";
 import "react-datepicker/dist/react-datepicker.css";
 import { sortByLastDate } from "/imports/utils/helpers/plantData";
 import { toast } from "react-toastify";
 import DiaryModals from "./DiaryModals";
 import DiaryReadEdit from "./DiaryReadEdit";
-import useNewData from "../../hooks/useNewData";
-
-/*
-TODO
-- make types a file of constants (dateBought, datePlanted, etc)
-- maybe just move all the view components into one file and import that alone
-*/
+import useNewData from "/imports/ui/hooks/useNewData";
+import Diary from "/imports/api/Diary/Diary";
 
 const DiarySwipePanel = (props) => {
-  const plant = props.plant;
+  const diary = props.diary;
   const { newData, setNewData, changeNewData } = useNewData({});
 
   const updatePlant = (type) => {
     const newPlantData = newData;
-    const oldPlantData = plant;
+    const oldPlantData = diary;
 
     if (!type || !newPlantData || JSON.stringify(newPlantData) === "{}") {
       toast.error("No data entered.");
@@ -40,8 +34,6 @@ const DiarySwipePanel = (props) => {
             toast.error(err.message);
           } else {
             toast.success("Successfully saved new entry.");
-
-            //reset the data
             resetData();
           }
         });
@@ -59,40 +51,38 @@ const DiarySwipePanel = (props) => {
   return (
     <div className="PlantSeedlingViewEdit">
       {/* diary */}
-      <DiaryReadEdit item={plant} updateData={changeNewData} />
+      <DiaryReadEdit item={diary} updateData={changeNewData} />
 
       {/* diary */}
       <DiaryModals
         updateData={changeNewData}
         save={updatePlant}
         resetModal={resetData}
-        diary={plant.diary}
+        diary={diary.diary}
       />
     </div>
   );
 };
 
 DiarySwipePanel.propTypes = {
-  plant: PropTypes.object.isRequired,
+  diary: PropTypes.object.isRequired,
+  id: PropTypes.string.isRequired,
   exitEditMode: PropTypes.func.isRequired,
 };
 
 export default withTracker((props) => {
-  // const id = props.match.params.id
-  // const plant = Plant.findOne({_id: id})
-  // const categories = Category.find({}).fetch()
-  let plant = props.plant;
+  let diary = Diary.findOne({ plantId: props.id }) || {};
 
   //sort the data
-  if (plant) {
-    plant.diary = sortByLastDate(plant.diary);
+  if (diary) {
+    diary.diary = sortByLastDate(diary.diary);
   } else {
-    plant = {
+    diary = {
       diary: null,
     };
   }
 
   return {
-    plant,
+    diary,
   };
 })(DiarySwipePanel);
