@@ -79,6 +79,8 @@ Meteor.methods({
       } else {
         logger("success", "passed", data);
         const response = SoilComposition.update({ _id: id }, query);
+
+        //todo for all methods, if response is 0 then something went wrong, need to throw err to the client
         return response;
       }
     } catch (e) {

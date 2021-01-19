@@ -4,7 +4,6 @@ import SwipePanelContent from "../Shared/SwipePanelContent/SwipePanelContent";
 import SoilTypes from "/imports/utils/constants/soilTypes";
 import UpdateTypes from "/imports/utils/constants/updateTypes";
 import { withTracker } from "meteor/react-meteor-data";
-import PruningDeadheadingReadEditPro from "../PruningDeadheading/PruningDeadheadingReadEditPro";
 
 const SoilCompReadEditPro = (props) => {
   const {
@@ -14,7 +13,7 @@ const SoilCompReadEditPro = (props) => {
     soilMoisture,
     soilPh,
     category,
-    editingType,
+    editing,
   } = props;
 
   return (
@@ -29,7 +28,7 @@ const SoilCompReadEditPro = (props) => {
       </SwipePanelContent>
 
       {category === "in-ground" ? (
-        editingType === UpdateTypes.soilComp.soilCompEditModal ? (
+        editing ? (
           <React.Fragment>
             <SwipePanelContent icon="tilling">
               <p className="modern-input">
@@ -109,7 +108,7 @@ const SoilCompReadEditPro = (props) => {
       )}
 
       {category === "potted" ? (
-        editingType === UpdateTypes.soilComp.soilCompEditModal ? (
+        editing ? (
           <SwipePanelContent icon="soilRecipe">
             <p className="modern-input">
               <label>soil recipe</label>
@@ -154,13 +153,14 @@ SoilCompReadEditPro.propTypes = {
   soilCompLastChecked: PropTypes.string.isRequired,
   soilMoisture: PropTypes.string,
   soilPh: PropTypes.number,
-  editingType: PropTypes.string,
+  editing: PropTypes.bool.isRequired,
 };
 
 export default withTracker(() => {
   const editingType = Session.get("editingType");
+  const editing = editingType === UpdateTypes.soilComp.soilCompEditModal;
 
   return {
-    editingType,
+    editing,
   };
 })(SoilCompReadEditPro);

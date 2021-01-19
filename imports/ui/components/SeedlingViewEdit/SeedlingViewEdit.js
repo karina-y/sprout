@@ -462,15 +462,13 @@ class SeedlingViewEdit extends Component {
 
           {/* pest */}
           <PestReadEdit
-            item={seedling}
-            updateData={this.updateData}
             pestLastChecked={pestLastChecked}
             pestName={pestName}
             pestTreatment={pestTreatment}
           />
 
           {/* diary */}
-          <DiaryReadEdit item={seedling} updateData={this.updateData} />
+          <DiaryReadEdit item={seedling} />
 
           <EtcSeedlingReadEdit
             seedling={seedling}
@@ -646,6 +644,8 @@ export default withTracker((props) => {
   } else {
     seedling.pruningDeadheadingTracker = null;
   }
+
+  //todo do i need this?
   // seedling.soilCondition = getSoilCondition(seedling.soilCompositionTracker)
 
   return {

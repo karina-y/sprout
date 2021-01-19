@@ -5,13 +5,13 @@ import UpdateTypes from "/imports/utils/constants/updateTypes";
 import { withTracker } from "meteor/react-meteor-data";
 
 const FertilizerReadEditPro = (props) => {
-  const { editingType, item, updateData, fertilizerContent } = props;
+  const { editing, item, updateData, fertilizerContent } = props;
 
   return (
     <div className="swipe-slide">
       <p className="swipe-title title-ming">Fertilizer - Nutrients</p>
 
-      {editingType === UpdateTypes.fertilizer.fertilizerEditModal ? (
+      {editing ? (
         <React.Fragment>
           <SwipePanelContent icon="schedule" iconTitle="fertilizer schedule">
             <p className="modern-input">
@@ -88,7 +88,11 @@ const FertilizerReadEditPro = (props) => {
           <React.Fragment>
             {(item.fertilizer || fertilizerContent) && (
               <SwipePanelContent icon="fertilizer">
-                <p>{item.fertilizer || fertilizerContent}</p>
+                <p>
+                  {item.fertilizer ||
+                    fertilizerContent ||
+                    item.preferredFertilizer}
+                </p>
               </SwipePanelContent>
             )}
 
@@ -114,12 +118,14 @@ FertilizerReadEditPro.propTypes = {
   item: PropTypes.object.isRequired,
   updateData: PropTypes.func.isRequired,
   fertilizerContent: PropTypes.string,
+  editing: PropTypes.bool.isRequired,
 };
 
 export default withTracker(() => {
   const editingType = Session.get("editingType");
+  const editing = editingType === UpdateTypes.fertilizer.fertilizerEditModal;
 
   return {
-    editingType,
+    editing,
   };
 })(FertilizerReadEditPro);

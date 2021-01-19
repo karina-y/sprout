@@ -3,8 +3,9 @@ import PropTypes from "prop-types";
 import SwipePanelContent from "../Shared/SwipePanelContent/SwipePanelContent";
 import { parseDate } from "/imports/utils/helpers/plantData";
 
+//todo change this name? it's read only
 const DiaryReadEdit = (props) => {
-  const { item, updateData } = props;
+  const { item } = props;
 
   return (
     <div className="swipe-slide">
@@ -32,7 +33,6 @@ const DiaryReadEdit = (props) => {
 
 DiaryReadEdit.propTypes = {
   item: PropTypes.object.isRequired,
-  updateData: PropTypes.func.isRequired,
 };
 
 export default DiaryReadEdit;

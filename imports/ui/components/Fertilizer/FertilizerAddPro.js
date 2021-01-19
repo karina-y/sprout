@@ -30,8 +30,8 @@ const FertilizerAddPro = (props) => {
                 <label>preferred fertilizer</label>
                 <input
                         type="text"
-                        onChange={(e) => props.updateData(e, "fertilizer")}
-                        value={props.item.fertilizer || ""}
+                        onChange={(e) => props.updateData(e, "preferredFertilizer")}
+                        value={props.item.preferredFertilizer || ""}
                 />
               </p>
             </SwipePanelContent>

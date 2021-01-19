@@ -29,6 +29,7 @@ export function getPlantCondition(tracker, daysSince, schedule) {
   return condition;
 }
 
+//todo do i need this? soilCondition varies, this may not make sense
 export function getSoilCondition(tracker, idealMoistureRange) {
   let condition = "unknown";
 

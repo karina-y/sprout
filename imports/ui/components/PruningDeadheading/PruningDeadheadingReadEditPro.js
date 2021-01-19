@@ -5,14 +5,13 @@ import UpdateTypes from "/imports/utils/constants/updateTypes";
 import { withTracker } from "meteor/react-meteor-data";
 
 const PruningDeadheadingReadEditPro = (props) => {
-  const { plant, updateData, editingType } = props;
+  const { plant, updateData, editing } = props;
 
   return (
     <div className="swipe-slide">
       <p className="swipe-title title-ming">Pruning - Deadheading</p>
 
-      {editingType ===
-      UpdateTypes.pruningDeadheading.pruningDeadheadingEditModal ? (
+      {editing ? (
         <React.Fragment>
           {/*<SwipePanelContent icon="pruning" iconTitle="pruning schedule">
 					  <p className="modern-input">
@@ -108,13 +107,15 @@ const PruningDeadheadingReadEditPro = (props) => {
 PruningDeadheadingReadEditPro.propTypes = {
   plant: PropTypes.object.isRequired,
   updateData: PropTypes.func.isRequired,
-  editingType: PropTypes.string,
+  editing: PropTypes.bool.isRequired,
 };
 
 export default withTracker(() => {
   const editingType = Session.get("editingType");
+  const editing =
+    editingType === UpdateTypes.pruningDeadheading.pruningDeadheadingEditModal;
 
   return {
-    editingType,
+    editing,
   };
 })(PruningDeadheadingReadEditPro);

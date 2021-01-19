@@ -7,9 +7,10 @@ import { faQuestionCircle } from "@fortawesome/free-solid-svg-icons/faQuestionCi
 import { faSmile } from "@fortawesome/free-solid-svg-icons/faSmile";
 import SwipePanelContent from "../Shared/SwipePanelContent/SwipePanelContent";
 import { withTracker } from "meteor/react-meteor-data";
+import UpdateTypes from "/imports/utils/constants/updateTypes";
 
 const WaterReadEdit = (props) => {
-  const { item, updateData, editingType } = props;
+  const { item, updateData, editing } = props;
 
   return (
     <div className="swipe-slide">
@@ -39,7 +40,7 @@ const WaterReadEdit = (props) => {
         />
       </p>
 
-      {editingType === "waterTracker" ? (
+      {editing ? (
         <React.Fragment>
           <SwipePanelContent icon="schedule" iconTitle="water schedule">
             <p className="modern-input">
@@ -91,13 +92,14 @@ const WaterReadEdit = (props) => {
 WaterReadEdit.propTypes = {
   item: PropTypes.object.isRequired,
   updateData: PropTypes.func.isRequired,
-  editingType: PropTypes.string,
+  editing: PropTypes.bool.isRequired,
 };
 
 export default withTracker(() => {
   const editingType = Session.get("editingType");
+  const editing = editingType === UpdateTypes.water.waterEditModal;
 
   return {
-    editingType,
+    editing,
   };
 })(WaterReadEdit);

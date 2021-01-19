@@ -5,8 +5,9 @@ import UpdateTypes from "/imports/utils/constants/updateTypes";
 import { withTracker } from "meteor/react-meteor-data";
 
 const FertilizerReadEdit = (props) => {
-  const { editingType, item, updateData, fertilizerContent } = props;
+  const { editingType, editing, item, updateData, fertilizerContent } = props;
 
+  //todo why do i have 2 checks for editing?
   return (
     <div className="swipe-slide">
       <p className="swipe-title title-ming">Fertilizer</p>
@@ -18,7 +19,7 @@ const FertilizerReadEdit = (props) => {
           editingType !== "fertilizerTracker" ? "top-align" : ""
         }
       >
-        {editingType === UpdateTypes.fertilizer.fertilizerEditModal ? (
+        {editing ? (
           <p className="modern-input">
             Fertilize every{" "}
             <input
@@ -45,7 +46,7 @@ const FertilizerReadEdit = (props) => {
         )}
       </SwipePanelContent>
 
-      {editingType === UpdateTypes.fertilizer.fertilizerEditModal ? (
+      {editing ? (
         <SwipePanelContent icon="fertilizer">
           <p className="modern-input">
             <label>preferred fertilizer</label>
@@ -71,12 +72,16 @@ FertilizerReadEdit.propTypes = {
   item: PropTypes.object.isRequired,
   updateData: PropTypes.func.isRequired,
   fertilizerContent: PropTypes.string.isRequired,
+  editingType: PropTypes.string,
+  editing: PropTypes.bool.isRequired
 };
 
 export default withTracker(() => {
   const editingType = Session.get("editingType");
+  const editing = editingType === UpdateTypes.fertilizer.fertilizerEditModal;
 
   return {
     editingType,
+    editing
   };
 })(FertilizerReadEdit);

@@ -68,8 +68,6 @@ const PestSwipePanel = (props) => {
   return (
     <div className="PlantSeedlingViewEdit">
       <PestReadEdit
-        item={pest}
-        updateData={changeNewData}
         pestLastChecked={pestLastChecked}
         pestName={pestName}
         pestTreatment={pestTreatment}

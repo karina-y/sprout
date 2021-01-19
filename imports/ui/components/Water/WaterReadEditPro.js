@@ -5,7 +5,7 @@ import UpdateTypes from "/imports/utils/constants/updateTypes";
 import { withTracker } from "meteor/react-meteor-data";
 
 const WaterReadEditPro = (props) => {
-  const { item, updateData, editingType } = props;
+  const { item, updateData, editing } = props;
 
   return (
     <div className="swipe-slide">
@@ -18,7 +18,7 @@ const WaterReadEditPro = (props) => {
 				  alt={item.waterCondition === 'needs-attn' ? 'sad face with tear' : item.waterCondition === 'neutral' ? 'neutral face' : item.waterCondition === 'unsure' ? 'question mark' : 'smiling face'}/>*/}
       </p>
 
-      {editingType === UpdateTypes.water.waterEditModal ? (
+      {editing ? (
         <React.Fragment>
           <SwipePanelContent icon="schedule" iconTitle="water schedule">
             <p className="modern-input">
@@ -108,13 +108,14 @@ const WaterReadEditPro = (props) => {
 WaterReadEditPro.propTypes = {
   item: PropTypes.object.isRequired,
   updateData: PropTypes.func.isRequired,
-  editingType: PropTypes.string,
+  editing: PropTypes.bool.isRequired,
 };
 
 export default withTracker(() => {
   const editingType = Session.get("editingType");
+  const editing = editingType === UpdateTypes.water.waterEditModal;
 
   return {
-    editingType,
+    editing,
   };
 })(WaterReadEditPro);

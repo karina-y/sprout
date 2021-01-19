@@ -43,6 +43,7 @@ Meteor.methods({
 
     try {
       const id = data._id;
+      //todo remove all these deletes throughout the code, it forces the compiler to deoptimize
       delete data._id;
       data.updatedAt = new Date();
 

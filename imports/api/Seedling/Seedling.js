@@ -54,9 +54,9 @@ Seedling.schema = new SimpleSchema(
       defaultValue: "",
       label: "method",
     },
-    //TODO isoneof "indoor" "outdoor"
     startedIndoorOutdoor: {
       type: String,
+      allowedValues: ["indoor", "outdoor"],
       optional: true,
       label: "startedIndoorOutdoor",
     },

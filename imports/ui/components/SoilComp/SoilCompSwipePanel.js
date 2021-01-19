@@ -63,6 +63,7 @@ const SoilCompSwipePanel = (props) => {
       }
 
       if (data) {
+        //todo no id
         data._id = oldPlantData._id;
 
         Meteor.call(

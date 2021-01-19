@@ -144,7 +144,7 @@ class PlantAdd extends Component {
     } else if (!plant.lightPreference) {
       errMsg =
         "Please enter a lighting preference (eg. Bright indirect light).";
-      swipeViewIndex = 1;
+      swipeViewIndex = 0;
     } else if (!plant.location) {
       errMsg =
         "Please enter where this plant lives in/around your home (eg. Living Room or Back Patio).";
@@ -237,12 +237,33 @@ class PlantAdd extends Component {
               window.location.href = `/plant/${plantResponse}`;
             })
             .catch(function (err) {
+              //TODO if any of these errored we have a problem
+              //if the user navigates away from the page, they'll see the plant WAS partially saved
+              //if the user tries to save again, they'll save a second plant
+              //need to delete all the entries above and start over
               console.log("Got Error", err);
               toast.error(err.message);
+              this.deletePlant(plantResponse);
             });
         }
       });
     }
+  }
+
+  //todo this code is repeated
+  deletePlant(plantId) {
+    Meteor.call("plant.delete", plantId, (err, response) => {
+      if (err) {
+        console.log("err", err);
+
+        //todo do we want to show clients this error?
+        toast.error(err.message);
+      } else {
+        //TODO this needs to be history.push but it results in an error when the page can't find the plant
+        // this.props.history.push('/catalogue/plant')
+        // window.location.href = "/catalogue/plant";
+      }
+    });
   }
 
   render() {
@@ -372,34 +393,13 @@ class PlantAdd extends Component {
           )}
 
           {/* pruning/deadheading schedule */}
+          {/*TODO import the pruningdeadheading component*/}
           {Meteor.isPro && (
             <div className="swipe-slide">
               <p className="swipe-title title-ming">Pruning - Deadheading</p>
-
-              {/*<SwipePanelContent icon="schedule" iconTitle="pruning schedule">
-					<p className="modern-input">Prune every <input type="number"
-																   min="0"
-																   inputMode="numeric"
-																   pattern="[0-9]*"
-																   className="small"
-																   onChange={(e) => this.updateData(e, 'pruningSchedule')}
-																   value={plant.pruningSchedule || ''}/> days
-					</p>
-				  </SwipePanelContent>
-
-				  <SwipePanelContent icon="schedule" iconTitle="deadheading schedule">
-					<p className="modern-input">Deadhead every <input type="number"
-																	  min="0"
-																	  inputMode="numeric"
-																	  pattern="[0-9]*"
-																	  className="small"
-																	  onChange={(e) => this.updateData(e, 'deadheadingSchedule')}
-																	  value={plant.deadheadingSchedule || ''}/> days
-					</p>
-				  </SwipePanelContent>*/}
-
               <SwipePanelContent icon="pruning" iconTitle="pruning preference">
                 <p className="modern-input">
+                  <label>pruning preference</label>
                   <input
                     type="text"
                     onChange={(e) =>
@@ -415,6 +415,7 @@ class PlantAdd extends Component {
                 iconTitle="deadheading preference"
               >
                 <p className="modern-input">
+                  <label>deadheading preference</label>
                   <input
                     type="text"
                     onChange={(e) =>

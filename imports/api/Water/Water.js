@@ -32,6 +32,7 @@ Water.schema = new SimpleSchema(
     waterScheduleAuto: {
       type: Boolean,
       defaultValue: false,
+      optional: true,
       label: "waterScheduleAuto",
     },
     waterPreference: {

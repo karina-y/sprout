@@ -51,7 +51,7 @@ const DiarySwipePanel = (props) => {
   return (
     <div className="PlantSeedlingViewEdit">
       {/* diary */}
-      <DiaryReadEdit item={diary} updateData={changeNewData} />
+      <DiaryReadEdit item={diary} />
 
       {/* diary */}
       <DiaryModals

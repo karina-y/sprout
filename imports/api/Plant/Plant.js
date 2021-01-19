@@ -2,6 +2,7 @@
 
 import { Mongo } from "meteor/mongo";
 import SimpleSchema from "simpl-schema";
+import Water from "../Water/Water";
 
 const Plant = new Mongo.Collection("Plant");
 
@@ -16,6 +17,24 @@ Plant.deny({
   update: () => true,
   remove: () => true,
 });
+
+//TODO do i really need/want any helpers?
+/*Plant.helpers({
+  water() {
+    return Water.findOne(
+      { plantId: this._id },
+      {
+        fields: {
+          plantId: 1,
+          waterSchedule: 1,
+          waterScheduleAuto: 1,
+          waterPreference: 1,
+          waterTracker: 1,
+        },
+      }
+    );
+  },
+});*/
 
 Plant.schema = new SimpleSchema(
   {
@@ -34,7 +53,6 @@ Plant.schema = new SimpleSchema(
       defaultValue: "",
       label: "latinName",
     },
-    //TODO isoneof (list categories)
     category: {
       type: String,
       optional: !Meteor.isPro,

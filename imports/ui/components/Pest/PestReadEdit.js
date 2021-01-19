@@ -2,8 +2,9 @@ import React from "react";
 import PropTypes from "prop-types";
 import SwipePanelContent from "../Shared/SwipePanelContent/SwipePanelContent";
 
+//todo change this name? it's read only
 const PestReadEdit = (props) => {
-  const { item, updateData, pestLastChecked, pestName, pestTreatment } = props;
+  const { pestLastChecked, pestName, pestTreatment } = props;
 
   return (
     <div className="swipe-slide">
@@ -29,8 +30,6 @@ const PestReadEdit = (props) => {
 };
 
 PestReadEdit.propTypes = {
-  item: PropTypes.object.isRequired,
-  updateData: PropTypes.func.isRequired,
   pestLastChecked: PropTypes.string.isRequired,
   pestName: PropTypes.string.isRequired,
   pestTreatment: PropTypes.string.isRequired,

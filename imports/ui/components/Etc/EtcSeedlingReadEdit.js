@@ -6,13 +6,13 @@ import Category from "/imports/api/Category/Category";
 import UpdateTypes from "/imports/utils/constants/updateTypes";
 
 const EtcSeedlingReadEdit = (props) => {
-  const { seedling, updateData, editingType, categories } = props;
+  const { seedling, updateData, editing, categories } = props;
 
   return (
     <div className="swipe-slide adjust-icons">
       <p className="swipe-title title-ming">Etc</p>
 
-      {editingType === UpdateTypes.etc.etcEditModal ? (
+      {editing ? (
         <React.Fragment>
           <SwipePanelContent icon="info" iconTitle="common name">
             <p className="modern-input">
@@ -158,15 +158,17 @@ const EtcSeedlingReadEdit = (props) => {
 EtcSeedlingReadEdit.propTypes = {
   seedling: PropTypes.object.isRequired,
   updateData: PropTypes.func.isRequired,
-  editingType: PropTypes.string,
+  editing: PropTypes.bool.isRequired,
   categories: PropTypes.array.isRequired,
 };
 
-export default withTracker((props) => {
+export default withTracker(() => {
   const categories = Category.find({}).fetch();
   const editingType = Session.get("editingType");
+  const editing = editingType === UpdateTypes.etc.etcEditModal;
 
   return {
     categories,
+    editing
   };
 })(EtcSeedlingReadEdit);

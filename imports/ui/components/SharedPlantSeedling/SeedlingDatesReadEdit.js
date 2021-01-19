@@ -5,16 +5,17 @@ import { withTracker } from "meteor/react-meteor-data";
 import Category from "../../../api/Category/Category";
 import { parseDate } from "/imports/utils/helpers/plantData";
 import { Session } from "meteor/session";
+import UpdateTypes from "/imports/utils/constants/updateTypes";
 
 const SeedlingDatesReadEdit = (props) => {
-  const { seedling, updateData, editingType } = props;
+  const { seedling, updateData, editing } = props;
 
   return (
     <div className="swipe-slide adjust-icons">
       <p className="swipe-title title-ming">Dates</p>
 
       {/*TODO - this format: {editingType === UpdateTypes.water.waterEditModal ?*/}
-      {editingType === "dates" ? (
+      {editing ? (
         <React.Fragment>
           <SwipePanelContent icon="sowDate">
             <p className="modern-input">
@@ -163,15 +164,17 @@ const SeedlingDatesReadEdit = (props) => {
 SeedlingDatesReadEdit.propTypes = {
   seedling: PropTypes.object.isRequired,
   updateData: PropTypes.func.isRequired,
-  editing: PropTypes.string,
+  editing: PropTypes.bool.isRequired,
   categories: PropTypes.array.isRequired,
 };
 
 export default withTracker(() => {
   const categories = Category.find({}).fetch();
   const editingType = Session.get("editingType");
+  const editing = editingType === UpdateTypes.general.dates;
 
   return {
     categories,
+    editing
   };
 })(SeedlingDatesReadEdit);

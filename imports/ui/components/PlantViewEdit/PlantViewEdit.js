@@ -74,6 +74,7 @@ class PlantViewEdit extends Component {
     Session.set("savingType", null);
   }
 
+  //TODO it's not noticable to the client but i get errors in the console after it's been deleted
   deletePlant() {
     Meteor.call("plant.delete", this.props.plant._id, (err, response) => {
       if (err) {
