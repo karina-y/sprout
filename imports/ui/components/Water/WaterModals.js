@@ -47,7 +47,7 @@ const WaterModals = (props) => {
         type={UpdateTypes.water.waterHistoryModal}
         header="Watering History"
       >
-        {tracker && tracker.length > 0 ? (
+        {tracker?.length > 0 ? (
           <table>
             <thead>
               <tr>

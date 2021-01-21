@@ -105,7 +105,7 @@ const PruningDeadheadingModals = (props) => {
         type={UpdateTypes.pruningDeadheading.pruningDeadheadingHistoryModal}
         header="Pruning - Deadheading History"
       >
-        {tracker && tracker.length > 0 ? (
+        {tracker?.length > 0 ? (
           <table>
             <thead>
               <tr>

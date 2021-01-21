@@ -9,7 +9,7 @@ import { ToastContainer } from "react-toastify";
 import Loading from "./components/Shared/Loading/Loading";
 import { Meteor } from "meteor/meteor";
 import Preferences from "../api/Preferences/Preferences";
-import ToDo from "./pages/PlantToDo/PlantToDo";
+import PlantToDo from "./pages/PlantToDo/PlantToDo";
 import Authenticated from "./pages/Authenticated";
 import Navigation from "./components/Navigation/Navigation";
 import ScrollToTop from "./components/Shared/ScrollToTop";
@@ -78,7 +78,7 @@ class App extends Component {
           <Switch>
             {/*<Route exact path="/" render={props => <HomePage {...props} />} />*/}
 
-            <Authenticated exact path="/" component={ToDo} {...props} />
+            <Authenticated exact path="/" component={PlantToDo} {...props} />
 
             <Authenticated
               exact

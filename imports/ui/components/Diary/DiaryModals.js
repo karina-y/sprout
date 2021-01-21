@@ -29,7 +29,7 @@ const DiaryModals = (props) => {
         type={UpdateTypes.diary.diaryHistoryModal}
         header="Diary History"
       >
-        {diary && diary.length > 0 ? (
+        {diary?.length > 0 ? (
           <table>
             <thead>
               <tr>

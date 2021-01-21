@@ -5,7 +5,7 @@ import ItemAddEntryModal from "../Shared/ItemAddEntryModal";
 import ItemViewHistoryModal from "../Shared/ItemViewHistoryModal";
 import { parseDate } from "/imports/utils/helpers/plantData";
 import UpdateTypes from "/imports/utils/constants/updateTypes";
-import { withTracker } from 'meteor/react-meteor-data'
+import { withTracker } from "meteor/react-meteor-data";
 
 const PestModals = (props) => {
   const {
@@ -61,7 +61,7 @@ const PestModals = (props) => {
         type={UpdateTypes.pest.pestHistoryModal}
         header="Pest History"
       >
-        {tracker && tracker.length > 0 ? (
+        {tracker?.length > 0 ? (
           <table>
             <thead>
               <tr>

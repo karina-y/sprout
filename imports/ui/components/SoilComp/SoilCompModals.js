@@ -84,7 +84,7 @@ const SoilCompModals = (props) => {
         type={UpdateTypes.soilComp.soilCompHistoryModal}
         header="Soil Composition History"
       >
-        {tracker && tracker.length > 0 ? (
+        {tracker?.length > 0 ? (
           <table>
             <thead>
               <tr>

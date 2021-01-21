@@ -1,8 +1,7 @@
-//sample schema
-
+import { Meteor } from "meteor/meteor";
 import { Mongo } from "meteor/mongo";
 import SimpleSchema from "simpl-schema";
-import Water from "../Water/Water";
+// import Water from "../Water/Water";
 
 const Plant = new Mongo.Collection("Plant");
 

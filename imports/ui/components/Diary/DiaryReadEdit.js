@@ -13,7 +13,7 @@ const DiaryReadEdit = (props) => {
 
       <SwipePanelContent icon="diary">
         <div className="scroll-box">
-          {item.diary && item.diary.length > 0
+          {item.diary?.length > 0
             ? item.diary.map((entry, index) => {
                 return (
                   <div key={index}>

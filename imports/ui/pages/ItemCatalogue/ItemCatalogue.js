@@ -155,7 +155,7 @@ class ItemCatalogue extends Component {
         </div>
 
         <div className="flex-around flex-wrap">
-          {this.props.catalogue && this.props.catalogue.length > 0 ? (
+          {props.catalogue?.length > 0 ? (
             this.state.filteredOrSortedCatalogue.map(function (item, index) {
               return <ItemPreview item={item} key={index} {...props} />;
             })
@@ -168,7 +168,7 @@ class ItemCatalogue extends Component {
                 padding: "10px",
               }}
             >
-              {this.props.msg}
+              {props.msg}
             </p>
           )}
         </div>

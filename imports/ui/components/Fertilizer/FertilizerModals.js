@@ -55,7 +55,7 @@ const FertilizerModals = (props) => {
         type={UpdateTypes.fertilizer.fertilizerHistoryModal}
         header="Fertilizing History"
       >
-        {tracker && tracker.length > 0 ? (
+        {tracker?.length > 0 ? (
           <table>
             <thead>
               <tr>

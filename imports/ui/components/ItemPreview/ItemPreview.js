@@ -80,14 +80,18 @@ export default withTracker((props) => {
   const water = Water.findOne({ plantId: item._id });
   const fertilizer = Fertilizer.findOne({ plantId: item._id });
 
-  //TODO turn these into a hook? is that right in tracker?
-  if (fertilizer && fertilizer.fertilizerTracker && fertilizer.fertilizerTracker.length > 0) {
+  //TODO turn these into a hook? is that ok in tracker?
+  //either way this is duplicated code and i don't like it
+  if (fertilizer?.fertilizerTracker?.length > 0) {
     item.daysSinceFertilized = getDaysSinceAction(fertilizer.fertilizerTracker);
+
     item.fertilizerCondition = getPlantCondition(
       fertilizer.fertilizerTracker,
       item.daysSinceFertilized,
       fertilizer.fertilizerSchedule
     );
+
+    //todo can i simplify this?
     item.fertilizerProgress =
       item.daysSinceFertilized / fertilizer.fertilizerSchedule > 1
         ? 5
@@ -98,7 +102,7 @@ export default withTracker((props) => {
     item.fertilizerProgress = 100;
   }
 
-  if (water && water.waterTracker && water.waterTracker.length > 0) {
+  if (water?.waterTracker?.length > 0) {
     item.daysSinceWatered = getDaysSinceAction(water.waterTracker);
     item.waterCondition = water.waterScheduleAuto
       ? "happy"

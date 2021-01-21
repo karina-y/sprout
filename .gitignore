@@ -8,3 +8,4 @@ settings.json
 .deploy/
 dev-notes.*
 mobile-config.js
+#I chose not to hide my tests as this is a portfolio project

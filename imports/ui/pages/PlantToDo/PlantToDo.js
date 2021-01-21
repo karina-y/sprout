@@ -1,13 +1,14 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { withTracker } from "meteor/react-meteor-data";
 import { Session } from "meteor/session";
+import { withTracker } from "meteor/react-meteor-data";
 import Plant from "/imports/api/Plant/Plant";
 import { getDaysSinceAction } from "/imports/utils/helpers/plantData";
 import PlantTaskList from "../../components/PlantTaskList/PlantTaskList";
 import Water from "/imports/api/Water/Water";
 import Fertilizer from "/imports/api/Fertilizer/Fertilizer";
 
+//TODO this doesn't need to be a class
 class PlantToDo extends Component {
   constructor(props) {
     super(props);
@@ -26,7 +27,7 @@ class PlantToDo extends Component {
       <div className="ToDo">
         {/* TODO add sorting and filtering, also why am i doing a function for mapping? */}
 
-        {this.props.catalogue && this.props.catalogue.length > 0 ? (
+        {this.props.catalogue?.length > 0 ? (
           this.props.catalogue.map(function (plant, index) {
             return <PlantTaskList plant={plant} key={index} {...props} />;
           })
@@ -58,13 +59,17 @@ export default withTracker(() => {
     let water = Water.findOne({ plantId: currPlant._id });
     let fertilizer = Fertilizer.findOne({ plantId: currPlant._id });
 
-    let waterDue = (water && water.waterScheduleAuto)
-      ? water.waterSchedule - getDaysSinceAction(water.waterTracker) - 1 : 2;
+    let waterDue =
+      water && water.waterScheduleAuto
+        ? water.waterSchedule - getDaysSinceAction(water.waterTracker) - 1
+        : 2;
 
-    let fertilizerDue = (fertilizer && fertilizer.fertilizerSchedule) ?
-      fertilizer.fertilizerSchedule -
-      getDaysSinceAction(fertilizer.fertilizerTracker) -
-      1 : 2;
+    let fertilizerDue =
+      fertilizer && fertilizer.fertilizerSchedule
+        ? fertilizer.fertilizerSchedule -
+          getDaysSinceAction(fertilizer.fertilizerTracker) -
+          1
+        : 2;
 
     if (waterDue < 1 || fertilizerDue < 1) {
       currPlant.attentionNeeded = {

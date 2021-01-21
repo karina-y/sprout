@@ -150,6 +150,7 @@ export default withTracker((props) => {
     pruningDeadheading.pruningDeadheadingTracker = sortByLastDate(
       pruning.concat(deadheading)
     );
+
     pruningDeadheading.highlightDates = getHighlightDates(
       pruningDeadheading.pruningDeadheadingTracker
     );

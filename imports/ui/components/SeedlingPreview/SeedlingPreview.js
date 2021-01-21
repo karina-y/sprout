@@ -77,16 +77,19 @@ SeedlingPreview.propTypes = {
 export default withTracker((props) => {
   let seedling = seedling;
 
-  //TODO turn these into a hook
-  if (seedling.fertilizerTracker && seedling.fertilizerTracker.length > 0) {
+  //TODO this code is duplicated
+  if (seedling.fertilizerTracker?.length > 0) {
     seedling.daysSinceFertilized = getDaysSinceAction(
       seedling.fertilizerTracker
     );
+
     seedling.fertilizerCondition = getPlantCondition(
       seedling.fertilizerTracker,
       seedling.daysSinceFertilized,
       seedling.fertilizerSchedule
     );
+
+    //todo simplify this
     seedling.fertilizerProgress =
       seedling.daysSinceFertilized / seedling.fertilizerSchedule > 1
         ? 5
@@ -97,7 +100,7 @@ export default withTracker((props) => {
     seedling.fertilizerProgress = 100;
   }
 
-  if (seedling.waterTracker && seedling.waterTracker.length > 0) {
+  if (seedling.waterTracker?.length > 0) {
     seedling.daysSinceWatered = getDaysSinceAction(seedling.waterTracker);
     seedling.waterCondition = getPlantCondition(
       seedling.waterTracker,

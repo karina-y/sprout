@@ -47,8 +47,7 @@ const EtcPlantReadEdit = (props) => {
                 <option value="" disabled={true}>
                   - Select a category -
                 </option>
-                {categories &&
-                  categories.map((item, index) => {
+                {categories?.map((item, index) => {
                     return (
                       <option value={item.category} key={index}>
                         {item.displayName}
@@ -208,7 +207,7 @@ const EtcPlantReadEdit = (props) => {
             <p>{plant.location || "N/A"}</p>
           </SwipePanelContent>
 
-          {plant.companions && plant.companions.length > 0 && (
+          {plant.companions?.length > 0 && (
             <SwipePanelContent icon="companions">
               <p>{plant.companions.join(", ")}</p>
             </SwipePanelContent>

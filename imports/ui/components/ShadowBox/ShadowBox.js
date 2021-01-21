@@ -38,10 +38,8 @@ class ShadowBox extends React.Component {
         shadowLevel = "level-zero";
     }
 
-    const additionalOuterClasses =
-      this.props.additionalOuterClasses != null ? this.props.additionalOuterClasses : "";
-    const bootstrapColClasses =
-      this.props.bootstrapColClasses != null ? this.props.bootstrapColClasses : "";
+    const additionalOuterClasses = this.props.additionalOuterClasses || "";
+    const bootstrapColClasses = this.props.bootstrapColClasses || "";
     const hoverAction = this.props.hoverAction ? "shadow-hover" : "";
     const popoutHover = this.props.popoutHover ? "popout-hover" : "";
 

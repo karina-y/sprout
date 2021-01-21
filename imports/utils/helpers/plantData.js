@@ -1,13 +1,15 @@
 import moment from "moment";
 
-export function getDaysSinceAction(tracker) {
+//date is for tests
+export function getDaysSinceAction(tracker, date) {
+  // console.log("***moment", moment(now))
   const now = Date.now();
   let days = "0";
 
-  if (tracker && Array.isArray(tracker) && tracker.length > 0) {
+  if (tracker?.length > 0 && Array.isArray(tracker)) {
     //doing new date so i can switch between dummy data and real data easily
     const lastDateActionOccured = new Date(tracker[tracker.length - 1].date);
-    days = moment(now).diff(moment(lastDateActionOccured), "days");
+    days = moment(date || now).diff(moment(lastDateActionOccured), "days");
   }
 
   return days;
@@ -16,7 +18,7 @@ export function getDaysSinceAction(tracker) {
 export function getPlantCondition(tracker, daysSince, schedule) {
   let condition = "unknown";
 
-  if (tracker && Array.isArray(tracker) && tracker.length > 0) {
+  if (tracker?.length > 0 && Array.isArray(tracker)) {
     if (daysSince / schedule >= 0.8) {
       condition = "needs-attn";
     } else if (daysSince / schedule >= 0.5) {
@@ -33,11 +35,15 @@ export function getPlantCondition(tracker, daysSince, schedule) {
 export function getSoilCondition(tracker, idealMoistureRange) {
   let condition = "unknown";
 
-  if (tracker && Array.isArray(tracker) && tracker.length > 0) {
+  if (tracker?.length > 0 && Array.isArray(tracker)) {
     const lastSoilComp = tracker[tracker.length - 1];
 
     //scale of 3.5 to 8, calculate percentage
-    if (lastSoilComp.ph >= 6.0 || lastSoilComp.ph <= 5.4 || lastSoilComp.moisture < 0.3) {
+    if (
+      lastSoilComp.ph >= 6.0 ||
+      lastSoilComp.ph <= 5.4 ||
+      lastSoilComp.moisture < 0.3
+    ) {
       condition = "needs-attn";
     } else if (lastSoilComp.moisture >= 0.3 && lastSoilComp.moisture < 0.6) {
       condition = "neutral";
@@ -52,7 +58,7 @@ export function getSoilCondition(tracker, idealMoistureRange) {
 export function lastChecked(tracker) {
   let lastChecked = "No records available.";
 
-  if (tracker && Array.isArray(tracker) && tracker.length > 0) {
+  if (tracker?.length > 0 && Array.isArray(tracker)) {
     lastChecked = `Last Checked ${parseDate(tracker[tracker.length - 1].date)}`;
   }
 
@@ -62,7 +68,7 @@ export function lastChecked(tracker) {
 export function lastFertilizerUsed(tracker) {
   let fertilizer = "N/A";
 
-  if (tracker && tracker.length > 0) {
+  if (tracker?.length > 0) {
     fertilizer = tracker[tracker.length - 1].fertilizer;
   }
 
@@ -72,7 +78,7 @@ export function lastFertilizerUsed(tracker) {
 export function getLastSoilPh(tracker) {
   let soilPh;
 
-  if (tracker && Array.isArray(tracker) && tracker.length > 0) {
+  if (tracker?.length > 0 && Array.isArray(tracker)) {
     soilPh = tracker[tracker.length - 1].ph;
   }
 
@@ -82,7 +88,7 @@ export function getLastSoilPh(tracker) {
 export function getLastSoilMoisture(tracker) {
   let soilMoisture;
 
-  if (tracker && Array.isArray(tracker) && tracker.length > 0) {
+  if (tracker?.length > 0 && Array.isArray(tracker)) {
     soilMoisture = tracker[tracker.length - 1].moisture
       ? `${Math.round(tracker[tracker.length - 1].moisture * 100)}%`
       : null;
@@ -94,7 +100,7 @@ export function getLastSoilMoisture(tracker) {
 export function getLastPestName(tracker) {
   let pest = "N/A";
 
-  if (tracker && Array.isArray(tracker) && tracker.length > 0) {
+  if (tracker?.length > 0 && Array.isArray(tracker)) {
     pest = tracker[tracker.length - 1].pest || "N/A";
   }
 
@@ -104,7 +110,7 @@ export function getLastPestName(tracker) {
 export function getLastPestTreatment(tracker) {
   let pestTreatment = "N/A";
 
-  if (tracker && Array.isArray(tracker) && tracker.length > 0) {
+  if (tracker?.length > 0 && Array.isArray(tracker)) {
     pestTreatment = tracker[tracker.length - 1].treatment || "N/A";
   }
 
@@ -114,7 +120,7 @@ export function getLastPestTreatment(tracker) {
 export function sortByLastDate(data) {
   let sortedData = [];
 
-  if (data && Array.isArray(data) && data.length > 0) {
+  if (data?.length > 0 && Array.isArray(data)) {
     sortedData = data.sort(function (a, b) {
       let dateA = new Date(a.date),
         dateB = new Date(b.date);
@@ -140,7 +146,7 @@ export function getHighlightDates(tracker, type) {
 
   if ((type === "dateBought" || type === "datePlanted") && tracker) {
     dates.push(new Date(tracker));
-  } else if (tracker && tracker.length > 0) {
+  } else if (tracker?.length > 0) {
     for (let i = 0; i < tracker.length; i++) {
       dates.push(new Date(tracker[i].date));
     }
