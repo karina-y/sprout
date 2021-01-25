@@ -6,7 +6,7 @@ import { parseDate } from "/imports/utils/helpers/plantData";
 import DatePicker from "react-datepicker";
 import { toast } from "react-toastify";
 import UpdateTypes from "/imports/utils/constants/updateTypes";
-import { withTracker } from 'meteor/react-meteor-data'
+import { withTracker } from "meteor/react-meteor-data";
 
 const PruningDeadheadingModals = (props) => {
   const {

@@ -175,6 +175,6 @@ export default withTracker(() => {
 
   return {
     categories,
-    editing
+    editing,
   };
 })(SeedlingDatesReadEdit);
