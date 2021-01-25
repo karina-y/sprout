@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Route, Redirect } from "react-router-dom";
+import { Route } from "react-router-dom";
 import { withTracker } from "meteor/react-meteor-data";
 
 class Authorized extends React.Component {
@@ -19,7 +19,9 @@ class Authorized extends React.Component {
               authenticated,
             })
           ) : (
-            <p style={{ padding: "40px" }}>You must upgrade to pro to use this feature.</p>
+            <p style={{ padding: "40px" }}>
+              You must upgrade to pro to use this feature.
+            </p>
           )
         }
       />

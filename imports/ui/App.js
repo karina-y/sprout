@@ -16,6 +16,7 @@ import ScrollToTop from "./components/Shared/ScrollToTop";
 import asyncComponent from "./components/Shared/AsyncComponent";
 import Authorized from "./pages/Authorized";
 
+//todo can i replace these with dynamic imports?
 const AsyncLogin = asyncComponent(() => import("./pages/Login"));
 const AsyncSignup = asyncComponent(() => import("./pages/Signup"));
 const AsyncAccount = asyncComponent(() => import("./pages/Account/Account"));

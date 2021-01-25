@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import SwipePanelContent from "../Shared/SwipePanelContent/SwipePanelContent";
 
 const SoilCompAdd = (props) => {
-  const { item, updateData, category } = props;
+  const { updateData, category } = props;
 
   return (
     <div className="swipe-slide">

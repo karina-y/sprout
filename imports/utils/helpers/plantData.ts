@@ -1,10 +1,32 @@
 import moment from "moment";
 
+//interfaces
+interface Tracker {
+  date: Date;
+}
+
+interface SoilCompositionTracker extends Tracker {
+  ph: number;
+  moisture: number;
+}
+
+interface FertilizerTracker extends Tracker {
+  fertilizer: string;
+}
+
+interface PestTracker extends Tracker {
+  pest: string;
+  treatment: string;
+}
+
 //date is for tests
-export function getDaysSinceAction(tracker, date) {
+export const getDaysSinceAction = (
+  tracker: Array<any>,
+  date: number
+): string => {
   // console.log("***moment", moment(now))
-  const now = Date.now();
-  let days = "0";
+  const now: number = Date.now();
+  let days: string = "0";
 
   if (tracker?.length > 0 && Array.isArray(tracker)) {
     //doing new date so i can switch between dummy data and real data easily
@@ -13,11 +35,14 @@ export function getDaysSinceAction(tracker, date) {
   }
 
   return days;
-}
+};
 
-//TODO do i need tracker here? it's not being used
-export function getPlantCondition(tracker, daysSince, schedule) {
-  let condition = "unknown";
+export const getPlantCondition = (
+  tracker: Array<any>,
+  daysSince: number,
+  schedule: number
+): string => {
+  let condition: string = "unknown";
 
   if (tracker?.length > 0 && Array.isArray(tracker)) {
     if (daysSince / schedule >= 0.8) {
@@ -30,14 +55,17 @@ export function getPlantCondition(tracker, daysSince, schedule) {
   }
 
   return condition;
-}
+};
 
 //todo do i need this? soilCondition varies, this may not make sense
-export function getSoilCondition(tracker, idealMoistureRange) {
-  let condition = "unknown";
+export const getSoilCondition = (
+  tracker: Array<SoilCompositionTracker>,
+  idealMoistureRange: number
+): string => {
+  let condition: string = "unknown";
 
   if (tracker?.length > 0 && Array.isArray(tracker)) {
-    const lastSoilComp = tracker[tracker.length - 1];
+    const lastSoilComp: SoilCompositionTracker = tracker[tracker.length - 1];
 
     //scale of 3.5 to 8, calculate percentage
     if (
@@ -54,40 +82,46 @@ export function getSoilCondition(tracker, idealMoistureRange) {
   }
 
   return condition;
-}
+};
 
-export function lastChecked(tracker) {
-  let lastChecked = "No records available.";
+export const lastChecked = (tracker: Array<any>): string => {
+  let lastChecked: string = "No records available.";
 
   if (tracker?.length > 0 && Array.isArray(tracker)) {
     lastChecked = `Last Checked ${parseDate(tracker[tracker.length - 1].date)}`;
   }
 
   return lastChecked;
-}
+};
 
-export function lastFertilizerUsed(tracker) {
-  let fertilizer = "N/A";
+export const lastFertilizerUsed = (
+  tracker: Array<FertilizerTracker>
+): string => {
+  let fertilizer: string = "N/A";
 
   if (tracker?.length > 0) {
     fertilizer = tracker[tracker.length - 1].fertilizer;
   }
 
   return fertilizer;
-}
+};
 
-export function getLastSoilPh(tracker) {
-  let soilPh;
+export const getLastSoilPh = (
+  tracker: Array<SoilCompositionTracker>
+): number => {
+  let soilPh: number;
 
   if (tracker?.length > 0 && Array.isArray(tracker)) {
     soilPh = tracker[tracker.length - 1].ph;
   }
 
   return soilPh;
-}
+};
 
-export function getLastSoilMoisture(tracker) {
-  let soilMoisture;
+export const getLastSoilMoisture = (
+  tracker: Array<SoilCompositionTracker>
+): string => {
+  let soilMoisture: string;
 
   if (tracker?.length > 0 && Array.isArray(tracker)) {
     soilMoisture = tracker[tracker.length - 1].moisture
@@ -96,54 +130,54 @@ export function getLastSoilMoisture(tracker) {
   }
 
   return soilMoisture;
-}
+};
 
-export function getLastPestName(tracker) {
-  let pest = "N/A";
+export const getLastPestName = (tracker: Array<PestTracker>): string => {
+  let pest: string = "N/A";
 
   if (tracker?.length > 0 && Array.isArray(tracker)) {
     pest = tracker[tracker.length - 1].pest || "N/A";
   }
 
   return pest;
-}
+};
 
-export function getLastPestTreatment(tracker) {
-  let pestTreatment = "N/A";
+export const getLastPestTreatment = (tracker: Array<PestTracker>): string => {
+  let pestTreatment: string = "N/A";
 
   if (tracker?.length > 0 && Array.isArray(tracker)) {
     pestTreatment = tracker[tracker.length - 1].treatment || "N/A";
   }
 
   return pestTreatment;
-}
+};
 
-export function sortByLastDate(data) {
-  let sortedData = [];
+export const sortByLastDate = (data: Array<Tracker>): Array<any> => {
+  let sortedData: Array<any> = [];
 
   if (data?.length > 0 && Array.isArray(data)) {
     sortedData = data.sort(function (a, b) {
-      let dateA = new Date(a.date);
-      let dateB = new Date(b.date);
+      let dateA: any = new Date(a.date);
+      let dateB: any = new Date(b.date);
       return dateA - dateB;
     });
   }
 
   return sortedData;
-}
+};
 
-export function parseDate(date) {
-  let parsedDate = "N/A";
+export const parseDate = (date: Date): string => {
+  let parsedDate: string = "N/A";
 
   if (date && new Date(date)?.getFullYear() + 1900 > 1969) {
     parsedDate = new Date(date).toLocaleDateString();
   }
 
   return parsedDate;
-}
+};
 
-export function getHighlightDates(tracker, type) {
-  let dates = [];
+export const getHighlightDates = (tracker: any, type: string): Array<Date> => {
+  let dates: Array<Date> = [];
 
   if ((type === "dateBought" || type === "datePlanted") && tracker) {
     dates.push(new Date(tracker));
@@ -154,4 +188,4 @@ export function getHighlightDates(tracker, type) {
   }
 
   return dates;
-}
+};

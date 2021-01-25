@@ -201,6 +201,7 @@ class PlantAdd extends Component {
         } else {
           const meteorCall = Promise.promisify(Meteor.call, Meteor);
 
+          //TODO can i meteor.wrapasync this? and just await each one without all this chaining?
           const calls = meteorCall("water.insert", plantResponse, water)
             .then(
               meteorCall.bind(

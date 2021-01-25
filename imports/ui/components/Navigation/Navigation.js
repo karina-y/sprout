@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import "./Navigation.scss";
-import { slide as Menu } from "react-burger-menu";
+import { Menu } from "react-burger-menu";
 import { Session } from "meteor/session";
 import { withTracker } from "meteor/react-meteor-data";
 import { toast } from "react-toastify/dist/index";
