@@ -6,16 +6,16 @@ import ItemPreview from "../../components/ItemPreview/ItemPreview";
 import { Session } from "meteor/session";
 import Plant from "/imports/api/Plant/Plant";
 import Seedling from "../../../api/Seedling/Seedling";
-import "./ItemCatalogue.scss";
+import "./ItemCatalog.scss";
 
-class ItemCatalogue extends Component {
+class ItemCatalog extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      catalogue: props.catalogue,
-      filteredOrSortedCatalogue: props.catalogue,
-      catalogueFilter: "",
+      catalog: props.catalog,
+      filteredOrSortedCatalog: props.catalog,
+      catalogFilter: "",
       sortBy: "",
     };
 
@@ -23,17 +23,17 @@ class ItemCatalogue extends Component {
   }
 
   componentDidMount() {
-    Session.set("pageTitle", "Catalogue");
+    Session.set("pageTitle", "Catalog");
   }
 
   //TODO
-  sortCatalogue(property) {
+  sortCatalog(property) {
     //TODO sorting allowed by both common and latin name... do i want to display both? make this a user pref? i haven't decided yet....
     //add more sorting options, last watered, last fertilized, etc
     //where to put sorting buttons? next to seach bar?
 
     const currentSortBy = this.state.sortBy;
-    const currentSort = this.state.filteredOrSortedCatalogue;
+    const currentSort = this.state.filteredOrSortedCatalog;
     let sortedUsers;
 
     if (currentSortBy === property) {
@@ -69,16 +69,16 @@ class ItemCatalogue extends Component {
 
     this.setState({
       sortBy: property,
-      filteredOrSortedCatalogue: sortedUsers,
+      filteredOrSortedCatalog: sortedUsers,
     });
   }
 
-  filterCatalogue(e) {
+  filterCatalog(e) {
     //this is overkill but i'm not sure how i want to search/filter in the future so leaving this for now
     //TODO ctrl+a del doesn't reset the filter
 
     const val = e.target.value;
-    const catalogue = this.state.catalogue;
+    const catalog = this.state.catalog;
 
     if (val) {
       function checkItem(obj, key) {
@@ -103,7 +103,7 @@ class ItemCatalogue extends Component {
         }
       }
 
-      const filteredCatalogue = catalogue.filter(function (obj) {
+      const filteredCatalog = catalog.filter(function (obj) {
         return Object.keys(obj).some(function (key) {
           if (key === "commonName" || key === "latinName") {
             return checkItem(obj, key);
@@ -126,13 +126,13 @@ class ItemCatalogue extends Component {
       }
 
       this.setState({
-        filteredOrSortedCatalogue: filteredCatalogue,
-        catalogueFilter: val,
+        filteredOrSortedCatalog: filteredCatalog,
+        catalogFilter: val,
       });
     } else {
       this.setState({
-        filteredCatalogue: catalogue,
-        catalogueFilter: "",
+        filteredCatalog: catalog,
+        catalogFilter: "",
       });
     }
   }
@@ -141,22 +141,22 @@ class ItemCatalogue extends Component {
     const props = this.props;
 
     return (
-      <div className="ItemCatalogue">
+      <div className="ItemCatalog">
         {/* TODO add sorting and filtering */}
         <div>
           <input
-            name="catalogueFilter"
+            name="catalogFilter"
             type="text"
             placeholder="Search by latin or common name"
             className="search-bar"
-            value={this.state.catalogueFilter}
-            onChange={this.filterCatalogue}
+            value={this.state.catalogFilter}
+            onChange={this.filterCatalog}
           />
         </div>
 
         <div className="flex-around flex-wrap">
-          {props.catalogue?.length > 0 ? (
-            this.state.filteredOrSortedCatalogue.map(function (item, index) {
+          {props.catalog?.length > 0 ? (
+            this.state.filteredOrSortedCatalog.map(function (item, index) {
               return <ItemPreview item={item} key={index} {...props} />;
             })
           ) : (
@@ -177,27 +177,27 @@ class ItemCatalogue extends Component {
   }
 }
 
-ItemCatalogue.propTypes = {
-  catalogue: PropTypes.array.isRequired,
+ItemCatalog.propTypes = {
+  catalog: PropTypes.array.isRequired,
   type: PropTypes.string.isRequired,
 };
 
 export default withTracker((props) => {
   const type = props.match.params.type;
-  let catalogue = [];
-  let msg = `You don't have any ${type}s in your catalogue yet.`;
+  let catalog = [];
+  let msg = `You don't have any ${type}s in your catalog yet.`;
 
   if (type === "plant") {
-    catalogue = Plant.find({ userId: Meteor.userId() }).fetch();
+    catalog = Plant.find({ userId: Meteor.userId() }).fetch();
   } else if (type === "seedling" && Meteor.isPro) {
-    catalogue = Seedling.find({ userId: Meteor.userId() }).fetch();
+    catalog = Seedling.find({ userId: Meteor.userId() }).fetch();
   } else {
     msg = "You need to upgrade to a pro account to use this feature";
   }
 
   return {
-    catalogue,
+    catalog,
     type,
     msg,
   };
-})(ItemCatalogue);
+})(ItemCatalog);

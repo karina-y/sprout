@@ -28,17 +28,19 @@ class Signup extends Component {
   }
 
   createUser() {
-    if (this.state.name && this.state.email && this.state.password) {
+    const { name, email, password, zip } = this.state;
+
+    if (name && email && password) {
       //TODO const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       //password constraints
 
       const data = {
         profile: {
-          name: this.state.name,
-          zip: this.state.zip,
+          name: name,
+          zip: zip,
         },
-        email: this.state.email.toLowerCase(),
-        password: this.state.password,
+        email: email.toLowerCase(),
+        password: password,
       };
 
       Meteor.call("account.insert", data, (err, response) => {
@@ -92,22 +94,34 @@ class Signup extends Component {
         <form id="Logout">
           <p className="modern-input">
             <label>name</label>
-            <input type="text" onChange={(e) => this.setState({ name: e.target.value })} />
+            <input
+              type="text"
+              onChange={(e) => this.setState({ name: e.target.value })}
+            />
           </p>
 
           <p className="modern-input">
             <label>e-mail</label>
-            <input type="email" onChange={(e) => this.setState({ email: e.target.value })} />
+            <input
+              type="email"
+              onChange={(e) => this.setState({ email: e.target.value })}
+            />
           </p>
 
           <p className="modern-input">
             <label>zip / postal code (optional)</label>
-            <input type="text" onChange={(e) => this.setState({ zip: e.target.value })} />
+            <input
+              type="text"
+              onChange={(e) => this.setState({ zip: e.target.value })}
+            />
           </p>
 
           <p className="modern-input">
             <label>password</label>
-            <input type="password" onChange={(e) => this.setState({ password: e.target.value })} />
+            <input
+              type="password"
+              onChange={(e) => this.setState({ password: e.target.value })}
+            />
           </p>
         </form>
 

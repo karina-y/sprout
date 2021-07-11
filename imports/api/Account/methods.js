@@ -222,10 +222,7 @@ Meteor.methods({
               Accounts.addEmail(userId, newProfile.email, false);
             }
 
-            if (
-              (newProfile.zip && newProfile.zip !== oldZip) ||
-              (newProfile.name && newProfile.name !== oldName)
-            ) {
+            if (newProfile?.zip !== oldZip || newProfile?.name !== oldName) {
               let query = {};
 
               if (newProfile.name) {

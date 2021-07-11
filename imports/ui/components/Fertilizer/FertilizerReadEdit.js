@@ -37,8 +37,7 @@ const FertilizerReadEdit = (props) => {
           <React.Fragment>
             <p>Fertilize every {item.fertilizerSchedule} days</p>
             <p>
-              Due in {item.fertilizerSchedule - item.daysSinceFertilized - 1}{" "}
-              days
+              Due in {item.fertilizerSchedule - item.daysSinceFertilized} days
             </p>
           </React.Fragment>
         ) : (
@@ -73,7 +72,7 @@ FertilizerReadEdit.propTypes = {
   updateData: PropTypes.func.isRequired,
   fertilizerContent: PropTypes.string.isRequired,
   editingType: PropTypes.string,
-  editing: PropTypes.bool.isRequired
+  editing: PropTypes.bool.isRequired,
 };
 
 export default withTracker(() => {
@@ -82,6 +81,6 @@ export default withTracker(() => {
 
   return {
     editingType,
-    editing
+    editing,
   };
 })(FertilizerReadEdit);

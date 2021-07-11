@@ -261,8 +261,8 @@ class PlantAdd extends Component {
         toast.error(err.message);
       } else {
         //TODO this needs to be history.push but it results in an error when the page can't find the plant
-        // this.props.history.push('/catalogue/plant')
-        // window.location.href = "/catalogue/plant";
+        // this.props.history.push('/catalog/plant')
+        // window.location.href = "/catalog/plant";
       }
     });
   }
@@ -332,14 +332,13 @@ class PlantAdd extends Component {
                       <option value="" disabled={true}>
                         - Select a category -
                       </option>
-                      {this.state.categories &&
-                        this.state.categories.map((item, index) => {
-                          return (
-                            <option value={item.category} key={index}>
-                              {item.displayName}
-                            </option>
-                          );
-                        })}
+                      {this.state.categories?.map((item, index) => {
+                        return (
+                          <option value={item.category} key={index}>
+                            {item.displayName}
+                          </option>
+                        );
+                      })}
                     </select>
                   </p>
                 </SwipePanelContent>

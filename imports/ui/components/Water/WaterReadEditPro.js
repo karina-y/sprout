@@ -77,14 +77,10 @@ const WaterReadEditPro = (props) => {
                 : "No schedule set"}
             </p>
             {!item.waterScheduleAuto &&
-            item.waterSchedule != null &&
-            item.daysSinceWatered != null ? (
-              <p>
-                Due in {item.waterSchedule - item.daysSinceWatered - 1} days
-              </p>
-            ) : (
-              ""
-            )}
+              item.waterSchedule != null &&
+              item.daysSinceWatered != null && (
+                <p>Due in {item.waterSchedule - item.daysSinceWatered} days</p>
+              )}
           </SwipePanelContent>
 
           {item.waterScheduleAuto && (

@@ -75,14 +75,12 @@ const FertilizerReadEditPro = (props) => {
                 : "No schedule set"}
             </p>
             {item.fertilizerSchedule != null &&
-            item.daysSinceFertilized != null ? (
-              <p>
-                Due in {item.fertilizerSchedule - item.daysSinceFertilized - 1}{" "}
-                days
-              </p>
-            ) : (
-              ""
-            )}
+              item.daysSinceFertilized != null && (
+                <p>
+                  Due in {item.fertilizerSchedule - item.daysSinceFertilized}{" "}
+                  days
+                </p>
+              )}
           </SwipePanelContent>
 
           <React.Fragment>

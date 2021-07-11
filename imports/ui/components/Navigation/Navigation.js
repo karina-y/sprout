@@ -43,16 +43,16 @@ class Navigation extends Component {
         title: "Today's Tasks",
       },
       {
-        href: "/catalogue/plant",
-        title: "Plant Catalogue",
+        href: "/catalog/plant",
+        title: "Plant Catalog",
       },
       {
         href: "/plant",
         title: "Add Plant",
       },
       /*{
-		href: '/catalogue/seedling',
-		title: 'Seedling Catalogue'
+		href: '/catalog/seedling',
+		title: 'Seedling Catalog'
 	  },
 	  {
 		href: '/seedling',
@@ -103,8 +103,14 @@ class Navigation extends Component {
           >
             {anchors.map((item, index) => {
               return item.href === "/logout" ? (
-                <p className="bm-item side-nav-link " onClick={logout} key={index}>
-                  <span className="nav-link-container flex-between">{item.title}</span>
+                <p
+                  className="bm-item side-nav-link "
+                  onClick={logout}
+                  key={index}
+                >
+                  <span className="nav-link-container flex-between">
+                    {item.title}
+                  </span>
                 </p>
               ) : (
                 <Link
@@ -115,7 +121,9 @@ class Navigation extends Component {
                   }`}
                   onClick={() => this.clicked(index)}
                 >
-                  <span className="nav-link-container flex-between">{item.title}</span>
+                  <span className="nav-link-container flex-between">
+                    {item.title}
+                  </span>
                 </Link>
               );
             })}

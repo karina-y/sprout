@@ -3,7 +3,7 @@
 //todo can i use a factory for this though?
 
 export const plant = {
-  _id: "rxgLKB55Sb8x4rfbz",
+  _id: "1",
   image: "/images/plant-04.jpg",
   category: "potted",
   commonName: "Prayer Plant",
@@ -17,25 +17,25 @@ export const plant = {
   companions: ["companion plants here"],
   createdAt: new Date(1611095798256),
   updatedAt: new Date(1611095798256),
-  userId: "r6H5iC6ySRKZZchns",
+  userId: "10",
 };
 
 export const water = {
-  _id: "x2d6jiBN48zfyELrG",
+  _id: "2",
   waterScheduleAuto: false,
   waterSchedule: 14,
   waterPreference: "keep soil moist",
   createdAt: new Date(1611095799787),
   updatedAt: new Date(1611097316077),
-  plantId: "rxgLKB55Sb8x4rfbz",
+  plantId: "1",
   waterTracker: [{ date: new Date(1610406113000) }],
 };
 
 export const fertilizer = {
-  _id: "FKBiMxCkqQK28cGiq",
+  _id: "3",
   createdAt: new Date(1611091990885),
   updatedAt: new Date(1611095330882),
-  plantId: "rxgLKB55Sb8x4rfbz",
+  plantId: "1",
   preferredFertilizer: "preferred fertilizer here",
   fertilizerTracker: [{ date: new Date(1610487302000), fertilizer: "test" }],
   compost: "compost here",
@@ -43,12 +43,12 @@ export const fertilizer = {
 };
 
 export const pruningDeadheading = {
-  _id: "DfFpXcQdou5cbAKko",
+  _id: "4",
   pruningPreference: "pruning here",
   deadheadingPreference: "deadheading here",
   createdAt: new Date(1611095970755),
   updatedAt: new Date(1611112990925),
-  plantId: "hdfaJCmD6Ajv8KAC2",
+  plantId: "9",
   pruningTracker: [
     { date: new Date(1610594581000) },
     { date: new Date(1609557788000) },
@@ -60,10 +60,10 @@ export const pruningDeadheading = {
 };
 
 export const soilCompositionPotted = {
-  _id: "9dB4SpxYSECWbdKGp",
+  _id: "5",
   createdAt: new Date(1611095971291),
   updatedAt: new Date(1611113112657),
-  plantId: "hdfaJCmD6Ajv8KAC2",
+  plantId: "9",
   soilRecipe: "soil recipe here",
   soilCompositionTracker: [
     {
@@ -74,10 +74,10 @@ export const soilCompositionPotted = {
 };
 
 export const soilCompositionInGround = {
-  _id: "9dB4SpxYSECWbdKGp",
+  _id: "6",
   createdAt: new Date(1611095971291),
   updatedAt: new Date(1611113226481),
-  plantId: "hdfaJCmD6Ajv8KAC2",
+  plantId: "9",
   soilAmendment: "soil amendment here",
   soilType: "sandy",
   tilled: true,
@@ -90,10 +90,10 @@ export const soilCompositionInGround = {
 };
 
 export const pest = {
-  _id: "KY5LLSK3CoRtnn9F8",
+  _id: "7",
   createdAt: new Date(1611095970933),
   updatedAt: new Date(1611113269084),
-  plantId: "hdfaJCmD6Ajv8KAC2",
+  plantId: "9",
   pestTracker: [
     {
       date: new Date(1609817259000),
@@ -104,10 +104,10 @@ export const pest = {
 };
 
 export const diary = {
-  _id: "EcF95FrhNarcYMbqn",
+  _id: "8",
   createdAt: new Date(1611095971114),
   updatedAt: new Date(1611113305077),
-  plantId: "hdfaJCmD6Ajv8KAC2",
+  plantId: "9",
   diary: [
     {
       entry: "first diary entry",

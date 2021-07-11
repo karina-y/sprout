@@ -46,14 +46,13 @@ const EtcSeedlingReadEdit = (props) => {
                 <option value="" disabled={true}>
                   - Select a category -
                 </option>
-                {categories &&
-                  categories.map((item, index) => {
-                    return (
-                      <option value={item.category} key={index}>
-                        {item.displayName}
-                      </option>
-                    );
-                  })}
+                {categories?.map((item, index) => {
+                  return (
+                    <option value={item.category} key={index}>
+                      {item.displayName}
+                    </option>
+                  );
+                })}
               </select>
             </p>
           </SwipePanelContent>
@@ -169,6 +168,6 @@ export default withTracker(() => {
 
   return {
     categories,
-    editing
+    editing,
   };
 })(EtcSeedlingReadEdit);

@@ -84,8 +84,8 @@ class PlantViewEdit extends Component {
         Session.set("modalOpen", null);
 
         //TODO this needs to be history.push but it results in an error when the page can't find the plant
-        // this.props.history.push('/catalogue/plant')
-        window.location.href = "/catalogue/plant";
+        // this.props.history.push('/catalog/plant')
+        window.location.href = "/catalog/plant";
       }
     });
   }
@@ -190,7 +190,7 @@ export default withTracker((props) => {
 
   //in case the user is looking at a deleted plant
   if (!plant) {
-    props.history.push("/catalogue/plant");
+    props.history.push("/catalog/plant");
   }
 
   const editingType = Session.get("editingType");

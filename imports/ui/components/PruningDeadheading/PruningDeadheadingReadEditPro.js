@@ -69,7 +69,7 @@ const PruningDeadheadingReadEditPro = (props) => {
 									   additionalOuterClasses="top-align">
 					  <p>{plant.pruningSchedule ? `Prune every ${plant.pruningSchedule} days` : 'No pruning schedule entered'}</p>
 					  {plant.pruningSchedule &&
-					  <p>Due in {plant.pruningSchedule - plant.daysSincePruned - 1} days</p>}
+					  <p>Due in {plant.pruningSchedule - plant.daysSincePruned} days</p>}
 					</SwipePanelContent>
 
 					<SwipePanelContent icon="deadheading"
@@ -77,7 +77,7 @@ const PruningDeadheadingReadEditPro = (props) => {
 									   additionalOuterClasses="top-align">
 					  <p>{plant.deadheadingSchedule ? `Deadhead every ${plant.deadheadingSchedule} days` : 'No deadheading schedule entered'}</p>
 					  {plant.deadheadingSchedule &&
-					  <p>Due in {plant.deadheadingSchedule - plant.daysSinceDeadheaded - 1} days</p>}
+					  <p>Due in {plant.deadheadingSchedule - plant.daysSinceDeadheaded} days</p>}
 					</SwipePanelContent>*/}
 
           <SwipePanelContent icon="pruning" iconTitle="pruning preference">

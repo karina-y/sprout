@@ -11,7 +11,7 @@ import {
   lastFertilizerUsed,
   parseDate,
   sortByLastDate,
-} from "../imports/utils/helpers/plantData";
+} from "../imports/utils/helpers/plantData.ts";
 import {
   diary,
   fertilizer,

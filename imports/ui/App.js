@@ -20,8 +20,8 @@ import Authorized from "./pages/Authorized";
 const AsyncLogin = asyncComponent(() => import("./pages/Login"));
 const AsyncSignup = asyncComponent(() => import("./pages/Signup"));
 const AsyncAccount = asyncComponent(() => import("./pages/Account/Account"));
-const AsyncItemCatalogue = asyncComponent(() =>
-  import("./pages/ItemCatalogue/ItemCatalogue")
+const AsyncItemCatalog = asyncComponent(() =>
+  import("./pages/ItemCatalog/ItemCatalog")
 );
 const AsyncLegalStuff = asyncComponent(() =>
   import("./pages/LegalStuff/LegalStuff")
@@ -90,8 +90,8 @@ class App extends Component {
 
             <Authenticated
               exact
-              path="/catalogue/:type"
-              component={AsyncItemCatalogue}
+              path="/catalog/:type"
+              component={AsyncItemCatalog}
               {...props}
             />
 

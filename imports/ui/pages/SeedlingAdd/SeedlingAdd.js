@@ -87,7 +87,7 @@ class SeedlingAdd extends Component {
           toast.error(err.message);
         } else {
           toast.success("Seedling added!");
-          this.props.history.push("/catalogue/seedling");
+          this.props.history.push("/catalog/seedling");
         }
       });
     }
@@ -187,14 +187,13 @@ class SeedlingAdd extends Component {
                   <option value="" disabled={true}>
                     - Select a category -
                   </option>
-                  {categories &&
-                    categories.map((item, index) => {
-                      return (
-                        <option value={item.category} key={index}>
-                          {item.displayName}
-                        </option>
-                      );
-                    })}
+                  {categories?.map((item, index) => {
+                    return (
+                      <option value={item.category} key={index}>
+                        {item.displayName}
+                      </option>
+                    );
+                  })}
                 </select>
               </p>
             </SwipePanelContent>

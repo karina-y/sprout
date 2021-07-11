@@ -358,7 +358,7 @@ class SeedlingViewEdit extends Component {
       } else {
         Session.set("modalOpen", null);
 
-        this.props.history.push("/catalogue/seedling");
+        this.props.history.push("/catalog/seedling");
       }
     });
   }
@@ -593,7 +593,7 @@ export default withTracker((props) => {
 
   //in case the user is looking at a deleted seedling
   if (!seedling) {
-    props.history.push("/catalogue/seedling");
+    props.history.push("/catalog/seedling");
   }
 
   const categories = Category.find({}).fetch();

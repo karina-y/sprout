@@ -27,8 +27,8 @@ class PlantToDo extends Component {
       <div className="ToDo">
         {/* TODO add sorting and filtering, also why am i doing a function for mapping? */}
 
-        {this.props.catalogue?.length > 0 ? (
-          this.props.catalogue.map(function (plant, index) {
+        {this.props.catalog?.length > 0 ? (
+          this.props.catalog.map(function (plant, index) {
             return <PlantTaskList plant={plant} key={index} {...props} />;
           })
         ) : (
@@ -45,36 +45,33 @@ class PlantToDo extends Component {
 }
 
 PlantToDo.propTypes = {
-  catalogue: PropTypes.array.isRequired,
+  catalog: PropTypes.array.isRequired,
 };
 
 export default withTracker(() => {
-  const catalogue = Plant.find({ userId: Meteor.userId() }).fetch();
+  const catalog = Plant.find({ userId: Meteor.userId() }).fetch();
   let needsAttention = [];
 
   //filter what needs attention today
-  //plant.waterSchedule - plant.daysSinceWatered - 1
-  for (let i = 0; i < catalogue.length; i++) {
-    let currPlant = catalogue[i];
+  //plant.waterSchedule - plant.daysSinceWatered
+  for (let i = 0; i < catalog.length; i++) {
+    let currPlant = catalog[i];
     let water = Water.findOne({ plantId: currPlant._id });
     let fertilizer = Fertilizer.findOne({ plantId: currPlant._id });
 
-    let waterDue =
-      water && water.waterScheduleAuto
-        ? water.waterSchedule - getDaysSinceAction(water.waterTracker) - 1
-        : 2;
+    let waterDue = water?.waterScheduleAuto
+      ? 2
+      : water?.waterSchedule - getDaysSinceAction(water?.waterTracker);
 
-    let fertilizerDue =
-      fertilizer && fertilizer.fertilizerSchedule
-        ? fertilizer.fertilizerSchedule -
-          getDaysSinceAction(fertilizer.fertilizerTracker) -
-          1
-        : 2;
+    let fertilizerDue = fertilizer?.fertilizerSchedule
+      ? 2
+      : fertilizer?.fertilizerSchedule -
+        getDaysSinceAction(fertilizer?.fertilizerTracker);
 
-    if (waterDue < 1 || fertilizerDue < 1) {
+    if (waterDue <= 1 || fertilizerDue <= 1) {
       currPlant.attentionNeeded = {
-        water: waterDue < 1,
-        fertilizer: fertilizerDue < 1,
+        water: waterDue <= 1,
+        fertilizer: fertilizerDue <= 1,
       };
 
       needsAttention.push(currPlant);
@@ -82,6 +79,6 @@ export default withTracker(() => {
   }
 
   return {
-    catalogue: needsAttention,
+    catalog: needsAttention,
   };
 })(PlantToDo);
