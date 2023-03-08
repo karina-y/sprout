@@ -1,14 +1,13 @@
 import React from "react";
 import { withTracker } from "meteor/react-meteor-data";
 import PropTypes from "prop-types";
-import "../PlantViewEdit/PlantSeedlingViewEdit.scss";
+import "@component/PlantViewEdit/PlantSeedlingViewEdit.scss";
 import "react-datepicker/dist/react-datepicker.css";
-import { sortByLastDate } from "/imports/utils/helpers/plantData";
+import { sortByLastDate } from "@helper";
 import { toast } from "react-toastify";
-import DiaryModals from "./DiaryModals";
-import DiaryReadEdit from "./DiaryReadEdit";
-import useNewData from "/imports/ui/hooks/useNewData";
-import Diary from "/imports/api/Diary/Diary";
+import { DiaryModals, DiaryReadEdit } from "@component";
+import { useNewData } from "@hook";
+import { Diary } from "@api";
 
 const DiarySwipePanel = (props) => {
   const diary = props.diary;

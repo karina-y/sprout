@@ -4,17 +4,19 @@ import "./SeedlingAdd.scss";
 import Modal from "react-bootstrap/Modal";
 import { Session } from "meteor/session";
 import SwipeableViews from "react-swipeable-views";
-import { selectRandomPlantPicture } from "/imports/utils/helpers/selectRandomPlantPicture";
+import { selectRandomPlantPicture } from "@helper";
 import { toast } from "react-toastify";
-import Category from "/imports/api/Category/Category";
-import SwipePanelContent from "../../components/Shared/SwipePanelContent/SwipePanelContent";
-import WaterAdd from "../../components/SharedPlantSeedling/SwipeViewsAdd/Water";
-import WaterAddPro from "../../components/SharedPlantSeedling/SwipeViewsAdd/WaterPro";
-import FertilizerAddPro from "../../components/SharedPlantSeedling/SwipeViewsAdd/FertilizerPro";
-import FertilizerAdd from "../../components/SharedPlantSeedling/SwipeViewsAdd/Fertilizer";
-import SoilCompAddPro from "../../components/SharedPlantSeedling/SwipeViewsAdd/SoilCompPro";
-import SoilCompAdd from "../../components/SharedPlantSeedling/SwipeViewsAdd/SoilComp";
-import BottomNavAdd from "../../components/BottomNav/BottomNavAdd";
+import { Category } from "@api";
+import {
+  SwipePanelContent,
+  WaterAdd,
+  WaterAddPro,
+  FertilizerAddPro,
+  FertilizerAdd,
+  SoilCompAddPro,
+  SoilCompAdd,
+  BottomNavAdd,
+} from "@component";
 
 class SeedlingAdd extends Component {
   constructor(props) {

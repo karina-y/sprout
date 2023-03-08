@@ -19,6 +19,10 @@ class Login extends Component {
   componentDidMount() {
     Session.set("pageTitle", "Login");
 
+    if (Meteor.userId()) {
+      this.props.history.push("/");
+    }
+
     //TODO is there a smarter way to do this?
     /*if (this.props.history.action === 'REPLACE') {
 	  toast.error('You need to be logged in to perform that action.')
@@ -31,15 +35,19 @@ class Login extends Component {
 
       // Meteor.call('account.validateLogin')
 
-      Meteor.loginWithPassword(this.state.email.toLowerCase(), this.state.password, function (err) {
-        if (err) {
-          //do something if error occurred or
-          toast.error(err.message);
-        } else {
-          toast.success(`Welcome back ${Meteor.user().profile.name}!`);
-          props.history.push("/");
+      Meteor.loginWithPassword(
+        this.state.email.toLowerCase(),
+        this.state.password,
+        function (err) {
+          if (err) {
+            //do something if error occurred or
+            toast.error(err.message);
+          } else {
+            toast.success(`Welcome back ${Meteor.user().profile.name}!`);
+            props.history.push("/");
+          }
         }
-      });
+      );
     } else {
       toast.error("Please check your inputs and try again.");
     }
@@ -67,12 +75,18 @@ class Login extends Component {
         <form id="Login">
           <p className="modern-input">
             <label>e-mail</label>
-            <input type="email" onChange={(e) => this.setState({ email: e.target.value })} />
+            <input
+              type="email"
+              onChange={(e) => this.setState({ email: e.target.value })}
+            />
           </p>
 
           <p className="modern-input">
             <label>password</label>
-            <input type="password" onChange={(e) => this.setState({ password: e.target.value })} />
+            <input
+              type="password"
+              onChange={(e) => this.setState({ password: e.target.value })}
+            />
           </p>
         </form>
 

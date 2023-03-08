@@ -4,17 +4,19 @@ import "./PlantAdd.scss";
 import { Session } from "meteor/session";
 import { Promise } from "bluebird";
 import SwipeableViews from "react-swipeable-views";
-import { selectRandomPlantPicture } from "/imports/utils/helpers/selectRandomPlantPicture";
+import { selectRandomPlantPicture } from "@helper";
 import { toast } from "react-toastify";
-import Category from "/imports/api/Category/Category";
-import SwipePanelContent from "/imports/ui/components/Shared/SwipePanelContent/SwipePanelContent";
-import WaterAdd from "/imports/ui/components/Water/WaterAdd";
-import FertilizerAddPro from "/imports/ui/components/Fertilizer/FertilizerAddPro";
-import WaterAddPro from "/imports/ui/components/Water/WaterAddPro";
-import FertilizerAdd from "/imports/ui/components/Fertilizer/FertilizerAdd";
-import SoilCompAddPro from "/imports/ui/components/SoilComp/SoilCompAddPro";
-import SoilCompAdd from "/imports/ui/components/SoilComp/SoilCompAdd";
-import BottomNavAdd from "../../components/BottomNav/BottomNavAdd";
+import { Category } from "@api";
+import {
+  SwipePanelContent,
+  WaterAdd,
+  WaterAddPro,
+  FertilizerAdd,
+  FertilizerAddPro,
+  SoilCompAdd,
+  SoilCompAddPro,
+  BottomNavAdd,
+} from "@component";
 
 class PlantAdd extends Component {
   constructor(props) {
@@ -268,13 +270,8 @@ class PlantAdd extends Component {
   }
 
   render() {
-    const {
-      plant,
-      water,
-      fertilizer,
-      soilComposition,
-      pruningDeadheading,
-    } = this.state;
+    const { plant, water, fertilizer, soilComposition, pruningDeadheading } =
+      this.state;
 
     //TODO add ability to set plant photo and photo history eventually
 

@@ -6,19 +6,40 @@ import "./PlantSeedlingViewEdit.scss";
 import { Session } from "meteor/session";
 import "react-datepicker/dist/react-datepicker.css";
 import SwipeableViews from "react-swipeable-views";
-import Plant from "/imports/api/Plant/Plant";
 import { toast } from "react-toastify";
-import ItemAddEntryModal from "../Shared/ItemAddEntryModal";
-import FertilizerSwipePanel from "../Fertilizer/FertilizerSwipePanel";
-import WaterSwipePanel from "../Water/WaterSwipePanel";
-import SoilCompSwipePanel from "../SoilComp/SoilCompSwipePanel";
-import PruningDeadheadingSwipePanel from "../PruningDeadheading/PruningDeadheadingSwipePanel";
-import PestSwipePanel from "../Pest/PestSwipePanel";
-import DiarySwipePanel from "../Diary/DiarySwipePanel";
-import EtcSwipePanel from "../Etc/EtcSwipePanel";
-import BottomNavManage from "../BottomNav/BottomNavManage";
+import {
+  ItemAddEntryModal,
+  FertilizerSwipePanel,
+  WaterSwipePanel,
+  SoilCompSwipePanel,
+  PruningDeadheadingSwipePanel,
+  PestSwipePanel,
+  DiarySwipePanel,
+  EtcSwipePanel,
+  BottomNavManage,
+} from "@component";
+// import { PlantSchema } from "@model";
+import { Plant } from "@api";
+// import ItemAddEntryModal from "@component/Shared/ItemAddEntryModal";
 
-class PlantViewEdit extends Component {
+/*
+interface IPlantViewEditProps {
+  plant: PlantSchema;
+  editingType: string;
+}
+
+interface IPlantViewEditState {
+  swipeViewIndex: number;
+  newData: any;
+  currentDateSelection: any;
+  pruneType: any;
+}
+*/
+
+class PlantViewEdit extends Component /*<
+  IPlantViewEditProps,
+  IPlantViewEditState
+>*/ {
   constructor(props) {
     super(props);
 
@@ -31,6 +52,7 @@ class PlantViewEdit extends Component {
 
     autobind(this);
   }
+  // public static propTypes = {};
 
   componentDidMount() {
     Session.set(
@@ -130,6 +152,31 @@ class PlantViewEdit extends Component {
             />
           </div>
         )}
+        {/*
+kytodo idk what this was for
+        <ShadowBox
+          additionalOuterClasses="tempname todofixclassname"
+          hoverAction={false}
+          popoutHover={false}
+          shadowLevel={2}
+        >
+          <ReactSVG
+            src={Icons.water.icon}
+            className="plant-condition-icon info"
+            alt={Icons.water.alt}
+            title={Icons.water.title}
+          />
+
+          <div className="contents-todo">
+            <FontAwesomeIcon
+              icon={Icons.schedule.icon}
+              className="plant-condition-icon"
+              alt={Icons.schedule.alt}
+              title={Icons.schedule.title}
+            />
+          </div>
+        </ShadowBox>
+*/}
 
         <SwipeableViews
           className={`swipe-view ${editingType && "editing"}`}

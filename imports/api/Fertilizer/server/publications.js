@@ -1,3 +1,4 @@
+import { Meteor } from "meteor/meteor";
 import Fertilizer from "../Fertilizer";
 import Plant from "../../Plant/Plant";
 

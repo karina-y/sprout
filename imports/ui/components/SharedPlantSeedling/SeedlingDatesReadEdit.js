@@ -1,11 +1,11 @@
 import React from "react";
 import PropTypes from "prop-types";
-import SwipePanelContent from "../Shared/SwipePanelContent/SwipePanelContent";
+import { SwipePanelContent } from "@component";
 import { withTracker } from "meteor/react-meteor-data";
-import Category from "../../../api/Category/Category";
-import { parseDate } from "/imports/utils/helpers/plantData";
+import { Category } from "@api";
+import { parseDate } from "@helper";
 import { Session } from "meteor/session";
-import UpdateTypes from "/imports/utils/constants/updateTypes";
+import { UpdateTypes } from "@constant";
 
 const SeedlingDatesReadEdit = (props) => {
   const { seedling, updateData, editing } = props;

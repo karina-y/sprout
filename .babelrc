@@ -1,0 +1,30 @@
+{
+  "plugins": [
+	[
+	  "module-resolver",
+	  {
+		"root": [
+		  "./"
+		],
+		"alias": {
+		  "@api": "./imports/api",
+		  "@api/*": "./imports/api/*",
+		  "@component": "./imports/ui/components",
+		  "@component/*": "./imports/ui/components/*",
+		  "@hook": "./imports/ui/hooks",
+		  "@hook/*": "./imports/ui/hooks/*",
+		  "@page": "./imports/ui/pages",
+		  "@page/*": "./imports/ui/pages/*",
+		  "@style": "./imports/ui/stylesheets",
+		  "@style/*": "./imports/ui/stylesheets/*",
+		  "@constant": "./imports/utils/constants",
+		  "@constant/*": "./imports/utils/constants/*",
+		  "@helper": "./imports/utils/helpers",
+		  "@helper/*": "./imports/utils/helpers/*",
+		  "@model": "./imports/utils/models",
+		  "@model/*": "./imports/utils/models/*"
+		}
+	  }
+	]
+  ]
+}

@@ -9,10 +9,11 @@ const WeGotYou = () => (
       <h2 className="panel-title">Tired of overwatering?</h2>
 
       <p className="subtitle">
-        We got you boo, nobody likes fungus gnats or root rot, get a handle on overwatering by
-        tracking each day you water. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-        eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis
-        nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+        We got you boo, nobody likes fungus gnats or root rot, get a handle on
+        overwatering by tracking each day you water. Lorem ipsum dolor sit amet,
+        consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
+        et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+        exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
       </p>
     </div>
   </div>

@@ -1,5 +1,5 @@
 import React, { memo } from "react";
-import "./CustomIcon.scss";
+// import "./CustomIcon.scss";
 
 const CustomIcon = (
   props,

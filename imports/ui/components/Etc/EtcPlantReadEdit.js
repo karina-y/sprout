@@ -1,10 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
-import SwipePanelContent from "../Shared/SwipePanelContent/SwipePanelContent";
+import { SwipePanelContent } from "@component";
 import { withTracker } from "meteor/react-meteor-data";
-import Category from "/imports/api/Category/Category";
-import { parseDate } from "/imports/utils/helpers/plantData";
-import UpdateTypes from "/imports/utils/constants/updateTypes";
+import { Category } from "@api";
+import { parseDate } from "@helper";
+import { UpdateTypes } from "@constant";
 
 const EtcPlantReadEdit = (props) => {
   const { plant, updateData, editing, categories } = props;

@@ -1,8 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
-import SwipePanelContent from "../Shared/SwipePanelContent/SwipePanelContent";
-import SoilTypes from "/imports/utils/constants/soilTypes";
-import UpdateTypes from "/imports/utils/constants/updateTypes";
+import { SwipePanelContent } from "@component";
+import { SoilTypes, UpdateTypes } from "@constant";
 import { withTracker } from "meteor/react-meteor-data";
 
 const SoilCompReadEditPro = (props) => {

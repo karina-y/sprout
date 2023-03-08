@@ -1,5 +1,5 @@
 import React from "react";
-import PlantToDo from "../imports/ui/pages/PlantToDo/PlantToDo";
+import PlantToDo from "@page/PlantToDo/PlantToDo";
 import { shallow, mount, render } from "enzyme";
 
 let props = {};

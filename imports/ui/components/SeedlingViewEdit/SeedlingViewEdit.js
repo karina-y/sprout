@@ -6,7 +6,7 @@ import { Session } from "meteor/session";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import SwipeableViews from "react-swipeable-views";
-import "../PlantViewEdit/PlantSeedlingViewEdit.scss";
+import "@component/PlantViewEdit/PlantSeedlingViewEdit.scss";
 import {
   getDaysSinceAction,
   getLastPestName,
@@ -17,29 +17,30 @@ import {
   lastChecked,
   lastFertilizerUsed,
   sortByLastDate,
-} from "/imports/utils/helpers/plantData";
-import Seedling from "/imports/api/Seedling/Seedling";
+} from "@helper";
 import { toast } from "react-toastify";
-import ItemAddEntryModal from "../Shared/ItemAddEntryModal";
-import Category from "/imports/api/Category/Category";
-import WaterReadEditPro from "/imports/ui/components/Water/WaterReadEditPro";
+import {
+  ItemAddEntryModal,
+  WaterReadEditPro,
+  WaterModals,
+  FertilizerModals,
+  SoilCompModals,
+  PestModals,
+  DiaryModals,
+  SeedlingDatesReadEdit,
+  BottomNavManage,
+  WaterReadEdit,
+  FertilizerReadEditPro,
+  FertilizerReadEdit,
+  SoilCompReadEditPro,
+  SoilCompReadEdit,
+  PestReadEdit,
+  DiaryReadEdit,
+  EtcSeedlingReadEdit,
+} from "@component";
+import { Category, Seedling } from "@api";
 // import NotableDates from '../SharedPlantSeedling/SwipeViewsEdit/NotableDates'
-import WaterModals from "../Water/WaterModals";
-import FertilizerModals from "../Fertilizer/FertilizerModals";
-import SoilCompModals from "../SoilComp/SoilCompModals";
-import PestModals from "../Pest/PestModals";
-import DiaryModals from "../Diary/DiaryModals";
-import SeedlingDates from "../SharedPlantSeedling/SeedlingDatesReadEdit";
-import UpdateTypes from "/imports/utils/constants/updateTypes";
-import BottomNavManage from "../BottomNav/BottomNavManage";
-import WaterReadEdit from "../Water/WaterReadEdit";
-import FertilizerReadEditPro from "../Fertilizer/FertilizerReadEditPro";
-import FertilizerReadEdit from "../Fertilizer/FertilizerReadEdit";
-import SoilCompReadEditPro from "../SoilComp/SoilCompReadEditPro";
-import SoilCompReadEdit from "../SoilComp/SoilCompReadEdit";
-import PestReadEdit from "../Pest/PestReadEdit";
-import DiaryReadEdit from "../Diary/DiaryReadEdit";
-import EtcSeedlingReadEdit from "../Etc/EtcSeedlingReadEdit";
+// import { UpdateTypes } from "@constant";
 
 /*
 TODO
@@ -417,7 +418,10 @@ class SeedlingViewEdit extends Component {
           onChangeIndex={this.handleChangeIndex}
         >
           {/* dates */}
-          <SeedlingDates seedling={seedling} updateData={this.updateData} />
+          <SeedlingDatesReadEdit
+            seedling={seedling}
+            updateData={this.updateData}
+          />
 
           {/* water */}
           {Meteor.isPro ? (

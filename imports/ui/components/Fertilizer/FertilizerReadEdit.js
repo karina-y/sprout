@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
-import SwipePanelContent from "../Shared/SwipePanelContent/SwipePanelContent";
-import UpdateTypes from "/imports/utils/constants/updateTypes";
+import { SwipePanelContent } from "@component";
+import { UpdateTypes } from "@constant";
 import { withTracker } from "meteor/react-meteor-data";
 
 const FertilizerReadEdit = (props) => {

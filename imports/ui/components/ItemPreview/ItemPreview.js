@@ -1,17 +1,13 @@
 import React from "react";
 import PropTypes from "prop-types";
+import ProgressBar from "react-bootstrap/ProgressBar";
 import { withTracker } from "meteor/react-meteor-data";
 import "./ItemPreview.scss";
-import ShadowBox from "../ShadowBox/ShadowBox";
-import ProgressBar from "react-bootstrap/ProgressBar";
-import {
-  getDaysSinceAction,
-  getPlantCondition,
-} from "/imports/utils/helpers/plantData";
-import Icons from "/imports/utils/constants/icons";
+import { ShadowBox } from "@component";
+import { getDaysSinceAction, getPlantCondition } from "@helper";
+import { Icons } from "@constant";
 import { ReactSVG } from "react-svg";
-import Fertilizer from "/imports/api/Fertilizer/Fertilizer";
-import Water from "/imports/api/Water/Water";
+import { Fertilizer, Water } from "@api";
 
 const ItemPreview = (props) => {
   const { item, type, history } = props;

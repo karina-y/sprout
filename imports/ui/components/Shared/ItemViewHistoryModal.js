@@ -33,7 +33,11 @@ class ItemViewHistoryModal extends Component {
 
   render() {
     return (
-      <Modal show={this.state.show} onHide={this.close} className="plant-view-data-modal">
+      <Modal
+        show={this.state.show}
+        onHide={this.close}
+        className="plant-view-data-modal"
+      >
         <Modal.Header closeButton>{this.props.header}</Modal.Header>
 
         <Modal.Body>{this.props.children}</Modal.Body>

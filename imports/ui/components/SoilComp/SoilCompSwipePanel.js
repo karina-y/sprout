@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { withTracker } from "meteor/react-meteor-data";
 import PropTypes from "prop-types";
-import "../PlantViewEdit/PlantSeedlingViewEdit.scss";
+import "@component/PlantViewEdit/PlantSeedlingViewEdit.scss";
 import "react-datepicker/dist/react-datepicker.css";
 import {
   getHighlightDates,
@@ -9,14 +9,16 @@ import {
   getLastSoilPh,
   lastChecked,
   sortByLastDate,
-} from "/imports/utils/helpers/plantData";
+} from "@helper";
 import { toast } from "react-toastify";
-import SoilCompModals from "./SoilCompModals";
-import SoilCompReadEdit from "./SoilCompReadEdit";
-import SoilCompReadEditPro from "./SoilCompReadEditPro";
-import useNewData from "/imports/ui/hooks/useNewData";
-import UpdateTypes from "/imports/utils/constants/updateTypes";
-import SoilComposition from "/imports/api/SoilComposition/SoilComposition";
+import {
+  SoilCompModals,
+  SoilCompReadEdit,
+  SoilCompReadEditPro,
+} from "@component";
+import { useNewData } from "@hook";
+import { UpdateTypes } from "@constant";
+import { SoilComposition } from "@api";
 
 const SoilCompSwipePanel = (props) => {
   const soilComp = props.soilComp;

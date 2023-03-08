@@ -5,9 +5,9 @@ import { faSadTear } from "@fortawesome/free-solid-svg-icons/faSadTear";
 import { faMeh } from "@fortawesome/free-solid-svg-icons/faMeh";
 import { faQuestionCircle } from "@fortawesome/free-solid-svg-icons/faQuestionCircle";
 import { faSmile } from "@fortawesome/free-solid-svg-icons/faSmile";
-import SwipePanelContent from "../Shared/SwipePanelContent/SwipePanelContent";
+import { SwipePanelContent } from "@component";
 import { withTracker } from "meteor/react-meteor-data";
-import UpdateTypes from "/imports/utils/constants/updateTypes";
+import { UpdateTypes } from "@constant";
 
 const WaterReadEdit = (props) => {
   const { item, updateData, editing } = props;

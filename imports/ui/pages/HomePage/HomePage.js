@@ -1,10 +1,6 @@
 import React, { memo } from "react";
 import LazyLoad from "react-lazyload";
-import Hero from "../../components/HomePage/Hero";
-import WeGotYou from "../../components/HomePage/WeGotYou";
-import LusciousLocks from "../../components/HomePage/LusciousLocks";
-import GodMode from "../../components/HomePage/GodMode";
-import SignMeUp from "../../components/HomePage/SignMeUp";
+import { Hero, WeGotYou, LusciousLocks, GodMode, SignMeUp } from "@component";
 
 const HomePage = (props) => (
   <div className="HomePage">

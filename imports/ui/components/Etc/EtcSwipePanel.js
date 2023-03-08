@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
 import PropTypes from "prop-types";
-import "../PlantViewEdit/PlantSeedlingViewEdit.scss";
+import "@component/PlantViewEdit/PlantSeedlingViewEdit.scss";
 import "react-datepicker/dist/react-datepicker.css";
 import { toast } from "react-toastify";
-import EtcPlantReadEdit from "./EtcPlantReadEdit";
-import useNewData from "/imports/ui/hooks/useNewData";
-import UpdateTypes from "/imports/utils/constants/updateTypes";
+import { EtcPlantReadEdit } from "@component";
+import { useNewData } from "@hook";
+import { UpdateTypes } from "@constant";
 import { withTracker } from "meteor/react-meteor-data";
 
 const EtcSwipePanel = (props) => {

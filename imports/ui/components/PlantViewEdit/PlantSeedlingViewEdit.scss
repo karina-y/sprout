@@ -5,6 +5,21 @@
   //padding: 0 !important;
   padding-bottom: $bottom-nav-height;
 
+  .tempname {
+    height: 50px;
+    width: 95% !important;
+    margin: 0 auto !important;
+    display: flex;
+    align-items: center;
+    min-height: unset !important;
+
+    svg {
+      margin-left: 10px;
+      width: 30px;
+      height: 30px;
+    }
+  }
+
   .ShadowBox {
     width: 100%;
     padding: 10px !important;

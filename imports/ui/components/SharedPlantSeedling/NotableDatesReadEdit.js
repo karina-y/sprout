@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import SwipePanelContent from "../Shared/SwipePanelContent/SwipePanelContent";
+import { SwipePanelContent } from "@component";
 
 const NotableDatesReadEdit = (props) => {
   const { seedling, updateData, editing } = props;

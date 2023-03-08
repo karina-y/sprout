@@ -1,33 +1,20 @@
 // @ts-ignore
 import moment from "moment";
-
-//interfaces
-interface Tracker {
-  date: Date;
-}
-
-interface SoilCompositionTracker extends Tracker {
-  ph: number;
-  moisture: number;
-}
-
-interface FertilizerTracker extends Tracker {
-  fertilizer: string;
-}
-
-interface PestTracker extends Tracker {
-  pest: string;
-  treatment: string;
-}
+import {
+  FertilizerTracker,
+  PestTracker,
+  SoilCompositionTracker,
+  Tracker,
+} from "../models/tracker";
 
 //date is for tests
 export const getDaysSinceAction = (
   tracker: Array<any>,
-  date: number
-): string => {
+  date?: number
+): number => {
   // console.log("***moment", moment(now))
   const now: number = Date.now();
-  let days: string = "0";
+  let days: number = 0;
 
   if (tracker?.length > 0 && Array.isArray(tracker)) {
     //doing new date so i can switch between dummy data and real data easily
@@ -36,6 +23,18 @@ export const getDaysSinceAction = (
   }
 
   return days;
+};
+
+//date is for tests
+export const isActionDueToday = (
+  tracker: Array<any>,
+  schedule: number
+): boolean => {
+  if (!tracker || !schedule) {
+    return false;
+  } else {
+    return schedule - getDaysSinceAction(tracker) <= 1;
+  }
 };
 
 export const getPlantCondition = (
@@ -113,7 +112,7 @@ export const getLastSoilPh = (
   let soilPh: number;
 
   if (tracker?.length > 0 && Array.isArray(tracker)) {
-    soilPh = tracker[tracker.length - 1].ph;
+    return tracker[tracker.length - 1].ph;
   }
 
   return soilPh;

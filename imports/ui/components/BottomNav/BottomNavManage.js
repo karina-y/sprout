@@ -10,7 +10,7 @@ import { faCalendar } from "@fortawesome/free-solid-svg-icons/faCalendar";
 import { faTimes } from "@fortawesome/free-solid-svg-icons/faTimes";
 import { faPencilAlt } from "@fortawesome/free-solid-svg-icons/faPencilAlt";
 import { faSave } from "@fortawesome/free-solid-svg-icons/faSave";
-import UpdateTypes from "/imports/utils/constants/updateTypes";
+import { UpdateTypes } from "@constant";
 
 const BottomNavManage = (props) => {
   const { exitEditMode, editingType, swipeViewIndex, type } = props;
@@ -104,27 +104,27 @@ const BottomNavManage = (props) => {
     switch (swipeViewIndex) {
       case 1:
         modal = isHistoryModal
-          ? UpdateTypes.water.waterisHistoryModalModal
+          ? UpdateTypes.water.waterHistoryModal
           : UpdateTypes.water.waterEditModal;
         break;
       case 2:
         modal = isHistoryModal
-          ? UpdateTypes.fertilizer.fertilizerisHistoryModalModal
+          ? UpdateTypes.fertilizer.fertilizerHistoryModal
           : UpdateTypes.fertilizer.fertilizerEditModal;
         break;
       case 3:
         modal = isHistoryModal
-          ? UpdateTypes.soilComp.soilCompisHistoryModalModal
+          ? UpdateTypes.soilComp.soilCompHistoryModal
           : UpdateTypes.soilComp.soilCompEditModal;
         break;
       case 4:
         modal = isHistoryModal
-          ? UpdateTypes.pest.pestisHistoryModalModal
+          ? UpdateTypes.pest.pestHistoryModal
           : UpdateTypes.pest.pestEditModal;
         break;
       case 5:
         modal = isHistoryModal
-          ? UpdateTypes.diary.diaryisHistoryModalModal
+          ? UpdateTypes.diary.diaryHistoryModal
           : UpdateTypes.diary.diaryEditModal;
         break;
     }

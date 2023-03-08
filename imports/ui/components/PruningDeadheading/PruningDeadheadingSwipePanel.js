@@ -1,19 +1,17 @@
 import React, { useEffect } from "react";
 import { withTracker } from "meteor/react-meteor-data";
 import PropTypes from "prop-types";
-import "../PlantViewEdit/PlantSeedlingViewEdit.scss";
+import "@component/PlantViewEdit/PlantSeedlingViewEdit.scss";
 import "react-datepicker/dist/react-datepicker.css";
-import {
-  getHighlightDates,
-  sortByLastDate,
-} from "/imports/utils/helpers/plantData";
+import { getHighlightDates, sortByLastDate } from "@helper";
 import { toast } from "react-toastify";
-import PruningDeadheadingModals from "./PruningDeadheadingModals";
-import PruningDeadheadingReadEditPro from "./PruningDeadheadingReadEditPro";
-import useNewData from "/imports/ui/hooks/useNewData";
-import usePruneType from "/imports/ui/hooks/usePruneType";
-import UpdateTypes from "/imports/utils/constants/updateTypes";
-import PruningDeadheading from "/imports/api/PruningDeadheading/PruningDeadheading";
+import {
+  PruningDeadheadingModals,
+  PruningDeadheadingReadEditPro,
+} from "@component";
+import { useNewData, usePruneType } from "@hook";
+import { UpdateTypes } from "@constant";
+import { PruningDeadheading } from "@api";
 
 const PruningDeadheadingSwipePanel = (props) => {
   const pruningDeadheading = props.pruningDeadheading;

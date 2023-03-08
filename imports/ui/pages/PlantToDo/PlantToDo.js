@@ -1,26 +1,34 @@
+import { Meteor } from "meteor/meteor";
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Session } from "meteor/session";
 import { withTracker } from "meteor/react-meteor-data";
-import Plant from "/imports/api/Plant/Plant";
-import { getDaysSinceAction } from "/imports/utils/helpers/plantData";
-import PlantTaskList from "../../components/PlantTaskList/PlantTaskList";
-import Water from "/imports/api/Water/Water";
-import Fertilizer from "/imports/api/Fertilizer/Fertilizer";
+import { isActionDueToday } from "@helper";
+import { PlantTaskList } from "@component";
+import { Water, Fertilizer, Plant } from "@api";
+// import { PlantSchema } from "@model";
+
+/*interface IPlantToDoProps {
+  catalog: Array<PlantSchema>;
+}
+
+interface IPlantToDoState {}*/
 
 //TODO this doesn't need to be a class
-class PlantToDo extends Component {
+class PlantToDo extends Component /*<IPlantToDoProps, IPlantToDoState>*/ {
   constructor(props) {
     super(props);
 
     this.state = {};
   }
+  // public static propTypes = {};
 
   componentDidMount() {
     Session.set("pageTitle", "Today's Tasks");
   }
 
   render() {
+    //kytodo need a back button from this and other pages?
     const props = this.props;
 
     return (
@@ -49,29 +57,35 @@ PlantToDo.propTypes = {
 };
 
 export default withTracker(() => {
-  const catalog = Plant.find({ userId: Meteor.userId() }).fetch();
+  const catalog /*: Array<Plant>*/ = Plant.find({
+    userId: Meteor.userId(),
+  }).fetch();
   let needsAttention = [];
 
   //filter what needs attention today
   //plant.waterSchedule - plant.daysSinceWatered
+  //TODO can this get moved into a helper or keep here sinc eit's todo specific? or make a todo helper?
   for (let i = 0; i < catalog.length; i++) {
-    let currPlant = catalog[i];
-    let water = Water.findOne({ plantId: currPlant._id });
-    let fertilizer = Fertilizer.findOne({ plantId: currPlant._id });
+    const currPlant = catalog[i];
+    const water = Water.findOne({ plantId: currPlant._id });
+    const fertilizer = Fertilizer.findOne({ plantId: currPlant._id });
 
-    let waterDue = water?.waterScheduleAuto
-      ? 2
-      : water?.waterSchedule - getDaysSinceAction(water?.waterTracker);
+    console.log({ currPlant, fertilizer });
 
-    let fertilizerDue = fertilizer?.fertilizerSchedule
-      ? 2
-      : fertilizer?.fertilizerSchedule -
-        getDaysSinceAction(fertilizer?.fertilizerTracker);
+    let isWaterDue = isActionDueToday(
+      water?.waterTracker,
+      water?.waterSchedule
+    );
 
-    if (waterDue <= 1 || fertilizerDue <= 1) {
+    let isFertilizerDue = isActionDueToday(
+      fertilizer?.fertilizerTracker,
+      fertilizer?.fertilizerSchedule
+    );
+
+    if (isWaterDue || isFertilizerDue) {
       currPlant.attentionNeeded = {
-        water: waterDue <= 1,
-        fertilizer: fertilizerDue <= 1,
+        water: isWaterDue,
+        fertilizer: isFertilizerDue,
       };
 
       needsAttention.push(currPlant);

@@ -1,9 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
-import SwipePanelContent from "../Shared/SwipePanelContent/SwipePanelContent";
+import { SwipePanelContent } from "@component";
 import { withTracker } from "meteor/react-meteor-data";
-import Category from "/imports/api/Category/Category";
-import UpdateTypes from "/imports/utils/constants/updateTypes";
+import { Category } from "@api";
+import { UpdateTypes } from "@constant";
 
 const EtcSeedlingReadEdit = (props) => {
   const { seedling, updateData, editing, categories } = props;

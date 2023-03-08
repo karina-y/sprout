@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import "./SwipePanelContent.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ReactSVG } from "react-svg";
-import Icons from "/imports/utils/constants/icons";
+import { Icons } from "@constant";
 
 const SwipePanelContent = (props) => {
   const { icon, iconTitle, children } = props;

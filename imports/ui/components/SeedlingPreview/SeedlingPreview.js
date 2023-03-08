@@ -2,13 +2,10 @@ import React from "react";
 import PropTypes from "prop-types";
 import { withTracker } from "meteor/react-meteor-data";
 import "./SeedlingPreview.scss";
-import ShadowBox from "../ShadowBox/ShadowBox";
+import { ShadowBox } from "@component";
 import ProgressBar from "react-bootstrap/ProgressBar";
-import {
-  getDaysSinceAction,
-  getPlantCondition,
-} from "/imports/utils/helpers/plantData";
-import Icons from "/imports/utils/constants/icons";
+import { getDaysSinceAction, getPlantCondition } from "@helper";
+import { Icons } from "@constant";
 import { ReactSVG } from "react-svg";
 
 const SeedlingPreview = (props) => {

@@ -10,33 +10,10 @@ class ShadowBox extends React.Component {
   }
 
   render() {
-    let shadowLevel;
-
-    switch (this.props.shadowLevel) {
-      case 0:
-        shadowLevel = "level-zero";
-        break;
-      case 1:
-        shadowLevel = "level-one";
-        break;
-      case 2:
-        shadowLevel = "level-two";
-        break;
-      case 3:
-        shadowLevel = "level-three";
-        break;
-      case 4:
-        shadowLevel = "level-four";
-        break;
-      case 5:
-        shadowLevel = "level-five";
-        break;
-      case 6:
-        shadowLevel = "level-six";
-        break;
-      default:
-        shadowLevel = "level-zero";
-    }
+    const shadowLevel =
+      this.props.shadowLevel != null
+        ? `level-${this.props.shadowLevel}`
+        : "level-0";
 
     const additionalOuterClasses = this.props.additionalOuterClasses || "";
     const bootstrapColClasses = this.props.bootstrapColClasses || "";

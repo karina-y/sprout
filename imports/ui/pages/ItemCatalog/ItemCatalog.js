@@ -2,10 +2,9 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import autobind from "react-autobind";
 import { withTracker } from "meteor/react-meteor-data";
-import ItemPreview from "../../components/ItemPreview/ItemPreview";
+import { ItemPreview } from "@component";
 import { Session } from "meteor/session";
-import Plant from "/imports/api/Plant/Plant";
-import Seedling from "../../../api/Seedling/Seedling";
+import { Plant, Seedling } from "@api";
 import "./ItemCatalog.scss";
 
 class ItemCatalog extends Component {
@@ -153,6 +152,13 @@ class ItemCatalog extends Component {
             onChange={this.filterCatalog}
           />
         </div>
+
+        {/*TODO
+        - add button for indoor/outdoor
+        - or filter button: https://dribbble.com/shots/16199592-Plant-Care-Assistant
+        - task calendar: https://dribbble.com/shots/14399250-Plant-care-app-concept/attachments/6073201?mode=media
+        - quick task button (watered, etc)
+        */}
 
         <div className="flex-around flex-wrap">
           {props.catalog?.length > 0 ? (

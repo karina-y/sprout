@@ -1,11 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
-import ItemAddEntryModal from "../Shared/ItemAddEntryModal";
-import ItemViewHistoryModal from "../Shared/ItemViewHistoryModal";
-import { parseDate } from "/imports/utils/helpers/plantData";
+import { ItemAddEntryModal, ItemViewHistoryModal } from "@component";
+import { parseDate } from "@helper";
 import DatePicker from "react-datepicker";
 import { toast } from "react-toastify";
-import UpdateTypes from "/imports/utils/constants/updateTypes";
+import { UpdateTypes } from "@constant";
 import { withTracker } from "meteor/react-meteor-data";
 
 const PruningDeadheadingModals = (props) => {

@@ -1,4 +1,4 @@
-export function selectRandomPlantPicture() {
+export const selectRandomPlantPicture = () => {
   const number = Math.floor(Math.random() * 11) + 1;
 
   if (number < 10) {
@@ -6,4 +6,4 @@ export function selectRandomPlantPicture() {
   } else {
     return `/images/plant-${number.toString()}.jpg`;
   }
-}
+};

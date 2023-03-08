@@ -4,7 +4,7 @@ import "./Account.scss";
 import { Session } from "meteor/session";
 import { toast } from "react-toastify";
 import { Accounts } from "meteor/accounts-base";
-import Preferences from "/imports/api/Preferences/Preferences";
+import { Preferences } from "@api";
 import { Meteor } from "meteor/meteor";
 
 class Account extends Component {

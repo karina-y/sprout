@@ -1,21 +1,19 @@
 import React, { useEffect } from "react";
 import PropTypes from "prop-types";
-import "../PlantViewEdit/PlantSeedlingViewEdit.scss";
+import "@component/PlantViewEdit/PlantSeedlingViewEdit.scss";
 import "react-datepicker/dist/react-datepicker.css";
 import {
   getDaysSinceAction,
   getHighlightDates,
   getPlantCondition,
   sortByLastDate,
-} from "/imports/utils/helpers/plantData";
+} from "@helper";
 import { toast } from "react-toastify";
 import { withTracker } from "meteor/react-meteor-data";
-import WaterModals from "./WaterModals";
-import WaterReadEdit from "./WaterReadEdit";
-import WaterReadEditPro from "./WaterReadEditPro";
-import useNewData from "/imports/ui/hooks/useNewData";
-import UpdateTypes from "/imports/utils/constants/updateTypes";
-import Water from "../../../api/Water/Water";
+import { WaterModals, WaterReadEdit, WaterReadEditPro } from "@component";
+import { useNewData } from "@hook";
+import { UpdateTypes } from "@constant";
+import { Water } from "@api";
 
 const WaterSwipePanel = (props) => {
   const water = props.water;

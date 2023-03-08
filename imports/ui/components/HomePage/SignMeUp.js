@@ -6,7 +6,10 @@ const SignMeUp = (props) => (
     {Meteor.isCordova ? (
       <button className="pop get-started btn-md">get started</button>
     ) : (
-      <button className="pop btn-md" onClick={() => props.history.push("sign-up")}>
+      <button
+        className="pop btn-md"
+        onClick={() => props.history.push("sign-up")}
+      >
         sign up
       </button>
     )}

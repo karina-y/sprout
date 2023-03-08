@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { withTracker } from "meteor/react-meteor-data";
 import PropTypes from "prop-types";
-import "../PlantViewEdit/PlantSeedlingViewEdit.scss";
+import "@component/PlantViewEdit/PlantSeedlingViewEdit.scss";
 import "react-datepicker/dist/react-datepicker.css";
 import {
   getDaysSinceAction,
@@ -9,14 +9,16 @@ import {
   getPlantCondition,
   lastFertilizerUsed,
   sortByLastDate,
-} from "/imports/utils/helpers/plantData";
+} from "@helper";
 import { toast } from "react-toastify";
-import FertilizerModals from "./FertilizerModals";
-import FertilizerReadEdit from "./FertilizerReadEdit";
-import FertilizerReadEditPro from "./FertilizerReadEditPro";
-import useNewData from "/imports/ui/hooks/useNewData";
-import UpdateTypes from "/imports/utils/constants/updateTypes";
-import Fertilizer from "/imports/api/Fertilizer/Fertilizer";
+import {
+  FertilizerModals,
+  FertilizerReadEdit,
+  FertilizerReadEditPro,
+} from "@component";
+import { useNewData } from "@hook";
+import { UpdateTypes } from "@constant";
+import { Fertilizer } from "@api";
 
 const FertilizerSwipePanel = (props) => {
   const fertilizer = props.fertilizer;

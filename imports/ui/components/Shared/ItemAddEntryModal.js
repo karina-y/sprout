@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import autobind from "react-autobind";
 import Modal from "react-bootstrap/Modal";
-import { withTracker } from 'meteor/react-meteor-data'
+import { withTracker } from "meteor/react-meteor-data";
 
 class ItemAddEntryModal extends Component {
   constructor(props) {
@@ -41,7 +41,11 @@ class ItemAddEntryModal extends Component {
 
   render() {
     return (
-      <Modal show={this.state.show} onHide={this.close} className="plant-view-data-modal">
+      <Modal
+        show={this.state.show}
+        onHide={this.close}
+        className="plant-view-data-modal"
+      >
         <Modal.Header closeButton>{this.props.header}</Modal.Header>
 
         <Modal.Body>{this.props.children}</Modal.Body>
@@ -83,6 +87,6 @@ ItemAddEntryModal.propTypes = {
 export default withTracker(() => {
   const modalOpen = Session.get("modalOpen");
   return {
-    modalOpen
+    modalOpen,
   };
 })(ItemAddEntryModal);

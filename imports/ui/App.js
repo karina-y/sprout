@@ -6,15 +6,10 @@ import "./stylesheets/sitewide.scss";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
-import Loading from "./components/Shared/Loading/Loading";
 import { Meteor } from "meteor/meteor";
-import Preferences from "../api/Preferences/Preferences";
-import PlantToDo from "./pages/PlantToDo/PlantToDo";
-import Authenticated from "./pages/Authenticated";
-import Navigation from "./components/Navigation/Navigation";
-import ScrollToTop from "./components/Shared/ScrollToTop";
-import asyncComponent from "./components/Shared/AsyncComponent";
-import Authorized from "./pages/Authorized";
+import { Preferences } from "@api";
+import { PlantToDo, Authenticated, Authorized } from "@page";
+import { Loading, Navigation, ScrollToTop, asyncComponent } from "@component";
 
 //todo can i replace these with dynamic imports?
 const AsyncLogin = asyncComponent(() => import("./pages/Login"));

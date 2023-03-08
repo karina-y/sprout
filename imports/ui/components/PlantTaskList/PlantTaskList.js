@@ -1,9 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
 import "./PlantTaskList.scss";
-import ShadowBox from "../ShadowBox/ShadowBox";
+import { ShadowBox } from "@component";
 import { ReactSVG } from "react-svg";
-import Icons from "/imports/utils/constants/icons";
+import { Icons } from "@constant";
 
 function PlantTaskList(props) {
   const plant = props.plant;
@@ -28,7 +28,10 @@ function PlantTaskList(props) {
         <div className="quick-details">
           <p>{plant.latinName || plant.commonName}</p>
 
-          <div className="flex-evenly" style={{ position: "relative", padding: "10px 0" }}>
+          <div
+            className="flex-evenly"
+            style={{ position: "relative", padding: "10px 0" }}
+          >
             {plant.attentionNeeded.water && (
               <ReactSVG
                 src={Icons.water.icon}

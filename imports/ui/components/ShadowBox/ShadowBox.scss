@@ -42,7 +42,7 @@ div.ShadowBox {
     }
   }
 
-  &.level-zero {
+  &.level-0 {
     &.popout-hover {
       &:after {
         box-shadow: 0 3px 13px rgba(0, 109, 119, 0.3);
@@ -50,7 +50,7 @@ div.ShadowBox {
     }
   }
 
-  &.level-one {
+  &.level-1 {
     box-shadow: 0 1px 3px rgba(0, 109, 119, 0.12), 0 1px 2px rgba(0, 109, 119, 0.24);
     transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 
@@ -61,7 +61,7 @@ div.ShadowBox {
     }
   }
 
-  &.level-two {
+  &.level-2 {
     box-shadow: 0 3px 6px rgba(0, 109, 119, 0.16), 0 3px 6px rgba(0, 109, 119, 0.23);
 
     &.popout-hover {
@@ -71,7 +71,7 @@ div.ShadowBox {
     }
   }
 
-  &.level-three {
+  &.level-3 {
     box-shadow: 0 10px 20px rgba(0, 109, 119, 0.19), 0 6px 6px rgba(0, 109, 119, 0.23);
 
     &.popout-hover {
@@ -81,7 +81,7 @@ div.ShadowBox {
     }
   }
 
-  &.level-four {
+  &.level-4 {
     box-shadow: 0 14px 28px rgba(0, 109, 119, 0.25), 0 10px 10px rgba(0, 109, 119, 0.22);
 
     &.popout-hover {
@@ -91,7 +91,7 @@ div.ShadowBox {
     }
   }
 
-  &.level-five {
+  &.level-5 {
     box-shadow: 14px 11px 19px 0px rgba(0, 109, 119, 0.3), 7px 8px 12px 0px rgba(0, 109, 119, 0.22);
 
     &.popout-hover {
@@ -101,7 +101,7 @@ div.ShadowBox {
     }
   }
 
-  &.level-six {
+  &.level-6 {
     box-shadow: 14px 9px 38px 0px rgba(0, 109, 119, 0.4), 13px 8px 17px 2px rgba(0, 109, 119, 0.22);
 
     &.popout-hover {

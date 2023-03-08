@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import SwipePanelContent from "../Shared/SwipePanelContent/SwipePanelContent";
+import { SwipePanelContent } from "@component";
 
 const SoilCompReadEdit = (props) => {
   const { soilCompLastChecked, soilMoisture, soilPh, category } = props;
@@ -26,11 +26,7 @@ const SoilCompReadEdit = (props) => {
         </SwipePanelContent>
       ) : (
         <SwipePanelContent icon="soilMoisture">
-          {soilPh ? (
-            <p>Soil pH {soilPh}</p>
-          ) : (
-            <p>No records available.</p>
-          )}
+          {soilPh ? <p>Soil pH {soilPh}</p> : <p>No records available.</p>}
         </SwipePanelContent>
       )}
     </div>

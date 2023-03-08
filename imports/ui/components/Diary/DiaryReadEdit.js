@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
-import SwipePanelContent from "../Shared/SwipePanelContent/SwipePanelContent";
-import { parseDate } from "/imports/utils/helpers/plantData";
+import { SwipePanelContent } from "@component";
+import { parseDate } from "@helper";
 
 //todo change this name? it's read only
 const DiaryReadEdit = (props) => {

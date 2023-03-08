@@ -7,7 +7,12 @@ const Hero = () => (
       <h1 className="hero-title">sprout.</h1>
 
       {/*https://dribbble.com/shots/1777402-I-Am-Groot?1414061591*/}
-      <img src="/images/groot.gif" className="groot" alt="baby groot dancing" title="navigation" />
+      <img
+        src="/images/groot.gif"
+        className="groot"
+        alt="baby groot dancing"
+        title="navigation"
+      />
     </div>
 
     <div className="right-panel">

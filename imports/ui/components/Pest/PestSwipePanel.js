@@ -1,7 +1,7 @@
 import React from "react";
 import { withTracker } from "meteor/react-meteor-data";
 import PropTypes from "prop-types";
-import "../PlantViewEdit/PlantSeedlingViewEdit.scss";
+import "@component/PlantViewEdit/PlantSeedlingViewEdit.scss";
 import "react-datepicker/dist/react-datepicker.css";
 import {
   getHighlightDates,
@@ -9,12 +9,11 @@ import {
   getLastPestTreatment,
   lastChecked,
   sortByLastDate,
-} from "/imports/utils/helpers/plantData";
+} from "@helper";
 import { toast } from "react-toastify";
-import PestModals from "./PestModals";
-import PestReadEdit from "./PestReadEdit";
-import useNewData from "/imports/ui/hooks/useNewData";
-import Pest from "../../../api/Pest/Pest";
+import { PestModals, PestReadEdit } from "@component";
+import { useNewData } from "@hook";
+import { Pest } from "@api";
 
 const PestSwipePanel = (props) => {
   const pest = props.pest;

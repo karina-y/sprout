@@ -1,4 +1,4 @@
-const UpdateTypes = {
+export const UpdateTypes = {
   water: {
     waterEdit: "waterEdit",
     waterEditModal: "waterTracker",
@@ -39,4 +39,11 @@ const UpdateTypes = {
   },
 };
 
-export default UpdateTypes;
+export const EditingType = {
+  waterEditModal: UpdateTypes.water.waterEditModal,
+  fertilizerEditModal: UpdateTypes.fertilizer.fertilizerEditModal,
+  pruningDeadheadingEditModal:
+    UpdateTypes.pruningDeadheading.pruningDeadheadingEditModal,
+  soilCompEditModal: UpdateTypes.soilComp.soilCompEditModal,
+  etcEditModal: UpdateTypes.etc.etcEditModal,
+};
