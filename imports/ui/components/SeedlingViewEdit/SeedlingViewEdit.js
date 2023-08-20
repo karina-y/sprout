@@ -197,6 +197,7 @@ class SeedlingViewEdit extends Component {
 
     if (!type || !newSeedlingData || JSON.stringify(newSeedlingData) === "{}") {
       toast.error("No data entered.");
+      return;
     } else {
       switch (type) {
         //TODO abstract each of these cases out just like in plantviewedit

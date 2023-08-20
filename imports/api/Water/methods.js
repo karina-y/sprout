@@ -3,7 +3,7 @@ import rateLimit from "../../modules/rate-limit";
 import logger from "/imports/utils/helpers/logger";
 import SimpleSchema from "simpl-schema";
 import handleMethodException from "/imports/utils/helpers/handle-method-exception";
-import UpdateTypes from "../../utils/constants/updateTypes";
+import { UpdateTypes } from "@constant";
 
 Meteor.methods({
   "water.insert": function waterInsert(plantId, data) {
@@ -16,7 +16,11 @@ Meteor.methods({
       validationContext.validate(data);
 
       if (!validationContext.isValid()) {
-        logger("danger", "Validation failed", JSON.stringify(validationContext.validationErrors()));
+        logger(
+          "danger",
+          "Validation failed",
+          JSON.stringify(validationContext.validationErrors())
+        );
         handleMethodException("Invalid arguments passed");
       } else {
         const response = Water.insert(data);
@@ -71,9 +75,15 @@ Meteor.methods({
       validationContext.validate(data);
 
       if (!validationContext.isValid()) {
-        logger("danger", "Validation failed", JSON.stringify(validationContext.validationErrors()));
+        logger(
+          "danger",
+          "Validation failed",
+          JSON.stringify(validationContext.validationErrors())
+        );
         handleMethodException(
-          `'Validation failed', ${JSON.stringify(validationContext.validationErrors())}`
+          `'Validation failed', ${JSON.stringify(
+            validationContext.validationErrors()
+          )}`
         );
       } else {
         logger("success", "passed", data);

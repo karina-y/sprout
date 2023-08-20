@@ -3,20 +3,29 @@ import rateLimit from "../../modules/rate-limit";
 import logger from "/imports/utils/helpers/logger";
 import SimpleSchema from "simpl-schema";
 import handleMethodException from "/imports/utils/helpers/handle-method-exception";
-import UpdateTypes from "../../utils/constants/updateTypes";
+import { UpdateTypes } from "@constant";
 
 Meteor.methods({
-  "pruningDeadheading.insert": function pruningDeadheadingInsert(plantId, data) {
+  "pruningDeadheading.insert": function pruningDeadheadingInsert(
+    plantId,
+    data
+  ) {
     try {
       data.createdAt = new Date();
       data.updatedAt = new Date();
       data.plantId = plantId;
 
-      const validationContext = new SimpleSchema(PruningDeadheading.schema).newContext();
+      const validationContext = new SimpleSchema(
+        PruningDeadheading.schema
+      ).newContext();
       validationContext.validate(data);
 
       if (!validationContext.isValid()) {
-        logger("danger", "Validation failed", JSON.stringify(validationContext.validationErrors()));
+        logger(
+          "danger",
+          "Validation failed",
+          JSON.stringify(validationContext.validationErrors())
+        );
         handleMethodException("Invalid arguments passed");
       } else {
         const response = PruningDeadheading.insert(data);
@@ -76,8 +85,16 @@ Meteor.methods({
       validationContext.validate(data);
 
       if (!validationContext.isValid()) {
-        logger("danger", "Validation failed", JSON.stringify(validationContext.validationErrors()));
-        handleMethodException(`'Validation failed', ${JSON.stringify(validationContext.validationErrors())}`);
+        logger(
+          "danger",
+          "Validation failed",
+          JSON.stringify(validationContext.validationErrors())
+        );
+        handleMethodException(
+          `'Validation failed', ${JSON.stringify(
+            validationContext.validationErrors()
+          )}`
+        );
       } else {
         logger("success", "passed", data);
         const response = PruningDeadheading.update({ _id: id }, query);
@@ -106,7 +123,11 @@ Meteor.methods({
 });
 
 rateLimit({
-  methods: ["pruningDeadheading.insert", "pruningDeadheading.update", "pruningDeadheading.delete"],
+  methods: [
+    "pruningDeadheading.insert",
+    "pruningDeadheading.update",
+    "pruningDeadheading.delete",
+  ],
   limit: 5,
   timeRange: 1000,
 });

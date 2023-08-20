@@ -96,7 +96,7 @@ class PlantViewEdit extends Component /*<
     Session.set("savingType", null);
   }
 
-  //TODO it's not noticable to the client but i get errors in the console after it's been deleted
+  //TODO it's not noticeable to the client but i get errors in the console after it's been deleted
   deletePlant() {
     Meteor.call("plant.delete", this.props.plant._id, (err, response) => {
       if (err) {
@@ -127,6 +127,7 @@ class PlantViewEdit extends Component /*<
 
     return (
       <div className="PlantSeedlingViewEdit">
+        {/* photo panel */}
         {editingType === "etc" ? (
           <div className="plant-photo editing">
             <img

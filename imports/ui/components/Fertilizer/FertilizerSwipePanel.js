@@ -46,6 +46,7 @@ const FertilizerSwipePanel = (props) => {
 
     if (!type || !newPlantData || JSON.stringify(newPlantData) === "{}") {
       toast.error("No data entered.");
+      return;
     } else if (type === UpdateTypes.fertilizer.fertilizerEditModal) {
       data = {
         fertilizerTracker: newPlantData.fertilizerTracker,

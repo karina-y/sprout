@@ -25,6 +25,7 @@ const EtcSwipePanel = (props) => {
 
     if (!type || !newPlantData || JSON.stringify(newPlantData) === "{}") {
       toast.error("No data entered.");
+      return;
     } else {
       //TODO how can i update only the data that needs updating, instead of doing all this
       let data = {

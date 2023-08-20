@@ -72,9 +72,11 @@ class ItemCatalog extends Component {
     });
   }
 
+  /*
+   * Filters through the catalog based on what you search in the search bar
+   * */
   filterCatalog(e) {
     //this is overkill but i'm not sure how i want to search/filter in the future so leaving this for now
-    //TODO ctrl+a del doesn't reset the filter
 
     const val = e.target.value;
     const catalog = this.state.catalog;
@@ -88,17 +90,13 @@ class ItemCatalog extends Component {
           case "string":
             item = obj[key].toString().toLowerCase();
             return item.includes(val);
-            break;
           case "number":
             item = obj[key].toString().toLowerCase();
             return item.includes(val);
-            break;
           case "object":
             return filterObject(item);
-            break;
           case "array":
             return filterArray(item);
-            break;
         }
       }
 
@@ -130,7 +128,7 @@ class ItemCatalog extends Component {
       });
     } else {
       this.setState({
-        filteredCatalog: catalog,
+        filteredOrSortedCatalog: catalog,
         catalogFilter: "",
       });
     }

@@ -3,7 +3,7 @@ import rateLimit from "../../modules/rate-limit";
 import logger from "/imports/utils/helpers/logger";
 import SimpleSchema from "simpl-schema";
 import handleMethodException from "/imports/utils/helpers/handle-method-exception";
-import UpdateTypes from "../../utils/constants/updateTypes";
+import { UpdateTypes } from "@constant";
 
 Meteor.methods({
   "fertilizer.insert": function fertilizerInsert(plantId, data) {
@@ -12,11 +12,17 @@ Meteor.methods({
       data.updatedAt = new Date();
       data.plantId = plantId;
 
-      const validationContext = new SimpleSchema(Fertilizer.schema).newContext();
+      const validationContext = new SimpleSchema(
+        Fertilizer.schema
+      ).newContext();
       validationContext.validate(data);
 
       if (!validationContext.isValid()) {
-        logger("danger", "Validation failed", JSON.stringify(validationContext.validationErrors()));
+        logger(
+          "danger",
+          "Validation failed",
+          JSON.stringify(validationContext.validationErrors())
+        );
         handleMethodException("Invalid arguments passed");
       } else {
         const response = Fertilizer.insert(data);
@@ -39,7 +45,10 @@ Meteor.methods({
       let query;
 
       if (type === UpdateTypes.fertilizer.fertilizerEditModal) {
-        validationSchema = Fertilizer.schema.pick("fertilizerTracker", "updatedAt");
+        validationSchema = Fertilizer.schema.pick(
+          "fertilizerTracker",
+          "updatedAt"
+        );
 
         query = {
           $set: { updatedAt: data.updatedAt },
@@ -72,9 +81,15 @@ Meteor.methods({
       validationContext.validate(data);
 
       if (!validationContext.isValid()) {
-        logger("danger", "Validation failed", JSON.stringify(validationContext.validationErrors()));
+        logger(
+          "danger",
+          "Validation failed",
+          JSON.stringify(validationContext.validationErrors())
+        );
         handleMethodException(
-          `'Validation failed', ${JSON.stringify(validationContext.validationErrors())}`
+          `'Validation failed', ${JSON.stringify(
+            validationContext.validationErrors()
+          )}`
         );
       } else {
         logger("success", "passed", data);

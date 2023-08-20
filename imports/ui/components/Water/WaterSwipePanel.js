@@ -32,6 +32,7 @@ const WaterSwipePanel = (props) => {
 
     if (!newPlantData || JSON.stringify(newPlantData) === "{}") {
       toast.error("No data entered.");
+      return;
     } else if (type === UpdateTypes.water.waterEditModal) {
       data = {
         waterTracker: newPlantData.waterTracker,

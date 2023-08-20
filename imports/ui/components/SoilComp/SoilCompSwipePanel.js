@@ -45,6 +45,7 @@ const SoilCompSwipePanel = (props) => {
 
     if (!type || !newPlantData || JSON.stringify(newPlantData) === "{}") {
       toast.error("No data entered.");
+      return;
     } else {
       let data;
 

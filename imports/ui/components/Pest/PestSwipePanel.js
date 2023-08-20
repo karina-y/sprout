@@ -34,6 +34,7 @@ const PestSwipePanel = (props) => {
 
     if (!type || !newPlantData || JSON.stringify(newPlantData) === "{}") {
       toast.error("No data entered.");
+      return;
     } else {
       //TODO abstract each of these cases out
       let data = {
