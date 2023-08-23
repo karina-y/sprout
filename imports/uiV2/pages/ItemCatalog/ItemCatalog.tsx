@@ -1,14 +1,40 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import autobind from "react-autobind";
+import autobind from "autobind-decorator";
 import { withTracker } from "meteor/react-meteor-data";
 import { ItemPreview } from "@component";
 import { Session } from "meteor/session";
 import { Plant, Seedling } from "@api";
 import "./ItemCatalog.scss";
+import { PlantSchema } from "@model";
 
-class ItemCatalog extends Component {
-  constructor(props) {
+interface IItemCatalogProps {
+  catalog: Array<PlantSchema>;
+  type: string;
+  msg: string;
+}
+
+interface IItemCatalogState {
+  catalog: Array<PlantSchema>;
+  filteredOrSortedCatalog: Array<PlantSchema>;
+  catalogFilter: string; //TODO fix this type if it's not correct
+  sortBy: Property | string;
+}
+
+enum Property {
+  COMMON_NAME = "commonName",
+  LATIN_NAME = "latinName",
+  CREATED_AT = "createdAt",
+  UPDATED_AT = "updatedAt",
+}
+
+@autobind
+class ItemCatalog extends Component<IItemCatalogProps, IItemCatalogState> {
+  //TODO fill in propTypes
+  static propTypes: {};
+
+  // TODO type the props correctly
+  constructor(props: any) {
     super(props);
 
     this.state = {
@@ -18,7 +44,7 @@ class ItemCatalog extends Component {
       sortBy: "",
     };
 
-    autobind(this);
+    // autobind(this);
   }
 
   componentDidMount() {
@@ -26,7 +52,7 @@ class ItemCatalog extends Component {
   }
 
   //TODO
-  sortCatalog(property) {
+  sortCatalog(property: Property) {
     //TODO sorting allowed by both common and latin name... do i want to display both? make this a user pref? i haven't decided yet....
     //add more sorting options, last watered, last fertilized, etc
     //where to put sorting buttons? next to seach bar?
@@ -38,14 +64,21 @@ class ItemCatalog extends Component {
     if (currentSortBy === property) {
       sortedUsers = currentSort.reverse();
     } else {
-      sortedUsers = currentSort.sort(function (a, b) {
+      //TODO fix any type
+      sortedUsers = currentSort.sort(function (a: any, b: any) {
         let itemA;
         let itemB;
 
-        if (property === "commonName" || property === "latinName") {
+        if (
+          property === Property.COMMON_NAME ||
+          property === Property.LATIN_NAME
+        ) {
           itemA = a[property].toString().toLowerCase();
           itemB = b[property].toString().toLowerCase();
-        } else if (property === "createdAt" || property === "updatedAt") {
+        } else if (
+          property === Property.CREATED_AT ||
+          property === Property.UPDATED_AT
+        ) {
           itemA = a[property] ? new Date(a[property]) : null;
           itemB = b[property] ? new Date(b[property]) : null;
         }
@@ -54,7 +87,10 @@ class ItemCatalog extends Component {
           return -1;
         } else if (itemA == null) {
           return 1;
-        } else if (property === "createdAt" || property === "updatedAt") {
+        } else if (
+          property === Property.CREATED_AT ||
+          property === Property.UPDATED_AT
+        ) {
           return itemB - itemA;
         } else if (itemA < itemB) {
           return -1;
@@ -72,35 +108,38 @@ class ItemCatalog extends Component {
     });
   }
 
-  /*
+  /**
    * Filters through the catalog based on what you search in the search bar
-   * */
-  filterCatalog(e) {
+   * @param e the search bar typing event
+   */
+  filterCatalog(e: React.ChangeEvent<HTMLInputElement>) {
     //this is overkill but i'm not sure how i want to search/filter in the future so leaving this for now
 
     const val = e.target.value;
     const catalog = this.state.catalog;
 
     if (val) {
-      function checkItem(obj, key) {
+      //TODO fix the any types
+      function checkItem(obj: any, key: string): any {
         const type = typeof obj[key];
         let item = obj[key];
 
-        switch (type) {
-          case "string":
-            item = obj[key].toString().toLowerCase();
-            return item.includes(val);
-          case "number":
-            item = obj[key].toString().toLowerCase();
-            return item.includes(val);
-          case "object":
-            return filterObject(item);
-          case "array":
-            return filterArray(item);
+        if (type === "string") {
+          item = obj[key].toString().toLowerCase();
+          return item.includes(val);
+        } else if (type === "number") {
+          item = obj[key].toString().toLowerCase();
+          return item.includes(val);
+        } else if (Array.isArray(item)) {
+          return filterArray(item);
+        } else {
+          return filterObject(item);
         }
       }
 
-      const filteredCatalog = catalog.filter(function (obj) {
+      const filteredCatalog: Array<PlantSchema> = catalog.filter(function (
+        obj: PlantSchema
+      ) {
         return Object.keys(obj).some(function (key) {
           if (key === "commonName" || key === "latinName") {
             return checkItem(obj, key);
@@ -108,7 +147,7 @@ class ItemCatalog extends Component {
         });
       });
 
-      function filterArray(arr) {
+      function filterArray(arr: Array<any>) {
         arr.filter(function (obj) {
           return Object.keys(obj).some(function (key) {
             return checkItem(obj, key);
@@ -116,7 +155,7 @@ class ItemCatalog extends Component {
         });
       }
 
-      function filterObject(obj) {
+      function filterObject(obj: any) {
         return Object.keys(obj).some(function (key) {
           return checkItem(obj, key);
         });
@@ -184,19 +223,27 @@ class ItemCatalog extends Component {
 ItemCatalog.propTypes = {
   catalog: PropTypes.array.isRequired,
   type: PropTypes.string.isRequired,
+  msg: PropTypes.string.isRequired,
 };
 
-export default withTracker((props) => {
+export default withTracker((props: any) => {
   const type = props.match.params.type;
-  let catalog = [];
+  let catalog: Array<PlantSchema> = [];
   let msg = `You don't have any ${type}s in your catalog yet.`;
 
   if (type === "plant") {
-    catalog = Plant.find({ userId: Meteor.userId() }).fetch();
-  } else if (type === "seedling" && Meteor.isPro) {
-    catalog = Seedling.find({ userId: Meteor.userId() }).fetch();
+    catalog = Plant.find({
+      userId: Meteor.userId(),
+    }).fetch() as Array<PlantSchema>;
   } else {
-    msg = "You need to upgrade to a pro account to use this feature";
+    // @ts-ignore
+    if (type === "seedling" && Meteor.isPro) {
+      catalog = Seedling.find({
+        userId: Meteor.userId(),
+      }).fetch() as Array<PlantSchema>;
+    } else {
+      msg = "You need to upgrade to a pro account to use this feature";
+    }
   }
 
   return {

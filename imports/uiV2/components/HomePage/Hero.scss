@@ -1,0 +1,109 @@
+@import "../../stylesheets/variables";
+
+.HeroPanel {
+  height: $vh-less-nav !important;
+  background: $powder-blue;
+  display: flex;
+
+  & > div {
+    width: 100%;
+  }
+
+  .hero-title {
+    font-size: 128px;
+    color: $ming;
+    max-width: 80%;
+  }
+
+  .left-panel,
+  .right-panel {
+    color: $ming;
+  }
+
+  //#region breakpoints
+  @media only screen and ($breakpoint-xs) {
+    flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: $vh-less-mobile-nav;
+
+    .left-panel,
+    .right-panel {
+      text-align: center;
+      width: 80%;
+    }
+
+    .left-panel {
+      border-bottom: solid 1px $ming;
+      border-right: none;
+      margin-bottom: 20px;
+      padding-bottom: 20px;
+    }
+
+    .hero-title {
+      font-size: $font-lg;
+    }
+
+    h4 {
+      font-size: $font-sm;
+    }
+
+    .groot {
+      display: none;
+    }
+  }
+
+  @media only screen and ($breakpoint-sm) {
+    .left,
+    .right {
+      display: none;
+    }
+
+    .hero-title {
+      font-size: 80px;
+    }
+
+    .groot {
+      display: none;
+    }
+
+    h4 {
+      font-size: $font-sm;
+    }
+  }
+
+  @media only screen and ($breakpoint-md) {
+    .hero-title {
+      font-size: 100px;
+    }
+
+    h4 {
+      font-size: $font-md;
+    }
+
+    .left {
+      display: block;
+    }
+  }
+
+  @media only screen and ($breakpoint-lg) {
+    .right {
+      display: block;
+    }
+  }
+
+  @media only screen and ($breakpoint-mac-min) and ($breakpoint-mac-max) {
+    .hero-title {
+      font-size: 128px;
+    }
+
+    h4 {
+      font-size: $font-lg;
+    }
+  }
+
+  @media only screen and ($breakpoint-xl) {
+  }
+  //#endregion
+}
