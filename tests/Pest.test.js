@@ -1,4 +1,3 @@
-import logger from "../imports/utils/helpers/logger";
 import SimpleSchema from "simpl-schema";
 import Pest from "../imports/api/Pest/Pest";
 import { pest } from "./db/db";
@@ -11,10 +10,10 @@ it("validate model - pest", () => {
   const validationContext = new SimpleSchema(Pest.schema).newContext();
   validationContext.validate(pestDb);
   if (!validationContext.isValid()) {
-    logger(
-      "danger",
+    loggerV2.danger(
+      logSource,
       "Validation failed",
-      JSON.stringify(validationContext.validationErrors(), null, 4)
+      JSON.stringify(validationContext.validationErrors(), null, 4),
     );
   }
 

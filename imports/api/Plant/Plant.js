@@ -1,7 +1,6 @@
 import { Meteor } from "meteor/meteor";
 import { Mongo } from "meteor/mongo";
 import SimpleSchema from "simpl-schema";
-// import Water from "../Water/Water";
 
 const Plant = new Mongo.Collection("Plant");
 
@@ -125,7 +124,7 @@ Plant.schema = new SimpleSchema(
       getAutoValues: true,
       removeNullsFromArrays: true,
     },
-  }
+  },
 );
 
 Plant.attachSchema(Plant.schema);

@@ -1,13 +1,21 @@
 import rateLimit from "../../modules/rate-limit";
-import logger from "/imports/utils/helpers/logger";
+import { Meteor } from "meteor/meteor";
+import { loggerV2 } from "../../utils/helpers";
 
+const logSource = "Trefle Methods > ";
+
+//TODO what's this for?
 Meteor.methods({
   "trefle.get": function profileDelete(data) {
     try {
       //https://trefle.io/api/plants/?token=WjVkVytwSU1rYzNGNUNpS24rSmxPZz09&common_name=monstera
 
-      if (typeof data.commonName !== "string" || typeof data.latinName !== "string") {
-        logger("danger", "Validation failed");
+      if (
+        typeof data.commonName !== "string" ||
+        typeof data.latinName !== "string"
+      ) {
+        loggerV2.danger(logSource, "Validation failed");
+
         throw new Meteor.Error("500", "Invalid arguments passed");
       } else {
         const commonPlants = HTTP.call(
@@ -17,7 +25,7 @@ Meteor.methods({
             headers: {
               Accept: "application/json",
             },
-          }
+          },
         );
 
         const latinPlants = HTTP.call(
@@ -27,16 +35,17 @@ Meteor.methods({
             headers: {
               Accept: "application/json",
             },
-          }
+          },
         );
 
-        logger("info", "commonPlants", commonPlants);
-        logger("info", "latinPlants", latinPlants);
+        loggerV2.info(logSource, "commonPlants", commonPlants);
+        loggerV2.info(logSource, "latinPlants", latinPlants);
 
         return null;
       }
     } catch (e) {
-      logger("danger", e.message);
+      loggerV2.danger(logSource, e.message);
+
       throw new Meteor.Error("500", "Please check your inputs and try again.");
     }
   },

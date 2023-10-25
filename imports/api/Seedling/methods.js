@@ -1,8 +1,11 @@
 import Seedling from "./Seedling";
 import rateLimit from "../../modules/rate-limit";
-import logger from "/imports/utils/helpers/logger";
 import SimpleSchema from "simpl-schema";
 import handleMethodException from "/imports/utils/helpers/handle-method-exception";
+import { Meteor } from "meteor/meteor";
+import { loggerV2 } from "../../utils/helpers";
+
+const logSource = "Seedling Methods > ";
 
 Meteor.methods({
   "seedling.insert": function seedlingInsert(data) {
@@ -15,20 +18,26 @@ Meteor.methods({
       validationContext.validate(data);
 
       if (!validationContext.isValid()) {
-        logger("danger", "Validation failed", JSON.stringify(validationContext.validationErrors()));
+        loggerV2.danger(
+          logSource,
+          "Validation failed",
+          JSON.stringify(validationContext.validationErrors()),
+        );
+
         handleMethodException("Invalid arguments passed");
       } else {
         const response = Seedling.insert(data);
         return response;
       }
     } catch (e) {
-      logger("danger", e.message);
+      loggerV2.danger(logSource, e.message);
+
       handleMethodException(e.message);
     }
   },
   "seedling.update": function seedlingUpdate(type, data) {
-    logger("info", "type", type);
-    logger("info", "data", data);
+    loggerV2.info(logSource, "type", type);
+    loggerV2.info(logSource, "data", data);
 
     try {
       // data.updatedAt = new Date();
@@ -45,7 +54,7 @@ Meteor.methods({
             "lightPreference",
             "waterSchedule",
             "waterScheduleAuto",
-            "updatedAt"
+            "updatedAt",
           );
 
           query = {
@@ -64,7 +73,7 @@ Meteor.methods({
             "compost",
             "fertilizer",
             "nutrient",
-            "updatedAt"
+            "updatedAt",
           );
 
           query = {
@@ -87,7 +96,7 @@ Meteor.methods({
             "daysToHarvest",
             "estHarvestDate",
             "actualHarvestDate",
-            "updatedAt"
+            "updatedAt",
           );
 
           query = {
@@ -114,7 +123,7 @@ Meteor.methods({
             "method",
             "startedIndoorOutdoor",
             "seedBrand",
-            "updatedAt"
+            "updatedAt",
           );
 
           query = {
@@ -135,7 +144,12 @@ Meteor.methods({
           //entry for both pruning and deadheading
           validationSchema =
             seedling.category === "in-ground"
-              ? Seedling.schema.pick("soilAmendment", "soilType", "tilled", "updatedAt")
+              ? Seedling.schema.pick(
+                  "soilAmendment",
+                  "soilType",
+                  "tilled",
+                  "updatedAt",
+                )
               : Seedling.schema.pick("soilRecipe", "updatedAt");
           query =
             seedling.category === "in-ground"
@@ -167,25 +181,35 @@ Meteor.methods({
       validationContext.validate(data);
 
       if (!validationContext.isValid()) {
-        logger("danger", "Validation failed", JSON.stringify(validationContext.validationErrors()));
+        loggerV2.danger(
+          logSource,
+          "Validation failed",
+          JSON.stringify(validationContext.validationErrors()),
+        );
+
         handleMethodException(
-          `'Validation failed', ${JSON.stringify(validationContext.validationErrors())}`
+          `'Validation failed', ${JSON.stringify(
+            validationContext.validationErrors(),
+          )}`,
         );
         // throw new Meteor.Error('500')
       } else {
-        logger("success", "passed", data);
+        loggerV2.success(logSource, "passed", data);
+
         const response = Seedling.update({ _id: seedling._id }, query);
         return response;
       }
     } catch (e) {
-      logger("danger", e.message);
+      loggerV2.danger(logSource, e.message);
+
       handleMethodException(e.message);
     }
   },
   "seedling.delete": function seedlingDelete(data) {
     try {
       if (typeof data !== "string" || !data) {
-        logger("danger", "Invalid arguments passed");
+        loggerV2.danger(logSource, "Invalid arguments passed");
+
         handleMethodException("Invalid arguments passed");
         // throw new Meteor.Error('500', 'Invalid arguments passed')
       } else {
@@ -193,7 +217,8 @@ Meteor.methods({
         return response;
       }
     } catch (e) {
-      logger("danger", e.message);
+      loggerV2.danger(logSource, e.message);
+
       handleMethodException(e.message);
     }
   },

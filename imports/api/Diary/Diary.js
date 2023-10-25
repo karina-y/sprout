@@ -66,7 +66,7 @@ Diary.schema = new SimpleSchema(
       getAutoValues: true,
       removeNullsFromArrays: true,
     },
-  }
+  },
 );
 
 Diary.attachSchema(Diary.schema);

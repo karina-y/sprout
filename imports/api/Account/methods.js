@@ -1,10 +1,12 @@
 import { Accounts } from "meteor/accounts-base";
 import rateLimit from "../../modules/rate-limit";
-import logger from "/imports/utils/helpers/logger";
+import { loggerV2 } from "/imports/utils/helpers/logger";
 import SimpleSchema from "simpl-schema";
 import handleMethodException from "/imports/utils/helpers/handle-method-exception";
 import Preferences from "../Preferences/Preferences";
 import { Meteor } from "meteor/meteor";
+
+const logSource = "Account Methods > ";
 
 Meteor.methods({
   "account.insert": function accountInsert(data) {
@@ -54,15 +56,16 @@ Meteor.methods({
       validationContext.validate(data);
 
       if (!validationContext.isValid()) {
-        logger(
-          "danger",
+        loggerV2.danger(
+          logSource,
           "Validation failed",
-          JSON.stringify(validationContext.validationErrors())
+          JSON.stringify(validationContext.validationErrors()),
         );
+
         handleMethodException(
           `Validation failed, ${JSON.stringify(
-            validationContext.validationErrors()
-          )}`
+            validationContext.validationErrors(),
+          )}`,
         );
         // throw new Meteor.Error('500', 'Invalid arguments passed')
       } else {
@@ -70,7 +73,7 @@ Meteor.methods({
         const response = Accounts.createUser(data);
         Accounts.sendVerificationEmail(response);
 
-        // logger('info', 'acct res', response)
+        // loggerV2.info(logSource', 'acct res', response)
 
         //create their preferences profile
         Preferences.insert({
@@ -86,14 +89,15 @@ Meteor.methods({
         return response;
       }
     } catch (e) {
-      logger("danger", e.message);
+      loggerV2.danger(logSource, e.message);
+
       handleMethodException(e.message);
       // handleMethodException('Please check your inputs and try again.')
     }
   },
   "account.updatePassword": function accountUpdatePassword(
     password,
-    newPassword
+    newPassword,
   ) {
     try {
       const data = {
@@ -116,27 +120,34 @@ Meteor.methods({
       validationContext.validate(data);
 
       if (!validationContext.isValid()) {
-        logger(
-          "danger",
+        loggerV2.danger(
+          logSource,
           "Validation failed",
-          JSON.stringify(validationContext.validationErrors())
+          JSON.stringify(validationContext.validationErrors()),
         );
+
         handleMethodException(
           `Validation failed, ${JSON.stringify(
-            validationContext.validationErrors()
-          )}`
+            validationContext.validationErrors(),
+          )}`,
         );
         // throw new Meteor.Error('500', 'Invalid arguments passed')
       } else {
         Accounts.changePassword(data.password, data.newPassword, (err) => {
           if (err) {
-            logger("danger", "err in account.updatePassword - ", err.message);
+            loggerV2.danger(
+              logSource,
+              "err in account.updatePassword",
+              err.message,
+            );
+
             handleMethodException(err);
           }
         });
       }
     } catch (e) {
-      logger("danger", e.message);
+      loggerV2.danger(logSource, e.message);
+
       handleMethodException(e.message);
       // handleMethodException('Please check your inputs and try again.')
     }
@@ -144,7 +155,7 @@ Meteor.methods({
   "account.updateProfile": function accountUpdateProfile(
     newProfile,
     theme,
-    isPro
+    isPro,
   ) {
     if (
       !newProfile &&
@@ -152,7 +163,8 @@ Meteor.methods({
       theme == null &&
       isPro == null
     ) {
-      logger("danger", "No Data entered.");
+      loggerV2.danger(logSource, "No Data entered.");
+
       handleMethodException("Please check your inputs and try again.");
     } else {
       if (!newProfile && JSON.stringify(newProfile) === "{}") {
@@ -176,7 +188,7 @@ Meteor.methods({
         }
       } else {
         try {
-          logger("success", "data", newProfile);
+          loggerV2.success(logSource, "data", newProfile);
 
           const validationSchema = new SimpleSchema({
             email: {
@@ -197,16 +209,17 @@ Meteor.methods({
           });
 
           const validationContext = new SimpleSchema(
-            validationSchema
+            validationSchema,
           ).newContext();
           validationContext.validate(newProfile);
 
           if (!validationContext.isValid()) {
-            logger(
-              "danger",
+            loggerV2.danger(
+              logSource,
               "Validation failed",
-              JSON.stringify(validationContext.validationErrors())
+              JSON.stringify(validationContext.validationErrors()),
             );
+
             handleMethodException("Invalid arguments passed");
           } else {
             const userId = Meteor.userId();
@@ -255,7 +268,8 @@ Meteor.methods({
             // return response;
           }
         } catch (e) {
-          logger("danger", e.message);
+          loggerV2.danger(logSource, e.message);
+
           handleMethodException("Please check your inputs and try again.");
         }
       }

@@ -1,8 +1,32 @@
 {
+  "presets": [
+	"meteor",
+	"@babel/preset-env",
+	"@babel/preset-react",
+	"@babel/preset-typescript"
+  ],
+  "env": {
+	"test": {
+	  "plugins": [
+		"@babel/plugin-transform-modules-commonjs",
+		"@babel/plugin-transform-react-jsx"
+	  ]
+	}
+  },
+  "compilerOptions": {
+	"emitDeclarationOnly": true,
+	"isolatedModules": true
+  },
+  "extensions": ["ts", "tsx"],
+  "stripExtensions": [".ts", ".tsx"],
   "plugins": [
 	[
 	  "module-resolver",
 	  {
+		"extensions": [
+		  "ts", "tsx"
+		],
+		"stripExtensions": [".ts", ".tsx"],
 		"root": [
 		  "./"
 		],
@@ -22,7 +46,11 @@
 		  "@helper": "./imports/utils/helpers",
 		  "@helper/*": "./imports/utils/helpers/*",
 		  "@model": "./imports/utils/models",
-		  "@model/*": "./imports/utils/models/*"
+		  "@model/*": "./imports/utils/models/*",
+		  "@enum": "./imports/utils/enums",
+		  "@enum/*": "./imports/utils/enums/*",
+		  "@type": "./imports/utils/types",
+		  "@type/*": "./imports/utils/types/*"
 		}
 	  }
 	]

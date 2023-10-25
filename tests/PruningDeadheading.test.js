@@ -1,4 +1,3 @@
-import logger from "../imports/utils/helpers/logger";
 import SimpleSchema from "simpl-schema";
 import PruningDeadheading from "../imports/api/PruningDeadheading/PruningDeadheading";
 import { pruningDeadheading } from "./db/db";
@@ -9,14 +8,14 @@ it("validate model - pruningDeadheading", () => {
   delete pruningDeadheadingDb._id;
 
   const validationContext = new SimpleSchema(
-    PruningDeadheading.schema
+    PruningDeadheading.schema,
   ).newContext();
   validationContext.validate(pruningDeadheadingDb);
   if (!validationContext.isValid()) {
-    logger(
-      "danger",
+    loggerV2.danger(
+      logSource,
       "Validation failed",
-      JSON.stringify(validationContext.validationErrors(), null, 4)
+      JSON.stringify(validationContext.validationErrors(), null, 4),
     );
   }
 

@@ -1,4 +1,3 @@
-import logger from "../imports/utils/helpers/logger";
 import SimpleSchema from "simpl-schema";
 import Fertilizer from "../imports/api/Fertilizer/Fertilizer";
 import { fertilizer } from "./db/db";
@@ -11,10 +10,10 @@ it("validate model - fertilizer", () => {
   const validationContext = new SimpleSchema(Fertilizer.schema).newContext();
   validationContext.validate(fertilizerDb);
   if (!validationContext.isValid()) {
-    logger(
-      "danger",
+    loggerV2.danger(
+      logSource,
       "Validation failed",
-      JSON.stringify(validationContext.validationErrors(), null, 4)
+      JSON.stringify(validationContext.validationErrors(), null, 4),
     );
   }
 

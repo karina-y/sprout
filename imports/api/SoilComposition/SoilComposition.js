@@ -21,7 +21,7 @@ SoilComposition.schema = new SimpleSchema(
   {
     plantId: {
       type: String,
-      defaultValue: "admin",
+      defaultValue: "admin", //TODO is this correct? check all the others too
       label: "userId",
     },
     tilled: {

@@ -1,9 +1,12 @@
 import SoilComposition from "./SoilComposition";
 import rateLimit from "../../modules/rate-limit";
-import logger from "/imports/utils/helpers/logger";
 import SimpleSchema from "simpl-schema";
 import handleMethodException from "/imports/utils/helpers/handle-method-exception";
 import { UpdateTypes } from "@constant";
+import { Meteor } from "meteor/meteor";
+import { loggerV2 } from "../../utils/helpers";
+
+const logSource = "SoilComposition Methods > ";
 
 Meteor.methods({
   "soilComposition.insert": function soilCompositionInsert(plantId, data) {
@@ -13,33 +16,35 @@ Meteor.methods({
       data.plantId = plantId;
 
       const validationContext = new SimpleSchema(
-        SoilComposition.schema
+        SoilComposition.schema,
       ).newContext();
       validationContext.validate(data);
 
       if (!validationContext.isValid()) {
-        logger(
-          "danger",
+        loggerV2.danger(
+          logSource,
           "Validation failed",
-          JSON.stringify(validationContext.validationErrors())
+          JSON.stringify(validationContext.validationErrors()),
         );
+
         handleMethodException("Invalid arguments passed");
       } else {
         const response = SoilComposition.insert(data);
         return response;
       }
     } catch (e) {
-      logger("danger", e.message);
+      loggerV2.danger(logSource, e.message);
+
       handleMethodException(e.message);
     }
   },
   "soilComposition.update": function soilCompositionUpdate(
     type,
     data,
-    category
+    category,
   ) {
-    logger("info", "type", type);
-    logger("info", "data", data);
+    loggerV2.info(logSource, "type", type);
+    loggerV2.info(logSource, "data", data);
 
     try {
       const id = data._id;
@@ -64,7 +69,7 @@ Meteor.methods({
                 "soilAmendment",
                 "soilType",
                 "tilled",
-                "updatedAt"
+                "updatedAt",
               )
             : SoilComposition.schema.pick("soilRecipe", "updatedAt");
 
@@ -90,32 +95,36 @@ Meteor.methods({
       validationContext.validate(data);
 
       if (!validationContext.isValid()) {
-        logger(
-          "danger",
+        loggerV2.danger(
+          logSource,
           "Validation failed",
-          JSON.stringify(validationContext.validationErrors())
+          JSON.stringify(validationContext.validationErrors()),
         );
+
         handleMethodException(
           `'Validation failed', ${JSON.stringify(
-            validationContext.validationErrors()
-          )}`
+            validationContext.validationErrors(),
+          )}`,
         );
       } else {
-        logger("success", "passed", data);
+        loggerV2.success(logSource, "passed", data);
+
         const response = SoilComposition.update({ _id: id }, query);
 
         //todo for all methods, if response is 0 then something went wrong, need to throw err to the client
         return response;
       }
     } catch (e) {
-      logger("danger", e.message);
+      loggerV2.danger(logSource, e.message);
+
       handleMethodException(e.message);
     }
   },
   "soilComposition.delete": function soilCompositionDelete(data) {
     try {
       if (typeof data !== "string" || !data) {
-        logger("danger", "Invalid arguments passed");
+        loggerV2.danger(logSource, "Invalid arguments passed");
+
         handleMethodException("Invalid arguments passed");
         // throw new Meteor.Error('500', 'Invalid arguments passed')
       } else {
@@ -123,7 +132,8 @@ Meteor.methods({
         return response;
       }
     } catch (e) {
-      logger("danger", e.message);
+      loggerV2.danger(logSource, e.message);
+
       handleMethodException(e.message);
     }
   },

@@ -8,9 +8,12 @@ import SoilComposition from "../SoilComposition/SoilComposition";
 import Water from "../Water/Water";
 
 import rateLimit from "../../modules/rate-limit";
-import logger from "/imports/utils/helpers/logger";
 import SimpleSchema from "simpl-schema";
 import handleMethodException from "/imports/utils/helpers/handle-method-exception";
+import { Meteor } from "meteor/meteor";
+import { loggerV2 } from "../../utils/helpers";
+
+const logSource = "Plant Methods > ";
 
 Meteor.methods({
   "plant.insert": function plantInsert(data) {
@@ -23,23 +26,26 @@ Meteor.methods({
       validationContext.validate(data);
 
       if (!validationContext.isValid()) {
-        logger(
-          "danger",
+        loggerV2.danger(
+          logSource,
           "Validation failed",
-          JSON.stringify(validationContext.validationErrors())
+          JSON.stringify(validationContext.validationErrors()),
         );
+
         handleMethodException("Invalid arguments passed");
       } else {
+        //returns plantId
         const response = Plant.insert(data);
         return response;
       }
     } catch (e) {
-      logger("danger", e.message);
+      loggerV2.danger(logSource, e.message);
+
       handleMethodException(e.message);
     }
   },
   "plant.update": function plantUpdate(data) {
-    logger("info", "data", data);
+    loggerV2.info(logSource, "data", data);
 
     try {
       const id = data._id;
@@ -58,7 +64,7 @@ Meteor.methods({
         "toxicity",
         "category",
         "companions",
-        "updatedAt"
+        "updatedAt",
       );
 
       const query = {
@@ -81,35 +87,38 @@ Meteor.methods({
       validationContext.validate(data);
 
       if (!validationContext.isValid()) {
-        logger(
-          "danger",
+        loggerV2.danger(
+          logSource,
           "Validation failed",
-          JSON.stringify(validationContext.validationErrors())
+          JSON.stringify(validationContext.validationErrors()),
         );
+
         handleMethodException(
           `'Validation failed', ${JSON.stringify(
-            validationContext.validationErrors()
-          )}`
+            validationContext.validationErrors(),
+          )}`,
         );
       } else {
-        logger("success", "passed", data);
+        loggerV2.success(logSource, "passed", data);
+
         const response = Plant.update({ _id: id }, query);
         return response;
       }
     } catch (e) {
-      logger("danger", e.message);
+      loggerV2.danger(logSource, e.message);
+
       handleMethodException(e.message);
     }
   },
   "plant.delete": async function plantDelete(data) {
     try {
       if (typeof data !== "string" || !data) {
-        logger("danger", "Invalid arguments passed");
+        loggerV2.danger(logSource, "Invalid arguments passed");
+
         handleMethodException("Invalid arguments passed");
       } else {
         const promises = [
           new Promise(function (resolve, reject) {
-
             Plant.remove({ _id: data }, (err, done) => {
               err ? reject(err) : resolve(done);
             });
@@ -155,13 +164,14 @@ Meteor.methods({
         return Promise.all(promises);
       }
     } catch (e) {
-      logger("danger", e.message);
+      loggerV2.danger(logSource, e.message);
+
       handleMethodException(e.message);
     }
   },
 
   "plant.migrate": function plantInsert() {
-    return;
+    // return;
 
     try {
       let data = {
@@ -250,9 +260,8 @@ Meteor.methods({
           let fertilizerResponse = Fertilizer.insert(fertilizer);
           let diaryResponse = Diary.insert(diary);
           let pestResponse = Pest.insert(pest);
-          let pruningDeadheadingResponse = PruningDeadheading.insert(
-            pruningDeadheading
-          );
+          let pruningDeadheadingResponse =
+            PruningDeadheading.insert(pruningDeadheading);
           let soilCompositionResponse = SoilComposition.insert(soilComposition);
 
           let plantResponse = Plant.update(
@@ -282,14 +291,15 @@ Meteor.methods({
                 soilRecipe: 1,
                 soilCompositionTracker: 1,
               },
-            }
+            },
           );
         }
       }
 
       return;
     } catch (e) {
-      logger("danger", e.message);
+      loggerV2.danger(logSource, e.message);
+
       handleMethodException(e.message);
     }
   },

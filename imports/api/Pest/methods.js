@@ -1,8 +1,11 @@
 import Pest from "./Pest";
 import rateLimit from "../../modules/rate-limit";
-import logger from "/imports/utils/helpers/logger";
 import SimpleSchema from "simpl-schema";
 import handleMethodException from "/imports/utils/helpers/handle-method-exception";
+import { Meteor } from "meteor/meteor";
+import { loggerV2 } from "../../utils/helpers";
+
+const logSource = "Pest Methods > ";
 
 Meteor.methods({
   "pest.insert": function pestInsert(plantId, data) {
@@ -15,33 +18,40 @@ Meteor.methods({
       validationContext.validate(data);
 
       if (!validationContext.isValid()) {
-        logger("danger", "Validation failed", JSON.stringify(validationContext.validationErrors()));
+        loggerV2.danger(
+          logSource,
+          "Validation failed",
+          JSON.stringify(validationContext.validationErrors()),
+        );
+
         handleMethodException("Invalid arguments passed");
       } else {
         const response = Pest.insert(data);
-        logger("success", "passed", data);
+        loggerV2.success(logSource, "passed", data);
+
         return response;
       }
     } catch (e) {
-      logger("danger", e.message);
+      loggerV2.danger(logSource, e.message);
+
       handleMethodException(e.message);
     }
   },
   "pest.update": function pestUpdate(type, data) {
-    logger("info", "type", type);
-    logger("info", "data", data);
+    loggerV2.info(logSource, "type", type);
+    loggerV2.info(logSource, "data", data);
 
     try {
       const id = data._id;
       delete data._id;
-      data.updatedAt = new Date()
+      data.updatedAt = new Date();
 
-      const validationSchema = Pest.schema.pick(
-              "pestTracker",
-              "updatedAt"
-      );
+      const validationSchema = Pest.schema.pick("pestTracker", "updatedAt");
 
-      const query = { $set: { updatedAt: data.updatedAt }, $push: { pestTracker: data.pestTracker } };
+      const query = {
+        $set: { updatedAt: data.updatedAt },
+        $push: { pestTracker: data.pestTracker },
+      };
 
       data.pestTracker = [data.pestTracker];
 
@@ -49,22 +59,34 @@ Meteor.methods({
       validationContext.validate(data);
 
       if (!validationContext.isValid()) {
-        logger("danger", "Validation failed", JSON.stringify(validationContext.validationErrors()));
-        handleMethodException(`'Validation failed', ${JSON.stringify(validationContext.validationErrors())}`);
+        loggerV2.danger(
+          logSource,
+          "Validation failed",
+          JSON.stringify(validationContext.validationErrors()),
+        );
+
+        handleMethodException(
+          `'Validation failed', ${JSON.stringify(
+            validationContext.validationErrors(),
+          )}`,
+        );
       } else {
-        logger("success", "passed", data);
+        loggerV2.success(logSource, "passed", data);
+
         const response = Pest.update({ _id: id }, query);
         return response;
       }
     } catch (e) {
-      logger("danger", e.message);
+      loggerV2.danger(logSource, e.message);
+
       handleMethodException(e.message);
     }
   },
   "pest.delete": function pestDelete(data) {
     try {
       if (typeof data !== "string" || !data) {
-        logger("danger", "Invalid arguments passed");
+        loggerV2.danger(logSource, "Invalid arguments passed");
+
         handleMethodException("Invalid arguments passed");
         // throw new Meteor.Error('500', 'Invalid arguments passed')
       } else {
@@ -72,7 +94,8 @@ Meteor.methods({
         return response;
       }
     } catch (e) {
-      logger("danger", e.message);
+      loggerV2.danger(logSource, e.message);
+
       handleMethodException(e.message);
     }
   },

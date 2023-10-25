@@ -1,20 +1,25 @@
-// @ts-ignore
 import moment from "moment";
 import {
-  FertilizerTracker,
-  PestTracker,
-  SoilCompositionTracker,
-  Tracker,
-} from "../models/tracker";
+  IFertilizerTrackerSchema,
+  IPestTrackerSchema,
+  ISoilCompositionTrackerSchema,
+  ITrackerSchema,
+} from "@model/ITrackerSchema";
+import {
+  IFertilizerSchema,
+  IFertilizerStats,
+  IWaterSchema,
+  IWaterStats,
+} from "@model";
 
 //date is for tests
 export const getDaysSinceAction = (
-  tracker: Array<any>,
-  date?: number
+  tracker: Array<ITrackerSchema>,
+  date?: number,
 ): number => {
   // console.log("***moment", moment(now))
   const now: number = Date.now();
-  let days: number = 0;
+  let days = 0;
 
   if (tracker?.length > 0 && Array.isArray(tracker)) {
     //doing new date so i can switch between dummy data and real data easily
@@ -27,8 +32,8 @@ export const getDaysSinceAction = (
 
 //date is for tests
 export const isActionDueToday = (
-  tracker: Array<any>,
-  schedule: number
+  tracker: Array<ITrackerSchema>,
+  schedule: number,
 ): boolean => {
   if (!tracker || !schedule) {
     return false;
@@ -38,13 +43,18 @@ export const isActionDueToday = (
 };
 
 export const getPlantCondition = (
-  tracker: Array<any>,
+  tracker: Array<ITrackerSchema>,
   daysSince: number,
-  schedule: number
+  schedule?: number,
+  isAuto?: boolean,
 ): string => {
-  let condition: string = "unknown";
+  let condition = "unknown";
 
-  if (tracker?.length > 0 && Array.isArray(tracker)) {
+  if (isAuto) {
+    condition = "happy";
+  } else if (!schedule) {
+    return condition;
+  } else if (tracker?.length > 0 && Array.isArray(tracker)) {
     if (daysSince / schedule >= 0.8) {
       condition = "needs-attn";
     } else if (daysSince / schedule >= 0.5) {
@@ -59,13 +69,14 @@ export const getPlantCondition = (
 
 //todo do i need this? soilCondition varies, this may not make sense
 export const getSoilCondition = (
-  tracker: Array<SoilCompositionTracker>,
-  idealMoistureRange: number
+  tracker: Array<ISoilCompositionTrackerSchema>,
+  idealMoistureRange?: number,
 ): string => {
-  let condition: string = "unknown";
+  let condition = "unknown";
 
   if (tracker?.length > 0 && Array.isArray(tracker)) {
-    const lastSoilComp: SoilCompositionTracker = tracker[tracker.length - 1];
+    const lastSoilComp: ISoilCompositionTrackerSchema =
+      tracker[tracker.length - 1];
 
     //scale of 3.5 to 8, calculate percentage
     if (
@@ -84,8 +95,8 @@ export const getSoilCondition = (
   return condition;
 };
 
-export const lastChecked = (tracker: Array<any>): string => {
-  let lastChecked: string = "No records available.";
+export const lastChecked = (tracker: Array<ITrackerSchema>): string => {
+  let lastChecked = "No records available.";
 
   if (tracker?.length > 0 && Array.isArray(tracker)) {
     lastChecked = `Last Checked ${parseDate(tracker[tracker.length - 1].date)}`;
@@ -95,9 +106,9 @@ export const lastChecked = (tracker: Array<any>): string => {
 };
 
 export const lastFertilizerUsed = (
-  tracker: Array<FertilizerTracker>
+  tracker: Array<IFertilizerTrackerSchema>,
 ): string => {
-  let fertilizer: string = "N/A";
+  let fertilizer = "N/A";
 
   if (tracker?.length > 0) {
     fertilizer = tracker[tracker.length - 1].fertilizer;
@@ -107,58 +118,59 @@ export const lastFertilizerUsed = (
 };
 
 export const getLastSoilPh = (
-  tracker: Array<SoilCompositionTracker>
-): number => {
-  let soilPh: number;
-
+  tracker: Array<ISoilCompositionTrackerSchema>,
+): number | void => {
   if (tracker?.length > 0 && Array.isArray(tracker)) {
     return tracker[tracker.length - 1].ph;
   }
-
-  return soilPh;
 };
 
 export const getLastSoilMoisture = (
-  tracker: Array<SoilCompositionTracker>
-): string => {
-  let soilMoisture: string;
-
-  if (tracker?.length > 0 && Array.isArray(tracker)) {
-    soilMoisture = tracker[tracker.length - 1].moisture
-      ? `${Math.round(tracker[tracker.length - 1].moisture * 100)}%`
-      : null;
+  tracker: Array<ISoilCompositionTrackerSchema>,
+): string | void => {
+  if (
+    tracker?.length > 0 &&
+    Array.isArray(tracker) &&
+    tracker[tracker.length - 1].moisture
+  ) {
+    return `${Math.round(tracker[tracker.length - 1].moisture * 100)}%`;
   }
-
-  return soilMoisture;
 };
 
-export const getLastPestName = (tracker: Array<PestTracker>): string => {
-  let pest: string = "N/A";
+export const getLastPestName = (
+  tracker?: Array<IPestTrackerSchema>,
+): string => {
+  let pest = "N/A";
 
-  if (tracker?.length > 0 && Array.isArray(tracker)) {
+  if (tracker?.length && Array.isArray(tracker)) {
     pest = tracker[tracker.length - 1].pest || "N/A";
   }
 
   return pest;
 };
 
-export const getLastPestTreatment = (tracker: Array<PestTracker>): string => {
-  let pestTreatment: string = "N/A";
+export const getLastPestTreatment = (
+  tracker?: Array<IPestTrackerSchema>,
+): string => {
+  let pestTreatment = "N/A";
 
-  if (tracker?.length > 0 && Array.isArray(tracker)) {
+  if (tracker?.length && Array.isArray(tracker)) {
     pestTreatment = tracker[tracker.length - 1].treatment || "N/A";
   }
 
   return pestTreatment;
 };
 
-export const sortByLastDate = (data: Array<Tracker>): Array<any> => {
-  let sortedData: Array<any> = [];
+export const sortByLastDate = (
+  data: Array<ITrackerSchema>,
+): Array<ITrackerSchema> => {
+  let sortedData: Array<ITrackerSchema> = [];
 
   if (data?.length > 0 && Array.isArray(data)) {
     sortedData = data.sort(function (a, b) {
-      let dateA: any = new Date(a.date);
-      let dateB: any = new Date(b.date);
+      const dateA: Date = new Date(a.date);
+      const dateB: Date = new Date(b.date);
+      // @ts-ignore
       return dateA - dateB;
     });
   }
@@ -167,7 +179,7 @@ export const sortByLastDate = (data: Array<Tracker>): Array<any> => {
 };
 
 export const parseDate = (date: Date): string => {
-  let parsedDate: string = "N/A";
+  let parsedDate = "N/A";
 
   if (date && new Date(date)?.getFullYear() + 1900 > 1969) {
     parsedDate = new Date(date).toLocaleDateString();
@@ -176,16 +188,64 @@ export const parseDate = (date: Date): string => {
   return parsedDate;
 };
 
-export const getHighlightDates = (tracker: any, type: string): Array<Date> => {
-  let dates: Array<Date> = [];
+//TODO split this out into two different methods?
+export const getHighlightDates = (
+  tracker: Array<ITrackerSchema> | Date,
+  type?: string, //TODO enum this?
+): Array<Date> => {
+  const dates: Array<Date> = [];
 
   if ((type === "dateBought" || type === "datePlanted") && tracker) {
+    // @ts-ignore
     dates.push(new Date(tracker));
+    // @ts-ignore
   } else if (tracker?.length > 0) {
+    // @ts-ignore
     for (let i = 0; i < tracker.length; i++) {
+      // @ts-ignore
       dates.push(new Date(tracker[i].date));
     }
   }
 
   return dates;
+};
+
+/**
+ * this is how we fill in the progress bar
+ */
+export const getWaterProgress = (
+  item: IWaterSchema,
+  stats: IWaterStats,
+): number => {
+  let progress = 0;
+
+  //if it's automatically watered, progress will always be at 100%
+  if (item.waterScheduleAuto) {
+    progress = 100;
+  } else if (item.waterSchedule != null) {
+    progress =
+      stats.daysSinceWatered / item.waterSchedule > 1
+        ? 5
+        : (1 - stats.daysSinceWatered / item.waterSchedule) * 100 || 5;
+  }
+
+  return progress;
+};
+
+/**
+ * this is how we fill in the progress bar
+ */
+export const getFertilizerProgress = (
+  item: IFertilizerSchema,
+  stats: IFertilizerStats,
+): number => {
+  let progress = 0;
+
+  if (item.fertilizerSchedule != null) {
+    progress =
+      stats.daysSinceFertilized / item.fertilizerSchedule > 1
+        ? 5
+        : (1 - stats.daysSinceFertilized / item.fertilizerSchedule) * 100 || 5;
+  }
+  return progress;
 };

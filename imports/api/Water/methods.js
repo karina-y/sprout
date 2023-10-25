@@ -1,9 +1,12 @@
 import Water from "./Water";
 import rateLimit from "../../modules/rate-limit";
-import logger from "/imports/utils/helpers/logger";
+import { loggerV2 } from "/imports/utils/helpers/logger";
 import SimpleSchema from "simpl-schema";
 import handleMethodException from "/imports/utils/helpers/handle-method-exception";
-import { UpdateTypes } from "@constant";
+import { Meteor } from "meteor/meteor";
+import { TrackerType } from "../../utils/enums";
+
+const logSource = "Water Methods > ";
 
 Meteor.methods({
   "water.insert": function waterInsert(plantId, data) {
@@ -16,24 +19,26 @@ Meteor.methods({
       validationContext.validate(data);
 
       if (!validationContext.isValid()) {
-        logger(
-          "danger",
+        loggerV2.danger(
+          logSource,
           "Validation failed",
-          JSON.stringify(validationContext.validationErrors())
+          JSON.stringify(validationContext.validationErrors()),
         );
+
         handleMethodException("Invalid arguments passed");
       } else {
         const response = Water.insert(data);
         return response;
       }
     } catch (e) {
-      logger("danger", e.message);
+      loggerV2.danger(logSource, e.message);
+
       handleMethodException(e.message);
     }
   },
   "water.update": function waterUpdate(type, data) {
-    logger("info", "type", type);
-    logger("info", "data", data);
+    loggerV2.info(logSource, "type", type);
+    loggerV2.info(logSource, "data", data);
 
     try {
       const id = data._id;
@@ -42,7 +47,7 @@ Meteor.methods({
       let validationSchema;
       let query;
 
-      if (type === UpdateTypes.water.waterEditModal) {
+      if (type === TrackerType.WATER_TRACKER) {
         validationSchema = Water.schema.pick("waterTracker", "updatedAt");
 
         query = {
@@ -57,7 +62,7 @@ Meteor.methods({
           "waterPreference",
           "waterSchedule",
           "waterScheduleAuto",
-          "updatedAt"
+          "updatedAt",
         );
 
         query = {
@@ -75,30 +80,34 @@ Meteor.methods({
       validationContext.validate(data);
 
       if (!validationContext.isValid()) {
-        logger(
-          "danger",
+        loggerV2.danger(
+          logSource,
           "Validation failed",
-          JSON.stringify(validationContext.validationErrors())
+          JSON.stringify(validationContext.validationErrors()),
         );
+
         handleMethodException(
           `'Validation failed', ${JSON.stringify(
-            validationContext.validationErrors()
-          )}`
+            validationContext.validationErrors(),
+          )}`,
         );
       } else {
-        logger("success", "passed", data);
+        loggerV2.success(logSource, "passed", data);
+
         const response = Water.update({ _id: id }, query);
         return response;
       }
     } catch (e) {
-      logger("danger", e.message);
+      loggerV2.danger(logSource, e.message);
+
       handleMethodException(e.message);
     }
   },
   "water.delete": function waterDelete(data) {
     try {
       if (typeof data !== "string" || !data) {
-        logger("danger", "Invalid arguments passed");
+        loggerV2.danger(logSource, "Invalid arguments passed");
+
         handleMethodException("Invalid arguments passed");
         // throw new Meteor.Error('500', 'Invalid arguments passed')
       } else {
@@ -106,7 +115,8 @@ Meteor.methods({
         return response;
       }
     } catch (e) {
-      logger("danger", e.message);
+      loggerV2.danger(logSource, e.message);
+
       handleMethodException(e.message);
     }
   },

@@ -1,10 +1,9 @@
 {
   "compilerOptions": {
-	"target": "ES2018",
+	"target": "es2020",
 	"module": "commonjs",
-	"lib": ["ES2018", "DOM"],
 	"allowJs": true,
-	"checkJs": false,
+	"lib": ["es2020", "dom"],
 	"jsx": "react",
 	"incremental": true,
 	"sourceMap": true,
@@ -16,8 +15,23 @@
 	"downlevelIteration": true,
 	"experimentalDecorators": true,
 	"importHelpers": true,
+	"allowImportingTsExtensions": true,
 	"baseUrl": ".",
+	"rootDir": ".",
+	"typeRoots": [
+	  "imports/utils/types"
+	],
+	"types": [
+	  "@types/jest",
+	  "@types/node",
+	  "@types/react",
+	  "@types/meteor"
+	],
 	"paths": {
+	  "meteor/*": [
+		"node_modules/@types/meteor/*",
+		".meteor/local/types/packages.d.ts"
+	  ],
 	  "@api": ["imports/api"],
 	  "@api/*": ["imports/api/*"],
 	  "@component": ["imports/ui/components"],
@@ -34,6 +48,10 @@
 	  "@helper/*": ["imports/utils/helpers/*"],
 	  "@model": ["imports/utils/models"],
 	  "@model/*": ["imports/utils/models/*"],
+	  "@enum": ["imports/utils/enums"],
+	  "@enum/*": ["imports/utils/enums/*"],
+	  "@type": ["imports/utils/types"],
+	  "@type/*": ["imports/utils/types/*"]
 	}
   },
   "exclude": [
@@ -41,4 +59,5 @@
 	"./.meteor/**",
 	"./packages/**"
   ],
+  "include": ["**/*.ts", "**/*.tsx"]
 }

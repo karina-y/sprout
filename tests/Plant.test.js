@@ -1,4 +1,3 @@
-import logger from "../imports/utils/helpers/logger";
 import SimpleSchema from "simpl-schema";
 import Plant from "../imports/api/Plant/Plant";
 import { plant } from "./db/db";
@@ -11,10 +10,10 @@ it("validate model - plant", () => {
   const validationContext = new SimpleSchema(Plant.schema).newContext();
   validationContext.validate(plantDb);
   if (!validationContext.isValid()) {
-    logger(
-      "danger",
+    loggerV2.danger(
+      logSource,
       "Validation failed",
-      JSON.stringify(validationContext.validationErrors(), null, 4)
+      JSON.stringify(validationContext.validationErrors(), null, 4),
     );
   }
 

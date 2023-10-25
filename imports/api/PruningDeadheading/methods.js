@@ -1,14 +1,17 @@
 import PruningDeadheading from "./PruningDeadheading";
 import rateLimit from "../../modules/rate-limit";
-import logger from "/imports/utils/helpers/logger";
 import SimpleSchema from "simpl-schema";
 import handleMethodException from "/imports/utils/helpers/handle-method-exception";
 import { UpdateTypes } from "@constant";
+import { Meteor } from "meteor/meteor";
+import { loggerV2 } from "../../utils/helpers";
+
+const logSource = "PruningDeadheading Methods > ";
 
 Meteor.methods({
   "pruningDeadheading.insert": function pruningDeadheadingInsert(
     plantId,
-    data
+    data,
   ) {
     try {
       data.createdAt = new Date();
@@ -16,29 +19,31 @@ Meteor.methods({
       data.plantId = plantId;
 
       const validationContext = new SimpleSchema(
-        PruningDeadheading.schema
+        PruningDeadheading.schema,
       ).newContext();
       validationContext.validate(data);
 
       if (!validationContext.isValid()) {
-        logger(
-          "danger",
+        loggerV2.danger(
+          logSource,
           "Validation failed",
-          JSON.stringify(validationContext.validationErrors())
+          JSON.stringify(validationContext.validationErrors()),
         );
+
         handleMethodException("Invalid arguments passed");
       } else {
         const response = PruningDeadheading.insert(data);
         return response;
       }
     } catch (e) {
-      logger("danger", e.message);
+      loggerV2.danger(logSource, e.message);
+
       handleMethodException(e.message);
     }
   },
   "pruningDeadheading.update": function pruningDeadheadingUpdate(type, data) {
-    logger("info", "type", type);
-    logger("info", "data", data);
+    loggerV2.info(logSource, "type", type);
+    loggerV2.info(logSource, "data", data);
 
     try {
       const id = data._id;
@@ -52,7 +57,7 @@ Meteor.methods({
         validationSchema = PruningDeadheading.schema.pick(
           "pruningTracker",
           "deadheadingTracker",
-          "updatedAt"
+          "updatedAt",
         );
 
         query = {
@@ -69,7 +74,7 @@ Meteor.methods({
         validationSchema = PruningDeadheading.schema.pick(
           "pruningPreference",
           "deadheadingPreference",
-          "updatedAt"
+          "updatedAt",
         );
 
         query = {
@@ -85,30 +90,34 @@ Meteor.methods({
       validationContext.validate(data);
 
       if (!validationContext.isValid()) {
-        logger(
-          "danger",
+        loggerV2.danger(
+          logSource,
           "Validation failed",
-          JSON.stringify(validationContext.validationErrors())
+          JSON.stringify(validationContext.validationErrors()),
         );
+
         handleMethodException(
           `'Validation failed', ${JSON.stringify(
-            validationContext.validationErrors()
-          )}`
+            validationContext.validationErrors(),
+          )}`,
         );
       } else {
-        logger("success", "passed", data);
+        loggerV2.success(logSource, "passed", data);
+
         const response = PruningDeadheading.update({ _id: id }, query);
         return response;
       }
     } catch (e) {
-      logger("danger", e.message);
+      loggerV2.danger(logSource, e.message);
+
       handleMethodException(e.message);
     }
   },
   "pruningDeadheading.delete": function pruningDeadheadingDelete(data) {
     try {
       if (typeof data !== "string" || !data) {
-        logger("danger", "Invalid arguments passed");
+        loggerV2.danger(logSource, "Invalid arguments passed");
+
         handleMethodException("Invalid arguments passed");
         // throw new Meteor.Error('500', 'Invalid arguments passed')
       } else {
@@ -116,7 +125,8 @@ Meteor.methods({
         return response;
       }
     } catch (e) {
-      logger("danger", e.message);
+      loggerV2.danger(logSource, e.message);
+
       handleMethodException(e.message);
     }
   },

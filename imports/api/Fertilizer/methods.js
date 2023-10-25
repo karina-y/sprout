@@ -1,9 +1,12 @@
 import Fertilizer from "./Fertilizer";
 import rateLimit from "../../modules/rate-limit";
-import logger from "/imports/utils/helpers/logger";
 import SimpleSchema from "simpl-schema";
 import handleMethodException from "/imports/utils/helpers/handle-method-exception";
-import { UpdateTypes } from "@constant";
+import { TrackerType } from "../../utils/enums";
+import { Meteor } from "meteor/meteor";
+import { loggerV2 } from "../../utils/helpers";
+
+const logSource = "Fertilizer Methods > ";
 
 Meteor.methods({
   "fertilizer.insert": function fertilizerInsert(plantId, data) {
@@ -13,29 +16,31 @@ Meteor.methods({
       data.plantId = plantId;
 
       const validationContext = new SimpleSchema(
-        Fertilizer.schema
+        Fertilizer.schema,
       ).newContext();
       validationContext.validate(data);
 
       if (!validationContext.isValid()) {
-        logger(
-          "danger",
+        loggerV2.danger(
+          logSource,
           "Validation failed",
-          JSON.stringify(validationContext.validationErrors())
+          JSON.stringify(validationContext.validationErrors()),
         );
+
         handleMethodException("Invalid arguments passed");
       } else {
         const response = Fertilizer.insert(data);
         return response;
       }
     } catch (e) {
-      logger("danger", e.message);
+      loggerV2.danger(logSource, e.message);
+
       handleMethodException(e.message);
     }
   },
   "fertilizer.update": function fertilizerUpdate(type, data) {
-    logger("info", "type", type);
-    logger("info", "data", data);
+    loggerV2.info(logSource, "type", type);
+    loggerV2.info(logSource, "data", data);
 
     try {
       const id = data._id;
@@ -44,10 +49,10 @@ Meteor.methods({
       let validationSchema;
       let query;
 
-      if (type === UpdateTypes.fertilizer.fertilizerEditModal) {
+      if (type === TrackerType.FERTILIZER_TRACKER) {
         validationSchema = Fertilizer.schema.pick(
           "fertilizerTracker",
-          "updatedAt"
+          "updatedAt",
         );
 
         query = {
@@ -63,7 +68,7 @@ Meteor.methods({
           "compost",
           "preferredFertilizer",
           "nutrient",
-          "updatedAt"
+          "updatedAt",
         );
 
         query = {
@@ -81,30 +86,34 @@ Meteor.methods({
       validationContext.validate(data);
 
       if (!validationContext.isValid()) {
-        logger(
-          "danger",
+        loggerV2.danger(
+          logSource,
           "Validation failed",
-          JSON.stringify(validationContext.validationErrors())
+          JSON.stringify(validationContext.validationErrors()),
         );
+
         handleMethodException(
           `'Validation failed', ${JSON.stringify(
-            validationContext.validationErrors()
-          )}`
+            validationContext.validationErrors(),
+          )}`,
         );
       } else {
-        logger("success", "passed", data);
+        loggerV2.success(logSource, "passed", data);
+
         const response = Fertilizer.update({ _id: id }, query);
         return response;
       }
     } catch (e) {
-      logger("danger", e.message);
+      loggerV2.danger(logSource, e.message);
+
       handleMethodException(e.message);
     }
   },
   "fertilizer.delete": function fertilizerDelete(data) {
     try {
       if (typeof data !== "string" || !data) {
-        logger("danger", "Invalid arguments passed");
+        loggerV2.danger(logSource, "Invalid arguments passed");
+
         handleMethodException("Invalid arguments passed");
         // throw new Meteor.Error('500', 'Invalid arguments passed')
       } else {
@@ -112,7 +121,8 @@ Meteor.methods({
         return response;
       }
     } catch (e) {
-      logger("danger", e.message);
+      loggerV2.danger(logSource, e.message);
+
       handleMethodException(e.message);
     }
   },

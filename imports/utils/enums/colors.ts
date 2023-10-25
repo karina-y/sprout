@@ -1,0 +1,10 @@
+export enum Colors {
+  SUCCESS_DARK = "#45c6a5",
+  SUCCESS_LIGHT = "#53fad6",
+  DANGER_DARK = "#FE608B",
+  DANGER_LIGHT = "#F699C6",
+  WARNING_DARK = "#FEC45F",
+  WARNING_LIGHT = "#FDE3A9",
+  INFO_DARK = "#8184f9",
+  INFO_LIGHT = "#7da2f3",
+}

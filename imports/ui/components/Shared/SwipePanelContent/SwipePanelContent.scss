@@ -23,6 +23,22 @@
 
   .plant-condition-icon {
     display: inline-block;
+
+    &.fa-face-sad-tear {
+      color: $danger-dark;
+    }
+
+    &.fa-face-meh {
+      color: $danger-light;
+    }
+
+    &.fa-circle-question {
+      color: $warning-dark;
+    }
+
+    &.fa-face-smile {
+      color: $success-dark;
+    }
   }
 
   .svg-inline--fa {

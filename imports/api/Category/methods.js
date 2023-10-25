@@ -1,8 +1,11 @@
 import Category from "./Category";
 import rateLimit from "../../modules/rate-limit";
-import logger from "/imports/utils/helpers/logger";
+import { loggerV2 } from "/imports/utils/helpers/logger";
 import SimpleSchema from "simpl-schema";
 import handleMethodException from "../../utils/helpers/handle-method-exception";
+import { Meteor } from "meteor/meteor";
+
+const logSource = "Category Methods > ";
 
 Meteor.methods({
   "category.insert": function categoryInsert(data) {
@@ -15,9 +18,16 @@ Meteor.methods({
       validationContext.validate(data);
 
       if (!validationContext.isValid()) {
-        logger("danger", "Validation failed", JSON.stringify(validationContext.validationErrors()));
+        loggerV2.danger(
+          logSource,
+          "Validation failed",
+          JSON.stringify(validationContext.validationErrors()),
+        );
+
         handleMethodException(
-          `Validation failed, ${JSON.stringify(validationContext.validationErrors())}`
+          `Validation failed, ${JSON.stringify(
+            validationContext.validationErrors(),
+          )}`,
         );
         // throw new Meteor.Error('500', 'Invalid arguments passed')
       } else {
@@ -25,13 +35,14 @@ Meteor.methods({
         return response;
       }
     } catch (e) {
-      logger("danger", e.message);
+      loggerV2.danger(logSource, e.message);
+
       handleMethodException(e.message);
     }
   },
   "category.update": function categoryUpdate(type, data) {
-    logger("info", "type", type);
-    logger("info", "data", data);
+    loggerV2.info(logSource, "type", type);
+    loggerV2.info(logSource, "data", data);
 
     try {
       // data.updatedAt = new Date();
@@ -47,7 +58,7 @@ Meteor.methods({
             "waterPreference",
             "lightPreference",
             "waterSchedule",
-            "updatedAt"
+            "updatedAt",
           );
 
           query = {
@@ -60,7 +71,10 @@ Meteor.methods({
           };
           break;
         case "fertilizerTracker-edit":
-          validationSchema = Category.schema.pick("fertilizerSchedule", "updatedAt");
+          validationSchema = Category.schema.pick(
+            "fertilizerSchedule",
+            "updatedAt",
+          );
 
           query = {
             $set: {
@@ -75,7 +89,7 @@ Meteor.methods({
             "dateBought",
             "locationBought",
             "companions",
-            "updatedAt"
+            "updatedAt",
           );
 
           query = {
@@ -101,32 +115,43 @@ Meteor.methods({
       validationContext.validate(data);
 
       if (!validationContext.isValid()) {
-        logger("danger", "Validation failed", JSON.stringify(validationContext.validationErrors()));
+        loggerV2.danger(
+          logSource,
+          "Validation failed",
+          JSON.stringify(validationContext.validationErrors()),
+        );
+
         handleMethodException(
-          `Validation failed, ${JSON.stringify(validationContext.validationErrors())}`
+          `Validation failed, ${JSON.stringify(
+            validationContext.validationErrors(),
+          )}`,
         );
         // throw new Meteor.Error('500')
       } else {
-        logger("success", "passed", data);
+        loggerV2.success(logSource, "passed", data);
+
         const response = Category.update({ _id: plant._id }, query);
         return response;
       }
     } catch (e) {
-      logger("danger", e.message);
+      loggerV2.danger(logSource, e.message);
+
       handleMethodException(e.message);
     }
   },
   "category.delete": function categoryDelete(data) {
     try {
       if (typeof data !== "string") {
-        logger("danger", "Validation failed");
+        loggerV2.danger(logSource, "Invalid arguments passed");
+
         throw new Meteor.Error("500", "Invalid arguments passed");
       } else {
         const response = Category.remove({ _id: data });
         return response;
       }
     } catch (e) {
-      logger("danger", e.message);
+      loggerV2.danger(logSource, e.message);
+
       handleMethodException(e.message);
     }
   },

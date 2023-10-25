@@ -76,9 +76,14 @@ Seedling.schema = new SimpleSchema(
       label: "trueLeavesDate",
     },
     daysToGerminate: {
-      type: String,
+      type: Number,
       optional: true,
       label: "daysToGerminate",
+    },
+    startDate: {
+      type: Date,
+      optional: true,
+      label: "startDate",
     },
     transplantDate: {
       type: Date,
@@ -86,7 +91,7 @@ Seedling.schema = new SimpleSchema(
       label: "transplantDate",
     },
     daysToHarvest: {
-      type: String,
+      type: Number,
       optional: true,
       label: "daysToHarvest",
     },
@@ -118,6 +123,7 @@ Seedling.schema = new SimpleSchema(
       defaultValue: "",
       label: "diary.$.entry",
     },
+    //TODO should image be optional?
     image: {
       type: String,
       defaultValue: "",
@@ -258,7 +264,7 @@ Seedling.schema = new SimpleSchema(
     soilRecipe: {
       type: String,
       optional: true,
-      label: "soilAmmendment", //soil used in pots or in ground
+      label: "soilRecipe",
     },
     soilCompositionTracker: {
       type: Array,
@@ -272,7 +278,7 @@ Seedling.schema = new SimpleSchema(
     "soilCompositionTracker.$.date": {
       type: Date,
       defaultValue: new Date(),
-      optional: true,
+      optional: true, //TODO why is this optional and other dates in trackers aren't?
       label: "soilCompositionTracker.$.date",
     },
     "soilCompositionTracker.$.ph": {
