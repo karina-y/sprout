@@ -5,7 +5,6 @@ import "react-datepicker/dist/react-datepicker.css";
 import { toast } from "react-toastify";
 import { EtcPlantReadEdit } from "@component";
 import { useNewData } from "@hook";
-import { UpdateTypesDep } from "@constant";
 import { withTracker } from "meteor/react-meteor-data";
 import { RouteComponentPropsCustom } from "@type";
 import { IPlantSchema } from "@model";
@@ -26,8 +25,8 @@ const EtcSwipePanel = (props: IEtcSwipePanelProps) => {
   const { newData, setNewData, changeNewData } = useNewData({});
 
   useEffect(() => {
-    if (props.savingType === `${UpdateTypesDep.etc.etcEditModal}-edit`) {
-      updatePlant(`${UpdateTypesDep.etc.etcEditModal}-edit`);
+    if (props.savingType === `${ModalId.ETC_TRACKER}-edit`) {
+      updatePlant(`${ModalId.ETC_TRACKER}-edit`);
     }
   }, [props]);
 

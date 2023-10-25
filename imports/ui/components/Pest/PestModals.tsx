@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import DatePicker from "react-datepicker";
 import { ItemAddEntryModal, ItemViewHistoryModal } from "@component";
 import { parseDate } from "@helper";
-import { UpdateTypesDep } from "@constant";
 import { withTracker } from "meteor/react-meteor-data";
 import { RouteComponentPropsCustom } from "@type";
 import {
@@ -48,7 +47,7 @@ const PestModals = (props: IPestModalsProps) => {
         save={save}
         cancel={resetModal}
         activeModalId={activeModalId as ModalId}
-        modalId={UpdateTypesDep.pest.pestEditModal}
+        modalId={ModalId.PEST_TRACKER}
         header="New pest entry"
       >
         {/*
@@ -97,7 +96,7 @@ const PestModals = (props: IPestModalsProps) => {
       <ItemViewHistoryModal
         cancel={resetModal}
         activeModalId={activeModalId}
-        modalIdToDisplay={UpdateTypesDep.pest.pestHistoryModal}
+        modalIdToDisplay={ModalId.PEST_TRACKER_HISTORY}
         header="Pest History"
       >
         {tracker?.length ? (

@@ -3,10 +3,10 @@ import PropTypes from "prop-types";
 import { SwipePanelContent } from "@component";
 import { withTracker } from "meteor/react-meteor-data";
 import { Category } from "@api";
-import { UpdateTypesDep } from "@constant";
 import { ISeedlingSchema } from "@model/seedling";
 import { ICategorySchema } from "@model";
 import { Session } from "meteor/session";
+import { ModalId } from "@enum";
 
 interface IEtcSeedlingReadEditProps {
   seedling: ISeedlingSchema;
@@ -183,7 +183,7 @@ EtcSeedlingReadEdit.propTypes = {
 export default withTracker((_props: any) => {
   const categories = Category.find({}).fetch();
   const editingType = Session.get("editingType");
-  const editing = editingType === UpdateTypesDep.etc.etcEditModal;
+  const editing = editingType === ModalId.ETC_TRACKER;
 
   return {
     categories,

@@ -15,7 +15,6 @@ import {
   PruningDeadheadingReadEditPro,
 } from "@component";
 import { useNewData, usePruneType } from "@hook";
-import { UpdateTypesDep } from "@constant";
 import { PruningDeadheading } from "@api";
 import { IPruningDeadheadingSchema, IPruningDeadheadingStats } from "@model";
 import { TrackerEditingType } from "@enum";
@@ -64,9 +63,7 @@ const PruningDeadheadingSwipePanel = (
     } else {
       let data: Partial<IPruningDeadheadingSchema>;
 
-      if (
-        type === UpdateTypesDep.pruningDeadheading.pruningDeadheadingEditModal
-      ) {
+      if (type === ModalId.PRUNING_DEADHEADING_TRACKER) {
         data = {
           pruningTracker: newPlantData.pruningTracker,
           deadheadingTracker: newPlantData.deadheadingTracker,

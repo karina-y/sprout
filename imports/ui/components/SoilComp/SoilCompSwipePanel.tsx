@@ -20,7 +20,6 @@ import {
   SoilCompReadEditPro,
 } from "@component";
 import { useNewData } from "@hook";
-import { UpdateTypesDep } from "@constant";
 import { RouteComponentPropsCustom } from "@type";
 import { Categories, TrackerEditingType } from "@enum";
 import {
@@ -50,10 +49,8 @@ const SoilCompSwipePanel = (props: ISoilCompSwipePanelProps) => {
   } = useNewData({});
 
   useEffect(() => {
-    if (
-      props.savingType === `${UpdateTypesDep.soilComp.soilCompEditModal}-edit`
-    ) {
-      updatePlant(`${UpdateTypesDep.soilComp.soilCompEditModal}-edit`);
+    if (props.savingType === `${ModalId.SOIL_COMP_TRACKER}-edit`) {
+      updatePlant(`${ModalId.SOIL_COMP_TRACKER}-edit`);
     }
   }, [props]);
 
@@ -67,7 +64,7 @@ const SoilCompSwipePanel = (props: ISoilCompSwipePanelProps) => {
     } else {
       let data;
 
-      if (type === UpdateTypesDep.soilComp.soilCompEditModal) {
+      if (type === ModalId.SOIL_COMP_TRACKER) {
         data = newPlantData;
       } else {
         if (props.category === "in-ground") {

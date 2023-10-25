@@ -4,7 +4,6 @@ import { withTracker } from "meteor/react-meteor-data";
 import DatePicker from "react-datepicker";
 import { ItemAddEntryModal, ItemViewHistoryModal } from "@component";
 import { parseDate } from "@helper";
-import { UpdateTypesDep } from "@constant";
 import { IFertilizerTrackerSchema } from "@model";
 import {
   ModalId,
@@ -48,7 +47,7 @@ const FertilizerModals = (props: IFertilizerModalsProps) => {
         save={save}
         cancel={resetModal}
         activeModalId={activeModalId}
-        modalId={UpdateTypesDep.fertilizer.fertilizerEditModal}
+        modalId={ModalId.FERTILIZER_TRACKER}
         header="New fertilizer entry"
       >
         {/*
@@ -83,7 +82,7 @@ const FertilizerModals = (props: IFertilizerModalsProps) => {
       <ItemViewHistoryModal
         cancel={resetModal}
         activeModalId={activeModalId}
-        modalIdToDisplay={UpdateTypesDep.fertilizer.fertilizerHistoryModal}
+        modalIdToDisplay={ModalId.FERTILIZER_TRACKER_HISTORY}
         header="Fertilizing History"
       >
         {tracker?.length ? (

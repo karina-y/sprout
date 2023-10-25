@@ -5,7 +5,6 @@ import { withTracker } from "meteor/react-meteor-data";
 import { Category } from "@api";
 import { parseDate } from "@helper";
 import { Session } from "meteor/session";
-import { UpdateTypesDep } from "@constant";
 import { RouteComponentPropsCustom } from "@type";
 import { ISeedlingSchema } from "@model/seedling";
 import { Categories, SeedlingUpdateType } from "@enum";
@@ -204,7 +203,7 @@ SeedlingDatesReadEdit.propTypes = {
 export default withTracker((_props: any) => {
   const categories = Category.find({}).fetch();
   const editingType = Session.get("editingType");
-  const editing = editingType === UpdateTypesDep.general.dates;
+  const editing = editingType === "dates";
 
   return {
     categories,

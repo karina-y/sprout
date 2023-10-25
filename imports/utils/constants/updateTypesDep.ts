@@ -44,9 +44,8 @@ export const UpdateTypesDep = {
 //TODO what was i doing here? do i want the activeModalId enums even?
 export const EditingTypeDep = {
   waterEditModal: ModalId.WATER_TRACKER,
-  fertilizerEditModal: UpdateTypesDep.fertilizer.fertilizerEditModal,
-  pruningDeadheadingEditModal:
-    UpdateTypesDep.pruningDeadheading.pruningDeadheadingEditModal,
-  soilCompEditModal: UpdateTypesDep.soilComp.soilCompEditModal,
-  etcEditModal: UpdateTypesDep.etc.etcEditModal,
+  fertilizerEditModal: ModalId.FERTILIZER_TRACKER,
+  pruningDeadheadingEditModal: ModalId.PRUNING_DEADHEADING_TRACKER,
+  soilCompEditModal: ModalId.SOIL_COMP_TRACKER,
+  etcEditModal: ModalId.ETC_TRACKER,
 };

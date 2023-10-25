@@ -3,9 +3,8 @@ import PropTypes from "prop-types";
 import { SwipePanelContent } from "@component";
 import { withTracker } from "meteor/react-meteor-data";
 import { parseDate } from "@helper";
-import { UpdateTypesDep } from "@constant";
 import { ICategorySchema, IPlantSchema } from "@model";
-import { Categories, PlantDetailType } from "@enum";
+import { Categories, ModalId, PlantDetailType } from "@enum";
 import { Category } from "@api";
 import { Session } from "meteor/session";
 
@@ -255,7 +254,7 @@ EtcPlantReadEdit.propTypes = {
 export default withTracker((_props: any) => {
   const categories = Category.find({}).fetch() as Array<ICategorySchema>;
   const editingType = Session.get("editingType");
-  const editing = editingType === UpdateTypesDep.etc.etcEditModal;
+  const editing = editingType === ModalId.ETC_TRACKER;
 
   return {
     categories,

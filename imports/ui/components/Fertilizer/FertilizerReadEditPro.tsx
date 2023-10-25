@@ -1,7 +1,6 @@
 import React, { ChangeEvent, ComponentClass } from "react";
 import PropTypes from "prop-types";
 import { SwipePanelContent } from "@component";
-import { UpdateTypesDep } from "@constant";
 import { withTracker } from "meteor/react-meteor-data";
 import { PlantDetailType } from "@enum";
 import { IFertilizerSchema, IFertilizerStatsPro } from "@model";
@@ -157,7 +156,7 @@ FertilizerReadEditPro.propTypes = {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default withTracker((_props: any) => {
   const editingType = Session.get("editingType");
-  const editing = editingType === UpdateTypesDep.fertilizer.fertilizerEditModal;
+  const editing = editingType === ModalId.FERTILIZER_TRACKER;
 
   return {
     editing,

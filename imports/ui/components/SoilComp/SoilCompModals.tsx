@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import DatePicker from "react-datepicker";
 import { ItemAddEntryModal, ItemViewHistoryModal } from "@component";
 import { parseDate } from "@helper";
-import { UpdateTypesDep } from "@constant";
 import { withTracker } from "meteor/react-meteor-data";
 import { RouteComponentPropsCustom } from "@type";
 import { ISoilCompositionTrackerSchema, ITrackerSchema } from "@model";
@@ -111,7 +110,7 @@ const SoilCompModals = (props: ISoilCompAddProProps) => {
       <ItemViewHistoryModal
         cancel={resetModal}
         activeModalId={activeModalId}
-        modalIdToDisplay={UpdateTypesDep.soilComp.soilCompHistoryModal}
+        modalIdToDisplay={ModalId.SOIL_COMP_TRACKER_HISTORY}
         header="Soil Composition History"
       >
         {tracker?.length ? (
